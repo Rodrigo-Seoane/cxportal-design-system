@@ -1,0 +1,213 @@
+---
+title: Select
+description: A dropdown field for choosing one or multiple options from a list. Supports single and multi-select, optional search, two sizes, and a contextual-icon variant.
+figmaNodeId: 7-418
+status: stable
+---
+
+## Overview
+
+Select (Dropdown) provides more flexibility than radio buttons or checkboxes when the number of options is large. Users click the trigger to reveal a list and choose one — or multiple — values. The trigger collapses back once a selection is made, keeping the layout compact.
+
+Use it when there are more than three options and the full list would be too long to display inline. Options should be logically sorted and each label must be fully readable without truncation.
+
+## When to use
+
+- When there are more than three options and a radio group would take too much space
+- When a single or multi-selection from a bounded list is needed inside a form
+- When the form layout is dense and inline options would break the grid
+
+## Anatomy
+
+A Select consists of:
+
+- **Label** — Identifies the field. 12px SemiBold, always above the trigger. Hidden automatically on Small size.
+- **Trigger button** — The clickable field. Shows the placeholder or current selection, and a caret that rotates 180° when the dropdown is open.
+- **Leading icon (Complex type only)** — A contextual icon (e.g. `@`) on the left of the trigger to communicate the field's purpose at a glance.
+- **Dropdown panel** — Appears below the trigger via a portal. Contains the option rows and an optional search row at the top.
+- **Search row (optional)** — A magnifying-glass input at the top of the panel. Filters options as the user types.
+- **Option rows** — Each row is 36px tall. Single-select rows show a check mark on the right when selected. Multi-select rows show a checkbox on the left.
+- **Error message (optional)** — 10px red copy below the trigger.
+
+| State | Border | Description |
+|---|---|---|
+| Default | `#d9dce0` | Resting, not yet interacted |
+| Focus (open) | `#4285f4` (primary blue) | Dropdown is open, trigger is active |
+| Error | `#f792ac` (error-200) | Validation failed |
+| Disabled | `#d9dce0`, grey background | Interaction not allowed |
+
+## Variants
+
+### Size
+
+| Size | Trigger height | Font | Border radius | Border |
+|---|---|---|---|---|
+| **Regular** (default) | 36px | 14px / 20px | 8px | 1px |
+| **Small** | 24px | 10px / 16px | 4px | 0.5px |
+
+Small size hides the label row — always pair it with surrounding context that communicates the field's purpose.
+
+### Type
+
+| Type | Left icon | Use for |
+|---|---|---|
+| **Simple** (default) | — | General selections with no visual disambiguation needed |
+| **Complex** | `@` icon | Fields where a leading icon clarifies the field's domain (e.g. mention, assignee) |
+
+The leading icon colour follows state: blue when open, pink when error, grey otherwise.
+
+### Dropdown mode
+
+| Mode | `multiSelect` | Row style | Close on select |
+|---|---|---|---|
+| Single select | `false` | Label + check mark (right) | Yes |
+| Multi-select | `true` | Checkbox (left) + label | No — panel stays open |
+
+## Do's & Don'ts
+
+<DosDonts>
+  <Do description="Sort options logically — alphabetically, by frequency, or by a natural order the user already understands. Predictable order reduces scanning time." />
+  <Dont description="Randomise or change option order on re-render. It disorients users who partially remember where an option appears in the list." />
+</DosDonts>
+
+<DosDonts>
+  <Do description="Use the searchable prop for lists longer than ~10 options so users can filter without scrolling." />
+  <Dont description="Add search to short lists (≤5 options). It adds interaction cost without a meaningful benefit." />
+</DosDonts>
+
+<DosDonts>
+  <Do description="Write option labels as complete, sentence-case nouns or short phrases ('Option one', 'Last 30 days'). They must be readable at a glance." />
+  <Dont description="Truncate option labels inside the panel. If the text doesn't fit, widen the dropdown or shorten the label — never hide information the user needs to choose." />
+</DosDonts>
+
+<DosDonts>
+  <Do description="Keep disabled selects in the layout so users understand the form's complete shape. Pair them with surrounding context that explains why the field is locked." />
+  <Dont description="Remove disabled selects from the DOM. Users lose track of what options are available and how the form is structured." />
+</DosDonts>
+
+## Code
+
+### Single select
+
+```tsx
+import { Select } from '@/components/ui/select'
+
+const options = [
+  { label: 'Option one',   value: 'opt-1' },
+  { label: 'Option two',   value: 'opt-2' },
+  { label: 'Option three', value: 'opt-3' },
+]
+
+<Select options={options} label="Category" />
+```
+
+### Small size (no label)
+
+```tsx
+<Select
+  options={options}
+  size="small"
+  placeholder="Filter by status"
+/>
+```
+
+### Complex type (leading icon)
+
+```tsx
+<Select
+  options={options}
+  type="complex"
+  label="Assignee"
+  placeholder="Select assignee"
+/>
+```
+
+### Multi-select
+
+```tsx
+<Select
+  options={options}
+  multiSelect
+  label="Tags"
+  placeholder="Select tags"
+/>
+```
+
+### Searchable
+
+```tsx
+<Select
+  options={options}
+  searchable
+  label="Country"
+  placeholder="Select country"
+/>
+```
+
+### Searchable multi-select
+
+```tsx
+<Select
+  options={options}
+  multiSelect
+  searchable
+  label="Labels"
+  placeholder="Select labels"
+/>
+```
+
+### Error state
+
+```tsx
+<Select
+  options={options}
+  label="Category"
+  error="Please select an option."
+/>
+```
+
+### Disabled
+
+```tsx
+<Select
+  options={options}
+  label="Category"
+  disabled
+/>
+```
+
+### Controlled
+
+```tsx
+const [value, setValue] = useState('')
+
+<Select
+  options={options}
+  label="Category"
+  value={value}
+  onChange={setValue}
+/>
+```
+
+### Controlled multi-select
+
+```tsx
+const [values, setValues] = useState<string[]>([])
+
+<Select
+  options={options}
+  multiSelect
+  label="Tags"
+  value={values}
+  onChange={(v) => setValues(v as string[])}
+/>
+```
+
+## Accessibility
+
+- The trigger uses `aria-haspopup="listbox"` and `aria-expanded` to communicate its state to assistive technologies.
+- The dropdown panel uses `role="listbox"` and each option uses `role="option"` with `aria-selected`.
+- Multi-select panels include `aria-multiselectable="true"` on the listbox.
+- Error messages use `role="alert"` so screen readers announce them immediately.
+- The `aria-describedby` attribute links the trigger to its error message automatically.
+- Disabled triggers carry `disabled` so the browser and screen readers prevent interaction.

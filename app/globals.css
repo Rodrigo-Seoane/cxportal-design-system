@@ -1,0 +1,149 @@
+@import "tailwindcss";
+
+/* ─── Mona Sans variable font ─────────────────────────────────────────────── */
+@font-face {
+  font-family: 'Mona Sans';
+  src:
+    url('/fonts/MonaSans/MonaSans-VariableFont.woff2') format('woff2 supports variations'),
+    url('/fonts/MonaSans/MonaSans-VariableFont.woff2') format('woff2-variations');
+  font-weight: 200 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Mona Sans';
+  src:
+    url('/fonts/MonaSans/MonaSans-VariableFont-Italic.woff2') format('woff2 supports variations'),
+    url('/fonts/MonaSans/MonaSans-VariableFont-Italic.woff2') format('woff2-variations');
+  font-weight: 200 900;
+  font-style: italic;
+  font-display: swap;
+}
+
+/* ─── CxPortal Design Tokens ──────────────────────────────────────────────── */
+:root {
+  /* Colors — Primary */
+  --color-primary: #4285f4;
+
+  /* Colors — Text */
+  --color-text-primary: #021920;
+  --color-text-secondary: #7a828c;
+  --color-text-on-dark: #eff1f3;
+  --color-text-placeholder: #7a828c;
+
+  /* Colors — Surfaces */
+  --color-surface-section: #ffffff;
+  --color-surface-display: #eff1f3;
+  --color-surface-panel: #eff1f3;
+  --color-surface-nav: #050326;
+  --color-surface-form-field: #ffffff;
+  --color-surface-zebra: #f8f8f8;
+
+  /* Colors — Interactive states (buttons, hover, active, disabled) */
+  --color-interactive-primary-light: #689df6;
+  --color-interactive-primary-dark: #3264b8;
+  --color-interactive-border-strong: #aab0b8;
+  --color-interactive-border-disabled: #d9dce0;
+
+  /* Colors — Status */
+  --color-success-100: #ddf4d2;
+  --color-success-200: #b5e89c;
+  --color-warning-100: #fbeed8;
+  --color-warning-200: #f7ddb1;
+  --color-error-100: #fbc6d4;
+  --color-error-200: #f792ac;
+  --color-info-100: #d6e2f5;
+  --color-info-200: #a4beea;
+
+  /* Border Radius */
+  --radius-xs: 2px;
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 16px;
+  --radius-round: 64px;
+
+  /* Typography */
+  --font-sans: 'Mona Sans', system-ui, sans-serif;
+
+  /* Shadcn/ui semantic tokens (mapped to CxPortal palette) */
+  --background: var(--color-surface-section);
+  --foreground: var(--color-text-primary);
+  --muted: var(--color-surface-display);
+  --muted-foreground: var(--color-text-secondary);
+  --border: #e2e5e8;
+  --input: var(--color-surface-form-field);
+  --ring: var(--color-primary);
+  --primary: var(--color-primary);
+  --primary-foreground: #ffffff;
+  --secondary: var(--color-surface-display);
+  --secondary-foreground: var(--color-text-primary);
+  --accent: var(--color-surface-display);
+  --accent-foreground: var(--color-text-primary);
+  --destructive: var(--color-error-200);
+  --destructive-foreground: #ffffff;
+  --card: var(--color-surface-section);
+  --card-foreground: var(--color-text-primary);
+  --popover: var(--color-surface-section);
+  --popover-foreground: var(--color-text-primary);
+  --radius: var(--radius-md);
+}
+
+/* ─── Tailwind v4 @theme mapping ──────────────────────────────────────────── */
+@theme inline {
+  /* Font */
+  --font-sans: var(--font-sans);
+
+  /* Colors */
+  --color-primary: var(--color-primary);
+  --color-text-primary: var(--color-text-primary);
+  --color-text-secondary: var(--color-text-secondary);
+  --color-text-on-dark: var(--color-text-on-dark);
+  --color-text-placeholder: var(--color-text-placeholder);
+  --color-surface-section: var(--color-surface-section);
+  --color-surface-display: var(--color-surface-display);
+  --color-surface-panel: var(--color-surface-panel);
+  --color-surface-nav: var(--color-surface-nav);
+  --color-surface-form-field: var(--color-surface-form-field);
+  --color-surface-zebra: var(--color-surface-zebra);
+  --color-success-100: var(--color-success-100);
+  --color-success-200: var(--color-success-200);
+  --color-warning-100: var(--color-warning-100);
+  --color-warning-200: var(--color-warning-200);
+  --color-error-100: var(--color-error-100);
+  --color-error-200: var(--color-error-200);
+  --color-info-100: var(--color-info-100);
+  --color-info-200: var(--color-info-200);
+
+  /* Border Radius */
+  --radius-xs: var(--radius-xs);
+  --radius-sm: var(--radius-sm);
+  --radius-md: var(--radius-md);
+  --radius-lg: var(--radius-lg);
+  --radius-round: var(--radius-round);
+
+  /* Shadcn semantic tokens */
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-border: var(--border);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+}
+
+/* ─── Base styles ─────────────────────────────────────────────────────────── */
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+  font-size: 14px; /* Body MD is the base */
+  line-height: 20px;
+  -webkit-font-smoothing: antialiased;
+}

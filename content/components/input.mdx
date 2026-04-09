@@ -1,0 +1,167 @@
+---
+title: Input
+description: Text-entry fields for forms. Combines a Label and a Field — supports text, email, number, date, password, and textarea variants with hint and error states.
+figmaNodeId: 7-280
+status: stable
+---
+
+## Overview
+
+Input is the fundamental building block for data entry. It provides a text-editable field for users to add, change, or delete information. The component is a composition of two smaller pieces — a **Label** and a **Field** — which can be used independently or together.
+
+A basic widget for getting user input. Keyboard and mouse can be used to provide or change data. Use in forms, dialogs, search bars, and anywhere freeform text is needed.
+
+## When to use
+
+- When users need to enter, edit, or clear freeform text (names, numbers, emails, dates)
+- When a label is needed to tell users what data is expected
+- When hint text or validation feedback improves completion rates
+
+## Anatomy
+
+An Input consists of:
+
+- **Label** — Identifies the field. 12px SemiBold, always above the field. Required fields add a `*` indicator.
+- **Field** — The interactive container. 36px tall (single-line), white background, 8px border-radius, 8px padding.
+- **Prefix icon (optional)** — Type-specific icon on the left (Email → envelope) or right (Number → caret, Date → calendar).
+- **Password toggle (optional)** — Eye icon to reveal/hide the password value.
+- **Hint text (optional)** — 10px helper copy below the field. Suppressed when an error is shown.
+- **Error message (optional)** — 10px red copy with a warning icon inside the field.
+- **Character count (textarea only)** — Live counter aligned right below the textarea.
+
+| State | Border | Description |
+|---|---|---|
+| Default | `#d9dce0` | Resting, ready for input |
+| Focus | `#4285f4` (primary blue) | Field is active, cursor inside |
+| Error | `#f792ac` (error-200) | Validation failed |
+| Disabled | `#d9dce0`, grey background | Interaction not allowed |
+
+## Variants
+
+| Variant | Icon | Use for |
+|---|---|---|
+| **Text** | — | Names, free text, single-line values |
+| **Email** | Envelope (left) | Email addresses — triggers email keyboard on mobile |
+| **Number** | Caret up/down (right) | Numeric values — avoids native browser spinners |
+| **Date** | Calendar (right) | Date values — pairs with a date picker in production |
+| **Password** | Eye/EyeSlash toggle | Passwords and sensitive values |
+| **Textarea** | — | Long text entries, messages, notes. Shows `n/500 Characters` count |
+
+## Label & hint combinations
+
+The label row and hint text are independently toggleable:
+
+- **Label visible + hint** — Most common form pattern. Hint text provides additional context below the field.
+- **Label hidden** — Used inside tables, compact toolbars, or when the surrounding layout already communicates the field's purpose. Always pair with `placeholder` text as a fallback.
+- **Required indicator** — The `required` prop appends a red `*` after the label. Always back this up with a validation error message — never rely on the `*` alone.
+- **Hint vs. error** — Hint text and error messages share the same space below the field. When an error is present, the hint is hidden to avoid competing messages.
+
+## Do's & Don'ts
+
+<DosDonts>
+  <Do description="Write labels as short nouns or noun phrases ('Full name', 'Email address', 'Start date'). The label tells users what to enter — keep it scannable." />
+  <Dont description="Use the placeholder as the only label. Placeholders disappear on typing and are invisible to screen readers by default. Always pair them with a visible label." />
+</DosDonts>
+
+<DosDonts>
+  <Do description="Write error messages that tell users how to fix the problem — 'Enter a valid email address' rather than 'Invalid input'." />
+  <Dont description="Use generic error messages like 'Error' or 'Required'. Users need to understand what went wrong and what action to take." />
+</DosDonts>
+
+<DosDonts>
+  <Do description="Use hint text for formatting guidance or constraints that aren't obvious ('DD/MM/YYYY', 'At least 8 characters', '10-digit number without spaces')." />
+  <Dont description="Repeat in the hint what the label already says. Hint text adds value — if you have nothing useful to say, omit it." />
+</DosDonts>
+
+<DosDonts>
+  <Do description="Keep disabled fields in the layout so users understand the form's full shape. Disable with a clear reason nearby when possible (e.g. a preceding dependency field)." />
+  <Dont description="Remove disabled fields from the DOM to hide unavailable options. Users lose context about what functionality exists and how to unlock it." />
+</DosDonts>
+
+## Code
+
+### Basic text input
+
+```tsx
+import { Input } from '@/components/ui/input'
+
+<Input
+  variant="text"
+  label="Full Name"
+  placeholder="What's your name"
+/>
+```
+
+### With required indicator and hint
+
+```tsx
+<Input
+  variant="email"
+  label="Email"
+  required
+  hint="We'll never share your email."
+/>
+```
+
+### Error state
+
+```tsx
+<Input
+  variant="text"
+  label="Full Name"
+  error="Full name is required."
+/>
+```
+
+### Password with toggle
+
+```tsx
+<Input
+  variant="password"
+  label="Password"
+  hint="At least 8 characters."
+/>
+```
+
+### Textarea with character counter
+
+```tsx
+<Input
+  variant="textarea"
+  label="Message"
+  placeholder="Type your message here."
+/>
+```
+
+### Label hidden (no-label mode)
+
+```tsx
+<Input
+  variant="email"
+  labelVisible={false}
+  placeholder="Search by email"
+/>
+```
+
+### Controlled
+
+```tsx
+const [value, setValue] = useState('')
+
+<Input
+  variant="text"
+  label="Full Name"
+  value={value}
+  onChange={setValue}
+/>
+```
+
+## Accessibility
+
+- Every field must have an associated `<label>` — the `labelVisible={false}` prop hides it visually but keeps the label in the DOM. Use `aria-label` only as a last resort.
+- Required fields use `aria-required="true"` in addition to the visual `*` indicator — never rely on the asterisk alone.
+- Error messages use `role="alert"` so screen readers announce them immediately on submission.
+- The `aria-describedby` attribute links the field to its error message or hint text automatically.
+- Disabled fields retain their label so assistive technologies can enumerate all fields in a form.
+- Password toggle buttons have an `aria-label` that updates to reflect the current action ("Show password" / "Hide password").
+- The textarea character counter uses `aria-live="polite"` to announce updates without interrupting the user.

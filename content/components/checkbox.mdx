@@ -1,0 +1,185 @@
+---
+title: Checkbox & Radio
+description: Binary selection controls for forms. Checkbox allows multiple selections; Radio restricts to one choice within a group.
+figmaNodeId: 68-2472
+status: stable
+---
+
+## Overview
+
+### Checkbox
+
+Checkbox is used to select multiple values from several options. A single checkbox can represent the switch of two states — checked or unchecked — making it suitable for yes/no decisions, consent toggles, and multi-item selection.
+
+> **Note:** Checkbox often works together with a submit action for state. A single checkbox can represent the switch of two states.
+
+### Radio Button
+
+Radio button allows a user to select only one value from several options. All options are visible at once so the user can compare before choosing. Radio groups should not have too many options — use a Select dropdown when the list grows beyond five.
+
+> **Note:** Radio Button must be more than two options, and normally less than five. For binary choices (on/off), prefer a Switch. For long lists, use Select.
+
+## When to use
+
+### Use Checkbox when:
+- The user needs to select zero or more options from a list
+- A standalone toggle is needed (e.g. "I agree to the terms")
+- Selections are independent of each other (multiple can be true at once)
+- The form saves state incrementally (each checkbox maps to its own field)
+
+### Use Radio when:
+- The user must pick exactly one option from a bounded set
+- Options are mutually exclusive and parallel in meaning
+- There are between 2 and 5 options visible at once
+- Showing all choices simultaneously helps the user compare
+
+### Do not use either when:
+- The list has more than 5 options — use **Select** instead
+- Only two states are needed (on/off) — use **Switch**
+- The choice is a yes/no action — consider a **Button** pair
+
+## Anatomy
+
+### Checkbox
+- **Control** — 18×18px (Regular) or 12×12px (Small) rounded square. Fills with the brand blue on selection; shows a white check icon inside.
+- **Label** — Text to the right of the control. 14px Regular size, 12px Small size. Colour shifts to grey when disabled.
+
+### Radio Button
+- **Control** — 18×18px (Regular) or 12×12px (Small) circle. Shows a 12px (Regular) or 8px (Small) filled blue dot in the centre when selected.
+- **Label** — Same as Checkbox.
+
+## Variants
+
+### States
+
+| State | Visual | Description |
+|---|---|---|
+| **Default** | White box / circle, blue border | Resting, not yet selected |
+| **Hover** | Blue-filled control, blue border | Mouse is over the unselected control |
+| **Active (checked)** | Blue fill (checkbox) · White outer + blue dot (radio) | Selected |
+| **Disabled** | Grey background, grey border, grey label | Interaction not allowed |
+
+### Sizes
+
+| Size | Control | Font | Gap | Row height |
+|---|---|---|---|---|
+| **Regular** (default) | 18×18px | 14px / 20px | 12px | 32px |
+| **Small** | 12×12px | 12px / 20px | 8px | — |
+
+Small size is intended for dense UIs, data tables, or secondary settings panels where space is at a premium.
+
+## Do's & Don'ts
+
+<DosDonts>
+  <Do description="Always pair a control with a visible label. The label is the primary affordance — clicking anywhere on it (including the text) toggles the control." />
+  <Dont description="Use a checkbox or radio without a visible label. Icon-only controls have no clear meaning and fail accessibility requirements for form inputs." />
+</DosDonts>
+
+<DosDonts>
+  <Do description="Use Radio when choices are mutually exclusive. Group all radios under the same `name` so only one can be selected at a time." />
+  <Dont description="Use multiple independent checkboxes to simulate a radio group. If only one option should be active at a time, use Radio — browsers enforce exclusivity automatically." />
+</DosDonts>
+
+<DosDonts>
+  <Do description="Keep option labels short and parallel in structure. Start each label with a noun or a verb in the same tense ('Enable notifications', 'Enable analytics', 'Enable ads')." />
+  <Dont description="Mix label structures in the same group (e.g. 'Email updates', 'Receive SMS', 'Push: yes'). Inconsistent labels slow scanning and introduce ambiguity." />
+</DosDonts>
+
+<DosDonts>
+  <Do description="Disable a control with a clear reason nearby (helper text, tooltip, or surrounding context) when the option is temporarily unavailable." />
+  <Dont description="Remove disabled controls from the layout. Users lose track of what options exist and may think the feature was removed entirely." />
+</DosDonts>
+
+<DosDonts>
+  <Do description="Use Small size in data tables, filter bars, or settings panels where vertical rhythm must stay tight and the surrounding context makes labels scannable." />
+  <Dont description="Use Small size as the default in standalone forms. The reduced hit area (12px) makes it harder to click accurately, especially on touch devices." />
+</DosDonts>
+
+<DosDonts>
+  <Do description="Pre-check a checkbox or radio only when you can reliably infer the user's intent — e.g. 'Remember me' on a trusted device, or the most common plan in a pricing form." />
+  <Dont description="Pre-check every option in a list. It forces users to un-check items rather than opt in, leading to unintended selections and lower data quality." />
+</DosDonts>
+
+## Code
+
+### Checkbox — uncontrolled
+
+```tsx
+import { Checkbox } from '@/components/ui/checkbox'
+
+<Checkbox label="Accept terms & conditions" />
+<Checkbox label="Subscribe to newsletter" defaultChecked />
+<Checkbox label="Enable analytics" disabled />
+```
+
+### Checkbox — controlled
+
+```tsx
+const [agreed, setAgreed] = useState(false)
+
+<Checkbox
+  label="I agree to the terms"
+  checked={agreed}
+  onChange={setAgreed}
+/>
+```
+
+### Checkbox — small size
+
+```tsx
+<Checkbox label="Show archived" size="small" />
+<Checkbox label="Active" size="small" defaultChecked />
+```
+
+### Radio group — controlled
+
+```tsx
+const [plan, setPlan] = useState('pro')
+
+<fieldset style={{ border: 'none', padding: 0 }}>
+  <legend>Select a plan</legend>
+  <Radio
+    name="plan"
+    value="starter"
+    label="Starter"
+    checked={plan === 'starter'}
+    onChange={setPlan}
+  />
+  <Radio
+    name="plan"
+    value="pro"
+    label="Pro"
+    checked={plan === 'pro'}
+    onChange={setPlan}
+  />
+  <Radio
+    name="plan"
+    value="enterprise"
+    label="Enterprise"
+    checked={plan === 'enterprise'}
+    onChange={setPlan}
+  />
+</fieldset>
+```
+
+### Radio — small size
+
+```tsx
+<Radio name="view" value="list"  label="List"  size="small" checked={view === 'list'}  onChange={setView} />
+<Radio name="view" value="board" label="Board" size="small" checked={view === 'board'} onChange={setView} />
+```
+
+### Disabled radio
+
+```tsx
+<Radio name="tier" value="enterprise" label="Enterprise (contact sales)" disabled />
+```
+
+## Accessibility
+
+- The visual control is hidden from assistive technology (`aria-hidden="true"`). The underlying native `<input type="checkbox">` or `<input type="radio">` remains in the tab order and communicates state to screen readers.
+- The `<label>` wraps both the input and the label text, so clicking anywhere on the row activates the control.
+- Radio groups must share the same `name` attribute so the browser enforces mutual exclusivity and communicates the group structure to screen readers.
+- Wrap radio groups in a `<fieldset>` with a `<legend>` to give them a meaningful group name when used in forms.
+- Disabled inputs carry the native `disabled` attribute, which prevents interaction and announces the state to assistive technologies.
+- Both components pass keyboard focus tests: `Space` toggles a checkbox; arrow keys navigate a radio group natively.

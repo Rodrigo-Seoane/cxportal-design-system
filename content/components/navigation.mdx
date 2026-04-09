@@ -1,0 +1,174 @@
+---
+title: Navigation
+description: Vertical side navigation with collapsible groups, icon-labelled headers, and two-level hierarchy. Dark-mode-first with Light/SemiBold typography and blue interactive states.
+figmaNodeId: 8-2368
+status: stable
+---
+
+## Overview
+
+Navigation shows users where they are in the product and where they can go. The Design System vertical navigation supports a two-level hierarchy — group headers at the top level and sub-items nested below — providing access to multi-section application areas while keeping the overall structure compact and scannable.
+
+> **Navigation goals:** Let the user know exactly where they are in the product and take them to where they want to go quickly and effortlessly.
+
+## When to use
+
+- When the application has **6 or more distinct destinations**
+- When the structure has **1–3 levels of hierarchy** (prefer 2 for clarity)
+- When side context — seeing the menu while viewing content — improves orientation
+- When the same nav is shared across many different views and sections
+
+**Do not use** the vertical nav as the primary navigation when the application has fewer than 6 pages. Prefer a top navigation bar for flat, few-page structures.
+
+## Principles
+
+### Discoverability
+Users can locate the information they want. Design the information architecture to be as light-weight and inclusive as possible.
+
+### Efficiency
+- **Multiple access points** — multiple links to the same destination where helpful
+- **Shortcuts** — provide shortcuts to content, such as related links
+- **Escape pods** — return to the home page by clicking the logo so users can restart their journey
+
+## Anatomy
+
+- **Sidebar panel** — Fixed left panel, 240px wide, dark background (`#050326`)
+- **Brand header** — Logo mark + product name + sub-title. 64px tall.
+- **Group header (Menu Item)** — 48px tall. Leading icon (20px, thin weight) + label + expand/collapse caret. Toggles the sub-item list.
+- **Sub-items (Sub Menu Item)** — 40px tall. 48px left indent. Label only (no icon). Status badge optional.
+- **Footer** — Bottom-anchored utility links (e.g. Access Management) + version mark.
+
+## Variants
+
+### States
+
+| State | Background | Label weight | Use for |
+|---|---|---|---|
+| **Default** | Transparent | Light (300) | Resting, not interacted |
+| **Hover** | `#4285f4` (primary blue) | Light (300) | Mouse-over — preview of selection |
+| **Active** | `#3264b8` (primary dark) | SemiBold (600) | Currently selected / focused page |
+| **Disabled** | Transparent | Light (300) | Feature not available; text `#808080` |
+
+### Item types
+
+| Type | Height | Left padding | Right padding | Context |
+|---|---|---|---|---|
+| **Menu Item** (group header) | 48px | 12px | 12px | Top-level group, always has icon + caret |
+| **Sub Menu Item** | 40px | 48px | 24px | Child route, text only |
+
+## Information Architecture
+
+Two recommended approaches for organizing navigation groups:
+
+1. **Categorize by topic** — group content directly related to the service or content scope of the site
+2. **Categorize by tasks** — group by cooperation modalities, contacting cooperation specialists, signing processes, business operations, and customer service
+
+The importance of each menu item is less affected by the arrangement in a side navigation than in a top bar — all items share equivalent visual weight until one is active.
+
+> **Note:** It is not recommended to use distinct categories for color/products unless there are better visibility cues that support frequent use.
+
+## Do's & Don'ts
+
+<DosDonts>
+  <Do description="Keep group labels short — one or two words that clearly identify the section. Users scan labels; they shouldn't need to read them carefully to understand the scope." />
+  <Dont description="Use verb phrases like 'Manage Campaigns' or 'View Insights' for group headers. Noun phrases ('Campaigns', 'Insights') are faster to scan and match the user's mental model of sections, not tasks." />
+</DosDonts>
+
+<DosDonts>
+  <Do description="Auto-expand the group that contains the current active page when the user first lands on or navigates to that route. It reduces orientation effort." />
+  <Dont description="Expand all groups by default. Showing all sub-items at once defeats the purpose of collapsible groups and overwhelms the visual hierarchy." />
+</DosDonts>
+
+<DosDonts>
+  <Do description="Limit sub-items per group to 5–8 items. If a group grows beyond that, consider splitting it into two groups or adding a second level of hierarchy." />
+  <Dont description="Add more than 3 levels of nesting. The current component supports 2 levels (group + sub-item). Deep nesting creates orientation problems and makes the back-path unclear." />
+</DosDonts>
+
+<DosDonts>
+  <Do description="Keep disabled nav items visible in the sidebar so users understand the product's full scope. Pair them with surrounding context or a tooltip explaining why the section is locked." />
+  <Dont description="Remove disabled items from the nav. Users lose awareness of capabilities that exist but are not yet available to them — especially important in tiered products." />
+</DosDonts>
+
+<DosDonts>
+  <Do description="Use the thin-weight icon style (20px, thin) for group header icons. This maintains visual lightness and keeps icons from competing with the label text." />
+  <Dont description="Use filled or bold icons in the sidebar. They create too much visual weight and make the dark-background panel feel cluttered when multiple groups are visible." />
+</DosDonts>
+
+## Code
+
+### Basic vertical nav structure
+
+```tsx
+import { Sidebar } from '@/components/layout/Sidebar'
+
+// Place once in the root layout — Sidebar is position:fixed
+<Sidebar />
+```
+
+### Menu item (group header) — token reference
+
+```tsx
+// Default state
+<div style={{
+  height: 48,
+  display: 'flex',
+  alignItems: 'center',
+  gap: 8,
+  padding: '0 12px',
+  background: 'transparent',
+}}>
+  <Icon size={20} weight="thin" color="rgba(239,241,243,0.45)" />
+  <span style={{ flex: 1, fontSize: 14, fontWeight: 300, color: 'rgba(239,241,243,0.45)' }}>
+    Group Label
+  </span>
+  <CaretRightIcon size={16} />
+</div>
+
+// Active state
+<div style={{
+  height: 48,
+  background: '#3264b8',
+  /* … */
+}}>
+  <span style={{ fontWeight: 600, color: '#eff1f3' }}>Group Label</span>
+</div>
+```
+
+### Sub-menu item — token reference
+
+```tsx
+// Default
+<div style={{ height: 40, paddingLeft: 48, paddingRight: 24 }}>
+  <span style={{ fontSize: 14, fontWeight: 300, color: 'rgba(239,241,243,0.75)' }}>
+    Sub Item
+  </span>
+</div>
+
+// Active
+<div style={{ height: 40, paddingLeft: 48, paddingRight: 24, background: '#3264b8' }}>
+  <span style={{ fontSize: 14, fontWeight: 600, color: '#eff1f3' }}>
+    Sub Item
+  </span>
+</div>
+```
+
+## Token reference
+
+| Token | Value | Usage |
+|---|---|---|
+| `--surface/vertical-nav` | `#050326` | Sidebar background |
+| `--content-action/primary/default` | `#4285f4` | Hover background |
+| `--content-action/primary/500` | `#3264b8` | Active background |
+| `--text/on-action/primary` | `#eff1f3` | Default and active label text |
+| `--text/disabled` | `#808080` | Disabled label text |
+| Font weight Light | 300 | Default items |
+| Font weight SemiBold | 600 | Active sub-items |
+
+## Accessibility
+
+- The `<aside>` landmark element communicates the sidebar's role to screen readers.
+- Group headers are rendered as `<button>` elements so they receive keyboard focus and `Enter`/`Space` toggles the group.
+- Sub-item links are native `<a>` elements for full keyboard navigation.
+- The active item reflects the current page — combine with `aria-current="page"` on the active link for screen-reader announcements.
+- The collapsed/expanded state of group headers should be communicated with `aria-expanded` on the button.
+- Avoid relying on colour alone to communicate the active state — the SemiBold font weight provides a second visual cue.

@@ -1,0 +1,127 @@
+---
+title: Button
+description: Triggers an action or navigation. Four visual variants aligned to usage context, three sizes, and icon support.
+figmaNodeId: 1647-34735
+status: stable
+---
+
+## Overview
+
+Buttons allow users to take actions and make choices with a single tap. They communicate actions that users can take and are typically placed throughout the UI, in places like dialogs, modal windows, forms, cards, and toolbars.
+
+## When to use
+
+- To trigger an action or event, such as submitting a form, opening a dialog, canceling an action, or performing a delete operation
+- To navigate users to a new page or section
+- To confirm or dismiss information in dialogs and modals
+
+## Anatomy
+
+A Button consists of:
+
+- **Container** — Background with border and border-radius
+- **Label** — Action text describing what the button does
+- **Icon (optional)** — Visual symbol reinforcing the action (left or right position)
+- **States** — Visual feedback for default, hover, active, and disabled interactions
+
+| State | Description |
+|---|---|
+| Default | Resting state, ready for interaction |
+| Hover | Mouse cursor over the button, subtle visual feedback |
+| Active | Button is being pressed/clicked |
+| Disabled | Button is not available for interaction, reduced opacity |
+
+## Variants
+
+CxPortal uses four button variants, each bound to a specific usage context. Picking the wrong variant is a common source of visual hierarchy issues.
+
+| Variant | Size options | Usage |
+|---|---|---|
+| **Primary** | Regular · Small · XS | The main CTA. **Maximum 1 per page.** Use for submit, confirm, or the page's most important action. |
+| **Secondary** | Regular · Small · XS | Abort/cancel, page-level secondary options, section-level alternatives. |
+| **Form Controls** | Regular · Small · XS | Settings, configuration, and async inline controls (e.g. Add row, Delete item). |
+| **Text** | Regular · Small · XS | Minimal prominence. In-line or low-priority actions where a border would add visual noise. |
+
+### Icon-only buttons
+
+Icon-only buttons use square sizes: **Icon Regular (48×48)**, **Icon Small (36×36)**, **Icon XS (24×24)**. They follow the same variant rules but require an `aria-label` since there is no visible label.
+
+| Variant | Usage |
+|---|---|
+| **Primary icon** | Section/Feature primary action |
+| **Secondary icon** | Top Bar icons (support, documentation), Table Row actions |
+| **Form Controls icon** | Settings and configuration async controls |
+
+## Principles for use
+
+<DosDonts>
+  <Do description="Emphasize the primary action. If there is no primary action, secondary buttons are the safest default." />
+  <Dont description="Put more than 1 primary button in the same button group." />
+</DosDonts>
+
+<DosDonts>
+  <Do description="Place buttons in order of importance — less important actions on the left, primary action on the right." />
+  <Dont description="Put two icons in the same button. One icon per button, maximum." />
+</DosDonts>
+
+## Button Group
+
+When multiple buttons form a group, align them in **one line with gaps between them**. Never place buttons flush against each other — a gapless group is visually indistinguishable from a Toggle Button and creates ambiguity for users.
+
+## Code
+
+### Basic usage
+
+```tsx
+import { Button } from '@/components/ui/button'
+
+<Button variant="primary" size="regular">
+  Save changes
+</Button>
+```
+
+### With icon
+
+```tsx
+import { Button } from '@/components/ui/button'
+import { Plus } from 'lucide-react'
+
+// Icon left (most common)
+<Button variant="primary" size="sm">
+  <Plus />
+  Add item
+</Button>
+
+// Icon right
+<Button variant="secondary" size="sm">
+  Next step
+  <ArrowRight />
+</Button>
+```
+
+### Icon-only
+
+```tsx
+import { Button } from '@/components/ui/button'
+import { Trash } from 'lucide-react'
+
+<Button variant="form-controls" size="icon-sm" aria-label="Delete row">
+  <Trash />
+</Button>
+```
+
+### Disabled state
+
+```tsx
+<Button variant="primary" disabled>
+  Saving…
+</Button>
+```
+
+## Accessibility
+
+- All buttons must have accessible labels — visible text or `aria-label` for icon-only buttons
+- Ensure sufficient color contrast (minimum **4.5:1** for text against background)
+- Disabled buttons should remain perceivable but clearly indicate unavailability — do not hide them
+- Focus states must be visible for keyboard navigation (the component ships with a `focus-visible` ring)
+- Icon-only buttons require a tooltip or `aria-label` to communicate their purpose to assistive technology
