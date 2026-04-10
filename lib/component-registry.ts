@@ -2,7 +2,25 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Select } from '@/components/ui/select'
 import { Checkbox, Radio } from '@/components/ui/checkbox'
-import { Plus } from 'lucide-react'
+import {
+  Table,
+  TableHeader,
+  TableBody,
+  TableRow,
+  TableHead,
+  TableCell,
+  TableCheckboxHead,
+  TableCheckboxCell,
+} from '@/components/ui/table'
+import { Chip, Tag } from '@/components/ui/chip'
+import { Tabs, TabList, Tab, TabPanel } from '@/components/ui/tabs'
+import { Modal, ModalHeader, ModalBody, ModalFooter, XIcon, FloppyDisk } from '@/components/ui/modal'
+import { Switch, BooleanIcon } from '@/components/ui/switch'
+import { MessageBox } from '@/components/ui/message-box'
+import { Pagination } from '@/components/ui/pagination'
+import { VerticalTab, VerticalTabGroup, VerticalTabIcon } from '@/components/ui/vertical-tabs'
+import { Skeleton, Spinner } from '@/components/ui/loading'
+import { Plus, Grid } from 'lucide-react'
 
 // ─── Prop schema types ──────────────────────────────────────────────────────
 
@@ -328,6 +346,567 @@ export const registry: Record<string, ComponentEntry> = {
     },
   },
 
+  // ─── Table ───────────────────────────────────────────────────────────────────
+  table: {
+    slug: 'table',
+    title: 'Table',
+    description:
+      'Data table with sortable columns, row selection, multiple cell types, and two density modes. Supports striped rows, batch operations, and accessible keyboard navigation.',
+    status: 'stable',
+    scope: {
+      Table,
+      TableHeader,
+      TableBody,
+      TableRow,
+      TableHead,
+      TableCell,
+      TableCheckboxHead,
+      TableCheckboxCell,
+      Button,
+    },
+    propSchema: {
+      size: {
+        type: 'chip-select',
+        label: 'Density',
+        options: ['wide', 'compact'],
+        default: 'wide',
+      },
+      striped: {
+        type: 'boolean',
+        label: 'Striped rows',
+        default: false,
+      },
+      sortable: {
+        type: 'boolean',
+        label: 'Sortable headers',
+        default: false,
+      },
+      selectable: {
+        type: 'boolean',
+        label: 'Selectable rows',
+        default: false,
+      },
+      cellType: {
+        type: 'chip-select',
+        label: 'Cell type',
+        options: ['text', 'chip', 'tag', 'switch', 'actions', 'filter'],
+        default: 'text',
+      },
+    },
+    generateCode: ({ size, striped, sortable, selectable, cellType }) => {
+      const s    = String(size)
+      const ct   = String(cellType)
+      const strp = striped    === true || striped    === 'true'
+      const sort = sortable   === true || sortable   === 'true'
+      const sel  = selectable === true || selectable === 'true'
+
+      const sortProp = sort ? ` sortDirection="none" onSort={() => {}}` : ''
+      const chkHead  = sel  ? `\n        <TableCheckboxHead />` : ''
+      const chkCell  = (row: string) => sel ? `\n          <TableCheckboxCell ariaLabel="Select ${row}" />` : ''
+
+      // ── Inline cell content per type (tokens from Figma node 69-1408) ──────
+      const chipCell = [
+        `          <TableCell>`,
+        `            <span style={{ display: 'inline-flex', alignItems: 'center', gap: 8,`,
+        `              background: '#d6e2f5', borderRadius: 8, padding: '4px 12px',`,
+        `              fontSize: 10, fontWeight: 600, color: '#021920', whiteSpace: 'nowrap' }}>`,
+        `              Current`,
+        `            </span>`,
+        `          </TableCell>`,
+      ].join('\n')
+
+      const tagCell = [
+        `          <TableCell>`,
+        `            <span style={{ display: 'inline-flex', alignItems: 'center',`,
+        `              background: '#d9dce0', borderRadius: 16, padding: '4px 12px',`,
+        `              fontSize: 10, fontWeight: 600, color: '#021920', whiteSpace: 'nowrap' }}>`,
+        `              Audience`,
+        `            </span>`,
+        `          </TableCell>`,
+      ].join('\n')
+
+      const switchCell = [
+        `          <TableCell>`,
+        `            <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8 }}>`,
+        `              <div style={{ width: 41, height: 22, background: '#4285f4',`,
+        `                borderRadius: 11, position: 'relative', flexShrink: 0 }}>`,
+        `                <div style={{ position: 'absolute', right: 3, top: 3,`,
+        `                  width: 16, height: 16, background: 'white', borderRadius: '50%' }} />`,
+        `              </div>`,
+        `              <span style={{ fontSize: 12, color: '#021920' }}>Yes</span>`,
+        `            </div>`,
+        `          </TableCell>`,
+      ].join('\n')
+
+      const filterCell = [
+        `          <TableCell>`,
+        `            <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8,`,
+        `              border: '1px solid #eff1f3', borderRadius: 6, padding: '4px 8px', cursor: 'pointer' }}>`,
+        `              <span style={{ background: '#4285f4', color: 'white', borderRadius: 48,`,
+        `                padding: '2px 6px', fontSize: 10, fontWeight: 600, whiteSpace: 'nowrap' }}>2</span>`,
+        `              <span style={{ fontSize: 12, color: '#021920' }}>Select Option</span>`,
+        `            </div>`,
+        `          </TableCell>`,
+      ].join('\n')
+
+      const actionsCell = [
+        `          <TableCell align="right">`,
+        `            <div style={{ display: 'inline-flex', gap: 8 }}>`,
+        `              <Button variant="secondary" size="icon-sm" aria-label="Edit" />`,
+        `              <Button variant="secondary" size="icon-sm" aria-label="Delete" />`,
+        `            </div>`,
+        `          </TableCell>`,
+      ].join('\n')
+
+      const firstCell = (name: string) => {
+        switch (ct) {
+          case 'chip':    return chipCell
+          case 'tag':     return tagCell
+          case 'switch':  return switchCell
+          case 'filter':  return filterCell
+          case 'actions': return `          <TableCell>${name}</TableCell>`
+          default:        return `          <TableCell>${name}</TableCell>`
+        }
+      }
+
+      const lastCell = (date: string) =>
+        ct === 'actions' ? actionsCell : `          <TableCell align="right">${date}</TableCell>`
+
+      const rows = [
+        { name: 'Dianne Russell',   status: 'Active',   date: '12 Jan 2026', zebra: false },
+        { name: 'Wade Warren',      status: 'Draft',     date: '9 Feb 2026',  zebra: true  },
+        { name: 'Brooklyn Simmons', status: 'Synched',   date: '3 Mar 2026',  zebra: false },
+      ]
+
+      const rowLines = rows
+        .map(({ name, status, date, zebra }) => {
+          const stripedProp = strp && zebra ? ' striped' : ''
+          return [
+            `        <TableRow${stripedProp}>`,
+            chkCell(name),
+            firstCell(name),
+            `          <TableCell variant="secondary">${status}</TableCell>`,
+            lastCell(date),
+            `        </TableRow>`,
+          ].filter(Boolean).join('\n')
+        })
+        .join('\n')
+
+      return [
+        `<Table size="${s}">`,
+        `      <TableHeader>`,
+        `        <tr>`,
+        chkHead,
+        `          <TableHead${sortProp}>Name</TableHead>`,
+        `          <TableHead>Status</TableHead>`,
+        ct === 'actions'
+          ? `          <TableHead align="right">Actions</TableHead>`
+          : `          <TableHead align="right">Created</TableHead>`,
+        `        </tr>`,
+        `      </TableHeader>`,
+        `      <TableBody>`,
+        rowLines,
+        `      </TableBody>`,
+        `    </Table>`,
+      ].filter(l => l !== '').join('\n')
+    },
+  },
+
+  // ─── Tabs ────────────────────────────────────────────────────────────────────
+  tabs: {
+    slug: 'tabs',
+    title: 'Tabs',
+    description:
+      'Compact tab strip for switching between sibling views. Supports 2–4 tabs, optional icons, disabled states, and full keyboard navigation.',
+    status: 'stable',
+    scope: { Tabs, TabList, Tab, TabPanel, Grid },
+    propSchema: {
+      count: {
+        type: 'chip-select',
+        label: 'Tab count',
+        options: ['2', '3', '4'],
+        default: '3',
+      },
+      showIcons: {
+        type: 'boolean',
+        label: 'Show icons',
+        default: false,
+      },
+      disabled: {
+        type: 'boolean',
+        label: 'Disabled last tab',
+        default: false,
+      },
+    },
+    generateCode: ({ count, showIcons, disabled }) => {
+      const n     = Math.min(4, Math.max(2, parseInt(String(count)) || 3))
+      const icons = showIcons === true || showIcons === 'true'
+      const dis   = disabled  === true || disabled  === 'true'
+
+      const defs = [
+        { value: 'all',      label: 'All Users' },
+        { value: 'active',   label: 'Active'    },
+        { value: 'inactive', label: 'Inactive'  },
+        { value: 'archived', label: 'Archived'  },
+      ].slice(0, n)
+
+      const iconProp = icons
+        ? ` icon={<Grid size={16} strokeWidth={1.5} />}`
+        : ''
+
+      const tabLines = defs
+        .map(({ value, label }, i) => {
+          const dp = dis && i === n - 1 ? ' disabled' : ''
+          return `    <Tab value="${value}"${iconProp}${dp}>${label}</Tab>`
+        })
+        .join('\n')
+
+      return [
+        `<Tabs defaultValue="all">`,
+        `  <TabList aria-label="Filter users">`,
+        tabLines,
+        `  </TabList>`,
+        `</Tabs>`,
+      ].join('\n')
+    },
+  },
+
+  // ─── Chips & Tags ────────────────────────────────────────────────────────────
+  chips: {
+    slug: 'chips',
+    title: 'Chips & Tags',
+    description:
+      'Compact inline labels for status, categorisation, and user input. Chips are interactive; Tags are primarily informational.',
+    status: 'stable',
+    scope: { Chip, Tag },
+    propSchema: {
+      // ── Chip controls ──
+      chipType: {
+        type: 'chip-select',
+        label: 'Chip type',
+        options: ['info', 'success', 'warning', 'error'],
+        default: 'info',
+      },
+      chipShade: {
+        type: 'chip-select',
+        label: 'Chip shade',
+        options: ['100', '200', '400', '500'],
+        default: '100',
+      },
+      iconLeft: {
+        type: 'boolean',
+        label: 'Left icon',
+        default: true,
+      },
+      iconRight: {
+        type: 'boolean',
+        label: 'Dismiss icon',
+        default: true,
+      },
+      // ── Tag controls ──
+      tagState: {
+        type: 'chip-select',
+        label: 'Tag state',
+        options: ['default', 'active', 'viewed', 'disabled'],
+        default: 'default',
+      },
+      tagType: {
+        type: 'chip-select',
+        label: 'Tag type',
+        options: ['simple', 'with-value', 'value-update'],
+        default: 'simple',
+      },
+    },
+    generateCode: ({ chipType, chipShade, iconLeft, iconRight, tagState, tagType }) => {
+      const type  = String(chipType)
+      const shade = String(chipShade)
+      const left  = iconLeft  === true || iconLeft  === 'true'
+      const right = iconRight === true || iconRight === 'true'
+      const state = String(tagState)
+      const ttype = String(tagType)
+
+      const chipLines = [
+        `<Chip`,
+        `  label="Current"`,
+        `  type="${type}"`,
+        `  shade={${shade}}`,
+        !left  ? `  iconLeft={false}`  : null,
+        !right ? `  iconRight={false}` : null,
+        `/>`,
+      ].filter(Boolean).join('\n')
+
+      const tagLines = [
+        `<Tag`,
+        `  label="Audience"`,
+        `  state="${state}"`,
+        `  type="${ttype}"`,
+        ttype !== 'simple'       ? `  value="v1.2"`   : null,
+        ttype === 'value-update' ? `  newValue="v1.3"` : null,
+        `/>`,
+      ].filter(Boolean).join('\n')
+
+      const indent = (s: string) => s.split('\n').map(l => `  ${l}`).join('\n')
+
+      return [
+        `<div style={{ display: 'flex', flexDirection: 'column', gap: 16, alignItems: 'flex-start' }}>`,
+        indent(chipLines),
+        indent(tagLines),
+        `</div>`,
+      ].join('\n')
+    },
+  },
+
+  // ─── Modal ───────────────────────────────────────────────────────────────────
+  modal: {
+    slug: 'modal',
+    title: 'Modal',
+    description:
+      'A focused overlay dialog that interrupts the current workflow to request input, confirm an action, or display contextual information.',
+    status: 'stable',
+    scope: { Modal, ModalHeader, ModalBody, ModalFooter, Button, XIcon, FloppyDisk },
+    propSchema: {
+      size: {
+        type: 'chip-select',
+        label: 'Size',
+        options: ['large', 'medium'],
+        default: 'large',
+      },
+      title: {
+        type: 'text',
+        label: 'Title',
+        default: 'Upload Progress',
+      },
+      showClose: {
+        type: 'boolean',
+        label: 'Close button',
+        default: true,
+      },
+      confirmLabel: {
+        type: 'text',
+        label: 'Confirm label',
+        default: 'Save to Knowledge Base',
+      },
+    },
+    generateCode: ({ size, title, showClose, confirmLabel }) => {
+      const s    = String(size)
+      const t    = String(title)
+      const cl   = String(confirmLabel)
+      const close = showClose === true || showClose === 'true'
+
+      const btnSize  = s === 'large' ? 'regular' : 'sm'
+      const closeAttr = close ? ` onClose={() => {}}` : ''
+
+      const iconSize = s === 'large' ? 24 : 16
+
+      return [
+        `<Modal size="${s}" preview>`,
+        `  <ModalHeader${closeAttr}>${t}</ModalHeader>`,
+        `  <ModalBody>`,
+        `    <p style={{ fontSize: 14, color: '#7a828c', lineHeight: '20px' }}>`,
+        `      Configure your settings before proceeding with this action.`,
+        `    </p>`,
+        `  </ModalBody>`,
+        `  <ModalFooter>`,
+        `    <Button variant="text" size="${btnSize}">`,
+        `      <XIcon size={${iconSize}} weight="thin" />`,
+        `      Cancel`,
+        `    </Button>`,
+        `    <Button variant="primary" size="${btnSize}">`,
+        `      <FloppyDisk size={${iconSize}} weight="thin" />`,
+        `      ${cl}`,
+        `    </Button>`,
+        `  </ModalFooter>`,
+        `</Modal>`,
+      ].join('\n')
+    },
+  },
+
+  // ─── Message Box ─────────────────────────────────────────────────────────────
+  'message-box': {
+    slug: 'message-box',
+    title: 'Message Box',
+    description:
+      'Contextual feedback banners for outcomes, guidance, and system state. Four semantic types × two layout sizes.',
+    status: 'stable',
+    scope: { MessageBox },
+    propSchema: {
+      type: {
+        type: 'chip-select',
+        label: 'Type',
+        options: ['info', 'success', 'warning', 'error'],
+        default: 'info',
+      },
+      size: {
+        type: 'chip-select',
+        label: 'Size',
+        options: ['line', 'block'],
+        default: 'line',
+      },
+      dismissible: {
+        type: 'boolean',
+        label: 'Dismissible',
+        default: true,
+      },
+      message: {
+        type: 'text',
+        label: 'Message',
+        default: 'This campaign is currently paused. Resume to continue sending.',
+      },
+    },
+    generateCode: ({ type, size, dismissible, message }) => {
+      const t   = String(type)
+      const s   = String(size)
+      const dis = dismissible === true || dismissible === 'true'
+      const msg = String(message)
+      const isBlock = s === 'block'
+
+      const titleMap: Record<string, string> = {
+        info:    'File Guidelines',
+        success: 'Import Complete',
+        warning: 'Confirm Before Proceeding',
+        error:   'Action Failed',
+      }
+      const bodyMap: Record<string, string> = {
+        info:    'Your CSV file should include only two columns: Name and Phone. Make sure column headers match these names exactly.',
+        success: '15 contacts were added to the Quarterly Outreach segment.',
+        warning: 'Editing an active campaign will pause message delivery to all recipients until you re-activate it.',
+        error:   'Unable to save changes. Please check your connection and try again.',
+      }
+
+      const lines: string[] = ['<MessageBox']
+      lines.push(`  type="${t}"`)
+      if (s !== 'line') lines.push(`  size="${s}"`)
+      if (isBlock) lines.push(`  title="${titleMap[t]}"`)
+      if (!dis) lines.push(`  dismissible={false}`)
+      if (isBlock) {
+        lines.push(`  message="${bodyMap[t]}"`)
+        lines.push('/>')
+      } else {
+        lines.push(`  message="${msg}"`)
+        lines.push('/>')
+      }
+      return lines.join('\n')
+    },
+  },
+
+  // ─── Switch & Boolean Icon ───────────────────────────────────────────────────
+  switch: {
+    slug: 'switch',
+    title: 'Switch & Boolean Icon',
+    description:
+      'Immediate-effect toggle for binary settings, and a compact read-only status badge for true/false values in tables and detail panels.',
+    status: 'stable',
+    scope: { Switch, BooleanIcon },
+    propSchema: {
+      component: {
+        type: 'chip-select',
+        label: 'Component',
+        options: ['switch', 'boolean-icon'],
+        default: 'switch',
+      },
+      checked: {
+        type: 'boolean',
+        label: 'Checked / Value',
+        default: true,
+      },
+      labelPosition: {
+        type: 'chip-select',
+        label: 'Label position',
+        options: ['right', 'left'],
+        default: 'right',
+      },
+      size: {
+        type: 'chip-select',
+        label: 'Icon size',
+        options: ['regular', 'small'],
+        default: 'regular',
+      },
+      disabled: {
+        type: 'boolean',
+        label: 'Disabled',
+        default: false,
+      },
+      label: {
+        type: 'text',
+        label: 'Label',
+        default: 'Auto Accept Calls',
+      },
+    },
+    generateCode: ({ component, checked, labelPosition, size, disabled, label }) => {
+      const comp = String(component)
+      const val  = checked   === true || checked   === 'true'
+      const dis  = disabled  === true || disabled  === 'true'
+      const lp   = String(labelPosition)
+      const sz   = String(size)
+      const lbl  = String(label)
+
+      if (comp === 'boolean-icon') {
+        const lines = ['<BooleanIcon']
+        lines.push(`  value={${val}}`)
+        if (sz !== 'regular') lines.push(`  size="${sz}"`)
+        lines.push('/>')
+        return lines.join('\n')
+      }
+
+      // switch
+      const lines = ['<Switch']
+      lines.push(`  label="${lbl}"`)
+      if (val)          lines.push(`  defaultChecked`)
+      if (lp !== 'right') lines.push(`  labelPosition="${lp}"`)
+      if (dis)          lines.push(`  disabled`)
+      lines.push('/>')
+      return lines.join('\n')
+    },
+  },
+
+  // ─── Pagination ──────────────────────────────────────────────────────────────
+  pagination: {
+    slug: 'pagination',
+    title: 'Pagination',
+    description:
+      'Divides large datasets into discrete pages. Four variants from minimal directional arrows to numbered pages with automatic ellipsis truncation.',
+    status: 'stable',
+    scope: { Pagination },
+    propSchema: {
+      variant: {
+        type: 'chip-select',
+        label: 'Variant',
+        options: ['directional', 'directional-counter', 'back-next', 'numbered'],
+        default: 'numbered',
+      },
+      page: {
+        type: 'text',
+        label: 'Current page',
+        default: '4',
+      },
+      totalPages: {
+        type: 'text',
+        label: 'Total pages',
+        default: '10',
+      },
+      disabled: {
+        type: 'boolean',
+        label: 'Disabled',
+        default: false,
+      },
+    },
+    generateCode: ({ variant, page, totalPages, disabled }) => {
+      const v    = String(variant)
+      const p    = parseInt(String(page))    || 4
+      const tp   = parseInt(String(totalPages)) || 10
+      const dis  = disabled === true || disabled === 'true'
+
+      const lines = ['<Pagination']
+      lines.push(`  variant="${v}"`)
+      lines.push(`  page={${p}}`)
+      lines.push(`  totalPages={${tp}}`)
+      lines.push(`  onChange={() => {}}`)
+      if (dis) lines.push(`  disabled`)
+      lines.push('/>')
+      return lines.join('\n')
+    },
+  },
+
   // ─── Checkbox & Radio ────────────────────────────────────────────────────────
   checkbox: {
     slug: 'checkbox',
@@ -389,6 +968,144 @@ export const registry: Record<string, ComponentEntry> = {
         lines.push(`/>`)
       }
       return lines.join('\n')
+    },
+  },
+
+  // ─── Loading Indicators ──────────────────────────────────────────────────────
+  loading: {
+    slug: 'loading',
+    title: 'Loading Indicators',
+    description:
+      'Skeleton loaders and spinners that communicate system activity and reduce perceived latency.',
+    status: 'stable',
+    scope: { Skeleton, Spinner },
+    propSchema: {
+      component: {
+        type: 'chip-select',
+        label: 'Component',
+        options: ['spinner', 'skeleton-text', 'skeleton-card', 'skeleton-table'],
+        default: 'spinner',
+      },
+      spinnerSize: {
+        type: 'chip-select',
+        label: 'Spinner size',
+        options: ['xs', 'sm', 'md', 'lg', 'xl'],
+        default: 'md',
+      },
+    },
+    generateCode: ({ component, spinnerSize }) => {
+      const comp = String(component)
+      const sz   = String(spinnerSize)
+
+      if (comp === 'spinner') {
+        const sizeAttr = sz !== 'md' ? `\n  size="${sz}"` : ''
+        return `<Spinner${sizeAttr} />`
+      }
+
+      if (comp === 'skeleton-text') {
+        return [
+          '<div style={{ display: "flex", flexDirection: "column", gap: 6 }}>',
+          '  <Skeleton variant="text" textSize="body" />',
+          '  <Skeleton variant="text" textSize="body" />',
+          '  <Skeleton variant="text" textSize="body" width="70%" />',
+          '</div>',
+        ].join('\n')
+      }
+
+      if (comp === 'skeleton-card') {
+        return [
+          '<div style={{',
+          '  padding: 16,',
+          '  border: "1px solid #eff1f3",',
+          '  borderRadius: 8,',
+          '  display: "flex",',
+          '  flexDirection: "column",',
+          '  gap: 8,',
+          '}}>',
+          '  <div style={{ display: "flex", justifyContent: "space-between" }}>',
+          '    <Skeleton variant="text" textSize="body" width={120} />',
+          '    <Skeleton variant="rect" width={48} height={20} radius={10} />',
+          '  </div>',
+          '  <Skeleton variant="text" textSize="body-sm" width="100%" />',
+          '  <Skeleton variant="text" textSize="body-sm" width="70%" />',
+          '</div>',
+        ].join('\n')
+      }
+
+      // skeleton-table
+      return [
+        '<div style={{ display: "flex", flexDirection: "column", gap: 0 }}>',
+        '  {Array.from({ length: 4 }).map((_, i) => (',
+        '    <div',
+        '      key={i}',
+        '      style={{',
+        '        display: "flex",',
+        '        gap: 16,',
+        '        padding: "10px 12px",',
+        '        alignItems: "center",',
+        '        borderTop: i > 0 ? "1px solid #eff1f3" : "none",',
+        '      }}',
+        '    >',
+        '      <Skeleton variant="rect" width={16} height={16} radius={3} />',
+        '      <Skeleton variant="text" textSize="body-sm" width={120} />',
+        '      <Skeleton variant="text" textSize="body-sm" width={90} />',
+        '      <Skeleton variant="rect" width={60} height={20} radius={10} />',
+        '      <Skeleton variant="circle" width={24} height={24} />',
+        '    </div>',
+        '  ))}',
+        '</div>',
+      ].join('\n')
+    },
+  },
+
+  // ─── Vertical Tabs ───────────────────────────────────────────────────────────
+  'vertical-tabs': {
+    slug: 'vertical-tabs',
+    title: 'Vertical Tabs',
+    description:
+      'Stacked navigation tabs for switching between sections within a panel or settings page. Supports icons, active/disabled states, and right-side badge slots.',
+    status: 'stable',
+    scope: { VerticalTab, VerticalTabGroup, VerticalTabIcon },
+    propSchema: {
+      showIcons: {
+        type: 'boolean',
+        label: 'Show icons',
+        default: true,
+      },
+      activeIndex: {
+        type: 'chip-select',
+        label: 'Active tab',
+        options: ['0', '1', '2', '3', '4'],
+        default: '2',
+      },
+      count: {
+        type: 'chip-select',
+        label: 'Tab count',
+        options: ['3', '4', '5'],
+        default: '5',
+      },
+    },
+    generateCode: ({ showIcons, activeIndex, count }) => {
+      const icons = showIcons === true || showIcons === 'true'
+      const active = parseInt(String(activeIndex)) || 2
+      const total  = parseInt(String(count)) || 5
+
+      const items = [
+        'Global Permissions',
+        'Instances',
+        'Production',
+        'Development',
+        'Q&A',
+      ].slice(0, total)
+
+      const iconAttr = icons ? `\n    icon={<VerticalTabIcon size={16} />}` : ''
+
+      const tabs = items.map((label, i) => {
+        const activeAttr = i === active ? `\n    active` : ''
+        return `  <VerticalTab\n    label="${label}"${iconAttr}${activeAttr}\n    onClick={() => {}}\n  />`
+      }).join('\n')
+
+      return `<VerticalTabGroup>\n${tabs}\n</VerticalTabGroup>`
     },
   },
 }

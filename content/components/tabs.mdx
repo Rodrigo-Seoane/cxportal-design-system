@@ -1,0 +1,315 @@
+---
+title: Tabs
+description: Compact tab strip for switching between sibling views. Supports 2–4 tabs, optional icons, disabled states, and full keyboard navigation.
+figmaNodeId: 280-20700
+status: stable
+---
+
+## Overview
+
+Tabs organise sibling content into a compact, switchable strip. They let users navigate between related views without leaving the page context — making them ideal for filtering lists, toggling between display modes, or stepping through sections inside a panel or modal.
+
+The tab strip sits inside a rounded pill container and provides clear active, default, hover, and disabled states. The active tab has a white card with a blue border; idle tabs sit transparently within the grey group background.
+
+## When to use
+
+- When the page or panel has **2–4 distinct sibling views** that share the same layout space
+- When switching between views should feel **instant and in-context** (no page load)
+- When users benefit from seeing all available views upfront — tabs expose all options at once
+- As a **filter strip** above a list or table (e.g. All / Active / Inactive)
+- As a **view-mode switcher** (e.g. List View / Grid View)
+- Inside a **modal or drawer** to switch between sections without extra navigation
+
+**Do not use** tabs when:
+- There are more than 4 tabs — prefer a secondary navigation or a Select dropdown
+- The views are sequential steps that must be completed in order — use a Stepper instead
+- The content areas are not closely related — consider separate pages or sections
+- Only one tab would ever be available — show the content directly, skip the tabs
+
+## Anatomy
+
+- **Tab group (`TabList`)** — The outer pill container. Background `#eff1f3`, 4px border-radius, 4px padding all sides, 4px gap between tabs.
+- **Tab trigger (`Tab`)** — 10px SemiBold label, optional 16px icon on the left, 4px vertical and 12px horizontal padding, 4px border-radius.
+- **Tab panel (`TabPanel`)** — The content region associated with the active tab. Rendered below the tab strip; hidden when its tab is not active.
+
+## Variants
+
+### States
+
+<Table size="compact" className="mb-6">
+  <TableHeader>
+    <tr>
+      <TableHead>State</TableHead>
+      <TableHead>Background</TableHead>
+      <TableHead>Border</TableHead>
+      <TableHead>Text colour</TableHead>
+      <TableHead>Description</TableHead>
+    </tr>
+  </TableHeader>
+  <TableBody>
+    <TableRow>
+      <TableCell><strong>Active</strong></TableCell>
+      <TableCell><code>#ffffff</code></TableCell>
+      <TableCell><code>1px #689df6</code></TableCell>
+      <TableCell><code>#4285f4</code></TableCell>
+      <TableCell>Currently selected view</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><strong>Default</strong></TableCell>
+      <TableCell>Transparent</TableCell>
+      <TableCell>Transparent</TableCell>
+      <TableCell><code>#021920</code></TableCell>
+      <TableCell>Idle, available to select</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><strong>Hover</strong></TableCell>
+      <TableCell><code>rgba(255,255,255,0.65)</code></TableCell>
+      <TableCell>Transparent</TableCell>
+      <TableCell><code>#021920</code></TableCell>
+      <TableCell>Mouse over an idle tab</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><strong>Disabled</strong></TableCell>
+      <TableCell>Transparent</TableCell>
+      <TableCell>Transparent</TableCell>
+      <TableCell><code>#aab0b8</code></TableCell>
+      <TableCell>Feature not yet available</TableCell>
+    </TableRow>
+  </TableBody>
+</Table>
+
+### Icon support
+
+Each tab optionally accepts a 16px icon to the left of the label. Icons help disambiguate view modes at a glance (e.g. a table icon for List View, a grid icon for Grid View). Keep icon weight consistent across all tabs in a group — thin or regular, not mixed.
+
+<Table size="compact" className="mb-6">
+  <TableHeader>
+    <tr>
+      <TableHead>Variant</TableHead>
+      <TableHead>Icon</TableHead>
+      <TableHead>Best for</TableHead>
+    </tr>
+  </TableHeader>
+  <TableBody>
+    <TableRow>
+      <TableCell><strong>Text only</strong></TableCell>
+      <TableCell>—</TableCell>
+      <TableCell>Filter strips, status groupings (All / Active / Inactive)</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><strong>Icon + label</strong></TableCell>
+      <TableCell>16px, left of label</TableCell>
+      <TableCell>View-mode switchers where the icon quickly communicates the layout type</TableCell>
+    </TableRow>
+  </TableBody>
+</Table>
+
+## Usage in context
+
+The Tabs component appears across the product in three main patterns:
+
+**Filter strip above a table** — The most common usage. Placed between the page heading and the data table, tabs like "All Users", "Active", "Inactive" filter the rows below without a page reload. Usually paired with a search input and action buttons on the same row.
+
+**View-mode switcher** — Used to toggle between data representations: List View vs. Grid View, for example. Tabs with icons communicate the display format at a glance. Typically placed at the top-right of a content panel.
+
+**Modal section switcher** — Inside a modal or drawer with multiple related sections, tabs replace scrolling or accordion patterns and let users jump directly to the section they need. Used when sections share similar structure (e.g. "Updating existing proficiency" and "Adding new proficiency" within a bulk-change modal).
+
+## Do's & Don'ts
+
+<DosDonts>
+  <Do description="Keep all tab labels short — one to three words. The strip should be scannable at a glance. If labels are getting long, reconsider whether tabs are the right pattern." />
+  <Dont description="Use sentence-length labels or descriptions inside tabs. Tab labels are navigation anchors, not headings — the content area is where descriptions belong." />
+</DosDonts>
+
+<DosDonts>
+  <Do description="Always make one tab active by default. Provide a defaultValue (uncontrolled) or a controlled value prop. Never show a tab group with no active tab." />
+  <Dont description="Leave all tabs in the default (idle) state on initial render. Users need immediate orientation about which view is active." />
+</DosDonts>
+
+<DosDonts>
+  <Do description="Keep disabled tabs visible in the strip so users understand what views exist even if they are not yet accessible. Pair with a tooltip explaining why the tab is locked." />
+  <Dont description="Remove disabled tabs from the DOM. Users lose awareness of features that exist but are not yet available to them." />
+</DosDonts>
+
+<DosDonts>
+  <Do description="Use tabs for sibling views that are truly parallel — same type of content, same user goal. The user should feel they are looking at different facets of the same thing." />
+  <Dont description="Use tabs as a substitute for a stepper or wizard. If the order matters or a step must be completed before the next is available, use a Stepper component instead." />
+</DosDonts>
+
+<DosDonts>
+  <Do description="Limit to 4 tabs maximum. The strip is designed for 2–4 tabs at the widths used in the product. More tabs break the compact layout and overwhelm the user." />
+  <Dont description="Exceed 4 tabs. If the information architecture requires more sections, use the vertical Navigation or a secondary Select dropdown to expose the options." />
+</DosDonts>
+
+## Code
+
+### Basic (uncontrolled)
+
+```tsx
+import { Tabs, TabList, Tab, TabPanel } from '@/components/ui/tabs'
+
+<Tabs defaultValue="all">
+  <TabList aria-label="Filter users">
+    <Tab value="all">All Users</Tab>
+    <Tab value="active">Active</Tab>
+    <Tab value="inactive">Inactive</Tab>
+  </TabList>
+
+  <TabPanel value="all">
+    {/* All users table */}
+  </TabPanel>
+  <TabPanel value="active">
+    {/* Active users table */}
+  </TabPanel>
+  <TabPanel value="inactive">
+    {/* Inactive users table */}
+  </TabPanel>
+</Tabs>
+```
+
+### With icons
+
+```tsx
+import { Table, Rows } from '@phosphor-icons/react'
+
+<Tabs defaultValue="list">
+  <TabList aria-label="View mode">
+    <Tab value="list" icon={<Table size={16} weight="thin" />}>
+      List View
+    </Tab>
+    <Tab value="grid" icon={<Rows size={16} weight="thin" />}>
+      Grid View
+    </Tab>
+  </TabList>
+</Tabs>
+```
+
+### Controlled
+
+```tsx
+const [view, setView] = useState('all')
+
+<Tabs value={view} onChange={setView}>
+  <TabList aria-label="Filter users">
+    <Tab value="all">All Users</Tab>
+    <Tab value="active">Active</Tab>
+    <Tab value="inactive">Inactive</Tab>
+  </TabList>
+</Tabs>
+```
+
+### With a disabled tab
+
+```tsx
+<Tabs defaultValue="all">
+  <TabList aria-label="Filter content">
+    <Tab value="all">All</Tab>
+    <Tab value="active">Active</Tab>
+    <Tab value="archived" disabled>Archived</Tab>
+  </TabList>
+</Tabs>
+```
+
+### Inline with other controls
+
+```tsx
+{/* Common pattern: tabs + search + count on a single toolbar row */}
+<div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+  <Tabs defaultValue="all">
+    <TabList aria-label="Filter agents">
+      <Tab value="all">All</Tab>
+      <Tab value="updating">Updating</Tab>
+      <Tab value="adding">Adding</Tab>
+    </TabList>
+  </Tabs>
+  <Input variant="text" labelVisible={false} placeholder="Search agents" />
+  <span style={{ marginLeft: 'auto', fontSize: 14, color: '#7c7b8b' }}>
+    Showing 9 of 9 agents
+  </span>
+</div>
+```
+
+## Token reference
+
+<Table size="compact" className="mb-6">
+  <TableHeader>
+    <tr>
+      <TableHead>Token</TableHead>
+      <TableHead>Value</TableHead>
+      <TableHead>Usage</TableHead>
+    </tr>
+  </TableHeader>
+  <TableBody>
+    <TableRow>
+      <TableCell><code>--surface/main-panel</code></TableCell>
+      <TableCell><code>#eff1f3</code></TableCell>
+      <TableCell>Tab group container background</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><code>--surface/form-field</code></TableCell>
+      <TableCell><code>#ffffff</code></TableCell>
+      <TableCell>Active tab background</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><code>--border-color/surface-active/primary</code></TableCell>
+      <TableCell><code>#689df6</code></TableCell>
+      <TableCell>Active tab border</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><code>--text/action</code></TableCell>
+      <TableCell><code>#4285f4</code></TableCell>
+      <TableCell>Active tab label and icon colour</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><code>--text/on-action/secondary</code></TableCell>
+      <TableCell><code>#021920</code></TableCell>
+      <TableCell>Default tab label colour</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><code>--text/form-field/disabled</code></TableCell>
+      <TableCell><code>#aab0b8</code></TableCell>
+      <TableCell>Disabled tab label colour</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><code>--border-radius/sm</code></TableCell>
+      <TableCell>4px</TableCell>
+      <TableCell>Border radius for both group and individual tabs</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><code>--scale/1</code></TableCell>
+      <TableCell>4px</TableCell>
+      <TableCell>Group padding and tab vertical padding</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><code>--scale/3</code></TableCell>
+      <TableCell>12px</TableCell>
+      <TableCell>Tab horizontal padding</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>Font size</TableCell>
+      <TableCell>10px</TableCell>
+      <TableCell>Tab label — Caption/regular</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>Font weight</TableCell>
+      <TableCell>600 (SemiBold)</TableCell>
+      <TableCell>Tab label weight</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>Letter spacing</TableCell>
+      <TableCell>0.4px</TableCell>
+      <TableCell>Tab label tracking</TableCell>
+    </TableRow>
+  </TableBody>
+</Table>
+
+## Accessibility
+
+- `TabList` renders a `role="tablist"` container. Each `Tab` renders a `role="tab"` button. Each `TabPanel` renders `role="tabpanel"`.
+- `aria-selected` is set to `true` on the active tab and `false` on all others — screen readers announce which tab is current.
+- `aria-controls` on each tab and `aria-labelledby` on each panel link the trigger to its content region by ID.
+- A roving `tabIndex` is used: only the active tab has `tabIndex={0}`, all others have `tabIndex={-1}`. Users reach the tab group with a single `Tab` key press.
+- Once focused, `ArrowLeft` / `ArrowRight` move between tabs. `Home` jumps to the first tab; `End` jumps to the last.
+- `Space` or `Enter` activates the focused tab.
+- Disabled tabs carry the native `disabled` attribute — they are skipped by keyboard navigation and announced as unavailable by screen readers.
+- Always provide `aria-label` on `TabList` when multiple tab groups exist on the same page so screen readers can distinguish between them.

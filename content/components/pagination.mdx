@@ -1,0 +1,293 @@
+---
+title: Pagination
+description: Divides large datasets into discrete pages. Four variants from minimal directional arrows to numbered pages with automatic ellipsis truncation.
+figmaNodeId: 350-6690
+status: stable
+---
+
+## Overview
+
+Pagination breaks large sets of content or data into discrete pages, giving users orientation within a dataset and controls for moving between pages. The right variant depends on the size of the dataset and how much context the user needs to navigate it effectively.
+
+When the full page count is not important to the task — such as navigating a wizard or a small list — prefer a simpler directional variant. When users need to jump to arbitrary pages in large datasets, use numbered pagination with automatic truncation.
+
+---
+
+## When to use
+
+- When content or data exceeds what can reasonably be shown in a single view (typically > 25–50 rows)
+- When the dataset has a defined, stable total count
+- When sequential navigation is the primary pattern — previous/next between pages
+- When users need to jump directly to a specific page in large datasets
+
+**Do not use pagination when:**
+- The dataset has fewer than ~10 items — show everything
+- Content streams in dynamically without a defined total (prefer "Load More")
+- Scroll position continuity matters more than page awareness
+
+---
+
+## Variants
+
+<Table size="compact" className="mb-6">
+  <TableHeader>
+    <tr>
+      <TableHead>Variant</TableHead>
+      <TableHead>prop value</TableHead>
+      <TableHead>What it shows</TableHead>
+      <TableHead>Use for</TableHead>
+    </tr>
+  </TableHeader>
+  <TableBody>
+    <TableRow>
+      <TableCell><strong>Directional</strong></TableCell>
+      <TableCell><code>directional</code></TableCell>
+      <TableCell>‹ and › arrow buttons only</TableCell>
+      <TableCell>Minimal chrome — wizards, carousels, image galleries</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><strong>Directional + Counter</strong></TableCell>
+      <TableCell><code>directional-counter</code></TableCell>
+      <TableCell>‹ · "X of Y" · ›</TableCell>
+      <TableCell>When the user needs position context without page jumping</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><strong>Back / Next</strong></TableCell>
+      <TableCell><code>back-next</code></TableCell>
+      <TableCell>‹ Back and Next › labeled buttons</TableCell>
+      <TableCell>Sequential-only navigation; total page count is unimportant</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><strong>Numbered</strong></TableCell>
+      <TableCell><code>numbered</code></TableCell>
+      <TableCell>‹ Back · page numbers · Next ›, auto-truncates with …</TableCell>
+      <TableCell>Tables and lists where users need direct page access</TableCell>
+    </TableRow>
+  </TableBody>
+</Table>
+
+---
+
+## Anatomy
+
+- **Previous / Back button** — navigates to page − 1. Disabled on the first page. Icon-only (`directional`) or icon + "Back" label (`back-next`, `numbered`).
+- **Next button** — navigates to page + 1. Disabled on the last page.
+- **Page number buttons** — 36 × 36 px pills. Active page has a white (`#ffffff`) background; idle pages are transparent.
+- **Ellipsis (…)** — non-interactive placeholder indicating a hidden page range. Renders as the same pill shape to maintain visual rhythm.
+- **Counter label** — "X of Y" text rendered between directional arrows in the `directional-counter` variant. 14 px / `#021920`.
+
+---
+
+## Truncation logic
+
+For datasets with more than 7 pages, the `numbered` variant automatically truncates the page range:
+
+<Table size="compact" className="mb-6">
+  <TableHeader>
+    <tr>
+      <TableHead>Position of current page</TableHead>
+      <TableHead>Pages shown</TableHead>
+    </tr>
+  </TableHeader>
+  <TableBody>
+    <TableRow>
+      <TableCell>Near the start (page ≤ 4)</TableCell>
+      <TableCell>1 · 2 · 3 · 4 · 5 · … · last</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>Middle</TableCell>
+      <TableCell>1 · … · page−1 · <strong>page</strong> · page+1 · … · last</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>Near the end (page ≥ last − 3)</TableCell>
+      <TableCell>1 · … · last−4 · last−3 · last−2 · last−1 · last</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>≤ 7 total pages</TableCell>
+      <TableCell>All pages shown, no ellipsis</TableCell>
+    </TableRow>
+  </TableBody>
+</Table>
+
+---
+
+## Do's & Don'ts
+
+<DosDonts>
+  <Do description="Disable the Back button on page 1 and the Next button on the last page. Users should never navigate beyond the valid range." />
+  <Dont description="Hide the pagination when there is only one page. Render it in a disabled state or omit it entirely — never toggle its presence based on page count, as that causes layout shift." />
+</DosDonts>
+
+<DosDonts>
+  <Do description="Use the 'numbered' variant for tables where users are likely to jump to a specific page — for example, returning to a record they viewed earlier." />
+  <Dont description="Use 'numbered' pagination for small datasets. When all items fit on a single page or the total is under 10, show them all without pagination controls." />
+</DosDonts>
+
+<DosDonts>
+  <Do description="Place pagination consistently — typically below content, aligned to the right or centred. Keep it in the same position across all paginated views in the product." />
+  <Dont description="Mix 'Load More' and traditional pagination on the same view. They imply different mental models for how the dataset works." />
+</DosDonts>
+
+<DosDonts>
+  <Do description="Combine 'numbered' pagination with an 'items per page' selector when users are working in a data-intensive context and may want to adjust their view density." />
+  <Dont description="Show more than 7 visible page numbers without truncation. Ellipsis keeps the control compact; a long row of page buttons overwhelms and is rarely useful." />
+</DosDonts>
+
+---
+
+## Code
+
+### Directional (minimal)
+
+```tsx
+import { Pagination } from '@/components/ui/pagination'
+
+<Pagination
+  variant="directional"
+  page={page}
+  totalPages={12}
+  onChange={setPage}
+/>
+```
+
+### Directional + counter
+
+```tsx
+<Pagination
+  variant="directional-counter"
+  page={page}
+  totalPages={4}
+  onChange={setPage}
+/>
+{/* Renders: ‹  2 of 4  › */}
+```
+
+### Back / Next
+
+```tsx
+<Pagination
+  variant="back-next"
+  page={page}
+  totalPages={20}
+  onChange={setPage}
+/>
+```
+
+### Numbered (auto-truncates)
+
+```tsx
+{/* Small dataset — shows all pages */}
+<Pagination
+  variant="numbered"
+  page={page}
+  totalPages={5}
+  onChange={setPage}
+/>
+
+{/* Large dataset — auto-truncates with … */}
+<Pagination
+  variant="numbered"
+  page={page}
+  totalPages={125}
+  onChange={setPage}
+/>
+```
+
+### Controlled with state
+
+```tsx
+const [page, setPage] = useState(1)
+const ITEMS_PER_PAGE = 25
+
+const totalPages = Math.ceil(data.length / ITEMS_PER_PAGE)
+const pageData   = data.slice((page - 1) * ITEMS_PER_PAGE, page * ITEMS_PER_PAGE)
+
+return (
+  <>
+    <DataTable rows={pageData} />
+    <Pagination
+      variant="numbered"
+      page={page}
+      totalPages={totalPages}
+      onChange={setPage}
+    />
+  </>
+)
+```
+
+---
+
+## Token reference
+
+<Table size="compact" className="mb-6">
+  <TableHeader>
+    <tr>
+      <TableHead>Token</TableHead>
+      <TableHead>Value</TableHead>
+      <TableHead>Usage</TableHead>
+    </tr>
+  </TableHeader>
+  <TableBody>
+    <TableRow>
+      <TableCell><code>--border-color/surface-active/primary</code></TableCell>
+      <TableCell><code>#689df6</code></TableCell>
+      <TableCell>Button border on all states</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><code>--text/on-action/transparent</code></TableCell>
+      <TableCell><code>#3264b8</code></TableCell>
+      <TableCell>Button text and icon colour</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><code>--surface/form-field</code></TableCell>
+      <TableCell><code>#ffffff</code></TableCell>
+      <TableCell>Active (current) page background</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><code>--surface/action/empty</code></TableCell>
+      <TableCell><code>transparent</code></TableCell>
+      <TableCell>Idle button background</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><code>--border-radius/sm</code></TableCell>
+      <TableCell><code>4 px</code></TableCell>
+      <TableCell>Directional icon buttons</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><code>--border-radius/md</code></TableCell>
+      <TableCell><code>8 px</code></TableCell>
+      <TableCell>Back/Next labels and page number buttons</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>Page button size</TableCell>
+      <TableCell>36 × 36 px</TableCell>
+      <TableCell>Fixed width for numbered buttons to maintain visual alignment</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>Button padding</TableCell>
+      <TableCell>8 px</TableCell>
+      <TableCell>All button variants</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>Font — buttons</TableCell>
+      <TableCell>12 px / weight 400 / line-height 20 px</TableCell>
+      <TableCell>Body/Small — Back, Next, page numbers</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>Font — counter</TableCell>
+      <TableCell>14 px / weight 400 / <code>#021920</code></TableCell>
+      <TableCell>Body/Regular — "X of Y" label</TableCell>
+    </TableRow>
+  </TableBody>
+</Table>
+
+---
+
+## Accessibility
+
+- The pagination `<nav>` element carries `aria-label="Pagination"` so screen readers can distinguish it from other navigation landmarks on the page.
+- The active page button has `aria-current="page"`, allowing screen readers to announce which page is currently selected.
+- Disabled buttons (Back on page 1, Next on the last page) receive `aria-disabled="true"` and the native `disabled` attribute.
+- The `directional-counter` label is wrapped in `aria-live="polite"` + `aria-atomic="true"` so page changes are announced to assistive technologies without interrupting ongoing speech.
+- All interactive elements are keyboard-accessible via Tab. Clicking a page button or Back/Next is the intended interaction — no arrow-key roving tabindex is needed since these are not related option groups.
+- Icon-only buttons (`directional`) carry `aria-label="Previous page"` / `aria-label="Next page"` so their purpose is clear without a visible label.

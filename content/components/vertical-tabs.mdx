@@ -1,0 +1,286 @@
+---
+title: Vertical Tabs
+description: Stacked navigation tabs for switching between sections within a panel or settings page. Supports icons, active/disabled states, and right-side badge slots.
+figmaNodeId: 325-6411
+status: stable
+---
+
+## Overview
+
+Vertical Tabs provide section-level navigation within a bounded surface such as a settings panel, a detail drawer, or a sidebar. Unlike horizontal tabs, they scale gracefully to long label text and accommodate a higher number of items without overflow. Each tab is a full-width button; only one tab is active at a time.
+
+The component ships as two primitives:
+
+- **`VerticalTab`** — a single interactive tab item with icon, label, and an optional right-side slot for count chips or status badges.
+- **`VerticalTabGroup`** — a container that stacks tabs vertically with consistent spacing and a white background card.
+
+---
+
+## When to use
+
+- Navigating between distinct sections within a panel, drawer, or settings page
+- When the number of sections is between 2 and 7 — fewer than 2 tabs is not meaningful; more than 7 becomes hard to scan
+- When labels are long or variable-length and would not fit comfortably in a horizontal tab bar
+- When tabs need to carry secondary information such as record counts or status badges
+
+**Do not use Vertical Tabs when:**
+- Switching between content views at the page level — use the top navigation or horizontal tabs
+- The sections are deeply nested — prefer a breadcrumb or stepped layout instead
+- Only a single item exists — a heading with no alternatives is not a tab
+
+---
+
+## Anatomy
+
+- **Group container** — white background (`#ffffff`), 8 px padding, 4 px gap between items, 8 px border radius. Renders as `role="tablist"` with `aria-orientation="vertical"`.
+- **Tab button** — 14 px label, 16 px horizontal padding, 12 px vertical padding, 8 px border radius. Full-width within its container.
+- **Icon** — optional 16 × 16 px leading element. Matches the current text colour for each state.
+- **Right slot** — optional trailing region for count chips or status badges. Sits flush to the right edge.
+- **Active indicator** — solid blue fill (`#4285f4`) replaces the transparent background; label colour inverts to `#eff1f3` and weight increases to SemiBold (600).
+
+---
+
+## States
+
+<Table size="compact" className="mb-6">
+  <TableHeader>
+    <tr>
+      <TableHead>State</TableHead>
+      <TableHead>Background</TableHead>
+      <TableHead>Text colour</TableHead>
+      <TableHead>Font weight</TableHead>
+    </tr>
+  </TableHeader>
+  <TableBody>
+    <TableRow>
+      <TableCell><strong>Default</strong></TableCell>
+      <TableCell>Transparent</TableCell>
+      <TableCell><code>#021920</code></TableCell>
+      <TableCell>400 (Regular)</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><strong>Hover</strong></TableCell>
+      <TableCell><code>rgba(66, 133, 244, 0.08)</code></TableCell>
+      <TableCell><code>#021920</code></TableCell>
+      <TableCell>400 (Regular)</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><strong>Active</strong></TableCell>
+      <TableCell><code>#4285f4</code></TableCell>
+      <TableCell><code>#eff1f3</code></TableCell>
+      <TableCell>600 (SemiBold)</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><strong>Disabled</strong></TableCell>
+      <TableCell>Transparent</TableCell>
+      <TableCell><code>#aab0b8</code></TableCell>
+      <TableCell>400 (Regular)</TableCell>
+    </TableRow>
+  </TableBody>
+</Table>
+
+---
+
+## Do's & Don'ts
+
+<DosDonts>
+  <Do description="Keep tab labels short and parallel — one to three words each. Users scan the list quickly; long or inconsistent labels slow navigation." />
+  <Dont description="Mix navigational tabs and action buttons in the same VerticalTabGroup. The group is a navigation landmark; adding unrelated actions creates confusion." />
+</DosDonts>
+
+<DosDonts>
+  <Do description="Use the right-side slot for read-only context (record counts, 'New' badges). Clicking the tab always navigates — the slot is not a separate click target." />
+  <Dont description="Use Vertical Tabs for progressive disclosure or accordions. Each tab should reveal a full section, not toggle a panel inline." />
+</DosDonts>
+
+<DosDonts>
+  <Do description="Show the icon consistently across all tabs in a group, or not at all. A mix of icon and no-icon tabs breaks the visual rhythm." />
+  <Dont description="Use more than 7 tabs in a single group. Beyond that, consider a nested navigation pattern or a searchable list." />
+</DosDonts>
+
+---
+
+## Code
+
+### Basic group
+
+```tsx
+import { VerticalTab, VerticalTabGroup } from '@/components/ui/vertical-tabs'
+
+const [active, setActive] = useState('production')
+
+<VerticalTabGroup>
+  <VerticalTab
+    label="Global Permissions"
+    active={active === 'global'}
+    onClick={() => setActive('global')}
+  />
+  <VerticalTab
+    label="Instances"
+    active={active === 'instances'}
+    onClick={() => setActive('instances')}
+  />
+  <VerticalTab
+    label="Production"
+    active={active === 'production'}
+    onClick={() => setActive('production')}
+  />
+</VerticalTabGroup>
+```
+
+### With icons
+
+```tsx
+import { ShieldIcon } from '@phosphor-icons/react'
+
+<VerticalTabGroup>
+  <VerticalTab
+    label="Global Permissions"
+    icon={<ShieldIcon size={16} />}
+    active
+    onClick={() => {}}
+  />
+  <VerticalTab
+    label="Instances"
+    icon={<ShieldIcon size={16} />}
+    onClick={() => {}}
+  />
+</VerticalTabGroup>
+```
+
+### With count badge in right slot
+
+```tsx
+import { Chip } from '@/components/ui/chip'
+
+<VerticalTabGroup>
+  <VerticalTab
+    label="Categories"
+    active
+    rightSlot={<Chip label="14" type="count" shade={1} />}
+    onClick={() => {}}
+  />
+  <VerticalTab
+    label="Tags"
+    rightSlot={<Chip label="6" type="count" shade={1} />}
+    onClick={() => {}}
+  />
+</VerticalTabGroup>
+```
+
+### Disabled tab
+
+```tsx
+<VerticalTabGroup>
+  <VerticalTab label="Production" active onClick={() => {}} />
+  <VerticalTab label="Development" onClick={() => {}} />
+  <VerticalTab label="Q&A" disabled onClick={() => {}} />
+</VerticalTabGroup>
+```
+
+### Controlled with state
+
+```tsx
+const SECTIONS = ['Global Permissions', 'Instances', 'Production', 'Development', 'Q&A'] as const
+type Section = typeof SECTIONS[number]
+
+const [active, setActive] = useState<Section>('Production')
+
+<VerticalTabGroup style={{ width: 240 }}>
+  {SECTIONS.map((label) => (
+    <VerticalTab
+      key={label}
+      label={label}
+      active={active === label}
+      onClick={() => setActive(label)}
+    />
+  ))}
+</VerticalTabGroup>
+```
+
+---
+
+## Token reference
+
+<Table size="compact" className="mb-6">
+  <TableHeader>
+    <tr>
+      <TableHead>Token</TableHead>
+      <TableHead>Value</TableHead>
+      <TableHead>Usage</TableHead>
+    </tr>
+  </TableHeader>
+  <TableBody>
+    <TableRow>
+      <TableCell><code>--surface/section</code></TableCell>
+      <TableCell><code>#ffffff</code></TableCell>
+      <TableCell>Group container background</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><code>--surface/action/primary</code></TableCell>
+      <TableCell><code>#4285f4</code></TableCell>
+      <TableCell>Active tab background</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><code>--surface/action/hover</code></TableCell>
+      <TableCell><code>rgba(66, 133, 244, 0.08)</code></TableCell>
+      <TableCell>Hover state background</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><code>--text/body/primary</code></TableCell>
+      <TableCell><code>#021920</code></TableCell>
+      <TableCell>Default tab label</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><code>--text/on-action/filled</code></TableCell>
+      <TableCell><code>#eff1f3</code></TableCell>
+      <TableCell>Active tab label (inverted)</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><code>--text/disabled</code></TableCell>
+      <TableCell><code>#aab0b8</code></TableCell>
+      <TableCell>Disabled tab label and icon</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><code>--border-radius/md</code></TableCell>
+      <TableCell><code>8 px</code></TableCell>
+      <TableCell>Tab item and group container</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>Tab padding</TableCell>
+      <TableCell>12 px top/bottom · 16 px left/right</TableCell>
+      <TableCell>All tab states</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>Group padding</TableCell>
+      <TableCell>8 px</TableCell>
+      <TableCell>VerticalTabGroup inner inset</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>Item gap</TableCell>
+      <TableCell>4 px</TableCell>
+      <TableCell>Space between tabs in a group</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>Font — label</TableCell>
+      <TableCell>14 px / weight 400–600 / line-height 20 px</TableCell>
+      <TableCell>Regular for default; SemiBold for active</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>Icon size</TableCell>
+      <TableCell>16 × 16 px</TableCell>
+      <TableCell>Leading icon in each tab item</TableCell>
+    </TableRow>
+  </TableBody>
+</Table>
+
+---
+
+## Accessibility
+
+- `VerticalTabGroup` renders a `<div role="tablist" aria-orientation="vertical">` so assistive technologies understand this is a vertical tab navigation.
+- Each `VerticalTab` renders a `<button role="tab">` with `aria-selected="true"` on the active item.
+- Disabled tabs receive both the native `disabled` attribute and `aria-disabled="true"` so their state is conveyed to all assistive technologies.
+- The active tab should be paired with a corresponding `<div role="tabpanel">` in the main content area. Connect them with matching `id` and `aria-labelledby` attributes so screen readers can announce which panel is visible.
+- Tab panels that are not selected should be hidden with `hidden` or `display: none` — do not render all panels simultaneously.
+- Keyboard navigation follows the ARIA Tabs pattern: Tab moves focus into and out of the tab list; Arrow Up / Arrow Down move between tabs; Enter or Space activates the focused tab.

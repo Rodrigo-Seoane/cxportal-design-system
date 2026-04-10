@@ -1,0 +1,517 @@
+---
+title: Chips & Tags
+description: Compact inline labels for status, categorisation, and user input. Chips are interactive; Tags are primarily informational.
+figmaNodeId: 188-8771
+status: stable
+---
+
+## Overview
+
+Chips and Tags are both compact inline elements, but they serve fundamentally different purposes. **Chips** are interactive — users create, select, filter, or dismiss them. **Tags** are primarily informational — they describe, classify, or indicate the state of content assigned by the system or a user.
+
+## Key differences
+
+<Table size="compact" className="mb-6">
+  <TableHeader>
+    <tr>
+      <TableHead> </TableHead>
+      <TableHead>Chips</TableHead>
+      <TableHead>Tags</TableHead>
+    </tr>
+  </TableHeader>
+  <TableBody>
+    <TableRow>
+      <TableCell><strong>Purpose</strong></TableCell>
+      <TableCell>Interactive elements for actions, selections, or filtering</TableCell>
+      <TableCell>Metadata labels for categorisation and organisation</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><strong>Interactivity</strong></TableCell>
+      <TableCell>Highly interactive — clickable, selectable, removable</TableCell>
+      <TableCell>Primarily static or low interactivity — read-only, sometimes removable</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><strong>User action</strong></TableCell>
+      <TableCell>User creates or selects during a task</TableCell>
+      <TableCell>System or user assigns to categorise content</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><strong>Context</strong></TableCell>
+      <TableCell>Input controls, filters, selections</TableCell>
+      <TableCell>Content descriptors, status indicators</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><strong>Behaviour</strong></TableCell>
+      <TableCell>Can trigger actions, toggle states, or be dismissed</TableCell>
+      <TableCell>Display information, may link to filtered views</TableCell>
+    </TableRow>
+  </TableBody>
+</Table>
+
+---
+
+## Chip
+
+### When to use
+
+- When users need to make selections from a compact set of options
+- For displaying and managing user inputs (such as tags in a form field)
+- When filtering or refining content dynamically
+- For representing complex entities in a compact form (e.g. a contact with avatar + name + remove action)
+- When space is limited and traditional buttons would be too heavy
+
+### Anatomy
+
+- **Container** — 8px border-radius. Padding: 4px vertical, 12px horizontal.
+- **Left icon (optional)** — 12px thin-weight icon communicating the chip's domain or type.
+- **Label** — 10px SemiBold, 0.4px letter-spacing.
+- **Dismiss icon (optional)** — 12px × icon. Clicking removes the chip.
+
+### Variants
+
+#### Type & shade
+
+Chips carry semantic meaning through colour. Each type has four shade levels — 100 (lightest, background-safe) through 500 (darkest, high-contrast).
+
+<Table size="compact" className="mb-6">
+  <TableHeader>
+    <tr>
+      <TableHead>Type</TableHead>
+      <TableHead>Shade 100</TableHead>
+      <TableHead>Shade 200</TableHead>
+      <TableHead>Shade 400</TableHead>
+      <TableHead>Shade 500</TableHead>
+      <TableHead>Use for</TableHead>
+    </tr>
+  </TableHeader>
+  <TableBody>
+    <TableRow>
+      <TableCell><strong>Info</strong></TableCell>
+      <TableCell><code>#d6e2f5</code></TableCell>
+      <TableCell><code>#a4beea</code></TableCell>
+      <TableCell><code>#2859ab</code></TableCell>
+      <TableCell><code>#1f4584</code></TableCell>
+      <TableCell>Neutral information, current state, active filters</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><strong>Success</strong></TableCell>
+      <TableCell><code>#ddf4d2</code></TableCell>
+      <TableCell><code>#b5e89c</code></TableCell>
+      <TableCell><code>#67d034</code></TableCell>
+      <TableCell><code>#4b9924</code></TableCell>
+      <TableCell>Positive states — active, synced, confirmed</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><strong>Warning</strong></TableCell>
+      <TableCell><code>#fbeed8</code></TableCell>
+      <TableCell><code>#f7ddb1</code></TableCell>
+      <TableCell><code>#eaa93c</code></TableCell>
+      <TableCell><code>#c79033</code></TableCell>
+      <TableCell>Caution — pending, expiring, needs attention</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><strong>Error</strong></TableCell>
+      <TableCell><code>#fbc6d4</code></TableCell>
+      <TableCell><code>#f792ac</code></TableCell>
+      <TableCell><code>#ef2056</code></TableCell>
+      <TableCell><code>#ab0c36</code></TableCell>
+      <TableCell>Failure, blocked, critical state</TableCell>
+    </TableRow>
+  </TableBody>
+</Table>
+
+Text colour follows the shade: shades 100–400 use `#021920` (dark); shade 500 uses `#eff1f3` (light).
+
+#### Chip types by function
+
+<Table size="compact" className="mb-6">
+  <TableHeader>
+    <tr>
+      <TableHead>Type</TableHead>
+      <TableHead>Description</TableHead>
+      <TableHead>Example use case</TableHead>
+    </tr>
+  </TableHeader>
+  <TableBody>
+    <TableRow>
+      <TableCell><strong>Input chip</strong></TableCell>
+      <TableCell>Represents user-entered information that can be edited or removed</TableCell>
+      <TableCell>Email recipients, search terms entered by user</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><strong>Choice chip</strong></TableCell>
+      <TableCell>Single selection from a set of options (like radio buttons)</TableCell>
+      <TableCell>Selecting a size: S, M, L, XL</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><strong>Filter chip</strong></TableCell>
+      <TableCell>Multiple selections to filter content (like checkboxes)</TableCell>
+      <TableCell>Filtering products by "In Stock", "On Sale", "New"</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><strong>Action chip</strong></TableCell>
+      <TableCell>Triggers an action related to primary content</TableCell>
+      <TableCell>"Add to calendar", "Share", "Save"</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><strong>Suggestion chip</strong></TableCell>
+      <TableCell>Dynamically generated suggestions to assist user input</TableCell>
+      <TableCell>Autocomplete suggestions, quick replies in chat</TableCell>
+    </TableRow>
+  </TableBody>
+</Table>
+
+---
+
+## Tag
+
+### When to use
+
+- To display metadata about content items
+- For showing status or state information alongside content
+- When categorising items in lists or tables
+- To indicate content type or classification
+- For displaying system-assigned or pre-defined labels
+
+### Anatomy
+
+- **Container** — 16px border-radius (pill shape). Padding: 4px vertical, 12px horizontal.
+- **Label** — 10px SemiBold, 0.4px letter-spacing.
+- **Value (optional)** — Additional numeric or text value shown after the label.
+- **Arrow (value-update only)** — 12px thin arrow separating old value from new value.
+
+### Variants
+
+#### States
+
+<Table size="compact" className="mb-6">
+  <TableHeader>
+    <tr>
+      <TableHead>State</TableHead>
+      <TableHead>Background</TableHead>
+      <TableHead>Text colour</TableHead>
+      <TableHead>Use for</TableHead>
+    </tr>
+  </TableHeader>
+  <TableBody>
+    <TableRow>
+      <TableCell><strong>Default</strong></TableCell>
+      <TableCell><code>#d9dce0</code> (neutral/200)</TableCell>
+      <TableCell><code>#021920</code></TableCell>
+      <TableCell>Standard, unvisited label</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><strong>Active</strong></TableCell>
+      <TableCell><code>#4b535e</code> (neutral/500)</TableCell>
+      <TableCell><code>#eff1f3</code></TableCell>
+      <TableCell>Currently selected or applied filter</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><strong>Viewed</strong></TableCell>
+      <TableCell><code>#7a828c</code> (neutral/400)</TableCell>
+      <TableCell><code>#021920</code></TableCell>
+      <TableCell>Previously visited or seen item</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><strong>Disabled</strong></TableCell>
+      <TableCell><code>#eff1f3</code> (surface/disabled)</TableCell>
+      <TableCell><code>#aab0b8</code></TableCell>
+      <TableCell>Interaction not allowed</TableCell>
+    </TableRow>
+  </TableBody>
+</Table>
+
+#### Types
+
+<Table size="compact" className="mb-6">
+  <TableHeader>
+    <tr>
+      <TableHead>Type</TableHead>
+      <TableHead>Layout</TableHead>
+      <TableHead>Use for</TableHead>
+    </tr>
+  </TableHeader>
+  <TableBody>
+    <TableRow>
+      <TableCell><strong>Simple</strong></TableCell>
+      <TableCell>Label only</TableCell>
+      <TableCell>Status labels, category names, plain metadata</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><strong>With value</strong></TableCell>
+      <TableCell>Label · Value</TableCell>
+      <TableCell>Attribute–value pairs like "Audience 5" or "Version 2"</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><strong>Value update</strong></TableCell>
+      <TableCell>Label · Old → New</TableCell>
+      <TableCell>Showing a pending or applied change — "Count 2 → 5"</TableCell>
+    </TableRow>
+  </TableBody>
+</Table>
+
+#### Tag types by function
+
+<Table size="compact" className="mb-6">
+  <TableHeader>
+    <tr>
+      <TableHead>Type</TableHead>
+      <TableHead>Description</TableHead>
+      <TableHead>Example use case</TableHead>
+    </tr>
+  </TableHeader>
+  <TableBody>
+    <TableRow>
+      <TableCell><strong>Categorical</strong></TableCell>
+      <TableCell>Classifies content into predefined categories</TableCell>
+      <TableCell>"master list", "documentation", "archived"</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><strong>Status</strong></TableCell>
+      <TableCell>Indicates the current state of an item</TableCell>
+      <TableCell>"published", "draft", "synched", "pending"</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><strong>Attribute</strong></TableCell>
+      <TableCell>Displays a specific attribute or property of content</TableCell>
+      <TableCell>"audience: external", "customer: enterprise"</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><strong>Count / Badge</strong></TableCell>
+      <TableCell>Shows numerical information related to the item</TableCell>
+      <TableCell>Notification count, item quantity</TableCell>
+    </TableRow>
+  </TableBody>
+</Table>
+
+---
+
+## Decision framework
+
+**Use a Chip when:**
+- The user needs to interact with the element
+- The element represents user input that can be modified or removed
+- You need selection behaviour (single or multiple)
+- The element triggers an action
+- You are building a filter interface
+
+**Use a Tag when:**
+- The element is primarily informational
+- You are displaying metadata or categorisation
+- You need to show status or state
+- The label is system-defined rather than user-created
+- The element describes content rather than controls it
+
+---
+
+## Do's & Don'ts
+
+<DosDonts>
+  <Do description="Use Info shade 100 or 200 for chips embedded in light backgrounds — they provide colour-coded meaning without overwhelming the surrounding content." />
+  <Dont description="Use shade 400 or 500 chips in large quantities on a single page. High-contrast shades draw strong attention; reserve them for critical or high-priority states." />
+</DosDonts>
+
+<DosDonts>
+  <Do description="Always attach an onDismiss handler when the × icon is shown. A dismiss icon with no action confuses users who expect to remove the chip." />
+  <Dont description="Show the dismiss icon on chips that are not removable (such as read-only filter labels). Remove iconRight if the chip has no removal behaviour." />
+</DosDonts>
+
+<DosDonts>
+  <Do description="Use Tags in table cells and list metadata to give users at-a-glance context about each row's state, category, or attribute." />
+  <Dont description="Use Tags as primary call-to-action elements. Their low visual weight and read-only intent make them poor substitutes for buttons or chips when an action is required." />
+</DosDonts>
+
+<DosDonts>
+  <Do description="Use the value-update Tag type to communicate a pending or recently applied change — for example, showing that a count went from 2 to 5 after a sync." />
+  <Dont description="Use value-update Tags for static data. This type implies change is in progress or has just occurred; using it for stable values misleads users about the data's state." />
+</DosDonts>
+
+<DosDonts>
+  <Do description="Keep chip and tag labels short — one to three words. They are scanned, not read, and long labels break the horizontal rhythm of the layout." />
+  <Dont description="Truncate chip or tag labels with an ellipsis. If the text doesn't fit, shorten the label or use a tooltip — hidden text defeats the informational purpose." />
+</DosDonts>
+
+---
+
+## Code
+
+### Chip — basic
+
+```tsx
+import { Chip } from '@/components/ui/chip'
+
+<Chip label="Current" type="info" shade={100} />
+<Chip label="Active"  type="success" shade={200} />
+<Chip label="Pending" type="warning" shade={400} />
+<Chip label="Blocked" type="error" shade={500} />
+```
+
+### Chip — dismissible (controlled)
+
+```tsx
+const [tags, setTags] = useState(['Design', 'Research', 'Dev'])
+
+{tags.map((tag) => (
+  <Chip
+    key={tag}
+    label={tag}
+    type="info"
+    shade={100}
+    onDismiss={() => setTags((t) => t.filter((x) => x !== tag))}
+  />
+))}
+```
+
+### Chip — icon variants
+
+```tsx
+{/* No icons — label only */}
+<Chip label="Draft" type="warning" shade={200} iconLeft={false} iconRight={false} />
+
+{/* Left icon only */}
+<Chip label="Connected" type="success" shade={100} iconRight={false} />
+```
+
+### Chip — clickable
+
+```tsx
+<Chip
+  label="Filter by status"
+  type="info"
+  shade={100}
+  onClick={() => openFilterPanel()}
+/>
+```
+
+### Tag — simple
+
+```tsx
+import { Tag } from '@/components/ui/chip'
+
+<Tag label="Published"  state="default" />
+<Tag label="Active"     state="active" />
+<Tag label="Viewed"     state="viewed" />
+<Tag label="Locked"     state="disabled" />
+```
+
+### Tag — with value
+
+```tsx
+<Tag label="Audience" type="with-value" value="5" state="default" />
+<Tag label="Version"  type="with-value" value="v1.2" state="active" />
+```
+
+### Tag — value update
+
+```tsx
+{/* Shows a change from one value to another */}
+<Tag
+  label="Count"
+  type="value-update"
+  value="2"
+  newValue="5"
+  state="default"
+/>
+```
+
+---
+
+## Token reference
+
+<Table size="compact" className="mb-6">
+  <TableHeader>
+    <tr>
+      <TableHead>Token</TableHead>
+      <TableHead>Value</TableHead>
+      <TableHead>Usage</TableHead>
+    </tr>
+  </TableHeader>
+  <TableBody>
+    <TableRow>
+      <TableCell><code>--info/100</code></TableCell>
+      <TableCell><code>#d6e2f5</code></TableCell>
+      <TableCell>Chip Info shade 100 background</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><code>--info/500</code></TableCell>
+      <TableCell><code>#1f4584</code></TableCell>
+      <TableCell>Chip Info shade 500 background</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><code>--success/100</code></TableCell>
+      <TableCell><code>#ddf4d2</code></TableCell>
+      <TableCell>Chip Success shade 100 background</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><code>--warning/100</code></TableCell>
+      <TableCell><code>#fbeed8</code></TableCell>
+      <TableCell>Chip Warning shade 100 background</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><code>--error/100</code></TableCell>
+      <TableCell><code>#fbc6d4</code></TableCell>
+      <TableCell>Chip Error shade 100 background</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><code>--neutral/200</code></TableCell>
+      <TableCell><code>#d9dce0</code></TableCell>
+      <TableCell>Tag Default state background</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><code>--neutral/400</code></TableCell>
+      <TableCell><code>#7a828c</code></TableCell>
+      <TableCell>Tag Viewed state background</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><code>--neutral/500</code></TableCell>
+      <TableCell><code>#4b535e</code></TableCell>
+      <TableCell>Tag Active state background</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><code>--surface/disabled</code></TableCell>
+      <TableCell><code>#eff1f3</code></TableCell>
+      <TableCell>Tag Disabled state background</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><code>--text/on-action/secondary</code></TableCell>
+      <TableCell><code>#021920</code></TableCell>
+      <TableCell>Label text on light backgrounds (shades 100–400)</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><code>--text/on-action/primary</code></TableCell>
+      <TableCell><code>#eff1f3</code></TableCell>
+      <TableCell>Label text on dark backgrounds (shade 500, active tag)</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><code>--text/form-field/disabled</code></TableCell>
+      <TableCell><code>#aab0b8</code></TableCell>
+      <TableCell>Label text in disabled state</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>Font size</TableCell>
+      <TableCell>10px</TableCell>
+      <TableCell>Label text size for both Chip and Tag</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>Font weight</TableCell>
+      <TableCell>600 (SemiBold)</TableCell>
+      <TableCell>Label text weight for both Chip and Tag</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>Letter spacing</TableCell>
+      <TableCell>0.4px</TableCell>
+      <TableCell>Label tracking for both Chip and Tag</TableCell>
+    </TableRow>
+  </TableBody>
+</Table>
+
+---
+
+## Accessibility
+
+- Chips that are clickable use `role="button"` and `tabIndex={0}` so they receive keyboard focus. `Enter` and `Space` trigger the click handler.
+- The dismiss (×) icon uses `role="button"` with `aria-label="Remove {label}"` so screen readers announce its purpose.
+- Chips and Tags do not rely on colour alone to convey meaning — always pair a semantic type with a visible text label.
+- Disabled Tags carry `aria-disabled="true"` to communicate non-interactivity to assistive technologies.
+- When Chips are used as filter toggles in a group, wrap them in a `role="group"` with an `aria-label` that names the filter set (e.g. `aria-label="Filter by status"`).
+- For removable input chips (e.g. email recipients), announce removals with an `aria-live="polite"` region so screen readers confirm the item was removed.

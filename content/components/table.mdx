@@ -1,0 +1,612 @@
+---
+title: Table
+description: Data table with sortable columns, row selection, multiple cell types, and two density modes. Supports striped rows, batch operations, and accessible keyboard navigation.
+figmaNodeId: 795-2130
+status: stable
+---
+
+## Overview
+
+The Table component displays structured, multi-column data in a scannable grid. It supports two density modes — **Wide** (comfortable, 64 px rows) and **Compact** (dense, 40 px rows) — along with sortable headers, row selection via checkboxes, zebra striping, and a rich set of cell content types (text, links, tags, action buttons, switches, and more).
+
+## When to use
+
+- When presenting **6 or more rows** of related, structured data
+- When users need to **compare values across rows** (tabular data)
+- When **bulk operations** (select, delete, export) on multiple items are required
+- When users need to **sort or filter** a dataset to find specific entries
+
+**Do not use** a table for non-tabular content, simple key-value pairs (prefer a description list), or when fewer than 3 columns would be displayed.
+
+## Principles
+
+### Scanability first
+Organise columns by importance, placing key identifiers (names, IDs) on the left where users begin scanning. Use consistent alignment and adequate spacing to create clear visual lanes.
+
+### Progressive disclosure
+Show essential information in the default view and provide mechanisms (expandable rows, detail panels, modals) for accessing additional data without cluttering the table.
+
+### Actionable context
+Place row actions where users expect them — typically the rightmost column — and provide clear affordances for interactive elements. Batch actions should surface when multiple rows are selected.
+
+### Visual hierarchy
+Use typography weight, colour, and spacing to differentiate between headers, data cells, and interactive elements. Status indicators and tags should be immediately recognisable without relying on colour alone.
+
+## Anatomy
+
+<Table size="compact" className="mb-6">
+  <TableHeader>
+    <tr>
+      <TableHead>Element</TableHead>
+      <TableHead>Description</TableHead>
+    </tr>
+  </TableHeader>
+  <TableBody>
+    <TableRow>
+      <TableCell><strong>Table Header</strong></TableCell>
+      <TableCell><code>&lt;thead&gt;</code> — sticky row of column titles, often with sort controls</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><strong>Header Cell</strong> (<code>TableHead</code>)</TableCell>
+      <TableCell>Individual <code>&lt;th&gt;</code> with label and optional sort indicator (CaretUpDown)</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><strong>Table Body</strong></TableCell>
+      <TableCell><code>&lt;tbody&gt;</code> — container for all data rows</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><strong>Table Row</strong> (<code>TableRow</code>)</TableCell>
+      <TableCell>Horizontal grouping of related data cells; carries hover, selected, and disabled states</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><strong>Data Cell</strong> (<code>TableCell</code>)</TableCell>
+      <TableCell>Individual <code>&lt;td&gt;</code> — text, link, secondary, or visited variant</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><strong>Checkbox Column</strong></TableCell>
+      <TableCell>Optional selection column for batch operations (<code>TableCheckboxHead</code> + <code>TableCheckboxCell</code>)</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><strong>Actions Column</strong></TableCell>
+      <TableCell>Row-level icon-button actions (Edit, Delete, View, More…)</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><strong>Table Caption</strong></TableCell>
+      <TableCell>Optional visible/screen-reader caption anchored below the table</TableCell>
+    </TableRow>
+  </TableBody>
+</Table>
+
+## Variants
+
+### Density
+
+<Table size="compact" className="mb-6">
+  <TableHeader>
+    <tr>
+      <TableHead>Mode</TableHead>
+      <TableHead>Header height</TableHead>
+      <TableHead>Body row height</TableHead>
+      <TableHead>Padding</TableHead>
+      <TableHead>Font size</TableHead>
+    </tr>
+  </TableHeader>
+  <TableBody>
+    <TableRow>
+      <TableCell><strong>Wide</strong> (default)</TableCell>
+      <TableCell>48 px</TableCell>
+      <TableCell>64 px (72 px for stacked tags)</TableCell>
+      <TableCell><code>16px 8px</code> header · <code>12px 8px</code> cell</TableCell>
+      <TableCell>14 px body</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><strong>Compact</strong></TableCell>
+      <TableCell>40 px</TableCell>
+      <TableCell>40 px</TableCell>
+      <TableCell><code>8px</code> uniform</TableCell>
+      <TableCell>12 px body</TableCell>
+    </TableRow>
+  </TableBody>
+</Table>
+
+### Row states
+
+<Table size="compact" className="mb-6">
+  <TableHeader>
+    <tr>
+      <TableHead>State</TableHead>
+      <TableHead>Background</TableHead>
+      <TableHead>Visual treatment</TableHead>
+    </tr>
+  </TableHeader>
+  <TableBody>
+    <TableRow>
+      <TableCell><strong>Default</strong></TableCell>
+      <TableCell><code>#ffffff</code></TableCell>
+      <TableCell>Standard row</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><strong>Hover</strong></TableCell>
+      <TableCell><code>#f0f4fb</code></TableCell>
+      <TableCell>Subtle blue tint</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><strong>Selected</strong></TableCell>
+      <TableCell><code>#eaeff8</code></TableCell>
+      <TableCell>Accent background + checked checkbox</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><strong>Disabled</strong></TableCell>
+      <TableCell><code>#ffffff</code> @ 50% opacity</TableCell>
+      <TableCell><code>cursor: not-allowed</code>, no hover</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><strong>Zebra (striped)</strong></TableCell>
+      <TableCell><code>#f8f8f8</code></TableCell>
+      <TableCell>Alternating light grey on odd rows</TableCell>
+    </TableRow>
+  </TableBody>
+</Table>
+
+### Column alignment by content type
+
+<Table size="compact" className="mb-6">
+  <TableHeader>
+    <tr>
+      <TableHead>Column type</TableHead>
+      <TableHead>Alignment</TableHead>
+      <TableHead>Notes</TableHead>
+    </tr>
+  </TableHeader>
+  <TableBody>
+    <TableRow>
+      <TableCell>Text / ID / Name</TableCell>
+      <TableCell>Left</TableCell>
+      <TableCell>Default — most columns</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>Number / Price / Count</TableCell>
+      <TableCell>Right</TableCell>
+      <TableCell>Aids numerical comparison</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>Date / Time</TableCell>
+      <TableCell>Left or Center</TableCell>
+      <TableCell>Consistent across rows</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>Status / Tags</TableCell>
+      <TableCell>Left or Center</TableCell>
+      <TableCell>Use <code>Chip</code> or <code>Tag</code> patterns</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>Actions</TableCell>
+      <TableCell>Right or Center</TableCell>
+      <TableCell>Keep to 2–3 visible, overflow to <code>DotsThree</code></TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>Checkbox</TableCell>
+      <TableCell>Center</TableCell>
+      <TableCell>Always paired with a <code>TableCheckboxHead</code></TableCell>
+    </TableRow>
+  </TableBody>
+</Table>
+
+### Sorting
+
+Sort direction cycles through three states on each header click:
+
+<Table size="compact" className="mb-6">
+  <TableHeader>
+    <tr>
+      <TableHead>State</TableHead>
+      <TableHead>Icon</TableHead>
+      <TableHead><code>aria-sort</code></TableHead>
+    </tr>
+  </TableHeader>
+  <TableBody>
+    <TableRow>
+      <TableCell><strong>None</strong></TableCell>
+      <TableCell><code>CaretUpDown</code> (grey, 18 px)</TableCell>
+      <TableCell><code>"none"</code></TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><strong>Ascending</strong></TableCell>
+      <TableCell><code>CaretUp</code> (blue, bold)</TableCell>
+      <TableCell><code>"ascending"</code></TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><strong>Descending</strong></TableCell>
+      <TableCell><code>CaretDown</code> (blue, bold)</TableCell>
+      <TableCell><code>"descending"</code></TableCell>
+    </TableRow>
+  </TableBody>
+</Table>
+
+### Selection
+
+<Table size="compact" className="mb-6">
+  <TableHeader>
+    <tr>
+      <TableHead>Mode</TableHead>
+      <TableHead>Behaviour</TableHead>
+    </tr>
+  </TableHeader>
+  <TableBody>
+    <TableRow>
+      <TableCell><strong>Multi-select</strong></TableCell>
+      <TableCell>Checkbox column in position 0. Header checkbox cycles: unchecked → all selected → all deselected. Indeterminate dash shown when some rows are selected.</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><strong>Single-select</strong></TableCell>
+      <TableCell>No checkbox column — clicking a row makes it active (use <code>aria-selected</code> on the row).</TableCell>
+    </TableRow>
+  </TableBody>
+</Table>
+
+**Selection states — header checkbox:**
+
+<Table size="compact" className="mb-6">
+  <TableHeader>
+    <tr>
+      <TableHead>State</TableHead>
+      <TableHead>Checkbox appearance</TableHead>
+    </tr>
+  </TableHeader>
+  <TableBody>
+    <TableRow>
+      <TableCell>No rows selected</TableCell>
+      <TableCell>Empty box</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>Some rows selected</TableCell>
+      <TableCell>Dash (indeterminate)</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>All rows selected</TableCell>
+      <TableCell>Checked (blue fill)</TableCell>
+    </TableRow>
+  </TableBody>
+</Table>
+
+## Cell content types
+
+The component primitives (`TableCell`) are layout-agnostic. Compose these patterns inside a cell:
+
+<Table size="compact" className="mb-6">
+  <TableHeader>
+    <tr>
+      <TableHead>Type</TableHead>
+      <TableHead>Component / pattern</TableHead>
+      <TableHead>Alignment</TableHead>
+    </tr>
+  </TableHeader>
+  <TableBody>
+    <TableRow>
+      <TableCell><strong>Plain text</strong></TableCell>
+      <TableCell><code>TableCell</code> default</TableCell>
+      <TableCell>Left</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><strong>Link / visited link</strong></TableCell>
+      <TableCell><code>TableCell variant="link"</code> or <code>"visited"</code></TableCell>
+      <TableCell>Left</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><strong>Secondary / muted</strong></TableCell>
+      <TableCell><code>TableCell variant="secondary"</code></TableCell>
+      <TableCell>Left</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><strong>Empty / dash</strong></TableCell>
+      <TableCell><code>TableCell</code> → render <code>"—"</code></TableCell>
+      <TableCell>Left</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><strong>Status chip</strong></TableCell>
+      <TableCell>Inline <code>&lt;span&gt;</code> — <code>bg #d6e2f5</code>, <code>rounded-[8px]</code>, 12 px semibold</TableCell>
+      <TableCell>Left</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><strong>Tag (single)</strong></TableCell>
+      <TableCell>Inline <code>&lt;span&gt;</code> — <code>bg #d9dce0</code>, <code>rounded-[16px]</code></TableCell>
+      <TableCell>Left</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><strong>Number</strong></TableCell>
+      <TableCell><code>TableCell align="right"</code></TableCell>
+      <TableCell>Right</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><strong>Actions</strong></TableCell>
+      <TableCell><code>Button</code> <code>variant="secondary"</code> <code>size="icon-xs"</code> (compact) or <code>"icon-sm"</code> (wide)</TableCell>
+      <TableCell>Right</TableCell>
+    </TableRow>
+  </TableBody>
+</Table>
+
+## Do's & Don'ts
+
+<DosDonts>
+  <Do description="Keep column count manageable — 5–8 columns is ideal on desktop. If more data is needed, use progressive disclosure (expandable rows, side panels) rather than adding more columns." />
+  <Dont description="Overcrowd cells with too much information. Each cell should carry one primary value. Secondary context belongs in a tooltip, sub-row, or detail panel." />
+</DosDonts>
+
+<DosDonts>
+  <Do description="Align data types consistently — numbers flush right, text flush left, status indicators centred. This creates natural visual lanes that users can scan vertically." />
+  <Dont description="Mix alignments within a column or centre-align long text values. Ragged left edges on text make vertical scanning significantly harder." />
+</DosDonts>
+
+<DosDonts>
+  <Do description="Use the Compact density when vertical space is limited or when users are working with dense operational data (admin panels, dashboards). Compact rows (40 px) pack more rows above the fold." />
+  <Dont description="Switch between Wide and Compact on the same page or within a single session without a user preference. Inconsistent density is disorienting." />
+</DosDonts>
+
+<DosDonts>
+  <Do description="Show the indeterminate state (dash) on the header checkbox when some — but not all — rows are selected. This accurately communicates partial selection before the user commits to select-all." />
+  <Dont description="Skip the indeterminate state by jumping directly from unchecked to fully checked. Users lose track of whether their partial selection has been replaced." />
+</DosDonts>
+
+<DosDonts>
+  <Do description="Enable zebra striping (`striped` prop on alternating TableRows) for wide tables with many columns. Alternating backgrounds (#f8f8f8) guide the eye horizontally across dense rows." />
+  <Dont description="Use striping on narrow tables with 3 or fewer columns — it adds visual noise without the scanability benefit." />
+</DosDonts>
+
+<DosDonts>
+  <Do description="Limit visible row actions to 3 icon buttons maximum (Edit, View, Delete). Overflow additional actions into a DotsThree menu to keep the actions column compact." />
+  <Dont description="Place destructive actions (Delete) as the primary/first visible button. Always position Edit or View first; Delete should require confirmation and be the last action." />
+</DosDonts>
+
+## Code
+
+### Basic table
+
+```tsx
+import {
+  Table, TableHeader, TableBody,
+  TableRow, TableHead, TableCell,
+} from '@/components/ui/table'
+
+<Table size="wide">
+  <TableHeader>
+    <tr>
+      <TableHead>Name</TableHead>
+      <TableHead>Status</TableHead>
+      <TableHead align="right">Created</TableHead>
+    </tr>
+  </TableHeader>
+  <TableBody>
+    <TableRow>
+      <TableCell>Dianne Russell</TableCell>
+      <TableCell>Active</TableCell>
+      <TableCell align="right">12 Jan 2026</TableCell>
+    </TableRow>
+    <TableRow striped>
+      <TableCell>Wade Warren</TableCell>
+      <TableCell>Draft</TableCell>
+      <TableCell align="right">9 Feb 2026</TableCell>
+    </TableRow>
+  </TableBody>
+</Table>
+```
+
+### Sortable columns
+
+```tsx
+const [sort, setSort] = useState<{ col: string; dir: 'asc' | 'desc' | 'none' }>({
+  col: '', dir: 'none',
+})
+
+function handleSort(col: string) {
+  setSort(prev =>
+    prev.col !== col
+      ? { col, dir: 'asc' }
+      : prev.dir === 'asc'
+      ? { col, dir: 'desc' }
+      : { col: '', dir: 'none' },
+  )
+}
+
+<TableHead
+  sortDirection={sort.col === 'name' ? sort.dir : 'none'}
+  onSort={() => handleSort('name')}
+>
+  Name
+</TableHead>
+```
+
+### Selectable rows with batch action
+
+```tsx
+import {
+  Table, TableHeader, TableBody, TableRow,
+  TableHead, TableCell, TableCheckboxHead, TableCheckboxCell,
+} from '@/components/ui/table'
+
+const [selected, setSelected] = useState<Set<number>>(new Set())
+
+const allSelected = selected.size === rows.length
+const someSelected = selected.size > 0 && !allSelected
+
+function toggleAll(checked: boolean) {
+  setSelected(checked ? new Set(rows.map(r => r.id)) : new Set())
+}
+
+<Table size="wide">
+  <TableHeader>
+    <tr>
+      <TableCheckboxHead
+        checked={allSelected}
+        indeterminate={someSelected}
+        onChange={toggleAll}
+      />
+      <TableHead>Name</TableHead>
+      <TableHead>Status</TableHead>
+    </tr>
+  </TableHeader>
+  <TableBody>
+    {rows.map(row => (
+      <TableRow key={row.id} selected={selected.has(row.id)}>
+        <TableCheckboxCell
+          checked={selected.has(row.id)}
+          onChange={v => {
+            const next = new Set(selected)
+            v ? next.add(row.id) : next.delete(row.id)
+            setSelected(next)
+          }}
+        />
+        <TableCell>{row.name}</TableCell>
+        <TableCell>{row.status}</TableCell>
+      </TableRow>
+    ))}
+  </TableBody>
+</Table>
+```
+
+### Compact density with link cells
+
+```tsx
+<Table size="compact">
+  <TableHeader>
+    <tr>
+      <TableHead>Agent ID</TableHead>
+      <TableHead>Name</TableHead>
+      <TableHead align="right">Score</TableHead>
+    </tr>
+  </TableHeader>
+  <TableBody>
+    <TableRow>
+      <TableCell variant="link">#00123</TableCell>
+      <TableCell>Dianne Russell</TableCell>
+      <TableCell align="right">98.4</TableCell>
+    </TableRow>
+  </TableBody>
+</Table>
+```
+
+## Token reference
+
+<Table size="compact" className="mb-6">
+  <TableHeader>
+    <tr>
+      <TableHead>Token</TableHead>
+      <TableHead>Value</TableHead>
+      <TableHead>Usage</TableHead>
+    </tr>
+  </TableHeader>
+  <TableBody>
+    <TableRow>
+      <TableCell><code>--surface/section</code></TableCell>
+      <TableCell><code>#ffffff</code></TableCell>
+      <TableCell>Header background, default row background</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><code>--surface/table/zebra-row</code></TableCell>
+      <TableCell><code>#f8f8f8</code></TableCell>
+      <TableCell>Alternating zebra-stripe row background</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>Row selected</TableCell>
+      <TableCell><code>#eaeff8</code></TableCell>
+      <TableCell>Selected row accent background</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>Row hover</TableCell>
+      <TableCell><code>#f0f4fb</code></TableCell>
+      <TableCell>Hover state row background</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><code>--border-color/neutral</code></TableCell>
+      <TableCell><code>#eff1f3</code></TableCell>
+      <TableCell>Row dividers and outer table border</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><code>--border-color/surface-active/primary</code></TableCell>
+      <TableCell><code>#689df6</code></TableCell>
+      <TableCell>Checkbox border, sort icon active</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><code>--text/body/primary</code></TableCell>
+      <TableCell><code>#021920</code></TableCell>
+      <TableCell>Default cell text, header label</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><code>--text/body/secondary</code></TableCell>
+      <TableCell><code>#7c7b8b</code></TableCell>
+      <TableCell>Muted / secondary cell text, sort icon idle</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><code>--text/action</code></TableCell>
+      <TableCell><code>#4285f4</code></TableCell>
+      <TableCell>Link cell text, active sort icon</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><code>--text/info</code></TableCell>
+      <TableCell><code>#2859ab</code></TableCell>
+      <TableCell>Visited link cell text</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><code>--surface/action/primary</code></TableCell>
+      <TableCell><code>#4285f4</code></TableCell>
+      <TableCell>Checkbox checked fill</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><code>--content-action/primary/300</code></TableCell>
+      <TableCell><code>#689df6</code></TableCell>
+      <TableCell>Checkbox hover fill</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>Header font</TableCell>
+      <TableCell>12 px / 600 / 0.24 px tracking</TableCell>
+      <TableCell><code>Body/Small/sm-semibold</code></TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>Body font (Wide)</TableCell>
+      <TableCell>14 px / 400 / 20 px lh</TableCell>
+      <TableCell><code>Body/Regular/regular</code></TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>Body font (Compact)</TableCell>
+      <TableCell>12 px / 400 / 20 px lh</TableCell>
+      <TableCell><code>Body/Small/sm-regular</code></TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>Header height (Wide)</TableCell>
+      <TableCell>48 px</TableCell>
+      <TableCell><code>TableHead</code> in wide mode</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>Header height (Compact)</TableCell>
+      <TableCell>40 px</TableCell>
+      <TableCell><code>TableHead</code> in compact mode</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>Body row height (Wide)</TableCell>
+      <TableCell>64 px</TableCell>
+      <TableCell><code>TableCell</code> in wide mode</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>Body row height (Compact)</TableCell>
+      <TableCell>40 px</TableCell>
+      <TableCell><code>TableCell</code> in compact mode</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>Sort icon size</TableCell>
+      <TableCell>18 px</TableCell>
+      <TableCell><code>CaretUpDown / CaretUp / CaretDown</code></TableCell>
+    </TableRow>
+  </TableBody>
+</Table>
+
+## Accessibility
+
+- Use semantic `<table>`, `<thead>`, `<tbody>`, `<th>`, `<td>` elements — the component handles this automatically.
+- `<th scope="col">` is set on every `TableHead` cell so screen readers can associate headers with their columns.
+- Sortable columns expose `aria-sort` (`"ascending"`, `"descending"`, or `"none"`) so sort state is announced when focus lands on the header.
+- `TableRow` sets `aria-selected` on selected rows so selection state is announced.
+- `TableCheckboxHead` carries `aria-label="Select all rows"`; pass a meaningful `ariaLabel` to `TableCheckboxCell` for each row (e.g. `"Select Dianne Russell"`).
+- The indeterminate state is set via `HTMLInputElement.indeterminate` (not a HTML attribute) — the component handles this correctly with a `useRef` + `useEffect` pattern.
+- Ensure a minimum 44 × 44 px touch target for all interactive elements in action columns.
+- Maintain a 4.5 : 1 contrast ratio for all cell text; the design tokens meet this threshold.
+- Visible focus rings are inherited from the global focus styles — do not suppress `outline` on table rows or cells.
+- Announce selection count changes to screen readers by pairing the table with a live region (e.g. `aria-live="polite"`) in the toolbar that reads "3 of 12 rows selected".

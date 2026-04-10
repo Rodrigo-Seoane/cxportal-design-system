@@ -1,0 +1,328 @@
+---
+title: Message Box
+description: Contextual feedback banners that communicate outcomes, guidance, and system state through four semantic intents and two layout sizes.
+figmaNodeId: 808-1262
+status: stable
+---
+
+## Overview
+
+Message Box surfaces feedback that the user needs to see — after an action completes, when something requires attention, or when context helps them proceed. It is not a toast or a notification: it lives in the page layout and persists until dismissed or the condition it describes is resolved.
+
+Four semantic types map to four distinct situations. Two sizes control how much information you can fit: Line for brief, single-sentence messages; Block for explanatory content that warrants a title and multiple paragraphs.
+
+---
+
+## When to use
+
+### Use Info when:
+- The system has something neutral to communicate — a scheduled event, a status, a tip
+- You want to orient the user before they take an action ("This campaign is currently paused. Resume to continue sending.")
+- A form needs guidance that doesn't fit in a hint text field
+
+### Use Success when:
+- An action completed successfully — especially destructive or async ones
+- The user needs confirmation before moving on ("15 contacts imported successfully.")
+- A multi-step flow reaches a milestone
+
+### Use Warning when:
+- The user is about to do something with significant side effects
+- A resource is approaching a limit or nearing expiry
+- Changes would affect more items than the user might expect ("Editing an active campaign will pause message delivery.")
+
+### Use Error when:
+- A user-initiated action failed
+- Validation catches a problem the user must fix before proceeding
+- A system-level issue requires the user's attention ("Unable to save changes. Please check your connection and try again.")
+
+### Use Line (default) when:
+- The message is a single sentence that provides enough context on its own
+- Vertical space is at a premium — forms, inline panels, compact settings pages
+
+### Use Block when:
+- The message needs a title and one or more supporting paragraphs
+- You want to include structured content — a table, a code example, a list of consequences
+- The information is important enough to command visual weight before the user proceeds
+
+---
+
+## Anatomy
+
+- **Left accent border** — 4px solid, same colour as the outer 1px border, reinforces the semantic type
+- **Status icon** — 24×24px Phosphor icon: Info (info), Checks (success), Warning (warning and error). Communicates type before the user reads a word.
+- **Content area** — Flex-grows to fill available width. In Line size, contains a single paragraph. In Block size, contains an optional title and a body area that accepts rich content.
+- **Dismiss button** — Trailing `XCircle` icon, 24×24px, same colour as the status icon. Optional. Hides the component when clicked.
+
+---
+
+## Variants
+
+### Types
+
+<Table size="compact" className="mb-6">
+  <TableHeader>
+    <tr>
+      <TableHead>Type</TableHead>
+      <TableHead>Background</TableHead>
+      <TableHead>Border / Icon</TableHead>
+      <TableHead>Situation</TableHead>
+    </tr>
+  </TableHeader>
+  <TableBody>
+    <TableRow>
+      <TableCell><strong>Info</strong></TableCell>
+      <TableCell>#eef3fb</TableCell>
+      <TableCell>#a4beea · blue icon</TableCell>
+      <TableCell>Neutral guidance, status, tips</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><strong>Success</strong></TableCell>
+      <TableCell>#f3fbee</TableCell>
+      <TableCell>#b5e89c · green icon</TableCell>
+      <TableCell>Completed actions, confirmations</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><strong>Warning</strong></TableCell>
+      <TableCell>#fdf8ef</TableCell>
+      <TableCell>#f7ddb1 · amber icon</TableCell>
+      <TableCell>Side effects, limits, consequences</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><strong>Error</strong></TableCell>
+      <TableCell>#fef1f4</TableCell>
+      <TableCell>#f792ac · red icon</TableCell>
+      <TableCell>Failed actions, validation, system faults</TableCell>
+    </TableRow>
+  </TableBody>
+</Table>
+
+### Sizes
+
+<Table size="compact" className="mb-6">
+  <TableHeader>
+    <tr>
+      <TableHead>Size</TableHead>
+      <TableHead>Alignment</TableHead>
+      <TableHead>Supports title</TableHead>
+      <TableHead>Supports rich children</TableHead>
+    </tr>
+  </TableHeader>
+  <TableBody>
+    <TableRow>
+      <TableCell><strong>Line</strong> (default)</TableCell>
+      <TableCell>Icon + text centred vertically</TableCell>
+      <TableCell>No</TableCell>
+      <TableCell>No</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><strong>Block</strong></TableCell>
+      <TableCell>Icon + content top-aligned</TableCell>
+      <TableCell>Yes (H5 for info/success, H4 for warning/error)</TableCell>
+      <TableCell>Yes</TableCell>
+    </TableRow>
+  </TableBody>
+</Table>
+
+---
+
+## Copy guidelines
+
+The message box content is as important as the visual treatment. Weak copy undermines even a well-placed banner.
+
+### Info
+Used to provide neutral information or guidance — no action required.
+
+| Context | Example |
+|---|---|
+| Status update | "Your campaign is scheduled to launch on Feb 15, 2026." |
+| Paused state | "This campaign is currently paused. Resume to continue sending." |
+| Guidance | "Complete all required fields to enable the submit button." |
+| Processing | "Your report is being generated. This may take a few minutes." |
+| Tip | "Pro tip: Use filters to narrow down results and find items faster." |
+| Visibility | "This article is visible to external users only." |
+
+### Success
+Used after completed actions — confirms a positive outcome.
+
+| Context | Example |
+|---|---|
+| Save / Update | "Changes saved successfully." |
+| Create | "Campaign created. You can now configure your audience settings." |
+| Delete | "Item removed from your list." |
+| Sync | "Data synced successfully. All records are up to date." |
+| Publish | "Knowledge base article published and now visible to users." |
+| Import | "15 contacts imported successfully." |
+| Campaign launch | "Campaign 'Summer Sale 2026' is now running." |
+
+### Warning
+Used to alert users to potential issues or require attention before proceeding.
+
+| Context | Example |
+|---|---|
+| Unsaved changes | "You have unsaved changes. Leaving now will discard your edits." |
+| Approaching limit | "You've used 90% of your monthly email quota." |
+| Side effect | "Editing an active campaign will pause message delivery." |
+| Bulk action | "This action will affect 1,250 contacts. Please review before confirming." |
+| Expiring | "Your API key expires in 7 days. Generate a new key to avoid interruptions." |
+| Low performance | "Open rate below 10%. Consider revising your subject line." |
+
+### Error
+Used when an action fails or a critical problem needs immediate attention.
+
+| Context | Example |
+|---|---|
+| Failed action | "Unable to save changes. Please check your connection and try again." |
+| Validation | "Invalid email format. Please enter a valid email address." |
+| System error | "Something went wrong. Our team has been notified." |
+| Permission | "You don't have permission to access this resource. Contact your admin." |
+| Timeout | "Request timed out. Please refresh the page and try again." |
+| Failed sync | "Sync failed for 3 records. Review the error log for details." |
+| Campaign error | "Campaign delivery failed. Check your sender domain settings." |
+| Integration | "Unable to sync with HubSpot. Reconnect your integration." |
+
+---
+
+## Do's & Don'ts
+
+<DosDonts>
+  <Do description="Match the type to the actual situation. Info for neutral context, Success for completed actions, Warning for consequences, Error for failures. The icon and colour are the first signal the user reads — misleading them erodes trust in the entire interface." />
+  <Dont description="Use Error to style a message that is merely cautionary. Red signals failure and triggers anxiety. If the user doesn't need to act urgently, use Warning instead." />
+</DosDonts>
+
+<DosDonts>
+  <Do description="Use Line size for single-sentence messages that need no explanation. It is the right default for inline feedback in forms and settings panels where space is constrained." />
+  <Dont description="Cram a long multi-sentence explanation into a Line message. If the message needs more than one sentence, switch to Block and add a title so the user can scan before reading." />
+</DosDonts>
+
+<DosDonts>
+  <Do description="Write actionable error messages. Tell the user what went wrong AND what to do next. 'Campaign delivery failed. Check your sender domain settings.' is far more helpful than 'An error occurred.'" />
+  <Dont description="Use generic error copy like 'Something went wrong' as the only message. Save that phrase for system-level failures where you genuinely cannot explain the cause — and in that case, add 'Our team has been notified.'" />
+</DosDonts>
+
+<DosDonts>
+  <Do description="Use the Block size with a descriptive title for pre-action warnings that explain consequences before the user commits. A Warning Block before a bulk action gives users the information they need to decide confidently." />
+  <Dont description="Use Block size for a simple success confirmation. A one-sentence outcome message ('15 contacts imported.') does not need a title, multiple paragraphs, or extra visual weight — use Line." />
+</DosDonts>
+
+<DosDonts>
+  <Do description="Set `dismissible` to false when the message describes a persistent system state that the user cannot resolve by acknowledging it — for example, a paused campaign or an expired integration. The banner should disappear only when the state changes, not when the user clicks away." />
+  <Dont description="Force a dismissible Message Box to reappear every time the page loads after the user has already dismissed it. Respect the user's intent — store dismissed state and only show the message again if the underlying condition has changed." />
+</DosDonts>
+
+<DosDonts>
+  <Do description="Place Success messages at the top of the affected section or immediately after the action that triggered them. Proximity to the action makes the confirmation meaningful." />
+  <Dont description="Stack multiple Message Boxes of the same type one after another. If several things succeeded at once, consolidate into one message ('3 agents updated successfully'). Stacked identical banners create visual noise without adding information." />
+</DosDonts>
+
+---
+
+## Code
+
+### Line — all types
+
+```tsx
+import { MessageBox } from '@/components/ui/message-box'
+
+<MessageBox
+  type="info"
+  message="This campaign is currently paused. Resume to continue sending."
+/>
+
+<MessageBox
+  type="success"
+  message="15 contacts imported successfully."
+/>
+
+<MessageBox
+  type="warning"
+  message="Editing an active campaign will pause message delivery."
+/>
+
+<MessageBox
+  type="error"
+  message="Unable to save changes. Please check your connection and try again."
+/>
+```
+
+### Line — non-dismissible
+
+```tsx
+// Persistent state banner — cannot be acknowledged away
+<MessageBox
+  type="info"
+  message="This campaign is currently paused. Resume to continue sending."
+  dismissible={false}
+/>
+```
+
+### Block — info with rich content
+
+```tsx
+<MessageBox
+  type="info"
+  size="block"
+  title="File Guidelines"
+  dismissible={false}
+>
+  <p style={{ margin: 0, fontSize: 14, lineHeight: '20px', color: '#021920' }}>
+    Your CSV file should include only two columns:{' '}
+    <strong>Name</strong> and <strong>Phone</strong>.
+    Make sure the column headers match these names exactly.
+  </p>
+</MessageBox>
+```
+
+### Block — warning before a destructive action
+
+```tsx
+<MessageBox
+  type="warning"
+  size="block"
+  title="Confirm Campaign Launch"
+>
+  <p style={{ margin: 0, fontSize: 14, lineHeight: '20px', color: '#021920' }}>
+    Launching this campaign will send real SMS messages to the contacts in your
+    list. Message and data rates may apply.
+  </p>
+  <p style={{ margin: '16px 0 0', fontSize: 14, lineHeight: '20px', color: '#021920' }}>
+    By clicking Launch, you confirm that all recipients have provided explicit
+    opt-in consent to receive these messages.
+  </p>
+</MessageBox>
+```
+
+### Block — controlled dismiss
+
+```tsx
+const [visible, setVisible] = useState(true)
+
+{visible && (
+  <MessageBox
+    type="success"
+    size="block"
+    title="Import Complete"
+    message="15 contacts were added to the Quarterly Outreach segment."
+    onDismiss={() => setVisible(false)}
+  />
+)}
+```
+
+### Uncontrolled dismiss (default)
+
+```tsx
+// No onDismiss prop — the component hides itself when the X is clicked
+<MessageBox
+  type="warning"
+  message="You have unsaved changes. Leaving now will discard your edits."
+/>
+```
+
+---
+
+## Accessibility
+
+- The container renders as `role="alert"`, which causes assistive technologies to announce the message immediately when it is injected into the DOM. For messages that appear on page load rather than in response to a user action, consider using `role="status"` (less intrusive) by extending the component.
+- The status icon is wrapped in `aria-hidden="true"` — the semantic type is conveyed by the message text, not the icon. Do not rely on the icon alone to communicate meaning to sighted users either; always pair it with descriptive text.
+- The dismiss button has an `aria-label="Dismiss"` so screen reader users understand its purpose. If you render multiple Message Boxes on the same page, extend the label to include context: `aria-label="Dismiss campaign paused notice"`.
+- Keyboard users can reach and activate the dismiss button via `Tab` + `Space` or `Enter`.
+- Error messages that appear in response to form validation should also use `aria-describedby` on the invalid form field so the error is announced when focus lands on the field, in addition to the alert announcement.

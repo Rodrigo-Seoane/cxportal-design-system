@@ -1,0 +1,455 @@
+---
+title: Loading Indicators
+description: Skeleton loaders and spinners that communicate system activity, reduce perceived latency, and prevent uncertainty about what's happening.
+figmaNodeId: 1161-2515
+status: stable
+---
+
+## Overview
+
+Loading indicators communicate that content is being loaded or processed. They provide visual feedback during wait times, reducing perceived latency and preventing uncertainty about system status.
+
+This page covers two distinct components:
+
+**Skeleton Loader** — A placeholder that mimics the shape and layout of the content that will appear. It anchors the user's eye, communicates structure before data arrives, and makes wait times feel shorter by implying progress. Prefer skeletons whenever the layout is predictable.
+
+**Spinner** — A rotating arc that signals an ongoing process of indeterminate duration. Use it for actions, inline states, and situations where content structure cannot be predicted in advance.
+
+> These two components address different loading scenarios — they are not interchangeable. Choosing the right one depends on whether you know the shape of what's loading.
+
+---
+
+## When to use
+
+### Use Skeleton Loaders when:
+- The layout structure is known in advance — tables, cards, lists, detail panels
+- Loading a content area on initial page load or after a section refresh
+- You want to reduce perceived loading time with a structural preview
+- The wait is expected to exceed 300 ms
+
+### Use Spinners when:
+- The content structure is unpredictable or dynamic
+- Performing an inline action: saving, submitting, deleting, processing
+- Loading within a button or a small element (no room for a skeleton)
+- Running an overlay or blocking operation that requires the user to wait
+
+### Timing guidelines
+
+<Table size="compact" className="mb-6">
+  <TableHeader>
+    <tr>
+      <TableHead>Duration</TableHead>
+      <TableHead>Recommendation</TableHead>
+    </tr>
+  </TableHeader>
+  <TableBody>
+    <TableRow>
+      <TableCell>Under 300 ms</TableCell>
+      <TableCell>Show nothing — feels instant</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>300 ms – 1 s</TableCell>
+      <TableCell>Simple skeleton or small spinner</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>1 s – 5 s</TableCell>
+      <TableCell>Skeleton with pulse animation</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>5 s – 10 s</TableCell>
+      <TableCell>Loading indicator + contextual message ("Loading proficiencies...")</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>Over 10 s</TableCell>
+      <TableCell>Progress indicator or step-based feedback</TableCell>
+    </TableRow>
+  </TableBody>
+</Table>
+
+---
+
+## Anatomy
+
+### Skeleton Loader
+
+A `Skeleton` is a single placeholder shape. You compose multiple `Skeleton` elements together to mirror the structure of the real UI.
+
+<Table size="compact" className="mb-6">
+  <TableHeader>
+    <tr>
+      <TableHead>Variant</TableHead>
+      <TableHead>Shape</TableHead>
+      <TableHead>Border Radius</TableHead>
+      <TableHead>Use for</TableHead>
+    </tr>
+  </TableHeader>
+  <TableBody>
+    <TableRow>
+      <TableCell><strong>text</strong></TableCell>
+      <TableCell>Rectangle</TableCell>
+      <TableCell>4px (sm)</TableCell>
+      <TableCell>Text lines, labels, paragraphs</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><strong>circle</strong></TableCell>
+      <TableCell>Circle</TableCell>
+      <TableCell>50%</TableCell>
+      <TableCell>Avatars, icons, status indicators</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><strong>rect</strong> (default)</TableCell>
+      <TableCell>Rectangle</TableCell>
+      <TableCell>8px (md)</TableCell>
+      <TableCell>Images, cards, buttons, chips, inputs</TableCell>
+    </TableRow>
+  </TableBody>
+</Table>
+
+**Color:** `#eff1f3` (Neutral-100) in light mode.
+
+**Animation:** Opacity pulse — fades between full opacity and 40%, 2 s cycle, `cubic-bezier(0.4, 0, 0.6, 1)`. Powered by Framer Motion. Respects `prefers-reduced-motion` automatically.
+
+**Text height reference** — when using `textSize`, the skeleton height matches the real line height of that typographic style:
+
+<Table size="compact" className="mb-6">
+  <TableHeader>
+    <tr>
+      <TableHead>textSize</TableHead>
+      <TableHead>Height</TableHead>
+      <TableHead>Matches</TableHead>
+    </tr>
+  </TableHeader>
+  <TableBody>
+    <TableRow>
+      <TableCell>caption</TableCell>
+      <TableCell>12 px</TableCell>
+      <TableCell>Caption labels, helper text</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>body-sm</TableCell>
+      <TableCell>14 px</TableCell>
+      <TableCell>Table cells, compact body copy</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>body</TableCell>
+      <TableCell>16 px</TableCell>
+      <TableCell>Body text, paragraph copy</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>h3</TableCell>
+      <TableCell>20 px</TableCell>
+      <TableCell>Section headings</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>h2</TableCell>
+      <TableCell>24 px</TableCell>
+      <TableCell>Page sub-headings</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>h1</TableCell>
+      <TableCell>28 px</TableCell>
+      <TableCell>Page titles</TableCell>
+    </TableRow>
+  </TableBody>
+</Table>
+
+### Spinner
+
+A self-contained SVG with a track ring and a 270° animated arc.
+
+<Table size="compact" className="mb-6">
+  <TableHeader>
+    <tr>
+      <TableHead>Size</TableHead>
+      <TableHead>Dimensions</TableHead>
+      <TableHead>Use for</TableHead>
+    </tr>
+  </TableHeader>
+  <TableBody>
+    <TableRow>
+      <TableCell><strong>xs</strong></TableCell>
+      <TableCell>12 × 12 px</TableCell>
+      <TableCell>Inputs, selects — tight inline contexts</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><strong>sm</strong></TableCell>
+      <TableCell>16 × 16 px</TableCell>
+      <TableCell>Buttons, inline elements</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><strong>md</strong> (default)</TableCell>
+      <TableCell>24 × 24 px</TableCell>
+      <TableCell>Standalone loading states, default use</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><strong>lg</strong></TableCell>
+      <TableCell>32 × 32 px</TableCell>
+      <TableCell>Section loading, card placeholders</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><strong>xl</strong></TableCell>
+      <TableCell>48 × 48 px</TableCell>
+      <TableCell>Full-page loading, modal overlays</TableCell>
+    </TableRow>
+  </TableBody>
+</Table>
+
+**Animation:** Continuous rotation, 1 s, linear, infinite. Framer Motion. Respects `prefers-reduced-motion`.
+
+---
+
+## Composition Patterns
+
+Skeletons are only meaningful when composed together to mirror the real content structure. The examples below show the patterns used in CxPortal.
+
+### Page title area
+
+```tsx
+import { Skeleton } from '@/components/ui/loading'
+
+// Title line + subtitle + two button placeholders
+<div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between' }}>
+  <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+    <Skeleton variant="text" textSize="h2" width={220} />
+    <Skeleton variant="text" textSize="body-sm" width={160} />
+  </div>
+  <div style={{ display: 'flex', gap: 8 }}>
+    <Skeleton variant="rect" width={113} height={32} radius={6} />
+    <Skeleton variant="rect" width={113} height={32} radius={6} />
+  </div>
+</div>
+```
+
+### Content card
+
+```tsx
+// Card with title, badge, and two body lines — repeat for a card grid
+<div
+  style={{
+    padding: '16px',
+    border: '1px solid #eff1f3',
+    borderRadius: 8,
+    display: 'flex',
+    flexDirection: 'column',
+    gap: 8,
+  }}
+>
+  <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+    <Skeleton variant="text" textSize="body" width={120} />
+    <Skeleton variant="rect" width={48} height={20} radius={10} />
+  </div>
+  <Skeleton variant="text" textSize="body-sm" width="100%" />
+  <Skeleton variant="text" textSize="body-sm" width="70%" />
+</div>
+```
+
+### Table rows
+
+```tsx
+// Skeleton table: header row + 5 data rows
+<div style={{ display: 'flex', flexDirection: 'column', gap: 0 }}>
+  {/* Header */}
+  <div
+    style={{
+      display: 'grid',
+      gridTemplateColumns: '16px 1fr 1fr 1fr 24px 24px 1fr 24px',
+      gap: 12,
+      padding: '8px 12px',
+      alignItems: 'center',
+    }}
+  >
+    <Skeleton variant="rect" width={16} height={16} radius={3} />
+    <Skeleton variant="text" textSize="caption" width={107} />
+    <Skeleton variant="text" textSize="caption" width={78} />
+    <Skeleton variant="rect" width={55} height={16} radius={8} />
+    <Skeleton variant="circle" width={16} height={16} />
+    <Skeleton variant="circle" width={16} height={16} />
+    <Skeleton variant="rect" width={146} height={24} radius={6} />
+    <Skeleton variant="circle" width={24} height={24} />
+  </div>
+
+  {/* Data rows */}
+  {Array.from({ length: 5 }).map((_, i) => (
+    <div
+      key={i}
+      style={{
+        display: 'grid',
+        gridTemplateColumns: '16px 1fr 1fr 1fr 24px 24px 1fr 24px',
+        gap: 12,
+        padding: '8px 12px',
+        alignItems: 'center',
+        borderTop: '1px solid #eff1f3',
+      }}
+    >
+      <Skeleton variant="rect" width={16} height={16} radius={3} />
+      <Skeleton variant="text" textSize="body-sm" width={107} />
+      <Skeleton variant="text" textSize="body-sm" width={78} />
+      <Skeleton variant="rect" width={55} height={16} radius={8} />
+      <Skeleton variant="circle" width={16} height={16} />
+      <Skeleton variant="circle" width={16} height={16} />
+      <Skeleton variant="rect" width={146} height={24} radius={6} />
+      <Skeleton variant="circle" width={24} height={24} />
+    </div>
+  ))}
+</div>
+```
+
+### Filter panel
+
+```tsx
+// Sidebar filter panel with label + input pairs
+<div style={{ display: 'flex', flexDirection: 'column', gap: 24, width: 164 }}>
+  {Array.from({ length: 3 }).map((_, i) => (
+    <div key={i} style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+      {/* Label */}
+      <Skeleton variant="text" textSize="caption" width={i === 0 ? 61 : i === 1 ? 85 : 51} />
+      {/* Input */}
+      <Skeleton variant="rect" width="100%" height={24} radius={6} />
+    </div>
+  ))}
+</div>
+```
+
+### Avatar + name (list item)
+
+```tsx
+<div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+  <Skeleton variant="circle" width={48} height={48} />
+  <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+    <Skeleton variant="text" textSize="body" width={140} />
+    <Skeleton variant="text" textSize="body-sm" width={90} />
+  </div>
+</div>
+```
+
+---
+
+## Do's & Don'ts
+
+<DosDonts>
+  <Do description="Mirror the actual content structure with your skeleton composition. If you're loading a table with a checkbox, 4 text columns, 2 icon columns, and an action cell — build the skeleton with those same proportions. Structural fidelity makes wait times feel shorter." />
+  <Dont description="Use generic rectangles for every skeleton regardless of content type. A skeleton that looks nothing like what will appear provides no orientation and feels like a placeholder rather than a preview." />
+</DosDonts>
+
+<DosDonts>
+  <Do description="Use Spinner sizes that match the context. xs and sm for tight inline elements (inputs, buttons), md for standalone loading states, lg and xl for sections and full-page overlays." />
+  <Dont description="Use a large Spinner (lg, xl) inline inside a button or input field. It will overflow its container and break the surrounding layout. Use xs or sm for tight spaces." />
+</DosDonts>
+
+<DosDonts>
+  <Do description="Delay showing the loading indicator until 300 ms have passed. For operations under 300 ms the indicator will flash on and off before the user has time to register it, which feels glitchy. Debounce your loading state." />
+  <Dont description="Show a loading indicator for operations that complete instantly or near-instantly. The momentary flash of a skeleton or spinner introduces visual noise without providing useful feedback." />
+</DosDonts>
+
+<DosDonts>
+  <Do description="Use Skeleton for predictable content areas — tables, cards, lists — and Spinner for unpredictable or action-triggered states. The two serve different mental models and should not be mixed within the same content zone." />
+  <Dont description="Mix Skeleton and Spinner in the same content loading zone. If a table is loading, show a table skeleton — not a spinner in the middle of the layout. Mixing patterns in the same area creates visual inconsistency." />
+</DosDonts>
+
+<DosDonts>
+  <Do description="Add a contextual loading message for operations that take more than 5 seconds. 'Loading your proficiencies...' or 'Connecting to Amazon Q...' reduces anxiety and helps users understand that the system is working on something specific." />
+  <Dont description="Use generic messages like 'Loading...' for long operations. When a user has been waiting 8 seconds, 'Loading...' provides no reassurance. Tell them what is loading." />
+</DosDonts>
+
+<DosDonts>
+  <Do description="Let Framer Motion handle reduced-motion preferences automatically. The Skeleton and Spinner components call useReducedMotion() internally — animations stop for users who have enabled prefers-reduced-motion in their OS settings. No extra work needed." />
+  <Dont description="Override or disable the reduced-motion behaviour by forcing animation props. Users who need reduced motion have expressed a preference for accessibility reasons — overriding it creates discomfort and may violate accessibility requirements." />
+</DosDonts>
+
+---
+
+## Code
+
+### Spinner — all sizes
+
+```tsx
+import { Spinner } from '@/components/ui/loading'
+
+<Spinner size="xs" />   // 12px — inputs, selects
+<Spinner size="sm" />   // 16px — buttons, inline
+<Spinner size="md" />   // 24px — default
+<Spinner size="lg" />   // 32px — section loading
+<Spinner size="xl" />   // 48px — full page, overlay
+```
+
+### Spinner — custom colour
+
+```tsx
+// Match the spinner to a white context (e.g., inside a filled primary button)
+<Spinner size="sm" color="#ffffff" label="Saving changes" />
+```
+
+### Skeleton — text lines
+
+```tsx
+import { Skeleton } from '@/components/ui/loading'
+
+// Single line matched to body-sm height
+<Skeleton variant="text" textSize="body-sm" width={160} />
+
+// Paragraph block — three lines of decreasing width
+<div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+  <Skeleton variant="text" textSize="body" />
+  <Skeleton variant="text" textSize="body" />
+  <Skeleton variant="text" textSize="body" width="70%" />
+</div>
+```
+
+### Skeleton — circle
+
+```tsx
+// Avatar placeholder
+<Skeleton variant="circle" width={40} height={40} />
+
+// Small status indicator
+<Skeleton variant="circle" width={16} height={16} />
+```
+
+### Skeleton — custom rect
+
+```tsx
+// Button placeholder
+<Skeleton variant="rect" width={120} height={32} radius={6} />
+
+// Chip/badge placeholder
+<Skeleton variant="rect" width={56} height={20} radius={10} />
+
+// Full-width input placeholder
+<Skeleton variant="rect" width="100%" height={40} radius={6} />
+```
+
+### Spinner inside a button loading state
+
+```tsx
+// Disable the button and swap label for a spinner while the request is in flight
+const [loading, setLoading] = useState(false)
+
+<Button
+  variant="primary"
+  disabled={loading}
+  onClick={async () => {
+    setLoading(true)
+    await submitForm()
+    setLoading(false)
+  }}
+>
+  {loading ? (
+    <>
+      <Spinner size="sm" color="#ffffff" label="Saving" />
+      Saving…
+    </>
+  ) : (
+    'Save changes'
+  )}
+</Button>
+```
+
+---
+
+## Accessibility
+
+- `Skeleton` renders `aria-hidden="true"` — it is a visual placeholder only and must never receive focus. Screen readers skip it entirely and will announce the real content when it loads.
+- `Spinner` renders as `<svg role="status" aria-label="Loading">`. The `label` prop overrides the accessible name — use a descriptive value when context permits: `label="Loading proficiencies"` rather than the default `"Loading"`.
+- Wrap a loading region in `aria-busy="true"` on the parent container so assistive technologies know that its content is not yet final. Remove the attribute when loading completes.
+- For status messages that should be announced after loading completes, add `aria-live="polite"` to the container that will receive the real content.
+- Both components call Framer Motion's `useReducedMotion()` internally and disable animations automatically when the user has enabled `prefers-reduced-motion` in their operating system.

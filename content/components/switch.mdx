@@ -1,0 +1,257 @@
+---
+title: Switch & Boolean Icon
+description: Immediate-effect toggle for binary settings, and a compact read-only status indicator for true/false values in data-dense contexts.
+figmaNodeId: 598-9971
+status: stable
+---
+
+## Overview
+
+### Switch
+
+Switch is an immediate-effect control for binary settings. When a user flips it, the system responds instantly — no form submission required. This immediacy is its defining characteristic and what differentiates it from Checkbox.
+
+The label beside the toggle reflects the setting being controlled, not the state. The current state is communicated visually by the thumb position and color: blue on the right means on; grey on the left means off.
+
+> **Note:** Because Switch takes effect immediately, pair it with undo support or a confirmation pattern when the action has significant consequences (e.g., disabling a live integration).
+
+### Boolean Icon
+
+Boolean Icon is a read-only companion for displaying true/false status values. It communicates a binary result — a green checkmark for true, a red cross for false — in a compact footprint suitable for table cells, list items, and dashboards.
+
+Boolean Icon is not interactive. For a toggleable control, use Switch.
+
+---
+
+## When to use
+
+### Use Switch when:
+- A setting takes effect immediately without a form submission (e.g., enabling auto-accept, toggling a feature flag)
+- The two states are clearly understood as on/off, enabled/disabled, or active/inactive
+- The action affects only the single item it is paired with, not a group of items
+- The user benefits from instant feedback — they can see the result change in real time
+
+### Use Boolean Icon when:
+- Displaying a true/false status in a table cell or compact list
+- Summarising binary attributes on a profile, card, or detail panel
+- The value is informational only and does not need to be changed in that context
+
+### Do not use Switch when:
+- The change only takes effect after the user submits a form — use **Checkbox** instead
+- Multiple independent options must be toggled as a batch — use a **Checkbox** group
+- The choice has more than two meaningful states — use **Select** or **Radio**
+
+---
+
+## Anatomy
+
+### Switch
+- **Track** — 41×22px pill. White background with a 1px neutral border. Remains visually stable in both states so the thumb carries the meaning.
+- **Thumb** — 16×16px circle inside the track. Blue (#4285f4) when on, positioned at the right; grey when off, positioned at the left. Animates smoothly between positions.
+- **Label** — 12px semibold text. Can appear to the left or right of the track. Defaults to "Yes" / "No" when no custom label is provided.
+
+### Boolean Icon
+- **Container** — Circular badge. 24×24px (Regular) or 16×16px (Small).
+- **True** — Green background (#4b9924) with a green border (#b5e89c) and a white check icon.
+- **False** — Red background (#ef2056) with a red border (#f792ac) and a white × icon.
+
+---
+
+## Variants
+
+### Switch states
+
+<Table size="compact" className="mb-6">
+  <TableHeader>
+    <tr>
+      <TableHead>State</TableHead>
+      <TableHead>Visual</TableHead>
+      <TableHead>Description</TableHead>
+    </tr>
+  </TableHeader>
+  <TableBody>
+    <TableRow>
+      <TableCell><strong>On</strong></TableCell>
+      <TableCell>Blue thumb on the right</TableCell>
+      <TableCell>The setting is active</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><strong>Off</strong></TableCell>
+      <TableCell>Grey thumb on the left</TableCell>
+      <TableCell>The setting is inactive</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><strong>Disabled</strong></TableCell>
+      <TableCell>Muted track and thumb, no-cursor</TableCell>
+      <TableCell>Interaction not permitted in the current context</TableCell>
+    </TableRow>
+  </TableBody>
+</Table>
+
+### Label position
+
+<Table size="compact" className="mb-6">
+  <TableHeader>
+    <tr>
+      <TableHead>Position</TableHead>
+      <TableHead>Layout</TableHead>
+      <TableHead>When to use</TableHead>
+    </tr>
+  </TableHeader>
+  <TableBody>
+    <TableRow>
+      <TableCell><strong>Right</strong> (default)</TableCell>
+      <TableCell>Track → Label</TableCell>
+      <TableCell>Most settings panels. The toggle leads, the label describes the action.</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><strong>Left</strong></TableCell>
+      <TableCell>Label → Track</TableCell>
+      <TableCell>Inline settings rows where the label anchors the left edge and the toggle is a trailing control.</TableCell>
+    </TableRow>
+  </TableBody>
+</Table>
+
+### Boolean Icon sizes
+
+<Table size="compact" className="mb-6">
+  <TableHeader>
+    <tr>
+      <TableHead>Size</TableHead>
+      <TableHead>Dimensions</TableHead>
+      <TableHead>Icon</TableHead>
+      <TableHead>When to use</TableHead>
+    </tr>
+  </TableHeader>
+  <TableBody>
+    <TableRow>
+      <TableCell><strong>Regular</strong> (default)</TableCell>
+      <TableCell>24×24px</TableCell>
+      <TableCell>12px</TableCell>
+      <TableCell>Standalone indicators, detail panels, profile summaries</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><strong>Small</strong></TableCell>
+      <TableCell>16×16px</TableCell>
+      <TableCell>8px</TableCell>
+      <TableCell>Table cells, compact list items, inline data</TableCell>
+    </TableRow>
+  </TableBody>
+</Table>
+
+---
+
+## Do's & Don'ts
+
+<DosDonts>
+  <Do description="Use Switch for settings that change immediately. The user should see the consequence of flipping it without having to submit a form. If there is a Save button in the flow, use Checkbox instead." />
+  <Dont description="Use Switch inside a form that requires submission to persist. The visual affordance implies instant feedback — if nothing changes until Save is clicked, users will be confused about whether the toggle worked." />
+</DosDonts>
+
+<DosDonts>
+  <Do description="Write labels that describe the setting, not the state. 'Auto Accept Calls' tells the user what they're controlling. The thumb position communicates whether it's on or off." />
+  <Dont description="Write labels like 'Enable: On' or use the label to describe the current state. The thumb position already conveys on/off — labelling the state creates redundancy and clutter." />
+</DosDonts>
+
+<DosDonts>
+  <Do description="Place the Switch label consistently across a group of settings. If all switches in a panel use right-positioned labels, keep all of them right-aligned — mixing positions in the same context creates visual noise." />
+  <Dont description="Mix label positions within the same settings panel or list. Inconsistent alignment breaks the visual rhythm and makes scanning harder." />
+</DosDonts>
+
+<DosDonts>
+  <Do description="Use Boolean Icon in table cells to communicate a true/false column value at a glance. The colour-coded badge is faster to scan than reading 'Yes' / 'No' text in every row." />
+  <Dont description="Use Boolean Icon as an interactive element. It has no click behaviour and communicates a read-only status. Use a Switch if the user needs to change the value." />
+</DosDonts>
+
+<DosDonts>
+  <Do description="Use Boolean Icon Small in table cells and compact lists where row height is 40px or less. The 16px size fits naturally inside a compact row without inflating the line height." />
+  <Dont description="Use Boolean Icon Regular (24px) inside compact table rows. It will clip against the row boundary or force the row to expand, breaking the table's visual density." />
+</DosDonts>
+
+---
+
+## Code
+
+### Switch — uncontrolled
+
+```tsx
+import { Switch } from '@/components/ui/switch'
+
+// Defaults to "Yes" / "No" label text
+<Switch />
+
+// Custom label, starts on
+<Switch label="Auto Accept Calls" defaultChecked />
+
+// Label on the left
+<Switch label="After Call Work" labelPosition="left" defaultChecked />
+```
+
+### Switch — controlled
+
+```tsx
+const [enabled, setEnabled] = useState(false)
+
+<Switch
+  label="Auto Accept Calls"
+  checked={enabled}
+  onChange={setEnabled}
+/>
+```
+
+### Switch — disabled
+
+```tsx
+<Switch label="Feature not available" disabled />
+<Switch label="Always enabled" defaultChecked disabled />
+```
+
+### Boolean Icon — basic
+
+```tsx
+import { BooleanIcon } from '@/components/ui/switch'
+
+<BooleanIcon value={true} />   // green check
+<BooleanIcon value={false} />  // red ×
+```
+
+### Boolean Icon — sizes
+
+```tsx
+// Regular (default) — for panels and detail views
+<BooleanIcon value={true} size="regular" />
+
+// Small — for table cells and compact lists
+<BooleanIcon value={false} size="small" />
+```
+
+### Boolean Icon — in a table cell
+
+```tsx
+<TableCell>
+  <BooleanIcon value={agent.autoAccept} size="small" label="Auto Accept active" />
+</TableCell>
+```
+
+### Boolean Icon — with custom accessible label
+
+```tsx
+<BooleanIcon
+  value={subscription.isActive}
+  label={subscription.isActive ? 'Subscription active' : 'Subscription inactive'}
+/>
+```
+
+---
+
+## Accessibility
+
+### Switch
+- The visible track and thumb are hidden from assistive technology (`aria-hidden="true"`). The underlying `<input type="checkbox" role="switch">` receives focus, communicates state via `aria-checked`, and responds to `Space` to toggle.
+- The `<label>` wraps both the input and the label text so clicking anywhere on the component activates the toggle.
+- A `disabled` Switch carries the native `disabled` attribute, which prevents interaction and announces the constraint to screen readers.
+- When the Switch controls a feature with non-trivial side effects, add `aria-describedby` pointing to a hint element that explains what enabling the setting does.
+
+### Boolean Icon
+- Rendered as `<span role="img">` with an `aria-label` that defaults to `"True"` or `"False"`. Override `label` when a more descriptive accessible name is appropriate (e.g. `"Auto Accept active"`).
+- The icon itself is `aria-hidden` — screen readers announce the `aria-label` on the container, not the icon name.

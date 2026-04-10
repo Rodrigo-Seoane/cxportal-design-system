@@ -1,0 +1,312 @@
+---
+title: Modal
+description: A focused overlay dialog that interrupts the current workflow to request input, confirm an action, or display contextual information.
+figmaNodeId: 1688-5529
+status: stable
+---
+
+## Overview
+
+A Modal is a focused overlay that temporarily suspends the main page context to demand the user's attention. Unlike inline forms or inline confirmation messages, a modal makes it impossible to continue the underlying workflow without first resolving the dialog — either completing the action or explicitly dismissing it.
+
+Modals are intentionally disruptive. Use them only when that disruption is warranted: when the stakes are high, when input or confirmation is required before proceeding, or when temporary context is too complex to fit inline.
+
+---
+
+## When to use
+
+- **Confirmation** — before an irreversible or high-stakes action (delete, publish, transfer).
+- **Focused input** — when a form is tightly scoped to one task and benefits from isolation (create tag, rename item, invite user).
+- **Progress feedback** — for long-running operations where the user needs to track status or cancel mid-flow (file upload, batch processing).
+- **Bulk operations** — when an action applies across a selection of items that must be reviewed before committing (bulk add tags, batch export).
+
+**Do not use a modal when:**
+- The user only needs to acknowledge a non-critical message — use an inline alert or toast instead.
+- The action is reversible and low risk — trigger it inline with an undo option.
+- The form has many fields or complex multi-step branching — consider a dedicated page or drawer instead.
+
+---
+
+## Anatomy
+
+- **Backdrop** — full-screen semi-transparent overlay (`rgba(5, 3, 38, 0.60)`). Clicking outside the panel closes the modal.
+- **Panel** — white container with 8 px border-radius and a drop shadow. Max-width depends on size.
+- **Header** — title text + optional × close button. Separated from the body by a 1 px `#eff1f3` border.
+- **Body** — scrollable content area. Padding: 16 px. Can contain any layout: prose, forms, file lists, progress indicators.
+- **Footer** — action buttons. Separated from the body by a 1 px `#eff1f3` border. Always placed at the bottom.
+
+---
+
+## Sizes
+
+<Table size="compact" className="mb-6">
+  <TableHeader>
+    <tr>
+      <TableHead>Size</TableHead>
+      <TableHead>Max width</TableHead>
+      <TableHead>Header style</TableHead>
+      <TableHead>Footer buttons</TableHead>
+      <TableHead>Use for</TableHead>
+    </tr>
+  </TableHeader>
+  <TableBody>
+    <TableRow>
+      <TableCell><strong>Large</strong></TableCell>
+      <TableCell>701 px</TableCell>
+      <TableCell>H1 — 28 px / weight 400</TableCell>
+      <TableCell>Regular (14 px, 12 px pad)</TableCell>
+      <TableCell>Upload progress, bulk operations, multi-field forms</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><strong>Medium</strong></TableCell>
+      <TableCell>453 px</TableCell>
+      <TableCell>H2 — 24 px / weight 400</TableCell>
+      <TableCell>Small (12 px, 8 px pad)</TableCell>
+      <TableCell>Confirmations, simple CRUD forms (Create/Edit/Delete Tag)</TableCell>
+    </TableRow>
+  </TableBody>
+</Table>
+
+Choose **Large** when the body content needs horizontal breathing room (file lists, scrollable selections, wide form layouts). Choose **Medium** for short, focused dialogs — confirmations, 1–3 field forms, simple feedback.
+
+---
+
+## Variants
+
+### Confirmation
+
+The simplest form — a title, a one-sentence description, and two buttons: a neutral **Cancel** and a **primary action** button. Even for destructive actions (Delete), CxPortal uses the primary blue button. The title and body copy carry the destructive weight; the button does not need a separate danger style.
+
+<Table size="compact" className="mb-6">
+  <TableHeader>
+    <tr>
+      <TableHead>Element</TableHead>
+      <TableHead>Guideline</TableHead>
+    </tr>
+  </TableHeader>
+  <TableBody>
+    <TableRow>
+      <TableCell>Title</TableCell>
+      <TableCell>State the action clearly — "Delete Tag", not "Are you sure?"</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>Body</TableCell>
+      <TableCell>One sentence: what will happen and whether it can be undone</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>Cancel button</TableCell>
+      <TableCell>`variant="text"` — always leftmost</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>Primary button</TableCell>
+      <TableCell>`variant="primary"` — label matches the title verb ("Delete", "Apply")</TableCell>
+    </TableRow>
+  </TableBody>
+</Table>
+
+### Form
+
+Used for creating or editing a single entity (tag, label, rule). Body contains labelled inputs. Inputs use the standard `Input` and `Select` components. Footer follows the Cancel + Primary pattern; the primary label is the verb ("Create Tag", "Update Tag").
+
+### Upload / Progress
+
+Used for long-running operations. Body contains a progress bar, status text, and optionally a file list with per-item status (success / error chip). The primary footer button changes label and state as the operation progresses ("Upload" → "Save to Knowledge Base" after completion).
+
+### Bulk Selection
+
+Used when an action applies to a selected set. Body contains a scrollable checklist of items. Footer primary button reflects the count when possible ("Apply to 3 articles").
+
+---
+
+## Do's & Don'ts
+
+<DosDonts>
+  <Do description="Write modal titles as verb phrases that match the primary action: 'Create Tag', 'Delete Article', 'Upload Files'. The title sets expectations for what the confirm button will do." />
+  <Dont description="Use vague or question-based titles like 'Are you sure?' or 'Confirm action'. These force the user to read the body to understand what they are confirming." />
+</DosDonts>
+
+<DosDonts>
+  <Do description="Always offer an explicit Cancel path — via the footer Cancel button, the × close button, or the backdrop click. Users must be able to escape without side effects." />
+  <Dont description="Remove the Cancel button from high-stakes modals to 'force' the action. This erodes user trust and violates accessibility guidelines for dismissible dialogs." />
+</DosDonts>
+
+<DosDonts>
+  <Do description="Use Medium for short focused dialogs (1–3 fields, one-sentence confirmations) and Large when the body needs room — file lists, bulk selections, or wide form layouts." />
+  <Dont description="Default every modal to Large. Oversized dialogs feel heavy for simple interactions and make the × button feel far from the title." />
+</DosDonts>
+
+<DosDonts>
+  <Do description="Keep the footer action count to two: Cancel and one primary action. If you need a secondary action, consider whether it belongs in the body as a link or inline control." />
+  <Dont description="Stack three or more buttons in the footer. Multiple primary-weight options paralyse the user and obscure which path is recommended." />
+</DosDonts>
+
+<DosDonts>
+  <Do description="Lock body scroll and move focus to the first focusable element inside the dialog as soon as it opens. Return focus to the trigger element when it closes." />
+  <Dont description="Open a modal on top of another modal. If a sub-action is needed, resolve it inline inside the body, or reconsider the information architecture." />
+</DosDonts>
+
+---
+
+## Code
+
+### Basic usage — controlled open/close
+
+```tsx
+import { useState } from 'react'
+import { Modal, ModalHeader, ModalBody, ModalFooter } from '@/components/ui/modal'
+import { Button } from '@/components/ui/button'
+
+export function CreateTagModal() {
+  const [open, setOpen] = useState(false)
+
+  return (
+    <>
+      <Button variant="primary" onClick={() => setOpen(true)}>
+        Create Tag
+      </Button>
+
+      <Modal open={open} onClose={() => setOpen(false)} size="medium">
+        <ModalHeader onClose={() => setOpen(false)}>Create Tag</ModalHeader>
+        <ModalBody>
+          {/* form fields */}
+        </ModalBody>
+        <ModalFooter>
+          <Button variant="text" size="sm" onClick={() => setOpen(false)}>Cancel</Button>
+          <Button variant="primary" size="sm" onClick={() => setOpen(false)}>Create Tag</Button>
+        </ModalFooter>
+      </Modal>
+    </>
+  )
+}
+```
+
+### Confirmation dialog
+
+```tsx
+<Modal open={open} onClose={() => setOpen(false)} size="medium">
+  <ModalHeader onClose={() => setOpen(false)}>Delete Tag</ModalHeader>
+  <ModalBody>
+    <p style={{ fontSize: 14, color: '#7a828c', lineHeight: '20px' }}>
+      Are you sure you want to delete the tag <strong>"Image Space"</strong>?
+      This action cannot be undone.
+    </p>
+  </ModalBody>
+  <ModalFooter>
+    <Button variant="text" size="sm" onClick={() => setOpen(false)}>Cancel</Button>
+    <Button variant="primary" size="sm" onClick={handleDelete}>Delete</Button>
+  </ModalFooter>
+</Modal>
+```
+
+### Large modal — upload progress
+
+```tsx
+<Modal open={open} onClose={() => setOpen(false)} size="large">
+  <ModalHeader onClose={() => setOpen(false)}>Upload Progress</ModalHeader>
+  <ModalBody>
+    {/* progress bar, file list with Chip status indicators */}
+  </ModalBody>
+  <ModalFooter>
+    <Button variant="text" onClick={() => setOpen(false)}>Cancel</Button>
+    <Button variant="primary" onClick={handleSave} disabled={!uploadComplete}>
+      Save to Knowledge Base
+    </Button>
+  </ModalFooter>
+</Modal>
+```
+
+### Without close button (forced action)
+
+```tsx
+{/* Omit onClose from ModalHeader to hide the × button.
+    The backdrop click and Escape key still call onClose on Modal. */}
+<Modal open={open} onClose={() => setOpen(false)} size="medium">
+  <ModalHeader>Processing — please wait</ModalHeader>
+  <ModalBody>
+    <p>Your files are being processed. This may take a moment.</p>
+  </ModalBody>
+</Modal>
+```
+
+---
+
+## Token reference
+
+<Table size="compact" className="mb-6">
+  <TableHeader>
+    <tr>
+      <TableHead>Token</TableHead>
+      <TableHead>Value</TableHead>
+      <TableHead>Usage</TableHead>
+    </tr>
+  </TableHeader>
+  <TableBody>
+    <TableRow>
+      <TableCell><code>--surface/nav</code></TableCell>
+      <TableCell><code>rgba(5, 3, 38, 0.60)</code></TableCell>
+      <TableCell>Backdrop overlay colour</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><code>--surface/section</code></TableCell>
+      <TableCell><code>#ffffff</code></TableCell>
+      <TableCell>Panel background</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><code>--border-radius/md</code></TableCell>
+      <TableCell><code>8 px</code></TableCell>
+      <TableCell>Panel corner radius</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><code>--border-color/neutral</code></TableCell>
+      <TableCell><code>#eff1f3</code></TableCell>
+      <TableCell>Header bottom border, footer top border</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><code>--text/body/primary</code></TableCell>
+      <TableCell><code>#021920</code></TableCell>
+      <TableCell>Header title colour, close icon colour</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>Header title — Large</TableCell>
+      <TableCell>28 px / weight 400 / line-height 34 px</TableCell>
+      <TableCell>H1 scale for Large modals</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>Header title — Medium</TableCell>
+      <TableCell>24 px / weight 400 / line-height 30 px</TableCell>
+      <TableCell>H2 scale for Medium modals</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>Close icon — Large</TableCell>
+      <TableCell>24 × 24 px</TableCell>
+      <TableCell>× icon in Large modal header</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>Close icon — Medium</TableCell>
+      <TableCell>18 × 18 px</TableCell>
+      <TableCell>× icon in Medium modal header</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>Panel max-width — Large</TableCell>
+      <TableCell>701 px</TableCell>
+      <TableCell>Upload progress, bulk operations</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>Panel max-width — Medium</TableCell>
+      <TableCell>453 px</TableCell>
+      <TableCell>Confirmations, focused CRUD forms</TableCell>
+    </TableRow>
+  </TableBody>
+</Table>
+
+---
+
+## Accessibility
+
+- The dialog root renders with `role="dialog"` and `aria-modal="true"`. Provide `aria-labelledby` pointing to the `ModalHeader` title element, or `aria-label` if there is no visible heading.
+- **Focus management** — focus moves to the first focusable element inside the dialog when it opens. On close, focus returns to the element that triggered the modal.
+- **Focus trap** — keyboard Tab/Shift+Tab cycles only within the dialog while it is open. Users cannot interact with the background page.
+- **Escape key** — always closes the dialog and triggers `onClose`. Do not suppress this behaviour.
+- **Backdrop click** — closes the dialog by default. If the action is in progress and closing would be destructive, you may disable this by omitting the `onClose` prop from `Modal`, but retain the Cancel button in the footer.
+- Screen readers announce the dialog when it opens. The `aria-labelledby` attribute ensures the title is read immediately, so users understand the context without scanning.
+- Do not use `role="alertdialog"` unless the dialog is specifically a system-level alert requiring an immediate response.
