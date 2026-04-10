@@ -1,6 +1,16 @@
 import type { MDXComponents } from 'mdx/types'
 import { DosDonts, Do, Dont } from '@/components/ds/DosDonts'
 import { ComponentPlayground } from '@/components/ds/ComponentPlayground'
+import {
+  Table,
+  TableHeader,
+  TableBody,
+  TableRow,
+  TableHead,
+  TableCell,
+} from '@/components/ui/table'
+import { Chip, Tag } from '@/components/ui/chip'
+import { Tabs, TabList, Tab, TabPanel } from '@/components/ui/tabs'
 
 // ─── Inline ComponentPreview wrapper ─────────────────────────────────────────
 // Lets MDX docs embed the live playground with: <ComponentPreview slug="button" />
@@ -168,5 +178,20 @@ export function getMDXComponents(): MDXComponents {
     Do,
     Dont,
     ComponentPreview,
+    // ── Design-system Table primitives (available in all MDX docs) ────────────
+    Table,
+    TableHeader,
+    TableBody,
+    TableRow,
+    TableHead,
+    TableCell,
+    // ── Chip & Tag (available in all MDX docs) ────────────────────────────────
+    Chip,
+    Tag,
+    // ── Tabs (available in all MDX docs) ─────────────────────────────────────
+    Tabs,
+    TabList,
+    Tab,
+    TabPanel,
   }
 }

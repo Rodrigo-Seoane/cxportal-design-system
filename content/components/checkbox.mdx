@@ -52,19 +52,67 @@ Radio button allows a user to select only one value from several options. All op
 
 ### States
 
-| State | Visual | Description |
-|---|---|---|
-| **Default** | White box / circle, blue border | Resting, not yet selected |
-| **Hover** | Blue-filled control, blue border | Mouse is over the unselected control |
-| **Active (checked)** | Blue fill (checkbox) · White outer + blue dot (radio) | Selected |
-| **Disabled** | Grey background, grey border, grey label | Interaction not allowed |
+<Table size="compact" className="mb-6">
+  <TableHeader>
+    <tr>
+      <TableHead>State</TableHead>
+      <TableHead>Visual</TableHead>
+      <TableHead>Description</TableHead>
+    </tr>
+  </TableHeader>
+  <TableBody>
+    <TableRow>
+      <TableCell><strong>Default</strong></TableCell>
+      <TableCell>White box / circle, blue border</TableCell>
+      <TableCell>Resting, not yet selected</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><strong>Hover</strong></TableCell>
+      <TableCell>Blue-filled control, blue border</TableCell>
+      <TableCell>Mouse is over the unselected control</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><strong>Active (checked)</strong></TableCell>
+      <TableCell>Blue fill (checkbox) · White outer + blue dot (radio)</TableCell>
+      <TableCell>Selected</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><strong>Disabled</strong></TableCell>
+      <TableCell>Grey background, grey border, grey label</TableCell>
+      <TableCell>Interaction not allowed</TableCell>
+    </TableRow>
+  </TableBody>
+</Table>
 
 ### Sizes
 
-| Size | Control | Font | Gap | Row height |
-|---|---|---|---|---|
-| **Regular** (default) | 18×18px | 14px / 20px | 12px | 32px |
-| **Small** | 12×12px | 12px / 20px | 8px | — |
+<Table size="compact" className="mb-6">
+  <TableHeader>
+    <tr>
+      <TableHead>Size</TableHead>
+      <TableHead>Control</TableHead>
+      <TableHead>Font</TableHead>
+      <TableHead>Gap</TableHead>
+      <TableHead>Row height</TableHead>
+    </tr>
+  </TableHeader>
+  <TableBody>
+    <TableRow>
+      <TableCell><strong>Regular</strong> (default)</TableCell>
+      <TableCell>18×18px</TableCell>
+      <TableCell>14px / 20px</TableCell>
+      <TableCell>12px</TableCell>
+      <TableCell>32px</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><strong>Small</strong></TableCell>
+      <TableCell>12×12px</TableCell>
+      <TableCell>12px / 20px</TableCell>
+      <TableCell>8px</TableCell>
+      <TableCell>—</TableCell>
+    </TableRow>
+  </TableBody>
+</Table>
 
 Small size is intended for dense UIs, data tables, or secondary settings panels where space is at a premium.
 

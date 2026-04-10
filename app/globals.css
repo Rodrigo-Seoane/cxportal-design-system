@@ -23,6 +23,9 @@
 
 /* ─── CxPortal Design Tokens ──────────────────────────────────────────────── */
 :root {
+  /* Sidebar layout — updated by Sidebar.tsx client component */
+  --sidebar-w: 240px;
+
   /* Colors — Primary */
   --color-primary: #4285f4;
 

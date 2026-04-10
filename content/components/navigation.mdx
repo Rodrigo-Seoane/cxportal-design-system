@@ -32,29 +32,82 @@ Users can locate the information they want. Design the information architecture 
 
 ## Anatomy
 
-- **Sidebar panel** — Fixed left panel, 240px wide, dark background (`#050326`)
-- **Brand header** — Logo mark + product name + sub-title. 64px tall.
-- **Group header (Menu Item)** — 48px tall. Leading icon (20px, thin weight) + label + expand/collapse caret. Toggles the sub-item list.
-- **Sub-items (Sub Menu Item)** — 40px tall. 48px left indent. Label only (no icon). Status badge optional.
-- **Footer** — Bottom-anchored utility links (e.g. Access Management) + version mark.
+- **Sidebar panel** — Fixed left panel, 240px expanded / 64px collapsed, dark background (`#050326`). Animates via framer-motion.
+- **Brand header** — Logo mark + product name + sub-title. 64px tall. Collapse toggle (`<List />` icon) sits flush right.
+- **Group header (Menu Item)** — 48px tall. Leading icon (20px, thin weight) + label + expand/collapse caret. Toggles the sub-item list. In collapsed mode: 48×48px icon-only, centered.
+- **Sub-items (Sub Menu Item)** — 40px tall. 48px left indent. Label only (no icon). Status badge optional. Hidden entirely when sidebar is collapsed.
+- **Collapse toggle** — `<List />` icon button (28×28px, 6px radius) in the brand header. Collapses/expands the full sidebar.
 
 ## Variants
 
 ### States
 
-| State | Background | Label weight | Use for |
-|---|---|---|---|
-| **Default** | Transparent | Light (300) | Resting, not interacted |
-| **Hover** | `#4285f4` (primary blue) | Light (300) | Mouse-over — preview of selection |
-| **Active** | `#3264b8` (primary dark) | SemiBold (600) | Currently selected / focused page |
-| **Disabled** | Transparent | Light (300) | Feature not available; text `#808080` |
+<Table size="compact" className="mb-6">
+  <TableHeader>
+    <tr>
+      <TableHead>State</TableHead>
+      <TableHead>Background</TableHead>
+      <TableHead>Label weight</TableHead>
+      <TableHead>Use for</TableHead>
+    </tr>
+  </TableHeader>
+  <TableBody>
+    <TableRow>
+      <TableCell><strong>Default</strong></TableCell>
+      <TableCell>Transparent</TableCell>
+      <TableCell>Light (300)</TableCell>
+      <TableCell>Resting, not interacted</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><strong>Hover</strong></TableCell>
+      <TableCell><code>#4285f4</code> (primary blue)</TableCell>
+      <TableCell>Light (300)</TableCell>
+      <TableCell>Mouse-over — preview of selection</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><strong>Active</strong></TableCell>
+      <TableCell><code>#3264b8</code> (primary dark)</TableCell>
+      <TableCell>SemiBold (600)</TableCell>
+      <TableCell>Currently selected / focused page</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><strong>Disabled</strong></TableCell>
+      <TableCell>Transparent</TableCell>
+      <TableCell>Light (300)</TableCell>
+      <TableCell>Feature not available; text <code>#808080</code></TableCell>
+    </TableRow>
+  </TableBody>
+</Table>
 
 ### Item types
 
-| Type | Height | Left padding | Right padding | Context |
-|---|---|---|---|---|
-| **Menu Item** (group header) | 48px | 12px | 12px | Top-level group, always has icon + caret |
-| **Sub Menu Item** | 40px | 48px | 24px | Child route, text only |
+<Table size="compact" className="mb-6">
+  <TableHeader>
+    <tr>
+      <TableHead>Type</TableHead>
+      <TableHead>Height</TableHead>
+      <TableHead>Left padding</TableHead>
+      <TableHead>Right padding</TableHead>
+      <TableHead>Context</TableHead>
+    </tr>
+  </TableHeader>
+  <TableBody>
+    <TableRow>
+      <TableCell><strong>Menu Item</strong> (group header)</TableCell>
+      <TableCell>48px</TableCell>
+      <TableCell>12px</TableCell>
+      <TableCell>12px</TableCell>
+      <TableCell>Top-level group, always has icon + caret</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><strong>Sub Menu Item</strong></TableCell>
+      <TableCell>40px</TableCell>
+      <TableCell>48px</TableCell>
+      <TableCell>24px</TableCell>
+      <TableCell>Child route, text only</TableCell>
+    </TableRow>
+  </TableBody>
+</Table>
 
 ## Information Architecture
 
@@ -94,6 +147,58 @@ The importance of each menu item is less affected by the arrangement in a side n
   <Dont description="Use filled or bold icons in the sidebar. They create too much visual weight and make the dark-background panel feel cluttered when multiple groups are visible." />
 </DosDonts>
 
+## Collapse animation
+
+The sidebar collapses from 240px to 64px via a `framer-motion` width tween. All text labels fade out simultaneously; each group header shrinks to an icon-only 48×48px button.
+
+### Timing
+
+| Property | Value |
+|---|---|
+| Duration | 220ms |
+| Easing | `[0.4, 0, 0.2, 1]` (Material standard) |
+| Label fade | 180ms, same easing |
+| Sub-list slide | 180ms height tween, `AnimatePresence` |
+
+### Collapsed item (48×48)
+
+In the collapsed state each group header becomes a centered icon button. The states match the expanded panel:
+
+<Table size="compact" className="mb-6">
+  <TableHeader>
+    <tr>
+      <TableHead>State</TableHead>
+      <TableHead>Background</TableHead>
+    </tr>
+  </TableHeader>
+  <TableBody>
+    <TableRow>
+      <TableCell>Default</TableCell>
+      <TableCell>Transparent</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>Hover</TableCell>
+      <TableCell><code>#689df6</code></TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>Active group</TableCell>
+      <TableCell><code>#4285f4</code></TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>Disabled</TableCell>
+      <TableCell>Transparent, icon muted</TableCell>
+    </TableRow>
+  </TableBody>
+</Table>
+
+### Behavior rules
+
+- Clicking the `<List />` toggle collapses or expands the sidebar.
+- When the sidebar collapses, all open sub-item lists close instantly.
+- When the sidebar expands, it re-opens the group that contains the current active route.
+- Only **one group can be open at a time** — opening a new group closes the previously open one.
+- Sub-items are not accessible while collapsed (keyboard or pointer). This is intentional; the collapsed state is a space-saving mode, not an alternative navigation mode.
+
 ## Code
 
 ### Basic vertical nav structure
@@ -103,6 +208,45 @@ import { Sidebar } from '@/components/layout/Sidebar'
 
 // Place once in the root layout — Sidebar is position:fixed
 <Sidebar />
+```
+
+### Collapse animation setup (framer-motion)
+
+```tsx
+import { motion, AnimatePresence } from 'framer-motion'
+
+const EXPANDED_WIDTH  = 240
+const COLLAPSED_WIDTH = 64
+
+// Sidebar panel
+<motion.aside
+  animate={{ width: collapsed ? COLLAPSED_WIDTH : EXPANDED_WIDTH }}
+  transition={{ duration: 0.22, ease: [0.4, 0, 0.2, 1] }}
+>
+  {/* Brand text — fade out on collapse */}
+  <motion.div
+    animate={{ opacity: collapsed ? 0 : 1, width: collapsed ? 0 : 'auto' }}
+    transition={{ duration: 0.18, ease: [0.4, 0, 0.2, 1] }}
+  >
+    <p>CxPortal</p>
+    <p>Design System</p>
+  </motion.div>
+
+  {/* Sub-item list — height tween with AnimatePresence */}
+  <AnimatePresence initial={false}>
+    {isOpen && (
+      <motion.div
+        initial={{ height: 0, opacity: 0 }}
+        animate={{ height: 'auto', opacity: 1 }}
+        exit={{ height: 0, opacity: 0 }}
+        transition={{ duration: 0.18, ease: [0.4, 0, 0.2, 1] }}
+        style={{ overflow: 'hidden' }}
+      >
+        {subItems}
+      </motion.div>
+    )}
+  </AnimatePresence>
+</motion.aside>
 ```
 
 ### Menu item (group header) — token reference
@@ -154,15 +298,52 @@ import { Sidebar } from '@/components/layout/Sidebar'
 
 ## Token reference
 
-| Token | Value | Usage |
-|---|---|---|
-| `--surface/vertical-nav` | `#050326` | Sidebar background |
-| `--content-action/primary/default` | `#4285f4` | Hover background |
-| `--content-action/primary/500` | `#3264b8` | Active background |
-| `--text/on-action/primary` | `#eff1f3` | Default and active label text |
-| `--text/disabled` | `#808080` | Disabled label text |
-| Font weight Light | 300 | Default items |
-| Font weight SemiBold | 600 | Active sub-items |
+<Table size="compact" className="mb-6">
+  <TableHeader>
+    <tr>
+      <TableHead>Token</TableHead>
+      <TableHead>Value</TableHead>
+      <TableHead>Usage</TableHead>
+    </tr>
+  </TableHeader>
+  <TableBody>
+    <TableRow>
+      <TableCell><code>--surface/vertical-nav</code></TableCell>
+      <TableCell><code>#050326</code></TableCell>
+      <TableCell>Sidebar background</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><code>--content-action/primary/default</code></TableCell>
+      <TableCell><code>#4285f4</code></TableCell>
+      <TableCell>Hover background</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><code>--content-action/primary/500</code></TableCell>
+      <TableCell><code>#3264b8</code></TableCell>
+      <TableCell>Active background</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><code>--text/on-action/primary</code></TableCell>
+      <TableCell><code>#eff1f3</code></TableCell>
+      <TableCell>Default and active label text</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><code>--text/disabled</code></TableCell>
+      <TableCell><code>#808080</code></TableCell>
+      <TableCell>Disabled label text</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>Font weight Light</TableCell>
+      <TableCell>300</TableCell>
+      <TableCell>Default items</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>Font weight SemiBold</TableCell>
+      <TableCell>600</TableCell>
+      <TableCell>Active sub-items</TableCell>
+    </TableRow>
+  </TableBody>
+</Table>
 
 ## Accessibility
 
@@ -170,5 +351,7 @@ import { Sidebar } from '@/components/layout/Sidebar'
 - Group headers are rendered as `<button>` elements so they receive keyboard focus and `Enter`/`Space` toggles the group.
 - Sub-item links are native `<a>` elements for full keyboard navigation.
 - The active item reflects the current page — combine with `aria-current="page"` on the active link for screen-reader announcements.
-- The collapsed/expanded state of group headers should be communicated with `aria-expanded` on the button.
+- The collapsed/expanded state of group headers is communicated with `aria-expanded` on the button.
+- The collapse toggle carries `aria-label="Collapse navigation"` / `aria-label="Expand navigation"` so its purpose is announced when focused.
+- When the sidebar is collapsed, sub-items are removed from the DOM (`AnimatePresence` exit) and therefore unreachable by keyboard — this matches the visual affordance.
 - Avoid relying on colour alone to communicate the active state — the SemiBold font weight provides a second visual cue.

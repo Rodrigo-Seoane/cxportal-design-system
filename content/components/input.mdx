@@ -29,23 +29,81 @@ An Input consists of:
 - **Error message (optional)** — 10px red copy with a warning icon inside the field.
 - **Character count (textarea only)** — Live counter aligned right below the textarea.
 
-| State | Border | Description |
-|---|---|---|
-| Default | `#d9dce0` | Resting, ready for input |
-| Focus | `#4285f4` (primary blue) | Field is active, cursor inside |
-| Error | `#f792ac` (error-200) | Validation failed |
-| Disabled | `#d9dce0`, grey background | Interaction not allowed |
+<Table size="compact" className="mb-6">
+  <TableHeader>
+    <tr>
+      <TableHead>State</TableHead>
+      <TableHead>Border</TableHead>
+      <TableHead>Description</TableHead>
+    </tr>
+  </TableHeader>
+  <TableBody>
+    <TableRow>
+      <TableCell>Default</TableCell>
+      <TableCell><code>#d9dce0</code></TableCell>
+      <TableCell>Resting, ready for input</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>Focus</TableCell>
+      <TableCell><code>#4285f4</code> (primary blue)</TableCell>
+      <TableCell>Field is active, cursor inside</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>Error</TableCell>
+      <TableCell><code>#f792ac</code> (error-200)</TableCell>
+      <TableCell>Validation failed</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>Disabled</TableCell>
+      <TableCell><code>#d9dce0</code>, grey background</TableCell>
+      <TableCell>Interaction not allowed</TableCell>
+    </TableRow>
+  </TableBody>
+</Table>
 
 ## Variants
 
-| Variant | Icon | Use for |
-|---|---|---|
-| **Text** | — | Names, free text, single-line values |
-| **Email** | Envelope (left) | Email addresses — triggers email keyboard on mobile |
-| **Number** | Caret up/down (right) | Numeric values — avoids native browser spinners |
-| **Date** | Calendar (right) | Date values — pairs with a date picker in production |
-| **Password** | Eye/EyeSlash toggle | Passwords and sensitive values |
-| **Textarea** | — | Long text entries, messages, notes. Shows `n/500 Characters` count |
+<Table size="compact" className="mb-6">
+  <TableHeader>
+    <tr>
+      <TableHead>Variant</TableHead>
+      <TableHead>Icon</TableHead>
+      <TableHead>Use for</TableHead>
+    </tr>
+  </TableHeader>
+  <TableBody>
+    <TableRow>
+      <TableCell><strong>Text</strong></TableCell>
+      <TableCell>—</TableCell>
+      <TableCell>Names, free text, single-line values</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><strong>Email</strong></TableCell>
+      <TableCell>Envelope (left)</TableCell>
+      <TableCell>Email addresses — triggers email keyboard on mobile</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><strong>Number</strong></TableCell>
+      <TableCell>Caret up/down (right)</TableCell>
+      <TableCell>Numeric values — avoids native browser spinners</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><strong>Date</strong></TableCell>
+      <TableCell>Calendar (right)</TableCell>
+      <TableCell>Date values — pairs with a date picker in production</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><strong>Password</strong></TableCell>
+      <TableCell>Eye/EyeSlash toggle</TableCell>
+      <TableCell>Passwords and sensitive values</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><strong>Textarea</strong></TableCell>
+      <TableCell>—</TableCell>
+      <TableCell>Long text entries, messages, notes. Shows <code>n/500 Characters</code> count</TableCell>
+    </TableRow>
+  </TableBody>
+</Table>
 
 ## Label & hint combinations
 

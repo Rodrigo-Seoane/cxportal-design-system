@@ -16,7 +16,15 @@ export default function RootLayout({
     <html lang="en" className="h-full antialiased">
       <body className="h-full" style={{ backgroundColor: 'var(--color-surface-display)' }}>
         <Sidebar />
-        <div className="ml-60 min-h-screen flex flex-col">
+        <div
+          style={{
+            marginLeft: 'var(--sidebar-w)',
+            minHeight: '100vh',
+            display: 'flex',
+            flexDirection: 'column',
+            transition: 'margin-left 0.22s cubic-bezier(0.4,0,0.2,1)',
+          }}
+        >
           {children}
         </div>
       </body>

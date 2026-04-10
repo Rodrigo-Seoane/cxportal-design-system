@@ -29,39 +29,124 @@ A Select consists of:
 - **Option rows** — Each row is 36px tall. Single-select rows show a check mark on the right when selected. Multi-select rows show a checkbox on the left.
 - **Error message (optional)** — 10px red copy below the trigger.
 
-| State | Border | Description |
-|---|---|---|
-| Default | `#d9dce0` | Resting, not yet interacted |
-| Focus (open) | `#4285f4` (primary blue) | Dropdown is open, trigger is active |
-| Error | `#f792ac` (error-200) | Validation failed |
-| Disabled | `#d9dce0`, grey background | Interaction not allowed |
+<Table size="compact" className="mb-6">
+  <TableHeader>
+    <tr>
+      <TableHead>State</TableHead>
+      <TableHead>Border</TableHead>
+      <TableHead>Description</TableHead>
+    </tr>
+  </TableHeader>
+  <TableBody>
+    <TableRow>
+      <TableCell>Default</TableCell>
+      <TableCell><code>#d9dce0</code></TableCell>
+      <TableCell>Resting, not yet interacted</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>Focus (open)</TableCell>
+      <TableCell><code>#4285f4</code> (primary blue)</TableCell>
+      <TableCell>Dropdown is open, trigger is active</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>Error</TableCell>
+      <TableCell><code>#f792ac</code> (error-200)</TableCell>
+      <TableCell>Validation failed</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>Disabled</TableCell>
+      <TableCell><code>#d9dce0</code>, grey background</TableCell>
+      <TableCell>Interaction not allowed</TableCell>
+    </TableRow>
+  </TableBody>
+</Table>
 
 ## Variants
 
 ### Size
 
-| Size | Trigger height | Font | Border radius | Border |
-|---|---|---|---|---|
-| **Regular** (default) | 36px | 14px / 20px | 8px | 1px |
-| **Small** | 24px | 10px / 16px | 4px | 0.5px |
+<Table size="compact" className="mb-6">
+  <TableHeader>
+    <tr>
+      <TableHead>Size</TableHead>
+      <TableHead>Trigger height</TableHead>
+      <TableHead>Font</TableHead>
+      <TableHead>Border radius</TableHead>
+      <TableHead>Border</TableHead>
+    </tr>
+  </TableHeader>
+  <TableBody>
+    <TableRow>
+      <TableCell><strong>Regular</strong> (default)</TableCell>
+      <TableCell>36px</TableCell>
+      <TableCell>14px / 20px</TableCell>
+      <TableCell>8px</TableCell>
+      <TableCell>1px</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><strong>Small</strong></TableCell>
+      <TableCell>24px</TableCell>
+      <TableCell>10px / 16px</TableCell>
+      <TableCell>4px</TableCell>
+      <TableCell>0.5px</TableCell>
+    </TableRow>
+  </TableBody>
+</Table>
 
 Small size hides the label row — always pair it with surrounding context that communicates the field's purpose.
 
 ### Type
 
-| Type | Left icon | Use for |
-|---|---|---|
-| **Simple** (default) | — | General selections with no visual disambiguation needed |
-| **Complex** | `@` icon | Fields where a leading icon clarifies the field's domain (e.g. mention, assignee) |
+<Table size="compact" className="mb-6">
+  <TableHeader>
+    <tr>
+      <TableHead>Type</TableHead>
+      <TableHead>Left icon</TableHead>
+      <TableHead>Use for</TableHead>
+    </tr>
+  </TableHeader>
+  <TableBody>
+    <TableRow>
+      <TableCell><strong>Simple</strong> (default)</TableCell>
+      <TableCell>—</TableCell>
+      <TableCell>General selections with no visual disambiguation needed</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><strong>Complex</strong></TableCell>
+      <TableCell><code>@</code> icon</TableCell>
+      <TableCell>Fields where a leading icon clarifies the field's domain (e.g. mention, assignee)</TableCell>
+    </TableRow>
+  </TableBody>
+</Table>
 
 The leading icon colour follows state: blue when open, pink when error, grey otherwise.
 
 ### Dropdown mode
 
-| Mode | `multiSelect` | Row style | Close on select |
-|---|---|---|---|
-| Single select | `false` | Label + check mark (right) | Yes |
-| Multi-select | `true` | Checkbox (left) + label | No — panel stays open |
+<Table size="compact" className="mb-6">
+  <TableHeader>
+    <tr>
+      <TableHead>Mode</TableHead>
+      <TableHead><code>multiSelect</code></TableHead>
+      <TableHead>Row style</TableHead>
+      <TableHead>Close on select</TableHead>
+    </tr>
+  </TableHeader>
+  <TableBody>
+    <TableRow>
+      <TableCell>Single select</TableCell>
+      <TableCell><code>false</code></TableCell>
+      <TableCell>Label + check mark (right)</TableCell>
+      <TableCell>Yes</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>Multi-select</TableCell>
+      <TableCell><code>true</code></TableCell>
+      <TableCell>Checkbox (left) + label</TableCell>
+      <TableCell>No — panel stays open</TableCell>
+    </TableRow>
+  </TableBody>
+</Table>
 
 ## Do's & Don'ts
 

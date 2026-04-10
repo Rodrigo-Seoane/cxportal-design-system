@@ -24,33 +24,95 @@ A Button consists of:
 - **Icon (optional)** — Visual symbol reinforcing the action (left or right position)
 - **States** — Visual feedback for default, hover, active, and disabled interactions
 
-| State | Description |
-|---|---|
-| Default | Resting state, ready for interaction |
-| Hover | Mouse cursor over the button, subtle visual feedback |
-| Active | Button is being pressed/clicked |
-| Disabled | Button is not available for interaction, reduced opacity |
+<Table size="compact" className="mb-6">
+  <TableHeader>
+    <tr>
+      <TableHead>State</TableHead>
+      <TableHead>Description</TableHead>
+    </tr>
+  </TableHeader>
+  <TableBody>
+    <TableRow>
+      <TableCell>Default</TableCell>
+      <TableCell>Resting state, ready for interaction</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>Hover</TableCell>
+      <TableCell>Mouse cursor over the button, subtle visual feedback</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>Active</TableCell>
+      <TableCell>Button is being pressed/clicked</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>Disabled</TableCell>
+      <TableCell>Button is not available for interaction, reduced opacity</TableCell>
+    </TableRow>
+  </TableBody>
+</Table>
 
 ## Variants
 
 CxPortal uses four button variants, each bound to a specific usage context. Picking the wrong variant is a common source of visual hierarchy issues.
 
-| Variant | Size options | Usage |
-|---|---|---|
-| **Primary** | Regular · Small · XS | The main CTA. **Maximum 1 per page.** Use for submit, confirm, or the page's most important action. |
-| **Secondary** | Regular · Small · XS | Abort/cancel, page-level secondary options, section-level alternatives. |
-| **Form Controls** | Regular · Small · XS | Settings, configuration, and async inline controls (e.g. Add row, Delete item). |
-| **Text** | Regular · Small · XS | Minimal prominence. In-line or low-priority actions where a border would add visual noise. |
+<Table size="compact" className="mb-6">
+  <TableHeader>
+    <tr>
+      <TableHead>Variant</TableHead>
+      <TableHead>Size options</TableHead>
+      <TableHead>Usage</TableHead>
+    </tr>
+  </TableHeader>
+  <TableBody>
+    <TableRow>
+      <TableCell><strong>Primary</strong></TableCell>
+      <TableCell>Regular · Small · XS</TableCell>
+      <TableCell>The main CTA. <strong>Maximum 1 per page.</strong> Use for submit, confirm, or the page's most important action.</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><strong>Secondary</strong></TableCell>
+      <TableCell>Regular · Small · XS</TableCell>
+      <TableCell>Abort/cancel, page-level secondary options, section-level alternatives.</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><strong>Form Controls</strong></TableCell>
+      <TableCell>Regular · Small · XS</TableCell>
+      <TableCell>Settings, configuration, and async inline controls (e.g. Add row, Delete item).</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><strong>Text</strong></TableCell>
+      <TableCell>Regular · Small · XS</TableCell>
+      <TableCell>Minimal prominence. In-line or low-priority actions where a border would add visual noise.</TableCell>
+    </TableRow>
+  </TableBody>
+</Table>
 
 ### Icon-only buttons
 
 Icon-only buttons use square sizes: **Icon Regular (48×48)**, **Icon Small (36×36)**, **Icon XS (24×24)**. They follow the same variant rules but require an `aria-label` since there is no visible label.
 
-| Variant | Usage |
-|---|---|
-| **Primary icon** | Section/Feature primary action |
-| **Secondary icon** | Top Bar icons (support, documentation), Table Row actions |
-| **Form Controls icon** | Settings and configuration async controls |
+<Table size="compact" className="mb-6">
+  <TableHeader>
+    <tr>
+      <TableHead>Variant</TableHead>
+      <TableHead>Usage</TableHead>
+    </tr>
+  </TableHeader>
+  <TableBody>
+    <TableRow>
+      <TableCell><strong>Primary icon</strong></TableCell>
+      <TableCell>Section/Feature primary action</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><strong>Secondary icon</strong></TableCell>
+      <TableCell>Top Bar icons (support, documentation), Table Row actions</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><strong>Form Controls icon</strong></TableCell>
+      <TableCell>Settings and configuration async controls</TableCell>
+    </TableRow>
+  </TableBody>
+</Table>
 
 ## Principles for use
 
