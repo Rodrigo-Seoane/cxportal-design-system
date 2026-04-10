@@ -1,0 +1,109 @@
+---
+title: Distribution Controls
+description: Traffic distribution slider for AWS failover scenarios. Splits load between two regions across a 0–100% range, in steps of 10.
+figmaNodeId: 11-2425
+status: wip
+---
+
+## Overview
+
+Distribution Controls gives operators a direct way to shift traffic between two AWS regions. It is the primary UI surface for failover workflows — routing all traffic to a healthy region or gradually rebalancing load after an incident.
+
+The control exposes a single value: the percentage of traffic sent to Region A. Region B always receives the remainder (100 − A), so the two values are always complementary and sum to 100%.
+
+---
+
+## When to use
+
+- Triggering a manual failover by moving 100% of traffic to a secondary region
+- Gradually shifting traffic during a blue/green or canary deployment
+- Rebalancing load after an incident is resolved
+- Giving operators a tactile, auditable way to confirm traffic split before applying changes
+
+---
+
+## Interaction model
+
+The split can be adjusted in two ways that stay in sync:
+
+**Drag handle** — grab the vertical divider between the two bars and slide left or right. The value snaps to the nearest 10% on release.
+
+**Input fields** — type a value directly into either region's field. Editing one field automatically updates the other. Values are committed on blur or Enter, and always snapped to 10% increments.
+
+Arrow keys (↑ / ↓) on either input field adjust the value by ±10% per keystroke.
+
+---
+
+## Label legibility
+
+Each bar carries region name and percentage labels that adapt to available space:
+
+<Table size="compact" className="mb-6">
+  <TableHeader>
+    <tr>
+      <TableHead>Fill width</TableHead>
+      <TableHead>Label behaviour</TableHead>
+    </tr>
+  </TableHeader>
+  <TableBody>
+    <TableRow>
+      <TableCell>≥ 30%</TableCell>
+      <TableCell>Region name (small) + percentage (large) — both inside the fill</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>10–19%</TableCell>
+      <TableCell>Percentage + region name — both in the adjacent passive zone, right of handle</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>20–29%</TableCell>
+      <TableCell>Region name inside fill · percentage in the adjacent passive zone</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>0%</TableCell>
+      <TableCell>Grayed "0% region" indicator in the opposing passive zone</TableCell>
+    </TableRow>
+  </TableBody>
+</Table>
+
+Labels always remain legible regardless of split — the percentage for a region at 0% appears as a muted indicator in the light passive bar on the opposite row.
+
+---
+
+## Props
+
+<Table size="compact" className="mb-6">
+  <TableHeader>
+    <tr>
+      <TableHead>Prop</TableHead>
+      <TableHead>Type</TableHead>
+      <TableHead>Default</TableHead>
+      <TableHead>Description</TableHead>
+    </tr>
+  </TableHeader>
+  <TableBody>
+    <TableRow>
+      <TableCell><code>defaultValue</code></TableCell>
+      <TableCell><code>number</code></TableCell>
+      <TableCell><code>0</code></TableCell>
+      <TableCell>Initial percentage for Region A (0–100, snapped to 10s)</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><code>regionA</code></TableCell>
+      <TableCell><code>string</code></TableCell>
+      <TableCell><code>"us-west-2"</code></TableCell>
+      <TableCell>Label for the left / primary region</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><code>regionB</code></TableCell>
+      <TableCell><code>string</code></TableCell>
+      <TableCell><code>"us-east-1"</code></TableCell>
+      <TableCell>Label for the right / secondary region</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><code>onChange</code></TableCell>
+      <TableCell><code>(a: number, b: number) =&gt; void</code></TableCell>
+      <TableCell>—</TableCell>
+      <TableCell>Called on every committed change with both region values</TableCell>
+    </TableRow>
+  </TableBody>
+</Table>

@@ -21,6 +21,7 @@ import { Pagination } from '@/components/ui/pagination'
 import { VerticalTab, VerticalTabGroup, VerticalTabIcon } from '@/components/ui/vertical-tabs'
 import { Skeleton, Spinner } from '@/components/ui/loading'
 import { Plus, Grid } from 'lucide-react'
+import { DistributionControls } from '@/components/ui/distribution-controls'
 
 // ─── Prop schema types ──────────────────────────────────────────────────────
 
@@ -1055,6 +1056,40 @@ export const registry: Record<string, ComponentEntry> = {
         '  ))}',
         '</div>',
       ].join('\n')
+    },
+  },
+
+  // ─── Distribution Controls ───────────────────────────────────────────────────
+  'distribution-controls': {
+    slug: 'distribution-controls',
+    title: 'Distribution Controls',
+    description:
+      'Traffic distribution slider for AWS failover scenarios. Splits traffic between two regions (0–100% in steps of 10) via a draggable handle or synchronized input fields.',
+    status: 'wip',
+    scope: { DistributionControls },
+    propSchema: {
+      defaultValue: {
+        type: 'chip-select',
+        label: 'Initial split (Region A %)',
+        options: ['0', '10', '20', '30', '40', '50', '60', '70', '80', '90', '100'],
+        default: '0',
+      },
+      regionA: {
+        type: 'text',
+        label: 'Region A',
+        default: 'us-west-2',
+      },
+      regionB: {
+        type: 'text',
+        label: 'Region B',
+        default: 'us-east-1',
+      },
+    },
+    generateCode: ({ defaultValue, regionA, regionB }) => {
+      const val = parseInt(String(defaultValue)) || 0
+      const a = String(regionA || 'us-west-2')
+      const b = String(regionB || 'us-east-1')
+      return `<DistributionControls\n  defaultValue={${val}}\n  regionA="${a}"\n  regionB="${b}"\n  onChange={(a, b) => console.log(a, b)}\n/>`
     },
   },
 

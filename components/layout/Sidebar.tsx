@@ -106,7 +106,8 @@ const NAV_GROUPS: NavGroup[] = [
     Icon: FlaskIcon,
     basePath: '/sandbox',
     items: [
-      { label: 'All Experiments', href: '/sandbox' },
+      { label: 'All Experiments',        href: '/sandbox' },
+      { label: 'Distribution Controls',  href: '/components/distribution-controls', status: 'wip' },
     ],
   },
 ]
