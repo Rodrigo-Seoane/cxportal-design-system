@@ -7,6 +7,8 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Checkbox, Radio } from '@/components/ui/checkbox'
 import { Plus } from 'lucide-react'
+import { ToastShowcase } from '@/components/ds/ToastShowcase'
+import { Stepper } from '@/components/ui/stepper'
 
 // ─── Shared types ────────────────────────────────────────────────────────────
 
@@ -588,6 +590,53 @@ function CheckboxShowcase() {
   )
 }
 
+// ─── Stepper showcase ────────────────────────────────────────────────────────
+
+const STEPPER_STEPS = [
+  { title: '1. Select Campaign Type', description: 'Choose the channel and format',   tag: 'Voice Survey'     },
+  { title: '2. Configure Audience',   description: 'Define targeting rules',           tag: 'All Contacts'     },
+  { title: '3. Compose Message',       description: 'Write and preview your message',  tag: 'Template Applied' },
+  { title: '4. Schedule Delivery',     description: 'Set date, time, and quiet hours', tag: 'Mar 15, 09:00 AM' },
+  { title: '5. Review & Launch',       description: 'Final review before activation',  tag: 'Ready'            },
+]
+
+function StepperShowcase() {
+  const panels = [
+    { label: 'Not started',  description: 'All steps default',                  currentStep: 0 },
+    { label: 'In progress',  description: '2 completed · 1 active · 2 default', currentStep: 2 },
+    { label: 'With tags',    description: 'Tag chips on completed steps',        currentStep: 3 },
+    { label: 'All complete', description: 'Every step completed',                currentStep: 5 },
+  ] as const
+
+  return (
+    <>
+      <ShowcaseHeader
+        title="States"
+        description="A full stepper at different points in the flow. Tag chips appear on completed steps when a value has been selected."
+      />
+      <div className="flex flex-wrap gap-4">
+        {panels.map(({ label, description, currentStep }) => (
+          <div key={label} className="flex flex-col gap-3 min-w-0">
+            <div>
+              <p className="text-sm font-medium" style={{ color: 'var(--color-text-primary)' }}>{label}</p>
+              <p className="text-xs mt-0.5" style={{ color: 'var(--color-text-secondary)' }}>{description}</p>
+            </div>
+            <div
+              className="rounded-lg border p-2"
+              style={{ borderColor: 'var(--color-border)', backgroundColor: 'var(--color-surface-section)', width: 280 }}
+            >
+              <Stepper
+                steps={STEPPER_STEPS}
+                currentStep={currentStep}
+              />
+            </div>
+          </div>
+        ))}
+      </div>
+    </>
+  )
+}
+
 // ─── Page ────────────────────────────────────────────────────────────────────
 
 export default async function ComponentPage(props: PageProps<'/components/[slug]'>) {
@@ -606,7 +655,7 @@ export default async function ComponentPage(props: PageProps<'/components/[slug]
 
   return (
     <>
-      <TopBar title={meta.title} />
+      <TopBar title={meta.title} figmaUpdated={doc?.frontmatter.figmaUpdated} />
       <main className="flex-1 px-8 py-10 max-w-5xl">
 
         {/* ── Header ──────────────────────────────────────────────────── */}
@@ -648,6 +697,12 @@ export default async function ComponentPage(props: PageProps<'/components/[slug]
 
         {/* ── Navigation showcase ──────────────────────────────────────── */}
         {slug === 'navigation' && <NavigationShowcase />}
+
+        {/* ── Toast live demo ───────────────────────────────────────────── */}
+        {slug === 'toast' && <ToastShowcase />}
+
+        {/* ── Stepper showcase ─────────────────────────────────────────── */}
+        {slug === 'stepper' && <StepperShowcase />}
 
         {/* ── MDX documentation ───────────────────────────────────────── */}
         {doc && (

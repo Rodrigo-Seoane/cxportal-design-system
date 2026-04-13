@@ -1,0 +1,145 @@
+---
+title: Inline Context Data
+description: A compact, read-only metadata row that displays a label–value pair with an optional contextual icon.
+figmaNodeId: 1060-19886
+figmaUpdated: Apr 13, 2026
+status: stable
+---
+
+## Overview
+
+Inline Context Data is a compact, read-only component that displays metadata as label–value pairs with an optional icon. It provides supplementary information about an object without taking up significant space, typically appearing in sidebars, panels, or below headings.
+
+## When to use
+
+**Use Inline Context Data for:**
+
+- Document metadata (author, last modified date, creation date)
+- System information (next renewal date, credit status)
+- Object properties in detail panels (version info, status)
+- Supplementary context below section titles
+- Read-only attribute display in sidebars
+
+**Do not use for:**
+
+- Editable fields — use Form Fields instead
+- Primary content display — use headings or body text
+- Interactive data — use Links or Buttons
+- Status indicators requiring action — use Chips or Tags
+- Key metrics requiring emphasis — use Data Cards
+
+## Anatomy
+
+A component consists of up to four parts, all on a single line:
+
+- **Icon** (optional) — 16×16px contextual icon, decorative (`aria-hidden`)
+- **Label** — descriptor text in secondary color (`#7a828c`), semibold, 10px
+- **Value 1** — primary value in muted color (`#aab0b8`), semibold, 10px
+- **Value 2** (optional) — secondary value for compound data (e.g. date + time)
+
+<Table size="compact" className="mb-6">
+  <TableHeader>
+    <tr>
+      <TableHead>Context</TableHead>
+      <TableHead>Label</TableHead>
+      <TableHead>Value example</TableHead>
+    </tr>
+  </TableHeader>
+  <TableBody>
+    <TableRow>
+      <TableCell>Document Author</TableCell>
+      <TableCell>Author:</TableCell>
+      <TableCell>rsaoane@pronetx.com</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>Last Modified</TableCell>
+      <TableCell>Last Modified:</TableCell>
+      <TableCell>11/05/2025 · 10:05 PM</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>Credit Renewal</TableCell>
+      <TableCell>Next Credit Renew:</TableCell>
+      <TableCell>11/05/2025</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>Created Date</TableCell>
+      <TableCell>Created:</TableCell>
+      <TableCell>11/05/2025</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>Version Number</TableCell>
+      <TableCell>Version:</TableCell>
+      <TableCell>v 17</TableCell>
+    </TableRow>
+  </TableBody>
+</Table>
+
+## Behavior
+
+- **Static display only** — no hover, focus, or click states
+- **No text wrap** — values should not wrap; truncate long values with ellipsis and expose the full value via a Tooltip
+- **Icon flexibility** — icons are contextual and should match the data type; use standard Phosphor icons from the design system library
+
+## Accessibility
+
+- Use semantic `<span>` elements for label and value within a `<div>` container
+- Icons must have `aria-hidden="true"` (decorative)
+- If the icon is the sole indicator of meaning, add `aria-label` to the container
+- Maintain a minimum 4.5:1 contrast ratio for all text
+
+<DosDonts>
+  <Do description="Match the icon to the data type — a Calendar icon for dates, AddressBook for contacts, Tag for versions." />
+  <Dont description="Use Inline Context Data for interactive or editable data — it has no hover or focus states." />
+</DosDonts>
+
+<DosDonts>
+  <Do description="Stack multiple instances vertically with consistent gap when showing several metadata fields together." />
+  <Dont description="Wrap value text — truncate with ellipsis and provide a Tooltip for the full value." />
+</DosDonts>
+
+## Code
+
+### Single value
+
+```tsx
+import { InlineContextData } from '@/components/ui/inline-context-data'
+import { CalendarIcon } from '@phosphor-icons/react'
+
+<InlineContextData
+  icon={<CalendarIcon size={16} weight="regular" color="#7a828c" />}
+  label="Created:"
+  value="11/05/2025"
+/>
+```
+
+### Compound value (date + time)
+
+```tsx
+<InlineContextData
+  icon={<CalendarIcon size={16} weight="regular" color="#7a828c" />}
+  label="Last Modified:"
+  value="11/05/2025"
+  value2="10:05 PM"
+/>
+```
+
+### Without icon
+
+```tsx
+<InlineContextData
+  label="Version:"
+  value="v 17"
+/>
+```
+
+### Props
+
+```tsx
+interface InlineContextDataProps {
+  label: string         // Descriptor text, e.g. "Next Credit Renew:"
+  value: string         // Primary value
+  value2?: string       // Optional secondary value for compound data
+  icon?: ReactNode      // Optional 16×16 icon — rendered aria-hidden
+  className?: string
+}
+```

@@ -1,0 +1,225 @@
+---
+title: Clickable Card
+description: Selection cards for single-choice flows. Two variants — a rich Card with icon, title, and description, and a compact Horizontal Card with a radio and uppercase label.
+figmaNodeId: 814-10834
+figmaUpdated: Apr 13, 2026
+status: stable
+---
+
+## Overview
+
+Clickable Cards are selection controls for single-choice flows — the visual equivalent of a radio button group, but with richer context. They allow users to pick one option from a set by clicking a card. A radio indicator in the corner provides a clear affordance for the selection state.
+
+Two variants serve different contexts:
+- **Card** — used when options benefit from an icon, a descriptive title, and explanatory body text (e.g. choosing a campaign type)
+- **Horizontal Card** — used for compact two-option choices where a short label is sufficient (e.g. scheduling method)
+
+## When to use
+
+- When users must select one option from a small set (typically 2–6) and visual clarity aids comprehension
+- When each option benefits from an icon and description (use the Card variant)
+- When only a short label differentiates options and vertical space is limited (use Horizontal Card)
+- In multi-step forms where the selection drives the next step
+
+**Do not use Clickable Cards for:**
+- Multi-select scenarios — use Checkboxes instead
+- Long lists of options (7+) — use a Select or Radio Group instead
+- Navigation — use Buttons or Links instead
+
+## Anatomy
+
+### Card variant
+
+- **Category icon** — 36×36px blue rounded square; communicates the option type at a glance
+- **Title** — 18px regular weight; the primary label
+- **Description** — 12px regular weight; secondary explanation below the title
+- **Radio indicator** — 18px circle in the top-right corner; filled when selected
+
+### Horizontal Card variant
+
+- **Radio indicator** — 18px circle on the left
+- **Label** — 12px semibold, uppercase, spaced tracking; the sole identifier
+
+## States
+
+<Table size="compact" className="mb-6">
+  <TableHeader>
+    <tr>
+      <TableHead>State</TableHead>
+      <TableHead>Background</TableHead>
+      <TableHead>Border</TableHead>
+      <TableHead>Radio</TableHead>
+    </tr>
+  </TableHeader>
+  <TableBody>
+    <TableRow>
+      <TableCell><strong>Default</strong></TableCell>
+      <TableCell><code>#ffffff</code></TableCell>
+      <TableCell><code>#eff1f3</code> (neutral)</TableCell>
+      <TableCell>Empty ring, neutral border</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><strong>Hover</strong></TableCell>
+      <TableCell><code>#ffffff</code></TableCell>
+      <TableCell><code>#689df6</code> (primary light)</TableCell>
+      <TableCell>Empty ring, neutral border</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><strong>Selected</strong></TableCell>
+      <TableCell><code>#d9dce0</code> (form-group)</TableCell>
+      <TableCell><code>#689df6</code> (primary light)</TableCell>
+      <TableCell>Filled — blue dot inside blue ring</TableCell>
+    </TableRow>
+  </TableBody>
+</Table>
+
+## Variants
+
+### Card
+
+Used when options require context. The icon communicates category; the description helps users distinguish between similar-sounding options before committing. Width is fluid (fills container) with a minimum content height of 92px in the text column.
+
+<Table size="compact" className="mb-6">
+  <TableHeader>
+    <tr>
+      <TableHead>Property</TableHead>
+      <TableHead>Value</TableHead>
+    </tr>
+  </TableHeader>
+  <TableBody>
+    <TableRow>
+      <TableCell>Padding</TableCell>
+      <TableCell>16px all sides</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>Gap (icon → content → radio)</TableCell>
+      <TableCell>24px</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>Border radius</TableCell>
+      <TableCell>8px (md)</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>Icon container</TableCell>
+      <TableCell>36×36px, 4px radius, primary blue</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>Title</TableCell>
+      <TableCell>18px / H5, regular weight</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>Description</TableCell>
+      <TableCell>12px / Body SM, regular weight</TableCell>
+    </TableRow>
+  </TableBody>
+</Table>
+
+### Horizontal Card
+
+Used for compact two-option selection (e.g. scheduling type). The entire card is the click target; the radio sits on the left and the label is styled as a caption — uppercase, semibold, with 0.48px letter-spacing.
+
+<Table size="compact" className="mb-6">
+  <TableHeader>
+    <tr>
+      <TableHead>Property</TableHead>
+      <TableHead>Value</TableHead>
+    </tr>
+  </TableHeader>
+  <TableBody>
+    <TableRow>
+      <TableCell>Padding</TableCell>
+      <TableCell>24px all sides</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>Gap (radio → label)</TableCell>
+      <TableCell>12px</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>Border radius</TableCell>
+      <TableCell>4px (sm)</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>Label</TableCell>
+      <TableCell>12px / Caption Large, semibold, uppercase</TableCell>
+    </TableRow>
+  </TableBody>
+</Table>
+
+## Accessibility
+
+- Cards render as `<button>` elements — they receive keyboard focus and are activatable with Enter or Space
+- In a group, manage selection state in the parent; only one card should have `selected` at a time
+- Add `aria-pressed={selected}` or use a `role="radio"` with `aria-checked` when the cards form a logical radio group
+- Do not rely on color alone to show selection — the radio dot provides a shape-based signal
+- Ensure sufficient contrast for the title and description text against both white and selected (`#d9dce0`) backgrounds
+
+## Principles for use
+
+<DosDonts>
+  <Do description="Use Card for options that benefit from explanation. If users can't tell the difference between options from the title alone, the description earns its space." />
+  <Dont description="Use Clickable Cards for navigation or actions. They signal 'pick one from a group' — using them for links or commands creates a confusing affordance." />
+</DosDonts>
+
+<DosDonts>
+  <Do description="Use Horizontal Cards when exactly two options are side-by-side and labels are self-explanatory (e.g. 'Schedule Now' vs 'Schedule Later')." />
+  <Dont description="Mix Card and Horizontal Card variants in the same selection group. Pick one and stay consistent." />
+</DosDonts>
+
+## Code
+
+### Card variant — single choice group
+
+```tsx
+import { ClickableCard } from '@/components/ui/clickable-card'
+
+const [selected, setSelected] = useState<string | null>(null)
+
+<div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
+  <ClickableCard
+    title="Voice Survey"
+    description="Collect feedback through interactive voice calls with up to 5 questions."
+    icon="voice-survey"
+    selected={selected === 'voice-survey'}
+    onClick={() => setSelected('voice-survey')}
+  />
+  <ClickableCard
+    title="SMS Survey"
+    description="Send survey questions via SMS and collect responses by keypad or reply."
+    icon="sms-survey"
+    selected={selected === 'sms-survey'}
+    onClick={() => setSelected('sms-survey')}
+  />
+</div>
+```
+
+### Horizontal Card variant
+
+```tsx
+import { ClickableHorizontalCard } from '@/components/ui/clickable-card'
+
+const [schedule, setSchedule] = useState<'now' | 'later'>('now')
+
+<div style={{ display: 'flex', gap: 16 }}>
+  <ClickableHorizontalCard
+    label="Schedule Now"
+    selected={schedule === 'now'}
+    onClick={() => setSchedule('now')}
+  />
+  <ClickableHorizontalCard
+    label="Schedule Later"
+    selected={schedule === 'later'}
+    onClick={() => setSchedule('later')}
+  />
+</div>
+```
+
+### Selected state (static)
+
+```tsx
+<ClickableCard
+  title="Voice Survey"
+  description="Collect feedback through interactive voice calls with up to 5 questions."
+  icon="voice-survey"
+  selected
+/>
+```

@@ -10,6 +10,7 @@ export type ComponentFrontmatter = {
   title?: string
   description?: string
   figmaNodeId?: string
+  figmaUpdated?: string
   status?: 'stable' | 'wip' | 'deprecated'
 }
 

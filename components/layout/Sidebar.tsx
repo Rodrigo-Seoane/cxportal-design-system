@@ -12,6 +12,7 @@ import {
   CaretRightIcon,
   CaretDownIcon,
   ListIcon,
+  BookOpenIcon,
 } from '@phosphor-icons/react'
 
 // ── Design tokens ─────────────────────────────────────────────────────────────
@@ -48,6 +49,18 @@ type NavGroup = {
   items: NavItem[]
 }
 
+// ── Top-level direct links (no group, no sub-items) ──────────────────────────
+type DirectLink = {
+  label: string
+  href: string
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  Icon: React.ComponentType<any>
+}
+
+const DIRECT_LINKS: DirectLink[] = [
+  { label: 'Guidelines', href: '/guidelines', Icon: BookOpenIcon },
+]
+
 // ── Nav structure ─────────────────────────────────────────────────────────────
 const NAV_GROUPS: NavGroup[] = [
   {
@@ -81,12 +94,12 @@ const NAV_GROUPS: NavGroup[] = [
       { label: 'Switch',              href: '/components/switch',              status: 'stable' },
       { label: 'Pagination',          href: '/components/pagination',          status: 'stable' },
       { label: 'Loading',             href: '/components/loading',             status: 'stable' },
-      { label: 'Toast Notifications', href: '/components/toast-notifications', status: 'wip' },
-      { label: 'Tooltip',             href: '/components/tooltip',             status: 'wip' },
-      { label: 'Stats Cards',         href: '/components/stats-cards',         status: 'wip' },
-      { label: 'Inline Context Data', href: '/components/inline-context-data', status: 'wip' },
-      { label: 'Clickable Card',      href: '/components/clickable-card',      status: 'wip' },
-      { label: 'Stepper',             href: '/components/stepper',             status: 'wip' },
+      { label: 'Toast Notifications', href: '/components/toast',               status: 'stable' },
+      { label: 'Tooltip',             href: '/components/tooltip',             status: 'stable' },
+      { label: 'Stats Cards',         href: '/components/stats-cards',         status: 'stable' },
+      { label: 'Inline Context Data', href: '/components/inline-context-data', status: 'stable' },
+      { label: 'Clickable Card',      href: '/components/clickable-card',      status: 'stable' },
+      { label: 'Stepper',             href: '/components/stepper',             status: 'stable' },
     ],
   },
   {
@@ -108,7 +121,6 @@ const NAV_GROUPS: NavGroup[] = [
     items: [
       { label: 'All Experiments',        href: '/sandbox' },
       { label: 'Distribution Controls',  href: '/components/distribution-controls', status: 'wip' },
-      { label: 'Toast',                   href: '/components/toast',                  status: 'stable' },
     ],
   },
 ]
@@ -116,6 +128,47 @@ const NAV_GROUPS: NavGroup[] = [
 const sublistVariants = {
   open:   { height: 'auto', opacity: 1 },
   closed: { height: 0,      opacity: 0 },
+}
+
+// ── Direct top-level link ─────────────────────────────────────────────────────
+function DirectLinkItem({ link, active, collapsed }: { link: DirectLink; active: boolean; collapsed: boolean }) {
+  const [hovered, setHovered] = useState(false)
+  const { Icon } = link
+
+  return (
+    <Link
+      href={link.href}
+      aria-current={active ? 'page' : undefined}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      style={{
+        width:          '100%',
+        height:          48,
+        display:        'flex',
+        alignItems:     'center',
+        justifyContent:  collapsed ? 'center' : 'flex-start',
+        gap:             collapsed ? 0 : 8,
+        padding:         collapsed ? 0 : '0 12px',
+        background:      active ? NAV.activeBg : hovered ? NAV.hoverBg : 'transparent',
+        textDecoration: 'none',
+        transition:     'background 100ms ease',
+        overflow:       'hidden',
+      }}
+    >
+      <Icon size={20} color={NAV.textDefault} weight="thin" style={{ flexShrink: 0 }} />
+      <span style={{
+        flex:       collapsed ? '0 0 0px' : '1',
+        fontSize:    14, fontWeight: active ? 600 : 300, lineHeight: '20px',
+        color:       NAV.textDefault, textAlign: 'left',
+        overflow:   'hidden', whiteSpace: 'nowrap',
+        opacity:     collapsed ? 0 : 1,
+        minWidth:    0,
+        transition:  LABEL_T,
+      }}>
+        {link.label}
+      </span>
+    </Link>
+  )
 }
 
 // ── Sub-item link ─────────────────────────────────────────────────────────────
@@ -305,6 +358,14 @@ export function Sidebar() {
         style={{ flex: 1, overflowY: 'auto', overflowX: 'hidden', padding: '4px 0' }}
         className="scrollbar-hide"
       >
+        {DIRECT_LINKS.map(link => (
+          <DirectLinkItem
+            key={link.href}
+            link={link}
+            active={pathname === link.href}
+            collapsed={collapsed}
+          />
+        ))}
         {NAV_GROUPS.map(section => {
           const isOpen        = !collapsed && openGroup === section.group
           const isGroupActive = pathname.startsWith(section.basePath)

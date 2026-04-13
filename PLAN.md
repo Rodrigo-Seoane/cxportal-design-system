@@ -182,21 +182,61 @@ project_portal/
 
 **Also completed:** Colors page redesigned to match Figma Mapped/Light spec — horizontal swatch cards (4px radius, 36×36 color square, hex copy chip), 4 sections × 16 sub-groups, full-width responsive flex-wrap layout.
 
-### Phase 5 — Core Component Set (10 components)
-**Milestone:** 10 components fully documented and interactive.
+### Phase 5 — Core Component Set ✅
+**Milestone:** All stable components fully documented and interactive. WIP components have pages and playgrounds; docs to be completed.
 
-| Priority | Component |
+**Stable (MDX + playground complete)**
+
+| Priority | Component | Slug |
+|---|---|---|
+| 1 | Button | `button` |
+| 2 | Input / Field | `input` |
+| 3 | Select / Dropdown | `select` |
+| 4 | Checkbox & Radio | `checkbox` |
+| 5 | Navigation | `navigation` |
+| 6 | Table | `table` |
+| 7 | Chips & Tags | `chips` |
+| 8 | Tabs (Horizontal) | `tabs` |
+| 9 | Vertical Tabs | `vertical-tabs` |
+| 10 | Modal | `modal` |
+| 11 | Message Box | `message-box` |
+| 12 | Switch | `switch` |
+| 13 | Pagination | `pagination` |
+| 14 | Loading | `loading` |
+| 15 | Toast Notifications | `toast` |
+
+**WIP (page exists, docs in progress)**
+
+| Component | Slug |
 |---|---|
-| 1 | Button |
-| 2 | Input / Field |
-| 3 | Select / Dropdown |
-| 4 | Checkbox & Radio |
-| 5 | Table |
-| 6 | Chips & Tags |
-| 7 | Horizontal Tabs |
-| 8 | Modal |
-| 9 | Switch |
-| 10 | Pagination |
+| Tooltip | `tooltip` |
+| Stats Cards | `stats-cards` |
+| Inline Context Data | `inline-context-data` |
+| Clickable Card | `clickable-card` |
+| Stepper | `stepper` |
+
+### Phase 5b — WIP Components
+**Milestone:** All WIP components promoted to Stable — playground, MDX docs, Do/Don't, and accessibility notes complete.
+
+Components to complete (in order):
+1. Tooltip
+2. Stats Cards
+3. Inline Context Data
+4. Clickable Card
+5. Stepper
+
+### Phase 5c — Charts
+**Milestone:** All chart types documented with interactive playground and MDX docs.
+
+| Component | Slug | Status |
+|---|---|---|
+| Area Chart | `area` | WIP |
+| Bar Chart | `bar` | WIP |
+| Line Chart | `line` | WIP |
+| Pie Chart | `pie` | WIP |
+| Radial Chart | `radial` | WIP |
+
+> Charts live at `/charts/[slug]` — separate section in sidebar, distinct from `/components`.
 
 ### Phase 6 — Sandbox Space
 **Milestone:** A shareable, design-system-aware workspace for new experiments.

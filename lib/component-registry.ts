@@ -23,6 +23,12 @@ import { Skeleton, Spinner } from '@/components/ui/loading'
 import { Plus, Grid } from 'lucide-react'
 import { DistributionControls } from '@/components/ui/distribution-controls'
 import { Toast } from '@/components/ui/toast'
+import { Tooltip } from '@/components/ui/tooltip'
+import { StatCard } from '@/components/ui/stats-cards'
+import { ClickableCard, ClickableHorizontalCard } from '@/components/ui/clickable-card'
+import { InlineContextData } from '@/components/ui/inline-context-data'
+import { AddressBookIcon, CalendarIcon, TagIcon, UserListIcon } from '@/components/ui/playground-icons'
+import { Stepper } from '@/components/ui/stepper'
 
 // ─── Prop schema types ──────────────────────────────────────────────────────
 
@@ -1189,6 +1195,318 @@ export const registry: Record<string, ComponentEntry> = {
       }).join('\n')
 
       return `<VerticalTabGroup>\n${tabs}\n</VerticalTabGroup>`
+    },
+  },
+
+  // ─── Stats Cards ─────────────────────────────────────────────────────────────
+  'stats-cards': {
+    slug: 'stats-cards',
+    title: 'Stats Cards',
+    description:
+      'Compact KPI cards for executive dashboards. Combine a metric value, category icon, and color-coded trend indicator so stakeholders can assess performance at a glance.',
+    status: 'stable',
+    scope: { StatCard },
+    propSchema: {
+      icon: {
+        type: 'select',
+        label: 'Icon',
+        options: [
+          'sms-sent',
+          'delivery-rate',
+          'open-rate',
+          'response-rate',
+          'opt-out',
+          'voice-duration',
+          'voice-survey',
+          'voice-notification',
+          'sms-survey',
+          'sms-notification',
+        ],
+        default: 'sms-sent',
+      },
+      size: {
+        type: 'chip-select',
+        label: 'Size',
+        options: ['regular', 'small'],
+        default: 'regular',
+      },
+      surface: {
+        type: 'chip-select',
+        label: 'Surface',
+        options: ['white', 'blue'],
+        default: 'white',
+      },
+      trendType: {
+        type: 'chip-select',
+        label: 'Trend',
+        options: ['increase', 'decrease', 'neutral'],
+        default: 'increase',
+      },
+      showTrend: {
+        type: 'boolean',
+        label: 'Show trend',
+        default: true,
+      },
+      title: {
+        type: 'text',
+        label: 'Title',
+        default: 'SMS Sent',
+      },
+      value: {
+        type: 'text',
+        label: 'Value',
+        default: '6,893',
+      },
+      trend: {
+        type: 'text',
+        label: 'Trend label',
+        default: '5.2% vs last week',
+      },
+    },
+    generateCode: ({ icon, size, surface, trendType, showTrend, title, value, trend }) => {
+      const lines = ['<StatCard']
+      lines.push(`  title="${String(title)}"`)
+      lines.push(`  value="${String(value)}"`)
+      if (showTrend === true || showTrend === 'true') {
+        lines.push(`  trend="${String(trend)}"`)
+        if (String(trendType) !== 'increase') lines.push(`  trendType="${String(trendType)}"`)
+      } else {
+        lines.push(`  showTrend={false}`)
+      }
+      if (String(surface) !== 'white') lines.push(`  surface="${String(surface)}"`)
+      if (String(size) !== 'regular')   lines.push(`  size="${String(size)}"`)
+      if (String(icon) !== 'sms-sent')  lines.push(`  icon="${String(icon)}"`)
+      lines.push('/>')
+      return lines.join('\n')
+    },
+  },
+
+  // ─── Clickable Card ──────────────────────────────────────────────────────────
+  'clickable-card': {
+    slug: 'clickable-card',
+    title: 'Clickable Card',
+    description:
+      'Selection cards for single-choice flows. Two variants: a rich Card with icon, title and description, and a compact Horizontal Card with a radio and uppercase label.',
+    status: 'stable',
+    scope: { ClickableCard, ClickableHorizontalCard },
+    propSchema: {
+      variant: {
+        type: 'chip-select',
+        label: 'Variant',
+        options: ['card', 'horizontal'],
+        default: 'card',
+      },
+      selected: {
+        type: 'boolean',
+        label: 'Selected',
+        default: false,
+      },
+      icon: {
+        type: 'select',
+        label: 'Icon',
+        options: [
+          'voice-survey',
+          'sms-sent',
+          'voice-duration',
+          'delivery-rate',
+          'open-rate',
+          'response-rate',
+          'opt-out',
+          'voice-notification',
+          'sms-survey',
+          'sms-notification',
+        ],
+        default: 'voice-survey',
+      },
+      title: {
+        type: 'text',
+        label: 'Title',
+        default: 'Voice Survey',
+      },
+      description: {
+        type: 'text',
+        label: 'Description',
+        default: 'Collect feedback through interactive voice calls with up to 5 questions.',
+      },
+      label: {
+        type: 'text',
+        label: 'Label (horizontal)',
+        default: 'Schedule Campaign',
+      },
+    },
+    generateCode: ({ variant, selected, icon, title, description, label }) => {
+      const v   = String(variant)
+      const sel = selected === true || selected === 'true'
+      const selAttr = sel ? `\n  selected` : ''
+
+      if (v === 'horizontal') {
+        const lbl = String(label)
+        return [`<ClickableHorizontalCard`, `  label="${lbl}"${selAttr}`, `/>`].join('\n')
+      }
+
+      // card variant
+      const lines = [`<ClickableCard`]
+      lines.push(`  title="${String(title)}"`)
+      lines.push(`  description="${String(description)}"`)
+      if (String(icon) !== 'voice-survey') lines.push(`  icon="${String(icon)}"`)
+      if (sel) lines.push(`  selected`)
+      lines.push(`/>`)
+      return lines.join('\n')
+    },
+  },
+
+  // ─── Tooltip ─────────────────────────────────────────────────────────────────
+  tooltip: {
+    slug: 'tooltip',
+    title: 'Tooltip',
+    description:
+      'A simple text popup that appears on hover to provide supplementary information about an element. Supports four placement directions.',
+    status: 'stable',
+    scope: { Tooltip },
+    propSchema: {
+      placement: {
+        type: 'chip-select',
+        label: 'Placement',
+        options: ['top', 'right', 'bottom', 'left'],
+        default: 'top',
+      },
+      content: {
+        type: 'text',
+        label: 'Content',
+        default: 'Tooltip content',
+      },
+    },
+    generateCode: ({ placement, content }) => {
+      const p = String(placement)
+      const c = String(content)
+      const placementAttr = p !== 'top' ? `\n  placement="${p}"` : ''
+      return [
+        `<div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 48 }}>`,
+        `  <Tooltip content="${c}"${placementAttr}>`,
+        `    <button style={{`,
+        `      padding: '8px 16px',`,
+        `      background: '#4285f4',`,
+        `      color: '#eff1f3',`,
+        `      border: 'none',`,
+        `      borderRadius: 4,`,
+        `      cursor: 'pointer',`,
+        `      fontSize: 14,`,
+        `    }}>`,
+        `      Hover me`,
+        `    </button>`,
+        `  </Tooltip>`,
+        `</div>`,
+      ].join('\n')
+    },
+  },
+
+  // ─── Stepper ──────────────────────────────────────────────────────────────────
+  stepper: {
+    slug: 'stepper',
+    title: 'Stepper',
+    description:
+      'Vertical progress indicator for multi-step flows. Shows completed, active, and upcoming steps with a connecting line, step labels, and optional tag chips on completed steps.',
+    status: 'stable',
+    scope: { Stepper },
+    propSchema: {
+      currentStep: {
+        type: 'chip-select',
+        label: 'Active step',
+        options: ['0', '1', '2', '3', '4'],
+        default: '1',
+      },
+      stepCount: {
+        type: 'chip-select',
+        label: 'Step count',
+        options: ['3', '4', '5'],
+        default: '4',
+      },
+      showTags: {
+        type: 'boolean',
+        label: 'Show tags on completed',
+        default: true,
+      },
+    },
+    generateCode: ({ currentStep, stepCount, showTags }) => {
+      const active = parseInt(String(currentStep)) || 0
+      const count  = parseInt(String(stepCount))   || 4
+      const tags   = showTags === true || showTags === 'true'
+
+      const ALL_STEPS = [
+        { title: '1. Select Campaign Type', description: 'Choose the channel and format',   tag: 'Voice Survey'     },
+        { title: '2. Configure Audience',   description: 'Define targeting rules',           tag: 'All Contacts'     },
+        { title: '3. Compose Message',       description: 'Write and preview your message',  tag: 'Template Applied' },
+        { title: '4. Schedule Delivery',     description: 'Set date, time, and quiet hours', tag: 'Mar 15, 09:00 AM' },
+        { title: '5. Review & Launch',       description: 'Final review before activation',  tag: 'Ready'            },
+      ].slice(0, count)
+
+      const stepsCode = ALL_STEPS.map((s, i) => {
+        const tagPart = (i < active && tags) ? `, tag: "${s.tag}"` : ''
+        return `    { title: "${s.title}", description: "${s.description}"${tagPart} }`
+      }).join(',\n')
+
+      return [
+        `<div style={{ width: 280, background: '#ffffff', border: '1px solid #eff1f3', borderRadius: 8, padding: 8 }}>`,
+        `  <Stepper`,
+        `    steps={[`,
+        stepsCode,
+        `    ]}`,
+        `    currentStep={${active}}`,
+        `  />`,
+        `</div>`,
+      ].join('\n')
+    },
+  },
+
+  // ─── Inline Context Data ──────────────────────────────────────────────────────
+  'inline-context-data': {
+    slug: 'inline-context-data',
+    title: 'Inline Context Data',
+    description:
+      'A compact, read-only metadata row that displays a label–value pair with an optional contextual icon. Supports a secondary value for compound data.',
+    status: 'stable',
+    scope: { InlineContextData, AddressBookIcon, CalendarIcon, TagIcon, UserListIcon },
+    propSchema: {
+      label: {
+        type: 'text',
+        label: 'Label',
+        default: 'Next Credit Renew:',
+      },
+      value: {
+        type: 'text',
+        label: 'Value',
+        default: '11/05/2025',
+      },
+      showValue2: {
+        type: 'boolean',
+        label: 'Second value',
+        default: false,
+      },
+      value2: {
+        type: 'text',
+        label: 'Value 2',
+        default: '09:00 AM',
+      },
+      showIcon: {
+        type: 'boolean',
+        label: 'Show icon',
+        default: true,
+      },
+    },
+    generateCode: ({ label, value, showValue2, value2, showIcon }) => {
+      const lbl   = String(label)
+      const val   = String(value)
+      const val2  = String(value2)
+      const icon  = showIcon  === true || showIcon  === 'true'
+      const two   = showValue2 === true || showValue2 === 'true'
+
+      const lines: string[] = ['<InlineContextData']
+      if (icon) lines.push(`  icon={<AddressBookIcon size={16} weight="regular" color="#7a828c" />}`)
+      lines.push(`  label="${lbl}"`)
+      lines.push(`  value="${val}"`)
+      if (two) lines.push(`  value2="${val2}"`)
+      lines.push('/>')
+      return lines.join('\n')
     },
   },
 }

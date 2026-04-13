@@ -1,0 +1,178 @@
+---
+title: Stepper
+description: Vertical progress indicator for multi-step flows. Communicates where the user is in a sequence, what has been completed, and what remains.
+figmaNodeId: 814-13827
+figmaUpdated: Apr 13, 2026
+status: stable
+---
+
+## Overview
+
+The Stepper is a vertical navigation pattern used in multi-step flows such as wizards, onboarding sequences, and campaign builders. It provides a persistent context panel showing all steps at once — completed, active, and upcoming — so users always know where they are and how much is left.
+
+## When to use
+
+- In flows with 3–5 discrete, sequential steps that must be completed in order
+- When users need spatial awareness of progress throughout the task (e.g., campaign creation, account setup)
+- As a sidebar panel alongside the step content, not as a top-level page header
+
+**When not to use:**
+
+- For simple two-step flows — a back/next button pair is sufficient
+- When steps are optional or non-sequential — use a tab bar instead
+- As an inline wizard inside a small card or modal with limited vertical space
+
+## Anatomy
+
+Each step in the Stepper consists of:
+
+- **Indicator** — A 24px circle that shows the step's state (completed, active, default)
+- **Connector line** — A 2px vertical line linking adjacent steps; absent on the last step
+- **Step title** — The step name (Body LG, 16px)
+- **Step description** — A brief label clarifying what happens in this step (Body SM, 12px)
+- **Tag chip** *(optional, completed steps only)* — A compact info chip summarising the user's selection for that step; removable with ×
+
+<Table size="compact" className="mb-6">
+  <TableHeader>
+    <tr>
+      <TableHead>Part</TableHead>
+      <TableHead>Required</TableHead>
+      <TableHead>Notes</TableHead>
+    </tr>
+  </TableHeader>
+  <TableBody>
+    <TableRow>
+      <TableCell>Indicator circle</TableCell>
+      <TableCell>Yes</TableCell>
+      <TableCell>Changes appearance by state — see Variants</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>Connector line</TableCell>
+      <TableCell>Yes (except last step)</TableCell>
+      <TableCell>Color reflects the step above: blue if completed, neutral if default</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>Step title</TableCell>
+      <TableCell>Yes</TableCell>
+      <TableCell>Should include step number for orientation (e.g. "1. Select Type")</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>Step description</TableCell>
+      <TableCell>Recommended</TableCell>
+      <TableCell>One short phrase; avoid wrapping to more than two lines</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>Tag chip</TableCell>
+      <TableCell>No</TableCell>
+      <TableCell>Only on completed steps; shows the user's selection for that step</TableCell>
+    </TableRow>
+  </TableBody>
+</Table>
+
+## Variants
+
+The Stepper has three step states, not visual variants. All states coexist within the same stepper at runtime.
+
+<Table size="compact" className="mb-6">
+  <TableHeader>
+    <tr>
+      <TableHead>State</TableHead>
+      <TableHead>Indicator</TableHead>
+      <TableHead>Text color</TableHead>
+      <TableHead>Connector</TableHead>
+    </tr>
+  </TableHeader>
+  <TableBody>
+    <TableRow>
+      <TableCell><strong>Default</strong></TableCell>
+      <TableCell>Hollow circle, neutral border (#eff1f3)</TableCell>
+      <TableCell>Secondary text (#7a828c)</TableCell>
+      <TableCell>Neutral (#eff1f3)</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><strong>Active</strong></TableCell>
+      <TableCell>Hollow circle, blue border (#4285f4)</TableCell>
+      <TableCell>Link blue (#3264b8)</TableCell>
+      <TableCell>Blue (#4285f4) on the line above; neutral on the line below</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><strong>Completed</strong></TableCell>
+      <TableCell>Filled blue circle (#4285f4) with white checkmark</TableCell>
+      <TableCell>Link blue (#3264b8)</TableCell>
+      <TableCell>Blue (#4285f4)</TableCell>
+    </TableRow>
+  </TableBody>
+</Table>
+
+### Tag chip
+
+When a completed step has a meaningful selection to surface, an optional tag chip appears below the description. It uses the Info 100 background (`#d6e2f5`) and includes an × button to let the user clear and redo that step. Clicking × should navigate back to that step, not silently delete the value.
+
+## Principles for use
+
+<DosDonts>
+  <Do description="Include the step number in the title (e.g. '1. Select Type'). Numbers orient users who jump back to an earlier step." />
+  <Dont description="Use generic labels like 'Step 1' with no description. The description should clarify what happens in that step." />
+</DosDonts>
+
+<DosDonts>
+  <Do description="Show the full list of steps from the start. Users should see how many steps are ahead before committing to the flow." />
+  <Dont description="Reveal steps dynamically as the user progresses. Surprise steps create distrust and feel like a bait-and-switch." />
+</DosDonts>
+
+<DosDonts>
+  <Do description="Keep step count between 3 and 5. Flows with more steps should be restructured or split into separate flows." />
+  <Dont description="Nest steppers or place a stepper inside a modal. Use it as a sidebar panel next to the step's content area." />
+</DosDonts>
+
+## Code
+
+### Basic usage
+
+```tsx
+import { Stepper } from '@/components/ui/stepper'
+
+<Stepper
+  steps={[
+    { title: '1. Select Campaign Type', description: 'Choose the channel and format' },
+    { title: '2. Configure Audience',   description: 'Define targeting rules' },
+    { title: '3. Compose Message',       description: 'Write and preview your message' },
+    { title: '4. Schedule Delivery',     description: 'Set date, time, and quiet hours' },
+  ]}
+  currentStep={1}
+/>
+```
+
+### With tag chips on completed steps
+
+```tsx
+<Stepper
+  steps={[
+    { title: '1. Select Campaign Type', description: 'Choose the channel and format', tag: 'Voice Survey' },
+    { title: '2. Configure Audience',   description: 'Define targeting rules',         tag: 'All Contacts' },
+    { title: '3. Compose Message',       description: 'Write and preview your message' },
+    { title: '4. Schedule Delivery',     description: 'Set date, time, and quiet hours' },
+  ]}
+  currentStep={2}
+  onTagRemove={(stepIndex) => goToStep(stepIndex)}
+/>
+```
+
+### Controlled navigation
+
+```tsx
+const [currentStep, setCurrentStep] = useState(0)
+
+<Stepper
+  steps={steps}
+  currentStep={currentStep}
+  onTagRemove={(i) => setCurrentStep(i)}
+/>
+```
+
+## Accessibility
+
+- The Stepper is a read-only progress indicator, not an interactive navigation component. Do not make individual steps clickable unless your flow explicitly supports non-linear navigation.
+- Each step should convey its state to assistive technology via visible text (the indicator alone is not sufficient for screen readers).
+- The × button on tag chips must have an `aria-label` describing what it removes (e.g., `aria-label="Remove Voice Survey"`). The component handles this automatically when `onTagRemove` is provided.
+- Color alone is not used to convey state — the completed checkmark icon and the hollow/filled indicator provide state information independent of color.

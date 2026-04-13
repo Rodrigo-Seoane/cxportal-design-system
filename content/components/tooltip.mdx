@@ -1,0 +1,119 @@
+---
+title: Tooltip
+description: A simple text popup that appears on hover to provide supplementary information about an element.
+figmaNodeId: 694-13794
+figmaUpdated: Apr 13, 2026
+status: stable
+---
+
+## Overview
+
+A Tooltip is a transient, non-interactive overlay that reveals short supplementary text when the user hovers over or focuses a trigger element. It communicates context without cluttering the UI with permanent labels.
+
+## When to use
+
+- To explain the purpose of an icon-only button or control that has no visible text label
+- To surface secondary information (keyboard shortcut, data source, field definition) that would add noise if always visible
+- As an accessible alternative to the HTML `title` attribute
+
+**Do not use when:**
+- The content is critical — use a Message Box or inline helper text instead so it is always visible
+- The content is long, complex, or interactive (links, buttons) — Tooltips only support plain text
+- On mobile, where hover is unavailable
+
+## Anatomy
+
+A Tooltip consists of:
+
+- **Trigger** — any focusable or hoverable element wrapped in `<Tooltip>`
+- **Body** — the floating content container (info-tinted background, 1px border, 8px radius, 16px padding, max-width 320px)
+- **Arrow** — a small diamond shape connecting the body to the trigger, rendered at the center of the aligned edge
+- **Shadow** — `0 4px 24px rgba(5,3,38,0.08)` for depth
+
+## Placement
+
+The `placement` prop controls which side of the trigger the tooltip appears on. The arrow always points toward the trigger.
+
+<Table size="compact" className="mb-6">
+  <TableHeader>
+    <tr>
+      <TableHead>Value</TableHead>
+      <TableHead>Tooltip position</TableHead>
+      <TableHead>Arrow direction</TableHead>
+    </tr>
+  </TableHeader>
+  <TableBody>
+    <TableRow>
+      <TableCell><code>top</code> (default)</TableCell>
+      <TableCell>Above the trigger</TableCell>
+      <TableCell>Points down ↓</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><code>bottom</code></TableCell>
+      <TableCell>Below the trigger</TableCell>
+      <TableCell>Points up ↑</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><code>left</code></TableCell>
+      <TableCell>Left of the trigger</TableCell>
+      <TableCell>Points right →</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><code>right</code></TableCell>
+      <TableCell>Right of the trigger</TableCell>
+      <TableCell>Points left ←</TableCell>
+    </TableRow>
+  </TableBody>
+</Table>
+
+Choose placement based on available viewport space. Prefer `top` when the trigger is near the bottom of the screen, `bottom` when near the top.
+
+## Accessibility
+
+- The tooltip body is rendered with `role="tooltip"` so screen readers can announce it
+- The component listens for both `onMouseEnter`/`onMouseLeave` and `onFocus`/`onBlur`, making it reachable for keyboard users
+- Never place interactive elements (links, buttons) inside the tooltip body — use a popover or modal instead
+- Keep content short enough to be read without scrolling
+
+<DosDonts>
+  <Do description="Use tooltips to clarify icon-only controls. Always pair icon buttons with a tooltip or aria-label." />
+  <Dont description="Put essential information only in a tooltip. Users on touch devices and screen readers may miss hover-only content." />
+</DosDonts>
+
+<DosDonts>
+  <Do description="Keep tooltip text brief — one sentence maximum. Tooltips are supplementary, not instructional." />
+  <Dont description="Use tooltips for error messages or required field hints. Use inline validation or a Message Box instead." />
+</DosDonts>
+
+## Code
+
+### Basic usage
+
+```tsx
+import { Tooltip } from '@/components/ui/tooltip'
+
+<Tooltip content="Delete this record">
+  <button aria-label="Delete">
+    <TrashIcon />
+  </button>
+</Tooltip>
+```
+
+### Placement
+
+```tsx
+<Tooltip content="Opens in a new tab" placement="right">
+  <a href="/docs" target="_blank">Documentation</a>
+</Tooltip>
+```
+
+### Props
+
+```tsx
+interface TooltipProps {
+  content: string           // Text to display in the tooltip
+  placement?: 'top' | 'right' | 'bottom' | 'left'  // Default: 'top'
+  children: React.ReactNode // The trigger element
+  className?: string
+}
+```
