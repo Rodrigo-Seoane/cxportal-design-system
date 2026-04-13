@@ -183,7 +183,7 @@ project_portal/
 **Also completed:** Colors page redesigned to match Figma Mapped/Light spec — horizontal swatch cards (4px radius, 36×36 color square, hex copy chip), 4 sections × 16 sub-groups, full-width responsive flex-wrap layout.
 
 ### Phase 5 — Core Component Set ✅
-**Milestone:** All stable components fully documented and interactive. WIP components have pages and playgrounds; docs to be completed.
+**Milestone:** All stable components fully documented and interactive.
 
 **Stable (MDX + playground complete)**
 
@@ -205,25 +205,16 @@ project_portal/
 | 14 | Loading | `loading` |
 | 15 | Toast Notifications | `toast` |
 
-**WIP (page exists, docs in progress)**
-
-| Component | Slug |
-|---|---|
-| Tooltip | `tooltip` |
-| Stats Cards | `stats-cards` |
-| Inline Context Data | `inline-context-data` |
-| Clickable Card | `clickable-card` |
-| Stepper | `stepper` |
-
-### Phase 5b — WIP Components
+### Phase 5b — WIP Components ✅
 **Milestone:** All WIP components promoted to Stable — playground, MDX docs, Do/Don't, and accessibility notes complete.
 
-Components to complete (in order):
-1. Tooltip
-2. Stats Cards
-3. Inline Context Data
-4. Clickable Card
-5. Stepper
+| Component | Slug | Completed |
+|---|---|---|
+| Tooltip | `tooltip` | Apr 13, 2026 |
+| Stats Cards | `stats-cards` | Apr 13, 2026 |
+| Inline Context Data | `inline-context-data` | Apr 13, 2026 |
+| Clickable Card | `clickable-card` | Apr 13, 2026 |
+| Stepper | `stepper` | Apr 13, 2026 |
 
 ### Phase 5c — Charts
 **Milestone:** All chart types documented with interactive playground and MDX docs.
