@@ -108,6 +108,7 @@ const NAV_GROUPS: NavGroup[] = [
     items: [
       { label: 'All Experiments',        href: '/sandbox' },
       { label: 'Distribution Controls',  href: '/components/distribution-controls', status: 'wip' },
+      { label: 'Toast',                   href: '/components/toast',                  status: 'stable' },
     ],
   },
 ]

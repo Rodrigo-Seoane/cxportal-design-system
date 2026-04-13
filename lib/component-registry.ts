@@ -22,6 +22,7 @@ import { VerticalTab, VerticalTabGroup, VerticalTabIcon } from '@/components/ui/
 import { Skeleton, Spinner } from '@/components/ui/loading'
 import { Plus, Grid } from 'lucide-react'
 import { DistributionControls } from '@/components/ui/distribution-controls'
+import { Toast } from '@/components/ui/toast'
 
 // ─── Prop schema types ──────────────────────────────────────────────────────
 
@@ -1090,6 +1091,53 @@ export const registry: Record<string, ComponentEntry> = {
       const a = String(regionA || 'us-west-2')
       const b = String(regionB || 'us-east-1')
       return `<DistributionControls\n  defaultValue={${val}}\n  regionA="${a}"\n  regionB="${b}"\n  onChange={(a, b) => console.log(a, b)}\n/>`
+    },
+  },
+
+  // ─── Toast ───────────────────────────────────────────────────────────────────
+  toast: {
+    slug: 'toast',
+    title: 'Toast',
+    description:
+      'Brief non-blocking feedback messages for action confirmations, errors, warnings and async operations. Auto-dismiss after a configurable duration.',
+    status: 'stable',
+    scope: { Toast },
+    propSchema: {
+      type: {
+        type: 'chip-select',
+        label: 'Type',
+        options: ['default', 'success', 'error', 'warning', 'info', 'loading'],
+        default: 'success',
+      },
+      title: {
+        type: 'text',
+        label: 'Title',
+        default: 'Event has been created',
+      },
+      description: {
+        type: 'text',
+        label: 'Description',
+        default: 'Sunday, December 03, 2023 at 9:00 AM',
+      },
+      showAction: {
+        type: 'boolean',
+        label: 'Show action button',
+        default: false,
+      },
+    },
+    generateCode: ({ type, title, description, showAction }) => {
+      const t     = String(type)
+      const lbl   = String(title)
+      const desc  = String(description)
+      const sa    = showAction === true || showAction === 'true'
+
+      const lines: string[] = [`<Toast`]
+      if (t !== 'default') lines.push(`  type="${t}"`)
+      lines.push(`  title="${lbl}"`)
+      if (desc) lines.push(`  description="${desc}"`)
+      if (sa)   lines.push(`  action={{ label: 'Undo', onClick: () => {} }}`)
+      lines.push(`/>`)
+      return lines.join('\n')
     },
   },
 

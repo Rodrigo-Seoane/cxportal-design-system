@@ -1,0 +1,367 @@
+---
+title: Toast
+description: Brief non-blocking feedback messages for action confirmations, errors, warnings and async operations. Auto-dismiss after a configurable duration.
+status: stable
+---
+
+## Overview
+
+Toast notifications are short, non-intrusive messages that appear temporarily to confirm an action, communicate a status change, or surface a warning. They stack at a fixed edge of the viewport, auto-dismiss after a set duration, and never block the underlying UI.
+
+CxPortal toasts support six types — default, success, error, warning, info, and loading — with the option to include a secondary description line and a single action button for reversible operations.
+
+## When to use
+
+**Use toasts for:**
+
+- Confirming that a user action was completed (file saved, record deleted, form submitted)
+- Non-critical errors that don't prevent the user from continuing (network retry, sync failure)
+- Warnings about side effects that don't require an immediate decision
+- Surfacing the progress or outcome of an async operation (`toast.promise`)
+- Offering a brief undo window after a destructive action
+
+**Do not use toasts for:**
+
+- Critical errors that block the workflow — use a Modal or inline error instead
+- Decisions that require the user to choose between options — use a Dialog
+- Form field validation — use inline error messages beneath each field
+- Permanent or persistent status information — use a Badge or MessageBox
+
+## Types
+
+<Table size="compact" className="mb-6">
+  <TableHeader>
+    <tr>
+      <TableHead>Type</TableHead>
+      <TableHead>Icon</TableHead>
+      <TableHead>Colour</TableHead>
+      <TableHead>Default duration</TableHead>
+      <TableHead>Use for</TableHead>
+    </tr>
+  </TableHeader>
+  <TableBody>
+    <TableRow>
+      <TableCell><code>default</code></TableCell>
+      <TableCell>None</TableCell>
+      <TableCell>—</TableCell>
+      <TableCell>4 000 ms</TableCell>
+      <TableCell>Neutral confirmations with no strong semantic signal</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><code>success</code></TableCell>
+      <TableCell>CheckCircle</TableCell>
+      <TableCell>#4b9924</TableCell>
+      <TableCell>3 000 ms</TableCell>
+      <TableCell>Completed actions — saved, created, sent, uploaded</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><code>error</code></TableCell>
+      <TableCell>XCircle</TableCell>
+      <TableCell>#ef2056</TableCell>
+      <TableCell>5 000 ms</TableCell>
+      <TableCell>Non-blocking failures — retry available, operation partially failed</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><code>warning</code></TableCell>
+      <TableCell>Warning</TableCell>
+      <TableCell>#c97000</TableCell>
+      <TableCell>4 000 ms</TableCell>
+      <TableCell>Cautions about side effects that do not require immediate action</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><code>info</code></TableCell>
+      <TableCell>Info</TableCell>
+      <TableCell>#4285f4</TableCell>
+      <TableCell>4 000 ms</TableCell>
+      <TableCell>Informational updates — new content available, sync in progress</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><code>loading</code></TableCell>
+      <TableCell>CircleNotch (spinning)</TableCell>
+      <TableCell>#4285f4</TableCell>
+      <TableCell>No auto-dismiss</TableCell>
+      <TableCell>Async operations — use with <code>toast.promise</code> to transition to success or error</TableCell>
+    </TableRow>
+  </TableBody>
+</Table>
+
+## Variants
+
+<Table size="compact" className="mb-6">
+  <TableHeader>
+    <tr>
+      <TableHead>Variant</TableHead>
+      <TableHead>Description</TableHead>
+    </tr>
+  </TableHeader>
+  <TableBody>
+    <TableRow>
+      <TableCell>Single-line</TableCell>
+      <TableCell>No <code>description</code> prop. Row is 48 px tall, items are vertically centered. Best for short confirmations.</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>Multi-line</TableCell>
+      <TableCell><code>description</code> prop present. Minimum height 64 px, content is top-aligned. Suitable for adding context to the title.</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>With icon</TableCell>
+      <TableCell>All types except <code>default</code> render a 16×16 semantic icon on the leading edge.</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>With action</TableCell>
+      <TableCell><code>action</code> prop adds a small blue button on the trailing edge. Use for reversible operations such as Undo or Retry.</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>Loading</TableCell>
+      <TableCell>Spinning CircleNotch icon. Duration is 0 (no auto-dismiss) — designed to be updated by <code>toast.promise</code>.</TableCell>
+    </TableRow>
+  </TableBody>
+</Table>
+
+## Behaviour
+
+### Position
+
+The default position is **top-right**. This keeps notifications away from primary content areas (forms, tables) while remaining in the user's natural reading flow. Other positions are supported for layout requirements.
+
+<Table size="compact" className="mb-6">
+  <TableHeader>
+    <tr>
+      <TableHead>Position</TableHead>
+      <TableHead>Notes</TableHead>
+    </tr>
+  </TableHeader>
+  <TableBody>
+    <TableRow>
+      <TableCell><code>top-right</code> (default)</TableCell>
+      <TableCell>Standard CxPortal placement</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><code>top-left</code></TableCell>
+      <TableCell>Suitable for RTL layouts or left-anchored shells</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><code>top-center</code></TableCell>
+      <TableCell>Use when the viewport is narrow or content is centred</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><code>bottom-right</code></TableCell>
+      <TableCell>Avoids overlap with sticky top navigation</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><code>bottom-left</code></TableCell>
+      <TableCell>Common in chat and messaging patterns</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><code>bottom-center</code></TableCell>
+      <TableCell>Mobile-first layouts</TableCell>
+    </TableRow>
+  </TableBody>
+</Table>
+
+### Timing
+
+<Table size="compact" className="mb-6">
+  <TableHeader>
+    <tr>
+      <TableHead>Type</TableHead>
+      <TableHead>Duration</TableHead>
+      <TableHead>Rationale</TableHead>
+    </tr>
+  </TableHeader>
+  <TableBody>
+    <TableRow>
+      <TableCell><code>default</code></TableCell>
+      <TableCell>4 000 ms</TableCell>
+      <TableCell>Standard reading time for a short sentence</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><code>success</code></TableCell>
+      <TableCell>3 000 ms</TableCell>
+      <TableCell>Confirmations need less time — user already knows the action they took</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><code>error</code></TableCell>
+      <TableCell>5 000 ms</TableCell>
+      <TableCell>Errors need more reading time; user may need to act on them</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><code>warning</code></TableCell>
+      <TableCell>4 000 ms</TableCell>
+      <TableCell>Standard</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><code>info</code></TableCell>
+      <TableCell>4 000 ms</TableCell>
+      <TableCell>Standard</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><code>loading</code></TableCell>
+      <TableCell>No auto-dismiss</TableCell>
+      <TableCell>Persists until the promise resolves or rejects</TableCell>
+    </TableRow>
+  </TableBody>
+</Table>
+
+Override the duration with the `duration` option (in milliseconds). Pass `duration: 0` to prevent auto-dismiss entirely.
+
+### Animation
+
+Toasts slide in from the edge of the viewport (16 px horizontal offset) with 200 ms ease transitions on `opacity` and `transform`. On dismiss the animation reverses. The 300 ms prune delay ensures the exit animation completes before the element is removed from the DOM.
+
+### Stacking
+
+The `Toaster` shows the most recent `maxToasts` toasts (default: 3). Toasts beyond this limit are queued in the store and displayed as older ones dismiss. The newest toast always appears visually closest to the viewport edge.
+
+## Setup
+
+Add a single `<Toaster />` to your root layout. It does not need to be near the component that triggers the toast — the store is module-level.
+
+```tsx
+// app/layout.tsx
+import { Toaster } from '@/components/ui/toast'
+
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+  return (
+    <html lang="en">
+      <body>
+        {children}
+        <Toaster position="top-right" />
+      </body>
+    </html>
+  )
+}
+```
+
+## API reference
+
+### Imperative API
+
+Call `toast` or any of its methods from anywhere — server actions, event handlers, utility functions.
+
+```tsx
+import { toast } from '@/components/ui/toast'
+
+// Default
+toast('Changes saved.')
+
+// Typed
+toast.success('File uploaded successfully.')
+toast.error('Upload failed. Please try again.')
+toast.warning('Session expires in 5 minutes.')
+toast.info('A new version is available.')
+
+// With description
+toast.success('Event created', {
+  description: 'Sunday, December 03, 2023 at 9:00 AM',
+})
+
+// With action button
+toast.error('Message deleted', {
+  action: { label: 'Undo', onClick: () => restoreMessage() },
+})
+
+// Custom duration (ms). Pass 0 to prevent auto-dismiss.
+toast.info('Syncing…', { duration: 0 })
+
+// Dismiss programmatically
+const id = toast.loading('Uploading…')
+toast.dismiss(id)
+
+// Dismiss all
+toast.dismiss()
+```
+
+### toast.promise
+
+Automatically transitions a loading toast to success or error based on a promise's outcome.
+
+```tsx
+toast.promise(uploadFile(file), {
+  loading: 'Uploading file…',
+  success: (data) => `${data.filename} uploaded successfully.`,
+  error:   (err)  => `Upload failed: ${err.message}`,
+})
+```
+
+The `loading`, `success`, and `error` values accept a plain string or a function that receives the resolved value / rejection reason.
+
+## Props
+
+### Toast
+
+<Table size="compact" className="mb-6">
+  <TableHeader>
+    <tr>
+      <TableHead>Prop</TableHead>
+      <TableHead>Type</TableHead>
+      <TableHead>Default</TableHead>
+      <TableHead>Description</TableHead>
+    </tr>
+  </TableHeader>
+  <TableBody>
+    <TableRow>
+      <TableCell><code>title</code></TableCell>
+      <TableCell><code>string</code></TableCell>
+      <TableCell>Required</TableCell>
+      <TableCell>Primary message text (14 px / 400 weight)</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><code>type</code></TableCell>
+      <TableCell><code>'default' | 'success' | 'error' | 'warning' | 'info' | 'loading'</code></TableCell>
+      <TableCell><code>'default'</code></TableCell>
+      <TableCell>Controls icon and semantic colour</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><code>description</code></TableCell>
+      <TableCell><code>string</code></TableCell>
+      <TableCell>—</TableCell>
+      <TableCell>Secondary text below the title (12 px / 300 weight). Triggers multi-line layout when set.</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><code>action</code></TableCell>
+      <TableCell><code>{'{ label: string; onClick: () => void }'}</code></TableCell>
+      <TableCell>—</TableCell>
+      <TableCell>Renders a small action button on the trailing edge</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><code>onDismiss</code></TableCell>
+      <TableCell><code>() =&gt; void</code></TableCell>
+      <TableCell>—</TableCell>
+      <TableCell>Renders a dismiss (×) button when set. Not rendered alongside an action button.</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><code>className</code></TableCell>
+      <TableCell><code>string</code></TableCell>
+      <TableCell>—</TableCell>
+      <TableCell>Additional CSS class applied to the outer container</TableCell>
+    </TableRow>
+  </TableBody>
+</Table>
+
+### Toaster
+
+<Table size="compact" className="mb-6">
+  <TableHeader>
+    <tr>
+      <TableHead>Prop</TableHead>
+      <TableHead>Type</TableHead>
+      <TableHead>Default</TableHead>
+      <TableHead>Description</TableHead>
+    </tr>
+  </TableHeader>
+  <TableBody>
+    <TableRow>
+      <TableCell><code>position</code></TableCell>
+      <TableCell><code>'top-right' | 'top-left' | 'top-center' | 'bottom-right' | 'bottom-left' | 'bottom-center'</code></TableCell>
+      <TableCell><code>'top-right'</code></TableCell>
+      <TableCell>Fixed-position anchor for the toast stack</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><code>maxToasts</code></TableCell>
+      <TableCell><code>number</code></TableCell>
+      <TableCell><code>3</code></TableCell>
+      <TableCell>Maximum number of toasts rendered simultaneously. Older entries are hidden until newer ones dismiss.</TableCell>
+    </TableRow>
+  </TableBody>
+</Table>
