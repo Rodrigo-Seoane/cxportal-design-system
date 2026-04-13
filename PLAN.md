@@ -217,17 +217,16 @@ project_portal/
 | Stepper | `stepper` | Apr 13, 2026 |
 
 ### Phase 5c — Charts
-**Milestone:** All chart types documented with interactive playground and MDX docs.
-
-| Component | Slug | Status |
-|---|---|---|
-| Area Chart | `area` | WIP |
-| Bar Chart | `bar` | WIP |
-| Line Chart | `line` | WIP |
-| Pie Chart | `pie` | WIP |
-| Radial Chart | `radial` | WIP |
+**Milestone:** All chart pages documented with interactive demos and inline documentation.
 
 > Charts live at `/charts/[slug]` — separate section in sidebar, distinct from `/components`.
+> Charts are self-contained pages (no MDX, no component-registry entry). Documentation is inline JSX.
+> Recharts handles rendering. react-day-picker + date-fns power the calendar picker.
+
+| Page | Route | Status | Notes |
+|---|---|---|---|
+| Full Size Chart | `/charts/full-size` | WIP | Chart type tabs (Bar/Area/Line), multi-series toggles (Desktop/Mobile/Tablet), date range picker with shortcuts, dynamic X-axis density |
+| Graph Cards | `/charts/graph-cards` | WIP | Compact 2-col grid cards — Area, Bar (value labels), Line variants; insight footer with trend direction icon |
 
 ### Phase 6 — Sandbox Space
 **Milestone:** A shareable, design-system-aware workspace for new experiments.

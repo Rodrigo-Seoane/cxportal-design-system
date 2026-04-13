@@ -107,11 +107,8 @@ const NAV_GROUPS: NavGroup[] = [
     Icon: ChartBarIcon,
     basePath: '/charts',
     items: [
-      { label: 'Area Type',   href: '/charts/area',   status: 'wip' },
-      { label: 'Bar Type',    href: '/charts/bar',    status: 'wip' },
-      { label: 'Line Type',   href: '/charts/line',   status: 'wip' },
-      { label: 'Pie Type',    href: '/charts/pie',    status: 'wip' },
-      { label: 'Radial Type', href: '/charts/radial', status: 'wip' },
+      { label: 'Full Size',    href: '/charts/full-size',    status: 'wip' },
+      { label: 'Graph Cards',  href: '/charts/graph-cards',  status: 'wip' },
     ],
   },
   {
