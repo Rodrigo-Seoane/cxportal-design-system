@@ -44,7 +44,7 @@ const T = {
 function CalChevron({ orientation }: { orientation?: 'up' | 'down' | 'left' | 'right' }) {
   if (orientation === 'left')  return <CaretLeftIcon  size={14} color="#4b535e" />
   if (orientation === 'right') return <CaretRightIcon size={14} color="#4b535e" />
-  return null
+  return <></>
 }
 
 // ── Component ──────────────────────────────────────────────────────────────────

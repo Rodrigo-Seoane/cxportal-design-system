@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect, useRef } from 'react'
-import { TopBar } from '@/components/layout/TopBar'
+import { SandboxShell } from '@/components/sandbox/SandboxShell'
 import { Button } from '@/components/ui/button'
 import { Select } from '@/components/ui/select'
 import { DatePicker } from '@/components/ui/date-picker'
@@ -25,7 +25,7 @@ const REPORT_OPTIONS = [{ label: 'Login Report', value: 'login' }]
 
 // ── Page ───────────────────────────────────────────────────────────────────────
 
-export default function ReportsPage() {
+export default function LoginReportPage() {
   // Form state
   const [reportType, setReportType] = useState('')
   const [startDate, setStartDate]   = useState<Date | null>(null)
@@ -108,8 +108,13 @@ export default function ReportsPage() {
   // ── Render ─────────────────────────────────────────────────────────────────
 
   return (
-    <>
-      <TopBar title="Reports" />
+    <SandboxShell
+      title="Login Report"
+      description="Generate and download login activity reports for a selected date range. Tests the report configuration flow, progress feedback, and success/error states."
+      status="In Review"
+      author="Rodrigo S."
+      created="2026-04-10"
+    >
       <Toaster position="top-right" />
 
       <main
@@ -295,6 +300,6 @@ export default function ReportsPage() {
           </div>
         </div>
       </main>
-    </>
+    </SandboxShell>
   )
 }
