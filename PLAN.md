@@ -216,17 +216,17 @@ project_portal/
 | Clickable Card | `clickable-card` | Apr 13, 2026 |
 | Stepper | `stepper` | Apr 13, 2026 |
 
-### Phase 5c — Charts
+### Phase 5c — Charts ✅
 **Milestone:** All chart pages documented with interactive demos and inline documentation.
 
 > Charts live at `/charts/[slug]` — separate section in sidebar, distinct from `/components`.
 > Charts are self-contained pages (no MDX, no component-registry entry). Documentation is inline JSX.
 > Recharts handles rendering. react-day-picker + date-fns power the calendar picker.
 
-| Page | Route | Status | Notes |
+| Page | Route | Status | Completed |
 |---|---|---|---|
-| Full Size Chart | `/charts/full-size` | WIP | Chart type tabs (Bar/Area/Line), multi-series toggles (Desktop/Mobile/Tablet), date range picker with shortcuts, dynamic X-axis density |
-| Graph Cards | `/charts/graph-cards` | WIP | Compact 2-col grid cards — Area, Bar (value labels), Line variants; insight footer with trend direction icon |
+| Full Size Chart | `/charts/full-size` | Stable | Apr 14, 2026 |
+| Graph Cards | `/charts/graph-cards` | Stable | Apr 14, 2026 |
 
 ### Phase 6 — Sandbox Space
 **Milestone:** A shareable, design-system-aware workspace for new experiments.

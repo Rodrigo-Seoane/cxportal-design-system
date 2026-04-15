@@ -42,6 +42,8 @@ export interface SelectProps {
   multiSelect?: boolean
   /** Show search row at top of dropdown */
   searchable?: boolean
+  /** Show required asterisk before the label */
+  required?: boolean
   /** Error message below the trigger */
   error?: string
   disabled?: boolean
@@ -84,6 +86,7 @@ export function Select({
   type = 'simple',
   multiSelect = false,
   searchable = false,
+  required = false,
   error,
   disabled = false,
   className,
@@ -304,7 +307,9 @@ export function Select({
         <label
           htmlFor={id}
           style={{
-            display: 'block',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '4px',
             marginBottom: '8px',
             fontSize: '12px',
             fontWeight: 600,
@@ -314,6 +319,11 @@ export function Select({
             cursor: disabled ? 'not-allowed' : 'default',
           }}
         >
+          {required && (
+            <span style={{ fontSize: '14px', fontWeight: 400, color: T.textValue, lineHeight: '20px' }}>
+              *
+            </span>
+          )}
           {label}
         </label>
       )}

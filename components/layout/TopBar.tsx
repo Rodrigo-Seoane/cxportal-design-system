@@ -1,3 +1,15 @@
+import { InlineContextData } from '@/components/ui/inline-context-data'
+
+const FigmaIcon = (
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <path d="M12 2C9.243 2 7 4.243 7 7s2.243 5 5 5 5-2.243 5-5-2.243-5-5-5z" fill="#0ACF83"/>
+    <path d="M7 12c-2.757 0-5 2.243-5 5s2.243 5 5 5 5-2.243 5-5-2.243-5-5-5z" fill="#F24E1E"/>
+    <path d="M17 12c-2.757 0-5 2.243-5 5s2.243 5 5 5 5-2.243 5-5-2.243-5-5-5z" fill="#FF7262"/>
+    <path d="M7 2C4.243 2 2 4.243 2 7s2.243 5 5 5 5-2.243 5-5-2.243-5-5-5z" fill="#F24E1E"/>
+    <path d="M17 2c-2.757 0-5 2.243-5 5s2.243 5 5 5 5-2.243 5-5-2.243-5-5-5z" fill="#1ABCFE"/>
+  </svg>
+)
+
 export function TopBar({ title, figmaUpdated }: { title?: string; figmaUpdated?: string }) {
   return (
     <header
@@ -16,16 +28,11 @@ export function TopBar({ title, figmaUpdated }: { title?: string; figmaUpdated?:
 
       <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
         {figmaUpdated && (
-          <span
-            style={{
-              fontSize: 11,
-              fontWeight: 400,
-              color: 'var(--color-text-secondary)',
-              whiteSpace: 'nowrap',
-            }}
-          >
-            Figma synced {figmaUpdated}
-          </span>
+          <InlineContextData
+            icon={FigmaIcon}
+            label="Figma synced"
+            value={figmaUpdated}
+          />
         )}
         <a
           href="https://www.figma.com/design/exoHhvasbJSziVGakV8Y0r/CxPortal-%7C-Design-System"

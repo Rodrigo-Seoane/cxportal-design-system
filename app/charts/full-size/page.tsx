@@ -31,12 +31,6 @@ export default function FullSizeChartPage() {
           <h2 className="text-2xl font-semibold" style={{ color: 'var(--color-text-primary)' }}>
             Full Size Chart
           </h2>
-          <span
-            className="mt-1 text-xs font-semibold px-2 py-0.5 rounded-full"
-            style={{ backgroundColor: 'var(--color-warning-100)', color: '#7a4a00' }}
-          >
-            wip
-          </span>
         </div>
         <p className="mb-10 text-base" style={{ color: 'var(--color-text-secondary)' }}>
           A full-width chart panel for dashboards. Combines a configurable header with one of three
