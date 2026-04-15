@@ -80,26 +80,28 @@ const NAV_GROUPS: NavGroup[] = [
     Icon: SquaresFourIcon,
     basePath: '/components',
     items: [
-      { label: 'Button',              href: '/components/button',              status: 'stable' },
-      { label: 'Input',               href: '/components/input',               status: 'stable' },
-      { label: 'Select',              href: '/components/select',              status: 'stable' },
-      { label: 'Checkbox & Radio',    href: '/components/checkbox',            status: 'stable' },
-      { label: 'Navigation',          href: '/components/navigation',          status: 'stable' },
-      { label: 'Table',               href: '/components/table',               status: 'stable' },
-      { label: 'Chips & Tags',        href: '/components/chips',               status: 'stable' },
-      { label: 'Tabs',                href: '/components/tabs',                status: 'stable' },
-      { label: 'Vertical Tabs',       href: '/components/vertical-tabs',       status: 'stable' },
-      { label: 'Modal',               href: '/components/modal',               status: 'stable' },
-      { label: 'Message Box',         href: '/components/message-box',         status: 'stable' },
-      { label: 'Switch',              href: '/components/switch',              status: 'stable' },
-      { label: 'Pagination',          href: '/components/pagination',          status: 'stable' },
-      { label: 'Loading',             href: '/components/loading',             status: 'stable' },
-      { label: 'Toast Notifications', href: '/components/toast',               status: 'stable' },
-      { label: 'Tooltip',             href: '/components/tooltip',             status: 'stable' },
-      { label: 'Stats Cards',         href: '/components/stats-cards',         status: 'stable' },
-      { label: 'Inline Context Data', href: '/components/inline-context-data', status: 'stable' },
-      { label: 'Clickable Card',      href: '/components/clickable-card',      status: 'stable' },
-      { label: 'Stepper',             href: '/components/stepper',             status: 'stable' },
+      { label: 'Button',                href: '/components/button',                status: 'stable' },
+      { label: 'Input',                 href: '/components/input',                 status: 'stable' },
+      { label: 'Select',                href: '/components/select',                status: 'stable' },
+      { label: 'Date Picker',           href: '/components/date-picker',           status: 'stable' },
+      { label: 'Checkbox & Radio',      href: '/components/checkbox',              status: 'stable' },
+      { label: 'Navigation',            href: '/components/navigation',            status: 'stable' },
+      { label: 'Table',                 href: '/components/table',                 status: 'stable' },
+      { label: 'Chips & Tags',          href: '/components/chips',                 status: 'stable' },
+      { label: 'Tabs',                  href: '/components/tabs',                  status: 'stable' },
+      { label: 'Vertical Tabs',         href: '/components/vertical-tabs',         status: 'stable' },
+      { label: 'Modal',                 href: '/components/modal',                 status: 'stable' },
+      { label: 'Message Box',           href: '/components/message-box',           status: 'stable' },
+      { label: 'Switch',                href: '/components/switch',                status: 'stable' },
+      { label: 'Pagination',            href: '/components/pagination',            status: 'stable' },
+      { label: 'Loading',               href: '/components/loading',               status: 'stable' },
+      { label: 'Toast Notifications',   href: '/components/toast',                 status: 'stable' },
+      { label: 'Tooltip',               href: '/components/tooltip',               status: 'stable' },
+      { label: 'Stats Cards',           href: '/components/stats-cards',           status: 'stable' },
+      { label: 'Inline Context Data',   href: '/components/inline-context-data',   status: 'stable' },
+      { label: 'Clickable Card',        href: '/components/clickable-card',        status: 'stable' },
+      { label: 'Stepper',               href: '/components/stepper',               status: 'stable' },
+      { label: 'Distribution Controls', href: '/components/distribution-controls', status: 'stable' },
     ],
   },
   {
@@ -107,8 +109,8 @@ const NAV_GROUPS: NavGroup[] = [
     Icon: ChartBarIcon,
     basePath: '/charts',
     items: [
-      { label: 'Full Size',    href: '/charts/full-size',    status: 'wip' },
-      { label: 'Graph Cards',  href: '/charts/graph-cards',  status: 'wip' },
+      { label: 'Full Size',    href: '/charts/full-size',    status: 'stable' },
+      { label: 'Graph Cards',  href: '/charts/graph-cards',  status: 'stable' },
     ],
   },
   {
@@ -116,11 +118,18 @@ const NAV_GROUPS: NavGroup[] = [
     Icon: FlaskIcon,
     basePath: '/sandbox',
     items: [
-      { label: 'All Experiments',        href: '/sandbox' },
-      { label: 'Distribution Controls',  href: '/components/distribution-controls', status: 'wip' },
+      { label: 'Login Report', href: '/reports', status: 'wip' },
     ],
   },
 ]
+
+// Returns the nav group whose basePath or any sub-item href matches pathname
+function findActiveGroup(pathname: string): string | null {
+  return NAV_GROUPS.find(s =>
+    pathname.startsWith(s.basePath) ||
+    s.items.some(i => pathname === i.href || pathname.startsWith(i.href + '/'))
+  )?.group ?? null
+}
 
 const sublistVariants = {
   open:   { height: 'auto', opacity: 1 },
@@ -307,13 +316,13 @@ export function Sidebar() {
   }, [collapsed])
 
   // Single open group
-  const activeGroup = NAV_GROUPS.find(s => pathname.startsWith(s.basePath))?.group ?? null
+  const activeGroup = findActiveGroup(pathname)
   const [openGroup, setOpenGroup] = useState<string | null>(activeGroup)
 
   useEffect(() => {
     setOpenGroup(prev => {
-      const hit = NAV_GROUPS.find(s => pathname.startsWith(s.basePath))
-      if (hit && prev !== hit.group) return hit.group
+      const group = findActiveGroup(pathname)
+      if (group && prev !== group) return group
       return prev
     })
   }, [pathname])
@@ -365,7 +374,8 @@ export function Sidebar() {
         ))}
         {NAV_GROUPS.map(section => {
           const isOpen        = !collapsed && openGroup === section.group
-          const isGroupActive = pathname.startsWith(section.basePath)
+          const isGroupActive = pathname.startsWith(section.basePath) ||
+            section.items.some(i => pathname === i.href || pathname.startsWith(i.href + '/'))
 
           return (
             <div key={section.group}>

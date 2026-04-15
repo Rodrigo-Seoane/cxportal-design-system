@@ -29,6 +29,7 @@ import { ClickableCard, ClickableHorizontalCard } from '@/components/ui/clickabl
 import { InlineContextData } from '@/components/ui/inline-context-data'
 import { AddressBookIcon, CalendarIcon, TagIcon, UserListIcon } from '@/components/ui/playground-icons'
 import { Stepper } from '@/components/ui/stepper'
+import { DatePicker } from '@/components/ui/date-picker'
 
 // ─── Prop schema types ──────────────────────────────────────────────────────
 
@@ -1066,13 +1067,59 @@ export const registry: Record<string, ComponentEntry> = {
     },
   },
 
+  // ─── Date Picker ─────────────────────────────────────────────────────────────
+  'date-picker': {
+    slug: 'date-picker',
+    title: 'Date Picker',
+    description:
+      'A DS-styled calendar input for selecting a single date. Portal-based calendar popup built on react-day-picker, with label, required, disabled, and error states — consistent with Select and Input field styling.',
+    status: 'stable',
+    scope: { DatePicker },
+    propSchema: {
+      label: {
+        type: 'text',
+        label: 'Label',
+        default: 'Date',
+      },
+      required: {
+        type: 'boolean',
+        label: 'Required',
+        default: false,
+      },
+      disabled: {
+        type: 'boolean',
+        label: 'Disabled',
+        default: false,
+      },
+      showError: {
+        type: 'boolean',
+        label: 'Error state',
+        default: false,
+      },
+    },
+    generateCode: ({ label, required, disabled, showError }) => {
+      const lbl = String(label || 'Date')
+      const req = required  === true || required  === 'true'
+      const dis = disabled  === true || disabled  === 'true'
+      const err = showError === true || showError === 'true'
+
+      const lines: string[] = [`<DatePicker`]
+      lines.push(`  label="${lbl}"`)
+      if (req) lines.push(`  required`)
+      if (dis) lines.push(`  disabled`)
+      if (err) lines.push(`  error="Please select a date."`)
+      lines.push(`/>`)
+      return lines.join('\n')
+    },
+  },
+
   // ─── Distribution Controls ───────────────────────────────────────────────────
   'distribution-controls': {
     slug: 'distribution-controls',
     title: 'Distribution Controls',
     description:
       'Traffic distribution slider for AWS failover scenarios. Splits traffic between two regions (0–100% in steps of 10) via a draggable handle or synchronized input fields.',
-    status: 'wip',
+    status: 'stable',
     scope: { DistributionControls },
     propSchema: {
       defaultValue: {

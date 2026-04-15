@@ -1,0 +1,196 @@
+---
+title: Date Picker
+description: A DS-styled calendar input for selecting a single date. Portal-based popup built on react-day-picker, consistent with Select and Input field styling.
+figmaNodeId: 145-6763
+figmaUpdated: Apr 15, 2026
+status: stable
+---
+
+## Overview
+
+Date Picker is a form field for selecting a single calendar date. It follows the same visual language as Input and Select — a labeled trigger field with a calendar icon that opens a portal-positioned calendar popup when clicked. Selecting a date closes the popup and populates the field.
+
+The underlying calendar is powered by `react-day-picker` v9 (already a project dependency). No external license or additional package is required.
+
+## When to Use
+
+- When the user needs to enter a specific date in a form (start date, end date, event date)
+- When date validity matters and free-text entry would introduce formatting errors
+- When you need a bounded selection — use a plain `Input` variant `"date"` only for simple inline date fields without calendar navigation
+
+**Do not use** for date-range selection. Two independent Date Pickers side by side (as in the Login Report) is the correct pattern.
+
+## Anatomy
+
+A Date Picker consists of:
+
+- **Label** — 12px SemiBold, always rendered above the trigger. Supports a `required` asterisk prefix consistent with Select.
+- **Trigger button** — The clickable field. Shows `mm/dd/yyyy` placeholder when empty, or the selected date formatted as `MM/dd/yyyy`. A `CalendarBlankIcon` is pinned to the right.
+- **Calendar popup** — Portal-positioned below the trigger. Renders a single-month `DayPicker` from `react-day-picker` with DS tokens applied via CSS variables. Navigation uses Phosphor `CaretLeftIcon` / `CaretRightIcon`.
+- **Error message (optional)** — 10px red copy below the trigger, announced via `role="alert"`.
+
+<Table size="compact" className="mb-6">
+  <TableHeader>
+    <tr>
+      <TableHead>State</TableHead>
+      <TableHead>Border</TableHead>
+      <TableHead>Description</TableHead>
+    </tr>
+  </TableHeader>
+  <TableBody>
+    <TableRow>
+      <TableCell>Default</TableCell>
+      <TableCell><code>#d9dce0</code></TableCell>
+      <TableCell>Resting, not yet interacted</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>Open (focus)</TableCell>
+      <TableCell><code>#4285f4</code> (primary blue)</TableCell>
+      <TableCell>Calendar popup is visible; trigger border turns blue</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>Filled</TableCell>
+      <TableCell><code>#d9dce0</code></TableCell>
+      <TableCell>A date is selected; field shows formatted date in <code>#4b535e</code></TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>Error</TableCell>
+      <TableCell><code>#f792ac</code></TableCell>
+      <TableCell>Validation failed; error message shown below field</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>Disabled</TableCell>
+      <TableCell><code>#d9dce0</code></TableCell>
+      <TableCell>Background <code>#eff1f3</code>; label and text become <code>#aab0b8</code></TableCell>
+    </TableRow>
+  </TableBody>
+</Table>
+
+## Props
+
+<Table size="compact" className="mb-6">
+  <TableHeader>
+    <tr>
+      <TableHead>Prop</TableHead>
+      <TableHead>Type</TableHead>
+      <TableHead>Default</TableHead>
+      <TableHead>Description</TableHead>
+    </tr>
+  </TableHeader>
+  <TableBody>
+    <TableRow>
+      <TableCell><code>label</code></TableCell>
+      <TableCell><code>string</code></TableCell>
+      <TableCell><code>"Date"</code></TableCell>
+      <TableCell>Label text rendered above the trigger</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><code>value</code></TableCell>
+      <TableCell><code>Date | null</code></TableCell>
+      <TableCell>—</TableCell>
+      <TableCell>Controlled selected date. Pass <code>null</code> for empty state</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><code>onChange</code></TableCell>
+      <TableCell><code>(date: Date | null) =&gt; void</code></TableCell>
+      <TableCell>—</TableCell>
+      <TableCell>Called when a date is selected or cleared</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><code>placeholder</code></TableCell>
+      <TableCell><code>string</code></TableCell>
+      <TableCell><code>"mm/dd/yyyy"</code></TableCell>
+      <TableCell>Placeholder shown when no date is selected</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><code>required</code></TableCell>
+      <TableCell><code>boolean</code></TableCell>
+      <TableCell><code>false</code></TableCell>
+      <TableCell>Renders a <code>*</code> before the label text in DS style</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><code>disabled</code></TableCell>
+      <TableCell><code>boolean</code></TableCell>
+      <TableCell><code>false</code></TableCell>
+      <TableCell>Disables the trigger; calendar cannot be opened</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><code>error</code></TableCell>
+      <TableCell><code>string</code></TableCell>
+      <TableCell>—</TableCell>
+      <TableCell>Validation message shown below the field in error style</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><code>id</code></TableCell>
+      <TableCell><code>string</code></TableCell>
+      <TableCell>auto</TableCell>
+      <TableCell>HTML <code>id</code> for the trigger. Auto-generated via <code>useId</code> if omitted</TableCell>
+    </TableRow>
+  </TableBody>
+</Table>
+
+## Accessibility
+
+- The trigger uses `aria-haspopup="dialog"` and `aria-expanded` to communicate popup state to screen readers.
+- An `aria-invalid` attribute is added when an `error` prop is present; the error message is linked via `aria-describedby`.
+- The label element is properly associated with the trigger via `htmlFor` / `id`.
+- The calendar popup is dismissed on **Escape**, and clicking outside closes it — both patterns are handled with keyboard and pointer event listeners.
+- Today's date is highlighted visually in the calendar via `react-day-picker`'s built-in today styling.
+
+<DosDonts>
+  <Do>
+    Use two separate Date Pickers for a date range (Start Date + End Date) — this gives users independent control over each value and clear separate labels.
+  </Do>
+  <Dont>
+    Use a single free-text Input for dates when the format must be consistent — users will enter dates in incompatible formats and validation becomes complex.
+  </Dont>
+</DosDonts>
+
+<DosDonts>
+  <Do>
+    Always include the <code>label</code> prop. Both the label and the calendar icon communicate the field's purpose; omitting the label removes an important accessibility anchor.
+  </Do>
+  <Dont>
+    Pre-populate a Date Picker with today's date unless the context explicitly calls for it — leave the field empty (<code>value={null}</code>) so users make a deliberate selection.
+  </Dont>
+</DosDonts>
+
+## Code
+
+**Uncontrolled (simplest):**
+
+```tsx
+import { DatePicker } from '@/components/ui/date-picker'
+
+// Manages its own state internally — use when you don't need to read the value outside the field
+<DatePicker label="Date" required />
+```
+
+**Controlled (with state):**
+
+```tsx
+import { useState } from 'react'
+import { DatePicker } from '@/components/ui/date-picker'
+
+export function ReportForm() {
+  const [startDate, setStartDate] = useState<Date | null>(null)
+  const [endDate,   setEndDate]   = useState<Date | null>(null)
+
+  return (
+    <div style={{ display: 'flex', gap: 16 }}>
+      <DatePicker
+        label="Start Date"
+        value={startDate}
+        onChange={setStartDate}
+        required
+      />
+      <DatePicker
+        label="End Date"
+        value={endDate}
+        onChange={setEndDate}
+        required
+      />
+    </div>
+  )
+}
+```
