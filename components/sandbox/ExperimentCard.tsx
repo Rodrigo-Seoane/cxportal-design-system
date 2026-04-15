@@ -1,3 +1,5 @@
+'use client'
+
 import Link from 'next/link'
 import type { Experiment, ExperimentStatus } from '@/lib/sandbox-registry'
 
