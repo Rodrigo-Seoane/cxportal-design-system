@@ -26,6 +26,7 @@ import {
   StackPlusIcon,
   StackMinusIcon,
   XCircleIcon,
+  ArticleIcon,
   SlidersHorizontalIcon,
   PlugsConnectedIcon,
   ArrowsDownUpIcon,
@@ -1680,6 +1681,235 @@ function BulkTagModal({
   )
 }
 
+// ── Rename Article Modal ───────────────────────────────────────────────────────
+
+function RenameArticleModal({
+  article,
+  onClose,
+  onSave,
+}: {
+  article: Article
+  onClose: () => void
+  onSave: (newTitle: string) => void
+}) {
+  const [newName, setNewName] = useState(article.title)
+  const [mounted, setMounted] = useState(false)
+
+  useEffect(() => { setMounted(true) }, [])
+
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose() }
+    document.addEventListener('keydown', handler)
+    return () => document.removeEventListener('keydown', handler)
+  }, [onClose])
+
+  const canSave = newName.trim().length > 0 && newName.trim() !== article.title
+
+  function handleSave() {
+    if (!canSave) return
+    onSave(newName.trim())
+    onClose()
+  }
+
+  if (!mounted) return null
+
+  return createPortal(
+    <div
+      onClick={onClose}
+      style={{
+        position: 'fixed', inset: 0,
+        background: 'rgba(0,0,0,0.4)',
+        zIndex: 1002,
+        display: 'flex', alignItems: 'center', justifyContent: 'center',
+      }}
+    >
+      <div
+        onClick={e => e.stopPropagation()}
+        style={{
+          background: '#ffffff',
+          borderRadius: 8,
+          width: 492,
+          maxWidth: 'calc(100vw - 32px)',
+          padding: 16,
+          boxShadow: '0 4px 24px rgba(5,3,38,0.08)',
+        }}
+      >
+        <div style={{
+          display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+          borderBottom: '1px solid #eff1f3', paddingBottom: 16, marginBottom: 0,
+        }}>
+          <span style={{ fontSize: 24, fontWeight: 400, color: '#021920' }}>Rename Article</span>
+          <button
+            onClick={onClose}
+            style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#7a828c', display: 'flex', padding: 0 }}
+          >
+            <XIcon size={18} />
+          </button>
+        </div>
+
+        <div style={{ padding: 16, display: 'flex', flexDirection: 'column', gap: 16 }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+            <label style={{ fontSize: 12, fontWeight: 600, color: '#4b535e', letterSpacing: '0.24px' }}>
+              Current Name
+            </label>
+            <input
+              disabled
+              value={article.title}
+              style={{
+                width: '100%', padding: 8,
+                background: '#eff1f3', border: '1px solid #d9dce0',
+                borderRadius: 8, fontSize: 14, color: '#7a828c',
+                boxSizing: 'border-box', outline: 'none',
+              }}
+            />
+          </div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+            <label style={{ fontSize: 12, fontWeight: 600, color: '#4b535e', letterSpacing: '0.24px' }}>
+              * New Name
+            </label>
+            <input
+              autoFocus
+              value={newName}
+              onChange={e => setNewName(e.target.value)}
+              style={{
+                width: '100%', padding: 8,
+                background: '#fff', border: '1px solid #4285f4',
+                borderRadius: 8, fontSize: 14, color: '#021920',
+                boxSizing: 'border-box', outline: 'none',
+              }}
+            />
+          </div>
+        </div>
+
+        <div style={{
+          borderTop: '1px solid #eff1f3', paddingTop: 16,
+          display: 'flex', alignItems: 'center', gap: 16,
+        }}>
+          <button
+            onClick={onClose}
+            style={{
+              display: 'flex', alignItems: 'center', gap: 6,
+              background: 'transparent', border: 'none', cursor: 'pointer',
+              fontSize: 12, fontWeight: 600, color: '#3264b8',
+            }}
+          >
+            <XCircleIcon size={16} />Cancel
+          </button>
+          <button
+            onClick={canSave ? handleSave : undefined}
+            disabled={!canSave}
+            style={{
+              display: 'flex', alignItems: 'center', gap: 6,
+              background: '#4285f4', border: '1px solid #689df6',
+              color: '#eff1f3', padding: '8px 12px', borderRadius: 8,
+              fontSize: 12, cursor: canSave ? 'pointer' : 'not-allowed',
+              opacity: canSave ? 1 : 0.5,
+            }}
+          >
+            <PlusCircleIcon size={16} />Save Changes
+          </button>
+        </div>
+      </div>
+    </div>,
+    document.body
+  )
+}
+
+// ── Delete Article Modal ───────────────────────────────────────────────────────
+
+function DeleteArticleModal({
+  article,
+  onClose,
+  onConfirm,
+}: {
+  article: Article
+  onClose: () => void
+  onConfirm: () => void
+}) {
+  const [mounted, setMounted] = useState(false)
+
+  useEffect(() => { setMounted(true) }, [])
+
+  useEffect(() => {
+    const handler = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose() }
+    document.addEventListener('keydown', handler)
+    return () => document.removeEventListener('keydown', handler)
+  }, [onClose])
+
+  if (!mounted) return null
+
+  return createPortal(
+    <div
+      onClick={onClose}
+      style={{
+        position: 'fixed', inset: 0,
+        background: 'rgba(0,0,0,0.4)',
+        zIndex: 1002,
+        display: 'flex', alignItems: 'center', justifyContent: 'center',
+      }}
+    >
+      <div
+        onClick={e => e.stopPropagation()}
+        style={{
+          background: '#ffffff',
+          borderRadius: 8,
+          width: 492,
+          maxWidth: 'calc(100vw - 32px)',
+          padding: 16,
+          boxShadow: '0 4px 24px rgba(5,3,38,0.08)',
+        }}
+      >
+        <div style={{
+          display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+          borderBottom: '1px solid #eff1f3', paddingBottom: 16, marginBottom: 0,
+        }}>
+          <span style={{ fontSize: 24, fontWeight: 400, color: '#021920' }}>Delete Article</span>
+          <button
+            onClick={onClose}
+            style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#7a828c', display: 'flex', padding: 0 }}
+          >
+            <XIcon size={18} />
+          </button>
+        </div>
+
+        <div style={{ padding: 16 }}>
+          <p style={{ margin: 0, fontSize: 14, color: '#4b535e', lineHeight: '20px' }}>
+            Are you sure you want to delete &ldquo;{article.title}&rdquo;? This action cannot be undone.
+          </p>
+        </div>
+
+        <div style={{
+          borderTop: '1px solid #eff1f3', paddingTop: 16,
+          display: 'flex', alignItems: 'center', gap: 16,
+        }}>
+          <button
+            onClick={onClose}
+            style={{
+              display: 'flex', alignItems: 'center', gap: 6,
+              background: 'transparent', border: 'none', cursor: 'pointer',
+              fontSize: 12, fontWeight: 600, color: '#3264b8',
+            }}
+          >
+            <XCircleIcon size={16} />Cancel
+          </button>
+          <button
+            onClick={onConfirm}
+            style={{
+              display: 'flex', alignItems: 'center', gap: 6,
+              background: '#ef2056', border: '1px solid #f45c82',
+              color: '#ffffff', padding: '8px 12px', borderRadius: 8,
+              fontSize: 12, cursor: 'pointer',
+            }}
+          >
+            <TrashIcon size={16} />Delete
+          </button>
+        </div>
+      </div>
+    </div>,
+    document.body
+  )
+}
+
 // ── Page ───────────────────────────────────────────────────────────────────────
 
 export default function CollapsibleFilterPage() {
@@ -1727,6 +1957,10 @@ export default function CollapsibleFilterPage() {
 
   // Document detail view
   const [activeArticle, setActiveArticle] = useState<Article | null>(null)
+
+  // Article rename / delete modals
+  const [renamingArticle,   setRenamingArticle]   = useState<Article | null>(null)
+  const [deletingArticleId, setDeletingArticleId] = useState<string | null>(null)
 
   const actionsRef   = useRef<HTMLButtonElement>(null)
   const rowRefs      = useRef<Map<string, HTMLButtonElement>>(new Map())
@@ -1936,6 +2170,47 @@ export default function CollapsibleFilterPage() {
     setDeletingTag(null)
   }, [])
 
+  const handleRenameArticle = useCallback((article: Article, newTitle: string) => {
+    setArticles(prev => prev.map(a => a.id === article.id ? { ...a, title: newTitle } : a))
+    setRenamingArticle(null)
+    toast.success('Article renamed', { description: newTitle })
+  }, [])
+
+  const handleDeleteArticle = useCallback((articleId: string) => {
+    setArticles(prev => prev.filter(a => a.id !== articleId))
+    setDeletingArticleId(null)
+    toast('Article deleted')
+  }, [])
+
+  const buildRowActionSections = useCallback((article: Article): DropdownSection[] => [
+    {
+      heading: 'File Management',
+      items: [
+        {
+          label: 'Rename',
+          icon: <ArticleIcon size={14} />,
+          onClick: () => setRenamingArticle(article),
+        },
+        {
+          label: 'Edit Article',
+          icon: <PencilSimpleIcon size={14} />,
+          onClick: () => setActiveArticle(article),
+        },
+        {
+          label: 'Replace Article',
+          icon: <UploadSimpleIcon size={14} />,
+          onClick: () => {},
+        },
+        {
+          label: 'Delete',
+          icon: <TrashIcon size={14} />,
+          danger: true,
+          onClick: () => setDeletingArticleId(article.id),
+        },
+      ],
+    },
+  ], [])
+
   const commonTagKeys = useMemo(() => {
     const sel = articles.filter(a => selectedRows.has(a.id))
     if (sel.length === 0) return []
@@ -1990,24 +2265,6 @@ export default function CollapsibleFilterPage() {
     },
   ]
 
-  const rowActionSections: DropdownSection[] = [
-    {
-      heading: 'File Management',
-      items: [
-        { label: 'Edit article',   icon: <PencilSimpleIcon size={14} /> },
-        { label: 'Move to folder', icon: <FolderOpenIcon size={14} /> },
-        { label: 'Duplicate',      icon: <CopyIcon size={14} /> },
-      ],
-    },
-    {
-      heading: 'Tags',
-      items: [
-        { label: 'Add tag',    icon: <TagIcon size={14} /> },
-        { label: 'Remove tag', icon: <TagIcon size={14} /> },
-        { label: 'Delete',     icon: <TrashIcon size={14} />, danger: true },
-      ],
-    },
-  ]
 
   return (
     <SandboxShell
@@ -2310,7 +2567,7 @@ export default function CollapsibleFilterPage() {
                           anchorRef={{ current: rowRefs.current.get(article.id) ?? null }}
                           open={rowActionsId === article.id}
                           onClose={() => setRowActionsId(null)}
-                          sections={rowActionSections}
+                          sections={buildRowActionSections(article)}
                           width={200}
                           align="right"
                         />
@@ -2369,6 +2626,23 @@ export default function CollapsibleFilterPage() {
           }}
         />
       )}
+      {renamingArticle && (
+        <RenameArticleModal
+          article={renamingArticle}
+          onClose={() => setRenamingArticle(null)}
+          onSave={(newTitle) => handleRenameArticle(renamingArticle, newTitle)}
+        />
+      )}
+      {deletingArticleId && (() => {
+        const article = articles.find(a => a.id === deletingArticleId)
+        return article ? (
+          <DeleteArticleModal
+            article={article}
+            onClose={() => setDeletingArticleId(null)}
+            onConfirm={() => handleDeleteArticle(deletingArticleId)}
+          />
+        ) : null
+      })()}
       {showAddTagModal && (
         <AddTagModal
           existingKeys={tagRegistry.map(t => t.key)}
