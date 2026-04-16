@@ -19,9 +19,10 @@ export default function RootLayout({
         <div
           style={{
             marginLeft: 'var(--sidebar-w)',
-            minHeight: '100vh',
+            height: '100vh',
             display: 'flex',
             flexDirection: 'column',
+            overflow: 'hidden',
             transition: 'margin-left 0.22s cubic-bezier(0.4,0,0.2,1)',
           }}
         >
