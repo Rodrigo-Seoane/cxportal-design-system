@@ -13,6 +13,7 @@ import {
   CaretDownIcon,
   ListIcon,
   BookOpenIcon,
+  WrenchIcon,
 } from '@phosphor-icons/react'
 
 // ── Design tokens ─────────────────────────────────────────────────────────────
@@ -121,6 +122,17 @@ const NAV_GROUPS: NavGroup[] = [
       { label: 'All Experiments',    href: '/sandbox' },
       { label: 'Login Report',       href: '/sandbox/login-report',       status: 'wip' },
       { label: 'Collapsible Filter', href: '/sandbox/collapsible-filter', status: 'wip' },
+    ],
+  },
+  {
+    group: 'System',
+    Icon: WrenchIcon,
+    basePath: '/system',
+    items: [
+      { label: 'Component Status', href: '/system/status' },
+      { label: 'Contributing',     href: '/system/contributing' },
+      { label: 'Changelog',        href: '/system/changelog' },
+      { label: 'Figma Sync',       href: '/system/figma-sync' },
     ],
   },
 ]

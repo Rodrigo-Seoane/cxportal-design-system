@@ -228,20 +228,36 @@ project_portal/
 | Full Size Chart | `/charts/full-size` | Stable | Apr 14, 2026 |
 | Graph Cards | `/charts/graph-cards` | Stable | Apr 14, 2026 |
 
-### Phase 6 — Sandbox Space
+### Phase 6 — Sandbox Space ✅
 **Milestone:** A shareable, design-system-aware workspace for new experiments.
 
 The Sandbox is a separate area (`/sandbox`) where new components and features are built and validated **before** they graduate into the documented design system. It is always grounded in the existing design tokens and components.
 
-**Architecture:**
-- Each experiment is a named entry in `lib/sandbox-registry.ts` with metadata (title, status, author, description, created date) and a default code string
-- `SandboxShell.tsx` renders a full-screen split: live code editor on the left, preview canvas on the right
-- The react-live scope in the Sandbox automatically injects **all design system tokens and Shadcn components** — experiments can only build with what's in the DS
-- A **DS Token Picker** panel (inside `SandboxToolbar.tsx`) lets the builder browse and insert token values directly into the code, reinforcing DS-first building
-- A **Share** button generates a shareable URL with the experiment slug (and optionally encodes the current code state as a base64 URL param for ad-hoc sharing without persistence)
-- Experiment status labels: `Draft` / `In Review` / `Validated` / `Graduated` — when status becomes Graduated, the component moves to the documented system
+**Architecture (built):**
+- `lib/sandbox-registry.ts` — each experiment is a named entry with metadata (title, status, author, description, created date)
+- `SandboxShell.tsx` — full-screen preview wrapper with status badge, author, and date in the top bar
+- `ExperimentCard.tsx` — index card with status badge (Draft / In Review / Validated), description, author, date
+- `/sandbox` index — 2-column grid of experiment cards, status legend
+- Sidebar `Sandbox` group — distinct top-level section with collapsible experiment list and WIP badges
 
-**Sidebar navigation group:** `Sandbox` sits as a distinct top-level section, visually separated from Foundations and Components, to signal it is a work-in-progress space.
+**Experiment status labels:** `Draft` / `In Review` / `Validated` — when Validated, the experiment is ready to ship and any new component it introduced graduates into the documented system.
+
+**Current experiments:**
+
+| Experiment | Route | Status | Completed |
+|---|---|---|---|
+| Login Report | `/sandbox/login-report` | WIP | — |
+| Collapsible Filter | `/sandbox/collapsible-filter` | In Review | Apr 15, 2026 |
+
+**Collapsible Filter — feature complete as of Apr 15, 2026:**
+- Article table (13 rows, 7 columns) with collapsible left filter panel
+- KB, Folder, and Tag filters — all wired to live filter logic (AND across categories, OR within tags)
+- Search input filters by article title
+- Pagination updates to match filtered result count; page resets on filter change
+- Empty state row when no articles match
+- **Assign Tags dropdown** — clicking any Tags cell opens a portal panel anchored to the cell; lists all available tags with checkboxes, pre-checks tags already assigned to that article; search input narrows the list; Clear removes all tags from the row
+- **Add New Tag panel** — "Add New" switches the portal to a form (Key + Value inputs, 9-swatch colour picker); duplicate detection warns inline and disables the submit button; submitting creates the tag in the global registry, assigns it to the article, and returns to the list view; new tags appear in the sidebar filter panel immediately
+- Dropdown flip — panel positions above the cell when there isn't enough viewport space below
 
 ### Phase 7 — Living System Infrastructure
 **Milestone:** The system has clear conventions for evolving over time.
