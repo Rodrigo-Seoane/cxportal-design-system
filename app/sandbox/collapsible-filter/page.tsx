@@ -4,22 +4,18 @@ import { useState, useRef, useEffect, useCallback, useMemo } from 'react'
 import { createPortal } from 'react-dom'
 import { SandboxShell } from '@/components/sandbox/SandboxShell'
 import { DocumentView } from './DocumentView'
-import { BulkMoveModal } from './BulkMoveModal'
+import { Button } from '@/components/ui/button'
 import { toast, Toaster } from '@/components/ui/toast'
 import {
   FunnelSimpleIcon,
   MagnifyingGlassIcon,
   PlusCircleIcon,
   UploadSimpleIcon,
-  FolderPlusIcon,
-  FoldersIcon,
   DotsThreeIcon,
   CaretDownIcon,
   CaretLeftIcon,
   CaretRightIcon,
   PencilSimpleIcon,
-  FolderOpenIcon,
-  FolderMinusIcon,
   CopyIcon,
   TagIcon,
   TrashIcon,
@@ -42,7 +38,6 @@ type Article = {
   id: string
   title: string
   kb: string
-  folder: string
   tags: string[]
   modified: string
   modifiedBy: string
@@ -51,23 +46,28 @@ type Article = {
 // ── Data ───────────────────────────────────────────────────────────────────────
 
 const ARTICLES: Article[] = [
-  { id: '1',  title: 'API Documentation Guidelines',   kb: 'Engineering',  folder: 'Development',  tags: ['dep:Engineering', 'status:Deprecated'],   modified: 'Apr 12, 2026', modifiedBy: 'Carlos M.' },
-  { id: '2',  title: 'Onboarding Process Overview',    kb: 'Product',      folder: 'HR & People',  tags: ['dep:Product', 'audience:Internal'],         modified: 'Apr 11, 2026', modifiedBy: 'Sara L.' },
-  { id: '3',  title: 'Q1 Marketing Campaign Results',  kb: 'Marketing',    folder: 'Campaigns',    tags: ['dep:Marketing', 'access:Confidential'],     modified: 'Apr 10, 2026', modifiedBy: 'Tom K.' },
-  { id: '4',  title: 'Security Policy v2.0',           kb: 'Engineering',  folder: 'Security',     tags: ['priority:Urgent', 'access:Confidential'],   modified: 'Apr 9, 2026',  modifiedBy: 'Anna R.' },
-  { id: '5',  title: 'Product Roadmap 2026',           kb: 'Product',      folder: 'Strategy',     tags: ['dep:Product', 'access:Confidential'],       modified: 'Apr 8, 2026',  modifiedBy: 'Sara L.' },
-  { id: '6',  title: 'Customer Support Playbook',      kb: 'Product',      folder: 'Support',      tags: ['dep:Product', 'audience:External'],         modified: 'Apr 7, 2026',  modifiedBy: 'Mike D.' },
-  { id: '7',  title: 'Finance Report Q1 2026',         kb: 'Finance',      folder: 'Reports',      tags: ['dep:Finance', 'access:Confidential'],       modified: 'Apr 6, 2026',  modifiedBy: 'Lisa P.' },
-  { id: '8',  title: 'Legal Compliance Checklist',     kb: 'Legal',        folder: 'Compliance',   tags: ['dep:Legal', 'priority:High'],               modified: 'Apr 5, 2026',  modifiedBy: 'John H.' },
-  { id: '9',  title: 'Brand Identity Guidelines',      kb: 'Marketing',    folder: 'Brand Assets', tags: ['dep:Marketing', 'audience:External'],       modified: 'Apr 4, 2026',  modifiedBy: 'Emma W.' },
-  { id: '10', title: 'Infrastructure Architecture',    kb: 'Engineering',  folder: 'Architecture', tags: ['dep:Engineering', 'priority:High'],         modified: 'Apr 3, 2026',  modifiedBy: 'Carlos M.' },
-  { id: '11', title: 'Vendor Management Policy',       kb: 'Legal',        folder: 'Procurement',  tags: ['dep:Legal', 'access:Public'],               modified: 'Apr 2, 2026',  modifiedBy: 'John H.' },
-  { id: '12', title: 'Employee Handbook 2026',         kb: 'Product',      folder: 'HR & People',  tags: ['dep:Product', 'audience:Internal'],         modified: 'Apr 1, 2026',  modifiedBy: 'Sara L.' },
-  { id: '13', title: 'Data Privacy Framework',         kb: 'Legal',        folder: 'Compliance',   tags: ['dep:Legal', 'status:Archived'],             modified: 'Mar 31, 2026', modifiedBy: 'Anna R.' },
+  { id: '1',  title: 'API Documentation Guidelines',   kb: 'Message Template',                    tags: ['dep:Engineering', 'status:Deprecated'],   modified: 'Apr 12, 2026', modifiedBy: 'Carlos M.' },
+  { id: '2',  title: 'Onboarding Process Overview',    kb: 'Message Template',                    tags: ['dep:Product', 'audience:Internal'],         modified: 'Apr 11, 2026', modifiedBy: 'Sara L.' },
+  { id: '3',  title: 'Q1 Marketing Campaign Results',  kb: 'Message Template',                    tags: ['dep:Marketing', 'access:Confidential'],     modified: 'Apr 10, 2026', modifiedBy: 'Tom K.' },
+  { id: '4',  title: 'Security Policy v2.0',           kb: 'Amazon Integration',                  tags: ['priority:Urgent', 'access:Confidential'],   modified: 'Apr 9, 2026',  modifiedBy: 'Anna R.' },
+  { id: '5',  title: 'Product Roadmap 2026',           kb: 'Amazon Integration',                  tags: ['dep:Product', 'access:Confidential'],       modified: 'Apr 8, 2026',  modifiedBy: 'Sara L.' },
+  { id: '6',  title: 'Customer Support Playbook',      kb: 'Quick Question',                      tags: ['dep:Product', 'audience:External'],         modified: 'Apr 7, 2026',  modifiedBy: 'Mike D.' },
+  { id: '7',  title: 'Finance Report Q1 2026',         kb: 'Quick Question',                      tags: ['dep:Finance', 'access:Confidential'],       modified: 'Apr 6, 2026',  modifiedBy: 'Lisa P.' },
+  { id: '8',  title: 'Legal Compliance Checklist',     kb: 'Quick Question',                      tags: ['dep:Legal', 'priority:High'],               modified: 'Apr 5, 2026',  modifiedBy: 'John H.' },
+  { id: '9',  title: 'Brand Identity Guidelines',      kb: 'Self Service Workshop Knowledge',     tags: ['dep:Marketing', 'audience:External'],       modified: 'Apr 4, 2026',  modifiedBy: 'Emma W.' },
+  { id: '10', title: 'Infrastructure Architecture',    kb: 'Self Service Workshop Knowledge',     tags: ['dep:Engineering', 'priority:High'],         modified: 'Apr 3, 2026',  modifiedBy: 'Carlos M.' },
+  { id: '11', title: 'Vendor Management Policy',       kb: 'Self Service Workshop Knowledge',     tags: ['dep:Legal', 'access:Public'],               modified: 'Apr 2, 2026',  modifiedBy: 'John H.' },
+  { id: '12', title: 'Employee Handbook 2026',         kb: 'Custom Tool Workshop Knowledge Base', tags: ['dep:Product', 'audience:Internal'],         modified: 'Apr 1, 2026',  modifiedBy: 'Sara L.' },
+  { id: '13', title: 'Data Privacy Framework',         kb: 'Custom Tool Workshop Knowledge Base', tags: ['dep:Legal', 'status:Archived'],             modified: 'Mar 31, 2026', modifiedBy: 'Anna R.' },
 ]
 
-const KB_LIST     = ['Engineering', 'Product', 'Marketing', 'Finance', 'Legal']
-const FOLDER_LIST = ['Development', 'Security', 'Architecture', 'HR & People', 'Strategy', 'Support', 'Campaigns', 'Brand Assets', 'Reports', 'Compliance', 'Procurement']
+const KB_LIST = [
+  'Message Template',
+  'Amazon Integration',
+  'Quick Question',
+  'Self Service Workshop Knowledge',
+  'Custom Tool Workshop Knowledge Base',
+]
 
 // Dot colors from the Figma DS tokens
 const TAG_ITEMS: { key: string; dotBg: string; dotDashed?: boolean }[] = [
@@ -404,8 +404,6 @@ function FilterPanel({
   onToggle,
   activeKBs,
   onToggleKB,
-  activeFolders,
-  onToggleFolder,
   activeTags,
   onToggleTag,
   onClearAll,
@@ -418,8 +416,6 @@ function FilterPanel({
   onToggle: () => void
   activeKBs: Set<string>
   onToggleKB: (kb: string) => void
-  activeFolders: Set<string>
-  onToggleFolder: (f: string) => void
   activeTags: Set<string>
   onToggleTag: (t: string) => void
   onClearAll: () => void
@@ -456,28 +452,9 @@ function FilterPanel({
         {open ? (
           <>
             <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-              <button
-                onClick={onToggle}
-                title="Collapse filters"
-                style={{
-                  display:        'flex',
-                  alignItems:     'center',
-                  justifyContent: 'center',
-                  width:          24,
-                  height:         24,
-                  border:         'none',
-                  borderRadius:   4,
-                  background:     'transparent',
-                  cursor:         'pointer',
-                  color:          '#4b535e',
-                  padding:        0,
-                  flexShrink:     0,
-                }}
-                onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.background = '#eff1f3' }}
-                onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.background = 'transparent' }}
-              >
+              <Button variant="form-controls" size="icon-xs" onClick={onToggle} title="Collapse filters">
                 <SlidersHorizontalIcon size={16} />
-              </button>
+              </Button>
               <span style={{ fontSize: 18, fontWeight: 400, color: '#021920', lineHeight: '24px' }}>
                 Filters
               </span>
@@ -504,28 +481,38 @@ function FilterPanel({
             </button>
           </>
         ) : (
-          <button
-            onClick={onToggle}
-            title="Expand filters"
-            style={{
-              display:        'flex',
-              alignItems:     'center',
-              justifyContent: 'center',
-              width:          28,
-              height:         28,
-              borderRadius:   6,
-              border:         'none',
-              background:     'transparent',
-              cursor:         'pointer',
-              color:          '#4b535e',
-              flexShrink:     0,
-            }}
-            onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.background = '#eff1f3' }}
-            onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.background = 'transparent' }}
-          >
-            <SlidersHorizontalIcon size={16} />
-          </button>
-
+          (() => {
+            const count = activeKBs.size + activeTags.size
+            return (
+              <div style={{ position: 'relative', display: 'inline-flex' }}>
+                <Button variant="secondary" size="icon-xs" onClick={onToggle} title="Expand filters">
+                  <SlidersHorizontalIcon size={16} />
+                </Button>
+                {count > 0 && (
+                  <span style={{
+                    position:       'absolute',
+                    top:            -6,
+                    right:          -6,
+                    width:          18,
+                    height:         18,
+                    borderRadius:   '50%',
+                    background:     '#4285f4',
+                    border:         '1px solid #689df6',
+                    display:        'flex',
+                    alignItems:     'center',
+                    justifyContent: 'center',
+                    fontSize:       10,
+                    fontWeight:     600,
+                    color:          '#eff1f3',
+                    lineHeight:     1,
+                    pointerEvents:  'none',
+                  }}>
+                    {count}
+                  </span>
+                )}
+              </div>
+            )
+          })()
         )}
       </div>
 
@@ -547,14 +534,6 @@ function FilterPanel({
             items={KB_LIST}
             active={activeKBs}
             onToggle={onToggleKB}
-          />
-
-          {/* Folders — TableFilter */}
-          <TableFilter
-            label="Folders"
-            items={FOLDER_LIST}
-            active={activeFolders}
-            onToggle={onToggleFolder}
           />
 
           {/* Tags — always visible, no collapse */}
@@ -662,6 +641,14 @@ function FilterTagItem({
       }}
     >
       <div style={{ display: 'flex', alignItems: 'center', gap: 8, flex: 1, padding: '0 4px' }}>
+        <div style={{
+          width: 12, height: 12, borderRadius: 2, flexShrink: 0,
+          background: checked ? '#4285f4' : '#ffffff',
+          border: '1px solid #689df6',
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+        }}>
+          {checked && <CheckIcon size={8} color="#ffffff" weight="bold" />}
+        </div>
         <div style={{
           width: 12, height: 12, borderRadius: '50%', flexShrink: 0,
           background: tag.dotDashed ? 'transparent' : tag.dotBg,
@@ -1922,7 +1909,6 @@ export default function CollapsibleFilterPage() {
   const [sortCol,       setSortCol]       = useState<keyof Article | null>(null)
   const [sortDir,       setSortDir]       = useState<'asc' | 'desc'>('asc')
   const [activeKBs,     setActiveKBs]     = useState<Set<string>>(new Set())
-  const [activeFolders, setActiveFolders] = useState<Set<string>>(new Set())
   const [activeTags,    setActiveTags]    = useState<Set<string>>(new Set())
 
   // Mutable data (articles + tag registry)
@@ -1947,16 +1933,16 @@ export default function CollapsibleFilterPage() {
   const [bulkCreateValue, setBulkCreateValue] = useState('')
   const [bulkCreateColor, setBulkCreateColor] = useState('#d6e2f5')
 
-  // Bulk move modal state
-  const [showBulkMove, setShowBulkMove] = useState(false)
-
   // Tag add / edit / delete modals
   const [showAddTagModal, setShowAddTagModal] = useState(false)
   const [editingTag,  setEditingTag]  = useState<string | null>(null)
   const [deletingTag, setDeletingTag] = useState<string | null>(null)
 
   // Document detail view
-  const [activeArticle, setActiveArticle] = useState<Article | null>(null)
+  const [activeArticle,  setActiveArticle]  = useState<Article | null>(null)
+  const [showNewArticle, setShowNewArticle] = useState(false)
+
+  const NEW_ARTICLE_STUB: Article = { id: '', title: '', kb: '', tags: [], modified: '', modifiedBy: '' }
 
   // Article rename / delete modals
   const [renamingArticle,   setRenamingArticle]   = useState<Article | null>(null)
@@ -1994,10 +1980,9 @@ export default function CollapsibleFilterPage() {
   }, [])
 
   const clearSelection  = () => setSelectedRows(new Set())
-  const toggleKB        = (kb: string) => setActiveKBs(prev    => { const n = new Set(prev); n.has(kb) ? n.delete(kb) : n.add(kb); return n })
-  const toggleFolder    = (f: string)  => setActiveFolders(prev => { const n = new Set(prev); n.has(f)  ? n.delete(f)  : n.add(f);  return n })
-  const toggleTag       = (t: string)  => setActiveTags(prev    => { const n = new Set(prev); n.has(t)  ? n.delete(t)  : n.add(t);  return n })
-  const clearAllFilters = () => { setActiveKBs(new Set()); setActiveFolders(new Set()); setActiveTags(new Set()) }
+  const toggleKB        = (kb: string) => setActiveKBs(prev  => { const n = new Set(prev); n.has(kb) ? n.delete(kb) : n.add(kb); return n })
+  const toggleTag       = (t: string)  => setActiveTags(prev => { const n = new Set(prev); n.has(t)  ? n.delete(t)  : n.add(t);  return n })
+  const clearAllFilters = () => { setActiveKBs(new Set()); setActiveTags(new Set()) }
 
   // ── Tag-assign handlers ──────────────────────────────────────────────────────
   const openTagDrop = (articleId: string) => {
@@ -2222,7 +2207,6 @@ export default function CollapsibleFilterPage() {
   const filteredArticles = useMemo(() => {
     const filtered = articles.filter(article => {
       if (activeKBs.size > 0 && !activeKBs.has(article.kb)) return false
-      if (activeFolders.size > 0 && !activeFolders.has(article.folder)) return false
       if (activeTags.size > 0 && !article.tags.some(t => activeTags.has(t))) return false
       if (searchQuery.trim()) {
         const q = searchQuery.trim().toLowerCase()
@@ -2239,9 +2223,9 @@ export default function CollapsibleFilterPage() {
       const cmp  = aVal.localeCompare(bVal)
       return sortDir === 'asc' ? cmp : -cmp
     })
-  }, [articles, activeKBs, activeFolders, activeTags, searchQuery, sortCol, sortDir])
+  }, [articles, activeKBs, activeTags, searchQuery, sortCol, sortDir])
 
-  useEffect(() => { setPage(1) }, [activeKBs, activeFolders, activeTags, searchQuery])
+  useEffect(() => { setPage(1) }, [activeKBs, activeTags, searchQuery])
 
   const totalPages   = Math.max(1, Math.ceil(filteredArticles.length / ROWS_PER_PAGE))
   const pagedArticles = filteredArticles.slice((page - 1) * ROWS_PER_PAGE, page * ROWS_PER_PAGE)
@@ -2250,10 +2234,8 @@ export default function CollapsibleFilterPage() {
     {
       heading: 'Knowledge Base',
       items: [
-        { label: 'Add New Article',  icon: <PlusCircleIcon size={14} /> },
+        { label: 'Add New Article',  icon: <PlusCircleIcon size={14} />, onClick: () => setShowNewArticle(true) },
         { label: 'Upload Files',     icon: <UploadSimpleIcon size={14} /> },
-        { label: 'Add New Folder',   icon: <FolderPlusIcon size={14} /> },
-        { label: 'Manage Folders',   icon: <FoldersIcon size={14} /> },
       ],
     },
     {
@@ -2368,8 +2350,6 @@ export default function CollapsibleFilterPage() {
           onToggle={() => setFiltersOpen(v => !v)}
           activeKBs={activeKBs}
           onToggleKB={toggleKB}
-          activeFolders={activeFolders}
-          onToggleFolder={toggleFolder}
           activeTags={activeTags}
           onToggleTag={toggleTag}
           onClearAll={clearAllFilters}
@@ -2409,8 +2389,6 @@ export default function CollapsibleFilterPage() {
                 <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
                   <BulkBtn icon={<StackPlusIcon size={16} />}  label="Add Tags"    onClick={openBulkAddTags} />
                   <BulkBtn icon={<StackMinusIcon size={16} />} label="Remove Tags" onClick={openBulkRemoveTags} />
-                  <BulkBtn icon={<FolderOpenIcon size={16} />} label="Move to Folder" onClick={() => setShowBulkMove(true)} />
-                  <BulkBtn icon={<FolderMinusIcon size={16} />} label="Remove Association" />
                   <BulkBtn icon={<TrashIcon size={16} />}      label="Delete" />
                 </div>
                 <BulkBtn icon={<XCircleIcon size={16} />} label="Clear" onClick={clearSelection} />
@@ -2427,8 +2405,7 @@ export default function CollapsibleFilterPage() {
                     <Checkbox checked={allSelected} indeterminate={someSelected} onChange={toggleAll} />
                   </Th>
                   <ThSort label="Article Title"  col="title"      sortCol={sortCol} sortDir={sortDir} onSort={handleSort} style={{ minWidth: 200 }} />
-                  <ThSort label="Knowledge Base" col="kb"         sortCol={sortCol} sortDir={sortDir} onSort={handleSort} style={{ width: 140 }} />
-                  <ThSort label="Folder"         col="folder"     sortCol={sortCol} sortDir={sortDir} onSort={handleSort} style={{ width: 140 }} />
+                  <ThSort label="Knowledge Base" col="kb"         sortCol={sortCol} sortDir={sortDir} onSort={handleSort} style={{ width: 220 }} />
                   <ThSort label="Tags"           col="tags"       sortCol={sortCol} sortDir={sortDir} onSort={handleSort} style={{ minWidth: 160 }} />
                   <ThSort label="Last Updated"   col="modified"   sortCol={sortCol} sortDir={sortDir} onSort={handleSort} style={{ width: 130 }} />
                   <ThSort label="Modified By"    col="modifiedBy" sortCol={sortCol} sortDir={sortDir} onSort={handleSort} style={{ width: 130 }} />
@@ -2438,7 +2415,7 @@ export default function CollapsibleFilterPage() {
               <tbody>
                 {filteredArticles.length === 0 && (
                   <tr>
-                    <td colSpan={8} style={{ textAlign: 'center', padding: '32px 0', color: '#7a828c', fontSize: 13 }}>
+                    <td colSpan={7} style={{ textAlign: 'center', padding: '32px 0', color: '#7a828c', fontSize: 13 }}>
                       No articles match the active filters.
                     </td>
                   </tr>
@@ -2476,7 +2453,6 @@ export default function CollapsibleFilterPage() {
                         </button>
                       </Td>
                       <Td style={{ color: '#4b535e' }}>{article.kb}</Td>
-                      <Td style={{ color: '#7a828c' }}>{article.folder}</Td>
                       <td
                         ref={el => {
                           if (el) tagCellRefs.current.set(article.id, el)
@@ -2607,24 +2583,11 @@ export default function CollapsibleFilterPage() {
           onClose={closeBulkModal}
         />
       )}
-      {activeArticle && (
-        <DocumentView article={activeArticle} onBack={() => setActiveArticle(null)} />
+      {showNewArticle && (
+        <DocumentView isNew article={NEW_ARTICLE_STUB} onBack={() => setShowNewArticle(false)} />
       )}
-      {showBulkMove && (
-        <BulkMoveModal
-          articles={articles.filter(a => selectedRows.has(a.id))}
-          onClose={() => setShowBulkMove(false)}
-          onConfirm={(folder, fullPath) => {
-            setArticles(prev => prev.map(a =>
-              selectedRows.has(a.id) ? { ...a, folder } : a
-            ))
-            clearSelection()
-            setShowBulkMove(false)
-            setTimeout(() => toast(`${selectedRows.size} article${selectedRows.size !== 1 ? 's' : ''} moved to ${folder}`, {
-              description: fullPath,
-            }), 1000)
-          }}
-        />
+      {!showNewArticle && activeArticle && (
+        <DocumentView article={activeArticle} onBack={() => setActiveArticle(null)} />
       )}
       {renamingArticle && (
         <RenameArticleModal

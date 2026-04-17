@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useRef, useEffect } from 'react'
+import { useState, useRef, useEffect, useMemo } from 'react'
 import {
   ArrowLeftIcon,
   DownloadSimpleIcon,
@@ -17,7 +17,11 @@ import {
 } from '@phosphor-icons/react'
 import { MarkdownEditor } from './MarkdownEditor'
 import { TagPanel } from './TagPanel'
+import { TemplateDropdown } from './TemplateDropdown'
+import { Tabs, TabList, Tab, TabPanel } from '@/components/ui/tabs'
+import { InlineContextData } from '@/components/ui/inline-context-data'
 import { toast } from '@/components/ui/toast'
+import type { KBTemplate } from './template-data'
 
 // ── Types ──────────────────────────────────────────────────────────────────────
 
@@ -25,7 +29,6 @@ type Article = {
   id: string
   title: string
   kb: string
-  folder: string
   tags: string[]
   modified: string
   modifiedBy: string
@@ -34,13 +37,17 @@ type Article = {
 interface DocumentViewProps {
   article: Article
   onBack: () => void
+  isNew?: boolean
 }
 
 // ── Data ───────────────────────────────────────────────────────────────────────
 
-const FOLDER_LIST = [
-  'Development', 'Security', 'Architecture', 'HR & People', 'Strategy',
-  'Support', 'Campaigns', 'Brand Assets', 'Reports', 'Compliance', 'Procurement',
+const KB_LIST = [
+  'Message Template',
+  'Amazon Integration',
+  'Quick Question',
+  'Self Service Workshop Knowledge',
+  'Custom Tool Workshop Knowledge Base',
 ]
 
 const TAG_STYLE: Record<string, { bg: string; text: string }> = {
@@ -126,11 +133,12 @@ function CardHeading({ children }: { children: React.ReactNode }) {
 
 // ── Main component ─────────────────────────────────────────────────────────────
 
-export function DocumentView({ article, onBack }: DocumentViewProps) {
+export function DocumentView({ article, onBack, isNew = false }: DocumentViewProps) {
   const [activeTab,        setActiveTab]        = useState<'markdown' | 'upload'>('markdown')
-  const [docName,          setDocName]          = useState(article.title)
-  const [docFolder,        setDocFolder]        = useState(article.folder)
+  const [docName,          setDocName]          = useState(isNew ? '' : article.title)
+  const [docKb,            setDocKb]            = useState(isNew ? '' : article.kb)
   const [markdown,         setMarkdown]         = useState(INITIAL_MARKDOWN)
+  const [editorMode, setEditorMode] = useState<'blank' | 'template' | null>(isNew ? null : 'template')
   const [tags,             setTags]             = useState<string[]>(article.tags)
   const [tagSearch,        setTagSearch]        = useState('')
   const [tagDropdownOpen,  setTagDropdownOpen]  = useState(false)
@@ -149,6 +157,12 @@ export function DocumentView({ article, onBack }: DocumentViewProps) {
   }, [tagDropdownOpen])
   const [selectedVersions, setSelectedVersions] = useState<Set<string>>(new Set(['v5']))
 
+  const currentTime = useMemo(() => {
+    const now = new Date()
+    return now.toLocaleDateString('en-US', { month: '2-digit', day: '2-digit', year: 'numeric' }) +
+      ' ' + now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })
+  }, [])
+
   function removeTag(tag: string) {
     setTags(prev => prev.filter(t => t !== tag))
   }
@@ -160,6 +174,12 @@ export function DocumentView({ article, onBack }: DocumentViewProps) {
       else next.add(id)
       return next
     })
+  }
+
+  function handleTemplateSelect(template: KBTemplate) {
+    setMarkdown(template.markdown)
+    setEditorMode('template')
+    setTimeout(() => toast.success('Template applied', { description: template.name }), 300)
   }
 
   return (
@@ -184,7 +204,7 @@ export function DocumentView({ article, onBack }: DocumentViewProps) {
         justifyContent: 'space-between',
       }}>
         <h2 style={{ margin: 0, fontSize: 18, fontWeight: 700, color: '#021920' }}>
-          {article.title}
+          {isNew ? 'Add New Article' : article.title}
         </h2>
         <div style={{ display: 'flex', gap: 8 }}>
           <button
@@ -279,13 +299,14 @@ export function DocumentView({ article, onBack }: DocumentViewProps) {
             display:    'flex',
             gap:        16,
           }}>
-            <div style={{ flex: 1 }}>
+            <div style={{ flex: 1, minWidth: 0 }}>
               <label style={{ display: 'block', fontSize: 11, fontWeight: 600, color: '#4b535e', marginBottom: 4 }}>
                 Document Name <span style={{ color: '#ef2056' }}>*</span>
               </label>
               <input
                 value={docName}
                 onChange={e => setDocName(e.target.value)}
+                placeholder={isNew ? 'e.g., API Integration Guide' : undefined}
                 style={{
                   width:        '100%',
                   padding:      '7px 10px',
@@ -301,76 +322,65 @@ export function DocumentView({ article, onBack }: DocumentViewProps) {
                 onBlur={e => { e.currentTarget.style.borderColor = '#d9dce0' }}
               />
             </div>
-            <div style={{ width: 200 }}>
+            <div style={{ flex: 1, minWidth: 0 }}>
               <label style={{ display: 'block', fontSize: 11, fontWeight: 600, color: '#4b535e', marginBottom: 4 }}>
-                Folder
+                Knowledge Base
               </label>
               <select
-                value={docFolder}
-                onChange={e => setDocFolder(e.target.value)}
+                value={docKb}
+                onChange={e => setDocKb(e.target.value)}
                 style={{
                   width:        '100%',
                   padding:      '7px 10px',
                   border:       '1px solid #d9dce0',
                   borderRadius: 6,
                   fontSize:     13,
-                  color:        '#021920',
+                  color:        docKb === '' ? '#aab0b8' : '#021920',
                   background:   '#fff',
                   outline:      'none',
                 }}
               >
-                {FOLDER_LIST.map(f => (
-                  <option key={f} value={f}>{f}</option>
+                {isNew && <option value="" disabled>Select Knowledge Base</option>}
+                {KB_LIST.map(kb => (
+                  <option key={kb} value={kb}>{kb}</option>
                 ))}
               </select>
             </div>
           </div>
 
-          {/* 3. Tab bar */}
-          <div style={{
-            padding:      '0 16px',
-            borderBottom: '1px solid #eff1f3',
-            flexShrink:   0,
-            display:      'flex',
-            gap:          0,
-          }}>
-            {(['markdown', 'upload'] as const).map(tab => (
-              <button
-                key={tab}
-                onClick={() => setActiveTab(tab)}
-                style={{
-                  display:       'flex',
-                  alignItems:    'center',
-                  gap:           6,
-                  padding:       '10px 14px',
-                  border:        'none',
-                  borderBottom:  activeTab === tab ? '2px solid #4285f4' : '2px solid transparent',
-                  background:    'transparent',
-                  cursor:        'pointer',
-                  fontSize:      13,
-                  fontWeight:    activeTab === tab ? 600 : 400,
-                  color:         activeTab === tab ? '#021920' : '#7a828c',
-                  marginBottom:  -1,
-                }}
-              >
-                {tab === 'upload' && <UploadSimpleIcon size={13} />}
-                {tab === 'markdown' ? 'Markdown' : 'Upload File'}
-              </button>
-            ))}
-          </div>
-
-          {/* 4. Content */}
-          {activeTab === 'markdown' ? (
-            <div style={{ flex: 1, minHeight: 0, overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
-              <MarkdownEditor value={markdown} onChange={setMarkdown} />
+          {/* 3 & 4. Tabs + Content */}
+          <Tabs
+            value={activeTab}
+            onChange={v => setActiveTab(v as 'markdown' | 'upload')}
+            style={{ flex: 1, minHeight: 0, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}
+          >
+            <div style={{ padding: '8px 16px', borderBottom: '1px solid #eff1f3', flexShrink: 0 }}>
+              <TabList>
+                <Tab value="markdown">Markdown</Tab>
+                <Tab value="upload" icon={<UploadSimpleIcon size={13} />}>Upload File</Tab>
+              </TabList>
             </div>
-          ) : (
-            <div style={{
-              flex:           1,
-              display:        'flex',
-              alignItems:     'center',
-              justifyContent: 'center',
-            }}>
+
+            <TabPanel
+              value="markdown"
+              style={{ flex: 1, minHeight: 0, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}
+            >
+              {editorMode === null ? (
+                <TemplateDropdown
+                  onBlank={() => { setEditorMode('blank'); setMarkdown('') }}
+                  onSelectTemplate={handleTemplateSelect}
+                />
+              ) : (
+                <div style={{ flex: 1, minHeight: 0, overflow: 'hidden', display: 'flex', flexDirection: 'column' }}>
+                  <MarkdownEditor value={markdown} onChange={setMarkdown} />
+                </div>
+              )}
+            </TabPanel>
+
+            <TabPanel
+              value="upload"
+              style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}
+            >
               <div style={{
                 border:       '2px dashed #d9dce0',
                 borderRadius: 8,
@@ -380,8 +390,8 @@ export function DocumentView({ article, onBack }: DocumentViewProps) {
               }}>
                 File upload coming soon
               </div>
-            </div>
-          )}
+            </TabPanel>
+          </Tabs>
 
           {/* 5. Footer */}
           <div style={{
@@ -407,7 +417,7 @@ export function DocumentView({ article, onBack }: DocumentViewProps) {
               Cancel
             </button>
             <button
-              onClick={() => setTimeout(() => toast.success('Changes saved', { description: docName }), 1000)}
+              onClick={() => { setTimeout(() => toast.success('Changes saved', { description: docName }), 300); onBack() }}
               style={{
                 display:      'flex',
                 alignItems:   'center',
@@ -441,9 +451,11 @@ export function DocumentView({ article, onBack }: DocumentViewProps) {
           {/* Card 1 — Document Details */}
           <SideCard>
             <CardHeading>Document Details</CardHeading>
-            <DetailsRow icon={<UserIcon size={16} color="#7a828c" />} label="Author" value={article.modifiedBy} />
-            <DetailsRow icon={<CalendarIcon size={16} color="#7a828c" />} label="Date Created" value={article.modified} />
-            <DetailsRow icon={<CalendarIcon size={16} color="#7a828c" />} label="Last Modified" value={article.modified} />
+            <InlineContextData icon={<UserIcon size={16} color="#7a828c" />} label="Author" value={isNew ? 'rseoane@pronetx.com' : article.modifiedBy} />
+            <InlineContextData icon={<CalendarIcon size={16} color="#7a828c" />} label="Date Created" value={isNew ? currentTime : article.modified} />
+            {!isNew && (
+              <InlineContextData icon={<CalendarIcon size={16} color="#7a828c" />} label="Last Modified" value={article.modified} />
+            )}
           </SideCard>
 
           {/* Card 2 — Tags */}
@@ -581,8 +593,8 @@ export function DocumentView({ article, onBack }: DocumentViewProps) {
             </div>
           </SideCard>
 
-          {/* Card 3 — Versions */}
-          <SideCard>
+          {/* Card 3 — Versions (hidden when creating new article) */}
+          {!isNew && <SideCard>
             <CardHeading>Versions (5)</CardHeading>
 
             <div style={{ border: '1px solid #eff1f3', borderRadius: 8, overflow: 'hidden' }}>
@@ -680,29 +692,11 @@ export function DocumentView({ article, onBack }: DocumentViewProps) {
                 Compare Versions
               </button>
             </div>
-          </SideCard>
+          </SideCard>}
         </div>
       </div>
+
     </div>
   )
 }
 
-// ── Details row helper ─────────────────────────────────────────────────────────
-
-function DetailsRow({
-  icon,
-  label,
-  value,
-}: {
-  icon: React.ReactNode
-  label: string
-  value: string
-}) {
-  return (
-    <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-      <span style={{ flexShrink: 0 }}>{icon}</span>
-      <span style={{ fontSize: 10, fontWeight: 600, color: '#7a828c', minWidth: 80 }}>{label}</span>
-      <span style={{ fontSize: 10, color: '#aab0b8' }}>{value}</span>
-    </div>
-  )
-}
