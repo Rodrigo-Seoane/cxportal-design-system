@@ -120,6 +120,18 @@ MDX has access to these custom components (registered in `components/mdx/MDXComp
 
 ---
 
+## Sandbox list/table pattern
+
+Sandbox views that display tabular or list data **must use Load More**, not pagination.
+
+- Start with `const [displayCount, setDisplayCount] = useState(10)`
+- Render `items.slice(0, displayCount)` in the table
+- Reset to `10` whenever filters or search change (via `useEffect`)
+- Render a "Load more" button below the table **only when** `items.length > displayCount`
+- Each press increments by 10: `setDisplayCount(c => c + 10)`
+
+---
+
 ## Rules to follow
 
 1. **Never edit `components/ui/` files directly** — these are the DS primitives. Style via CSS vars in `globals.css`.

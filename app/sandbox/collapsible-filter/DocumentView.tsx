@@ -14,6 +14,7 @@ import {
   ArrowsLeftRightIcon,
   UserIcon,
   CalendarIcon,
+  ArticleIcon,
 } from '@phosphor-icons/react'
 import { MarkdownEditor } from './MarkdownEditor'
 import { TagPanel } from './TagPanel'
@@ -213,11 +214,12 @@ export function DocumentView({ article, onBack, isNew = false }: DocumentViewPro
               alignItems:   'center',
               gap:          6,
               padding:      '8px 12px',
-              border:       '1px solid #3264b8',
+              border:       'none',
               borderRadius: 8,
               background:   'transparent',
               color:        '#3264b8',
               fontSize:     13,
+              fontWeight:   600,
               cursor:       'pointer',
             }}
           >
@@ -230,11 +232,12 @@ export function DocumentView({ article, onBack, isNew = false }: DocumentViewPro
               alignItems:   'center',
               gap:          6,
               padding:      '8px 12px',
-              border:       '1px solid #ef2056',
+              border:       'none',
               borderRadius: 8,
               background:   'transparent',
-              color:        '#ef2056',
+              color:        '#3264b8',
               fontSize:     13,
+              fontWeight:   600,
               cursor:       'pointer',
             }}
           >
@@ -356,7 +359,7 @@ export function DocumentView({ article, onBack, isNew = false }: DocumentViewPro
           >
             <div style={{ padding: '8px 16px', borderBottom: '1px solid #eff1f3', flexShrink: 0 }}>
               <TabList>
-                <Tab value="markdown">Markdown</Tab>
+                <Tab value="markdown" icon={<ArticleIcon size={13} />}>Markdown</Tab>
                 <Tab value="upload" icon={<UploadSimpleIcon size={13} />}>Upload File</Tab>
               </TabList>
             </div>

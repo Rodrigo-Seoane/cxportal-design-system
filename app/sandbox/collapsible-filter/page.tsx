@@ -13,8 +13,8 @@ import {
   UploadSimpleIcon,
   DotsThreeIcon,
   CaretDownIcon,
-  CaretLeftIcon,
-  CaretRightIcon,
+  ArrowCounterClockwiseIcon,
+  InfoIcon,
   PencilSimpleIcon,
   CopyIcon,
   TagIcon,
@@ -30,6 +30,7 @@ import {
   ArrowDownIcon,
   XIcon,
   CheckIcon,
+  WarningIcon,
 } from '@phosphor-icons/react'
 
 // ── Types ──────────────────────────────────────────────────────────────────────
@@ -38,6 +39,7 @@ type Article = {
   id: string
   title: string
   kb: string
+  association: string
   tags: string[]
   modified: string
   modifiedBy: string
@@ -46,19 +48,19 @@ type Article = {
 // ── Data ───────────────────────────────────────────────────────────────────────
 
 const ARTICLES: Article[] = [
-  { id: '1',  title: 'API Documentation Guidelines',   kb: 'Message Template',                    tags: ['dep:Engineering', 'status:Deprecated'],   modified: 'Apr 12, 2026', modifiedBy: 'Carlos M.' },
-  { id: '2',  title: 'Onboarding Process Overview',    kb: 'Message Template',                    tags: ['dep:Product', 'audience:Internal'],         modified: 'Apr 11, 2026', modifiedBy: 'Sara L.' },
-  { id: '3',  title: 'Q1 Marketing Campaign Results',  kb: 'Message Template',                    tags: ['dep:Marketing', 'access:Confidential'],     modified: 'Apr 10, 2026', modifiedBy: 'Tom K.' },
-  { id: '4',  title: 'Security Policy v2.0',           kb: 'Amazon Integration',                  tags: ['priority:Urgent', 'access:Confidential'],   modified: 'Apr 9, 2026',  modifiedBy: 'Anna R.' },
-  { id: '5',  title: 'Product Roadmap 2026',           kb: 'Amazon Integration',                  tags: ['dep:Product', 'access:Confidential'],       modified: 'Apr 8, 2026',  modifiedBy: 'Sara L.' },
-  { id: '6',  title: 'Customer Support Playbook',      kb: 'Quick Question',                      tags: ['dep:Product', 'audience:External'],         modified: 'Apr 7, 2026',  modifiedBy: 'Mike D.' },
-  { id: '7',  title: 'Finance Report Q1 2026',         kb: 'Quick Question',                      tags: ['dep:Finance', 'access:Confidential'],       modified: 'Apr 6, 2026',  modifiedBy: 'Lisa P.' },
-  { id: '8',  title: 'Legal Compliance Checklist',     kb: 'Quick Question',                      tags: ['dep:Legal', 'priority:High'],               modified: 'Apr 5, 2026',  modifiedBy: 'John H.' },
-  { id: '9',  title: 'Brand Identity Guidelines',      kb: 'Self Service Workshop Knowledge',     tags: ['dep:Marketing', 'audience:External'],       modified: 'Apr 4, 2026',  modifiedBy: 'Emma W.' },
-  { id: '10', title: 'Infrastructure Architecture',    kb: 'Self Service Workshop Knowledge',     tags: ['dep:Engineering', 'priority:High'],         modified: 'Apr 3, 2026',  modifiedBy: 'Carlos M.' },
-  { id: '11', title: 'Vendor Management Policy',       kb: 'Self Service Workshop Knowledge',     tags: ['dep:Legal', 'access:Public'],               modified: 'Apr 2, 2026',  modifiedBy: 'John H.' },
-  { id: '12', title: 'Employee Handbook 2026',         kb: 'Custom Tool Workshop Knowledge Base', tags: ['dep:Product', 'audience:Internal'],         modified: 'Apr 1, 2026',  modifiedBy: 'Sara L.' },
-  { id: '13', title: 'Data Privacy Framework',         kb: 'Custom Tool Workshop Knowledge Base', tags: ['dep:Legal', 'status:Archived'],             modified: 'Mar 31, 2026', modifiedBy: 'Anna R.' },
+  { id: '1',  title: 'API Documentation Guidelines',   kb: 'Message Template',                    association: 'Guide Troubleshooting',        tags: ['dep:Engineering', 'status:Deprecated'],   modified: 'Apr 12, 2026', modifiedBy: 'Carlos M.' },
+  { id: '2',  title: 'Onboarding Process Overview',    kb: 'Message Template',                    association: 'Guide Onboarding',             tags: ['dep:Product', 'audience:Internal'],         modified: 'Apr 11, 2026', modifiedBy: 'Sara L.' },
+  { id: '3',  title: 'Q1 Marketing Campaign Results',  kb: 'Message Template',                    association: 'Guide Campaigns',              tags: ['dep:Marketing', 'access:Confidential'],     modified: 'Apr 10, 2026', modifiedBy: 'Tom K.' },
+  { id: '4',  title: 'Security Policy v2.0',           kb: 'Amazon Integration',                  association: 'Guide Security Tips',          tags: ['priority:Urgent', 'access:Confidential'],   modified: 'Apr 9, 2026',  modifiedBy: 'Anna R.' },
+  { id: '5',  title: 'Product Roadmap 2026',           kb: 'Amazon Integration',                  association: 'Guide Product Roadmap',        tags: ['dep:Product', 'access:Confidential'],       modified: 'Apr 8, 2026',  modifiedBy: 'Sara L.' },
+  { id: '6',  title: 'Customer Support Playbook',      kb: 'Quick Question',                      association: 'Guide FAQ',                    tags: ['dep:Product', 'audience:External'],         modified: 'Apr 7, 2026',  modifiedBy: 'Mike D.' },
+  { id: '7',  title: 'Finance Report Q1 2026',         kb: 'Quick Question',                      association: 'Guide Finance',                tags: ['dep:Finance', 'access:Confidential'],       modified: 'Apr 6, 2026',  modifiedBy: 'Lisa P.' },
+  { id: '8',  title: 'Legal Compliance Checklist',     kb: 'Quick Question',                      association: 'Guide Compliance',             tags: ['dep:Legal', 'priority:High'],               modified: 'Apr 5, 2026',  modifiedBy: 'John H.' },
+  { id: '9',  title: 'Brand Identity Guidelines',      kb: 'Self Service Workshop Knowledge',     association: 'Guide Brand',                  tags: ['dep:Marketing', 'audience:External'],       modified: 'Apr 4, 2026',  modifiedBy: 'Emma W.' },
+  { id: '10', title: 'Infrastructure Architecture',    kb: 'Self Service Workshop Knowledge',     association: 'Guide Infrastructure',         tags: ['dep:Engineering', 'priority:High'],         modified: 'Apr 3, 2026',  modifiedBy: 'Carlos M.' },
+  { id: '11', title: 'Vendor Management Policy',       kb: 'Self Service Workshop Knowledge',     association: 'Guide Vendor Policy',          tags: ['dep:Legal', 'access:Public'],               modified: 'Apr 2, 2026',  modifiedBy: 'John H.' },
+  { id: '12', title: 'Employee Handbook 2026',         kb: 'Custom Tool Workshop Knowledge Base', association: 'Guide Employee Handbook',      tags: ['dep:Product', 'audience:Internal'],         modified: 'Apr 1, 2026',  modifiedBy: 'Sara L.' },
+  { id: '13', title: 'Data Privacy Framework',         kb: 'Custom Tool Workshop Knowledge Base', association: 'Guide Privacy Settings',       tags: ['dep:Legal', 'status:Archived'],             modified: 'Mar 31, 2026', modifiedBy: 'Anna R.' },
 ]
 
 const KB_LIST = [
@@ -754,95 +756,6 @@ function Checkbox({
       onChange={onChange}
       style={{ width: 14, height: 14, accentColor: '#4285f4', cursor: 'pointer' }}
     />
-  )
-}
-
-// ── Pagination ─────────────────────────────────────────────────────────────────
-
-function Pagination({ page, total, onChange }: { page: number; total: number; onChange: (p: number) => void }) {
-  return (
-    <div style={{
-      display:    'flex',
-      alignItems: 'center',
-      gap:        4,
-      padding:    '12px 16px',
-      borderTop:  '1px solid #eff1f3',
-    }}>
-      <PaginationBtn
-        onClick={() => onChange(Math.max(1, page - 1))}
-        disabled={page === 1}
-        label="Back"
-        icon={<CaretLeftIcon size={12} />}
-      />
-      {Array.from({ length: total }, (_, i) => i + 1).map(p => (
-        <button
-          key={p}
-          onClick={() => onChange(p)}
-          style={{
-            width:          28,
-            height:         28,
-            display:        'flex',
-            alignItems:     'center',
-            justifyContent: 'center',
-            border:         p === page ? '1px solid #4285f4' : '1px solid transparent',
-            borderRadius:   6,
-            background:     p === page ? '#eef3fb' : 'transparent',
-            color:          p === page ? '#4285f4' : '#4b535e',
-            fontSize:       13,
-            fontWeight:     p === page ? 600 : 400,
-            cursor:         'pointer',
-          }}
-        >
-          {p}
-        </button>
-      ))}
-      <PaginationBtn
-        onClick={() => onChange(Math.min(total, page + 1))}
-        disabled={page === total}
-        label="Next"
-        icon={<CaretRightIcon size={12} />}
-        iconAfter
-      />
-    </div>
-  )
-}
-
-function PaginationBtn({
-  onClick,
-  disabled,
-  label,
-  icon,
-  iconAfter,
-}: {
-  onClick: () => void
-  disabled?: boolean
-  label: string
-  icon: React.ReactNode
-  iconAfter?: boolean
-}) {
-  return (
-    <button
-      onClick={onClick}
-      disabled={disabled}
-      style={{
-        display:    'flex',
-        alignItems: 'center',
-        gap:        4,
-        padding:    '4px 10px',
-        border:     '1px solid #d9dce0',
-        borderRadius: 6,
-        background: 'transparent',
-        fontSize:   13,
-        fontWeight: 400,
-        color:      disabled ? '#aab0b8' : '#4b535e',
-        cursor:     disabled ? 'not-allowed' : 'pointer',
-        opacity:    disabled ? 0.6 : 1,
-      }}
-    >
-      {!iconAfter && icon}
-      {label}
-      {iconAfter && icon}
-    </button>
   )
 }
 
@@ -1897,6 +1810,183 @@ function DeleteArticleModal({
   )
 }
 
+// ── Failed KBs Modal ──────────────────────────────────────────────────────────
+
+const KB_STATUS = {
+  loaded: 5,
+  total:  8,
+  failed: [
+    { name: 'Amazon Integration',                         error: 'Network error — retry when connection is restored', canRetry: true  },
+    { name: 'Self Service Workshop Knowledge',             error: 'Timeout — server did not respond in time',         canRetry: true  },
+    { name: 'Custom Tool Workshop Knowledge Base',         error: 'Unknown error — contact support',                  canRetry: false },
+  ],
+}
+
+function FailedKBsModal({ onClose }: { onClose: () => void }) {
+  const failedCount    = KB_STATUS.total - KB_STATUS.loaded
+  const succeededCount = KB_STATUS.loaded
+
+  return createPortal(
+    <div style={{
+      position:       'fixed',
+      inset:          0,
+      zIndex:         9999,
+      background:     'rgba(2,25,32,0.4)',
+      display:        'flex',
+      alignItems:     'center',
+      justifyContent: 'center',
+    }}>
+      <div style={{
+        background:   '#fff',
+        borderRadius: 8,
+        boxShadow:    '0 8px 32px rgba(5,3,38,0.16)',
+        width:        701,
+        overflow:     'hidden',
+      }}>
+        {/* Header */}
+        <div style={{
+          display:        'flex',
+          alignItems:     'flex-start',
+          justifyContent: 'space-between',
+          padding:        '24px 24px 16px',
+          borderBottom:   '1px solid #eff1f3',
+        }}>
+          <div>
+            <h1 style={{ fontSize: 28, fontWeight: 400, color: '#021920', margin: '0 0 4px', lineHeight: '34px' }}>
+              Knowledge Bases Failures
+            </h1>
+            <p style={{ fontSize: 20, fontWeight: 400, color: '#4b535e', margin: 0, lineHeight: '28px' }}>
+              Knowledge Bases fetch completed with errors
+            </p>
+          </div>
+          <button
+            onClick={onClose}
+            style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 4, color: '#7a828c', display: 'flex', flexShrink: 0, marginTop: 4 }}
+          >
+            <XIcon size={20} />
+          </button>
+        </div>
+
+        {/* Stats cards */}
+        <div style={{ padding: '16px 24px', background: '#eff1f3', display: 'flex', gap: 12 }}>
+          <div style={{
+            background:   '#fff',
+            border:       '1px solid #d9dce0',
+            borderRadius: 8,
+            padding:      '12px 16px',
+            minWidth:     120,
+            textAlign:    'center',
+          }}>
+            <div style={{ fontSize: 24, fontWeight: 600, color: '#1a7f4b', lineHeight: 1 }}>{succeededCount}</div>
+            <div style={{ fontSize: 12, color: '#4b535e', marginTop: 4 }}>Succeeded</div>
+          </div>
+          <div style={{
+            background:   '#fff',
+            border:       '1px solid #d9dce0',
+            borderRadius: 8,
+            padding:      '12px 16px',
+            minWidth:     120,
+            textAlign:    'center',
+          }}>
+            <div style={{ fontSize: 24, fontWeight: 600, color: '#c0002a', lineHeight: 1 }}>{failedCount}</div>
+            <div style={{ fontSize: 12, color: '#4b535e', marginTop: 4 }}>Failed</div>
+          </div>
+        </div>
+
+        {/* Table */}
+        <div style={{ padding: '0 24px 8px' }}>
+          {/* Table header */}
+          <div style={{
+            display:         'grid',
+            gridTemplateColumns: '1fr 1fr 80px',
+            gap:             0,
+            background:      '#eff1f3',
+            borderRadius:    '4px 4px 0 0',
+            padding:         '8px 12px',
+            marginTop:       16,
+          }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+              <WarningIcon size={14} color="#c0002a" weight="fill" />
+              <span style={{ fontSize: 12, fontWeight: 600, color: '#021920' }}>
+                {failedCount} {failedCount === 1 ? 'file' : 'files'} failed to upload
+              </span>
+            </div>
+            <div style={{ fontSize: 12, fontWeight: 600, color: '#4b535e' }}>Error</div>
+            <div style={{ fontSize: 12, fontWeight: 600, color: '#4b535e' }}>Action</div>
+          </div>
+          {/* Table rows */}
+          {KB_STATUS.failed.map((kb, idx) => (
+            <div
+              key={kb.name}
+              style={{
+                display:             'grid',
+                gridTemplateColumns: '1fr 1fr 80px',
+                gap:                 0,
+                background:          idx % 2 === 0 ? '#fff' : '#fafafa',
+                padding:             '10px 12px',
+                borderBottom:        '1px solid #eff1f3',
+                alignItems:          'center',
+              }}
+            >
+              <span style={{ fontSize: 13, fontWeight: 600, color: '#021920' }}>{kb.name}</span>
+              <span style={{ fontSize: 13, color: '#4b535e', paddingRight: 8 }}>{kb.error}</span>
+              <span>
+                {kb.canRetry
+                  ? <span style={{ fontSize: 13, color: '#3264b8', cursor: 'pointer', textDecoration: 'underline' }}>Retry</span>
+                  : <span style={{ fontSize: 13, color: '#7a828c' }}>—</span>
+                }
+              </span>
+            </div>
+          ))}
+        </div>
+
+        {/* Footer */}
+        <div style={{ padding: '16px 24px', borderTop: '1px solid #eff1f3', display: 'flex', justifyContent: 'flex-end', gap: 8 }}>
+          <button
+            onClick={onClose}
+            style={{
+              display:      'flex',
+              alignItems:   'center',
+              gap:          6,
+              padding:      '8px 16px',
+              border:       'none',
+              borderRadius: 8,
+              background:   'transparent',
+              color:        '#3264b8',
+              fontSize:     13,
+              fontWeight:   600,
+              cursor:       'pointer',
+            }}
+          >
+            <XIcon size={14} />
+            Cancel
+          </button>
+          <button
+            onClick={onClose}
+            style={{
+              display:      'flex',
+              alignItems:   'center',
+              gap:          6,
+              padding:      '8px 16px',
+              border:       'none',
+              borderRadius: 8,
+              background:   '#4285f4',
+              color:        '#fff',
+              fontSize:     13,
+              fontWeight:   600,
+              cursor:       'pointer',
+            }}
+          >
+            <ArrowCounterClockwiseIcon size={14} />
+            Retry
+          </button>
+        </div>
+      </div>
+    </div>,
+    document.body,
+  )
+}
+
 // ── Page ───────────────────────────────────────────────────────────────────────
 
 export default function CollapsibleFilterPage() {
@@ -1905,7 +1995,8 @@ export default function CollapsibleFilterPage() {
   const [actionsOpen,   setActionsOpen]   = useState(false)
   const [rowActionsId,  setRowActionsId]  = useState<string | null>(null)
   const [searchQuery,   setSearchQuery]   = useState('')
-  const [page,          setPage]          = useState(1)
+  const [displayCount,  setDisplayCount]  = useState(10)
+  const [showKBModal,   setShowKBModal]   = useState(false)
   const [sortCol,       setSortCol]       = useState<keyof Article | null>(null)
   const [sortDir,       setSortDir]       = useState<'asc' | 'desc'>('asc')
   const [activeKBs,     setActiveKBs]     = useState<Set<string>>(new Set())
@@ -1942,7 +2033,7 @@ export default function CollapsibleFilterPage() {
   const [activeArticle,  setActiveArticle]  = useState<Article | null>(null)
   const [showNewArticle, setShowNewArticle] = useState(false)
 
-  const NEW_ARTICLE_STUB: Article = { id: '', title: '', kb: '', tags: [], modified: '', modifiedBy: '' }
+  const NEW_ARTICLE_STUB: Article = { id: '', title: '', kb: '', association: '', tags: [], modified: '', modifiedBy: '' }
 
   // Article rename / delete modals
   const [renamingArticle,   setRenamingArticle]   = useState<Article | null>(null)
@@ -1982,7 +2073,7 @@ export default function CollapsibleFilterPage() {
   const clearSelection  = () => setSelectedRows(new Set())
   const toggleKB        = (kb: string) => setActiveKBs(prev  => { const n = new Set(prev); n.has(kb) ? n.delete(kb) : n.add(kb); return n })
   const toggleTag       = (t: string)  => setActiveTags(prev => { const n = new Set(prev); n.has(t)  ? n.delete(t)  : n.add(t);  return n })
-  const clearAllFilters = () => { setActiveKBs(new Set()); setActiveTags(new Set()) }
+  const clearAllFilters = () => { setActiveKBs(new Set()); setActiveTags(new Set()); setDisplayCount(10) }
 
   // ── Tag-assign handlers ──────────────────────────────────────────────────────
   const openTagDrop = (articleId: string) => {
@@ -2202,8 +2293,6 @@ export default function CollapsibleFilterPage() {
     return tagRegistry.filter(t => sel.every(a => a.tags.includes(t.key)))
   }, [articles, selectedRows, tagRegistry])
 
-  const ROWS_PER_PAGE = 10
-
   const filteredArticles = useMemo(() => {
     const filtered = articles.filter(article => {
       if (activeKBs.size > 0 && !activeKBs.has(article.kb)) return false
@@ -2225,10 +2314,7 @@ export default function CollapsibleFilterPage() {
     })
   }, [articles, activeKBs, activeTags, searchQuery, sortCol, sortDir])
 
-  useEffect(() => { setPage(1) }, [activeKBs, activeTags, searchQuery])
-
-  const totalPages   = Math.max(1, Math.ceil(filteredArticles.length / ROWS_PER_PAGE))
-  const pagedArticles = filteredArticles.slice((page - 1) * ROWS_PER_PAGE, page * ROWS_PER_PAGE)
+  useEffect(() => { setDisplayCount(10) }, [activeKBs, activeTags, searchQuery])
 
   const actionSections: DropdownSection[] = [
     {
@@ -2258,88 +2344,19 @@ export default function CollapsibleFilterPage() {
     >
     <div style={{ display: 'flex', flexDirection: 'column', flex: 1, minHeight: 0, background: '#f8f9fb' }}>
 
-      {/* Page header */}
+      {/* Page title bar */}
       <div style={{
-        display:        'flex',
-        alignItems:     'center',
-        justifyContent: 'space-between',
-        padding:        '16px 24px',
-        background:     '#ffffff',
-        borderBottom:   '1px solid #eff1f3',
-        flexShrink:     0,
+        padding:      '16px 24px',
+        background:   '#ffffff',
+        borderBottom: '1px solid #eff1f3',
+        flexShrink:   0,
       }}>
-        <div>
-          <h2 style={{ fontSize: 18, fontWeight: 700, color: '#021920', margin: 0, lineHeight: '26px' }}>
-            Knowledge Management
-          </h2>
-          <p style={{ fontSize: 13, color: '#7a828c', margin: '2px 0 0', lineHeight: '18px' }}>
-            {ARTICLES.length} articles across {KB_LIST.length} knowledge bases
-          </p>
-        </div>
-
-        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-          {/* Search */}
-          <div style={{
-            display:     'flex',
-            alignItems:  'center',
-            gap:         6,
-            padding:     '6px 10px',
-            border:      '1px solid #d9dce0',
-            borderRadius: 8,
-            background:  '#ffffff',
-            width:       220,
-          }}>
-            <MagnifyingGlassIcon size={14} color="#7a828c" style={{ flexShrink: 0 }} />
-            <input
-              type="text"
-              placeholder="Search articles…"
-              value={searchQuery}
-              onChange={e => setSearchQuery(e.target.value)}
-              style={{
-                flex:       1,
-                border:     'none',
-                outline:    'none',
-                fontSize:   13,
-                color:      '#021920',
-                background: 'transparent',
-              }}
-            />
-          </div>
-
-          {/* Actions button */}
-          <button
-            ref={actionsRef}
-            onClick={() => setActionsOpen(v => !v)}
-            style={{
-              display:     'flex',
-              alignItems:  'center',
-              gap:         6,
-              padding:     '7px 14px',
-              border:      '1px solid #d9dce0',
-              borderRadius: 8,
-              background:  actionsOpen ? '#f5f7fa' : '#ffffff',
-              fontSize:    13,
-              fontWeight:  500,
-              color:       '#021920',
-              cursor:      'pointer',
-            }}
-          >
-            Actions
-            <CaretDownIcon
-              size={12}
-              style={{ transition: 'transform 0.15s', transform: actionsOpen ? 'rotate(180deg)' : 'rotate(0deg)' }}
-            />
-          </button>
-
-          <PortalDropdown
-            anchorRef={actionsRef}
-            open={actionsOpen}
-            onClose={() => setActionsOpen(false)}
-            sections={actionSections}
-            width={220}
-            align="right"
-          />
-        </div>
+        <h1 style={{ fontSize: 28, fontWeight: 400, color: '#4285f4', margin: 0, lineHeight: '34px' }}>
+          Articles List
+        </h1>
+        <p style={{ fontSize: 12, color: '#021920', margin: '4px 0 0' }}>
+          Manage your documentation and sync with Q in Connect
+        </p>
       </div>
 
       {/* Main content: filter panel + table */}
@@ -2361,6 +2378,106 @@ export default function CollapsibleFilterPage() {
 
         {/* Table area */}
         <div style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden', background: '#ffffff' }}>
+
+          {/* Content header */}
+          <div style={{ padding: '16px 16px 0', flexShrink: 0 }}>
+            <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: 12 }}>
+              <div>
+                <h2 style={{ fontSize: 28, fontWeight: 400, color: '#021920', margin: 0, lineHeight: '34px' }}>
+                  Articles ({filteredArticles.length})
+                </h2>
+                <p style={{ fontSize: 12, color: '#021920', margin: '4px 0 0' }}>
+                  Manage your documentation and sync with Q in Connect.
+                </p>
+              </div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexShrink: 0 }}>
+                {/* KB load indicator — only shown when some KBs failed */}
+                {KB_STATUS.loaded < KB_STATUS.total && (
+                  <button
+                    onClick={() => setShowKBModal(true)}
+                    style={{
+                      display:      'flex',
+                      alignItems:   'center',
+                      gap:          6,
+                      padding:      '4px 8px',
+                      border:       'none',
+                      borderRadius: 4,
+                      background:   'transparent',
+                      cursor:       'pointer',
+                      color:        '#3264b8',
+                    }}
+                  >
+                    <InfoIcon size={16} color="#3264b8" />
+                    <span style={{ fontSize: 10, fontWeight: 600, color: '#3264b8', whiteSpace: 'nowrap' }}>
+                      {KB_STATUS.loaded}/{KB_STATUS.total} Knowledge Bases loaded.
+                    </span>
+                  </button>
+                )}
+                {/* Actions button */}
+                <button
+                  ref={actionsRef}
+                  onClick={() => setActionsOpen(v => !v)}
+                  style={{
+                    display:      'flex',
+                    alignItems:   'center',
+                    gap:          6,
+                    padding:      '4px 10px',
+                    border:       '1px solid #689df6',
+                    borderRadius: 4,
+                    background:   actionsOpen ? '#f0f5fe' : 'transparent',
+                    fontSize:     10,
+                    fontWeight:   400,
+                    color:        '#3264b8',
+                    cursor:       'pointer',
+                  }}
+                >
+                  Actions
+                  <CaretDownIcon
+                    size={12}
+                    style={{ transition: 'transform 0.15s', transform: actionsOpen ? 'rotate(180deg)' : 'rotate(0deg)' }}
+                  />
+                </button>
+                <PortalDropdown
+                  anchorRef={actionsRef}
+                  open={actionsOpen}
+                  onClose={() => setActionsOpen(false)}
+                  sections={actionSections}
+                  width={220}
+                  align="right"
+                />
+              </div>
+            </div>
+
+            {/* Search row */}
+            <div style={{ marginBottom: 12 }}>
+              <div style={{
+                display:      'flex',
+                alignItems:   'center',
+                gap:          6,
+                padding:      '8px 10px',
+                border:       '1px solid #d9dce0',
+                borderRadius: 8,
+                background:   '#ffffff',
+                width:        362,
+              }}>
+                <MagnifyingGlassIcon size={18} color="#7a828c" style={{ flexShrink: 0 }} />
+                <input
+                  type="text"
+                  placeholder="Search Documents"
+                  value={searchQuery}
+                  onChange={e => setSearchQuery(e.target.value)}
+                  style={{
+                    flex:       1,
+                    border:     'none',
+                    outline:    'none',
+                    fontSize:   14,
+                    color:      '#021920',
+                    background: 'transparent',
+                  }}
+                />
+              </div>
+            </div>
+          </div>
 
           {/* Bulk Actions Panel */}
           {bulkMode && (
@@ -2404,23 +2521,24 @@ export default function CollapsibleFilterPage() {
                   <Th style={{ width: 40, paddingLeft: 16 }}>
                     <Checkbox checked={allSelected} indeterminate={someSelected} onChange={toggleAll} />
                   </Th>
-                  <ThSort label="Article Title"  col="title"      sortCol={sortCol} sortDir={sortDir} onSort={handleSort} style={{ minWidth: 200 }} />
-                  <ThSort label="Knowledge Base" col="kb"         sortCol={sortCol} sortDir={sortDir} onSort={handleSort} style={{ width: 220 }} />
-                  <ThSort label="Tags"           col="tags"       sortCol={sortCol} sortDir={sortDir} onSort={handleSort} style={{ minWidth: 160 }} />
-                  <ThSort label="Last Updated"   col="modified"   sortCol={sortCol} sortDir={sortDir} onSort={handleSort} style={{ width: 130 }} />
-                  <ThSort label="Modified By"    col="modifiedBy" sortCol={sortCol} sortDir={sortDir} onSort={handleSort} style={{ width: 130 }} />
+                  <ThSort label="Article Title"  col="title"       sortCol={sortCol} sortDir={sortDir} onSort={handleSort} style={{ width: 175 }} />
+                  <ThSort label="Knowledge Base" col="kb"          sortCol={sortCol} sortDir={sortDir} onSort={handleSort} style={{ width: 141 }} />
+                  <ThSort label="Association"    col="association" sortCol={sortCol} sortDir={sortDir} onSort={handleSort} style={{ width: 141 }} />
+                  <ThSort label="Tags"           col="tags"        sortCol={sortCol} sortDir={sortDir} onSort={handleSort} style={{ minWidth: 192 }} />
+                  <ThSort label="Last Updated"   col="modified"    sortCol={sortCol} sortDir={sortDir} onSort={handleSort} style={{ width: 123 }} />
+                  <ThSort label="Modified By"    col="modifiedBy"  sortCol={sortCol} sortDir={sortDir} onSort={handleSort} style={{ width: 113 }} />
                   <Th style={{ width: 48 }} />
                 </tr>
               </thead>
               <tbody>
                 {filteredArticles.length === 0 && (
                   <tr>
-                    <td colSpan={7} style={{ textAlign: 'center', padding: '32px 0', color: '#7a828c', fontSize: 13 }}>
+                    <td colSpan={8} style={{ textAlign: 'center', padding: '32px 0', color: '#7a828c', fontSize: 13 }}>
                       No articles match the active filters.
                     </td>
                   </tr>
                 )}
-                {pagedArticles.map((article, idx) => {
+                {filteredArticles.slice(0, displayCount).map((article, idx) => {
                   const isSelected = selectedRows.has(article.id)
                   return (
                     <tr
@@ -2445,6 +2563,11 @@ export default function CollapsibleFilterPage() {
                             fontWeight:     500,
                             cursor:         'pointer',
                             textDecoration: 'none',
+                            overflow:       'hidden',
+                            textOverflow:   'ellipsis',
+                            whiteSpace:     'nowrap',
+                            maxWidth:       175,
+                            display:        'block',
                           }}
                           onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.textDecoration = 'underline' }}
                           onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.textDecoration = 'none' }}
@@ -2452,7 +2575,8 @@ export default function CollapsibleFilterPage() {
                           {article.title}
                         </button>
                       </Td>
-                      <Td style={{ color: '#4b535e' }}>{article.kb}</Td>
+                      <Td style={{ color: '#4b535e', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', maxWidth: 141 }}>{article.kb}</Td>
+                      <Td style={{ color: '#4b535e', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', maxWidth: 141 }}>{article.association}</Td>
                       <td
                         ref={el => {
                           if (el) tagCellRefs.current.set(article.id, el)
@@ -2555,7 +2679,28 @@ export default function CollapsibleFilterPage() {
             </table>
           </div>
 
-          <Pagination page={page} total={totalPages} onChange={setPage} />
+          {filteredArticles.length > displayCount && (
+            <div style={{ padding: '12px 16px', borderTop: '1px solid #eff1f3', flexShrink: 0 }}>
+              <button
+                onClick={() => setDisplayCount(c => c + 10)}
+                style={{
+                  display:      'flex',
+                  alignItems:   'center',
+                  gap:          6,
+                  padding:      '8px 16px',
+                  border:       '1px solid #689df6',
+                  borderRadius: 8,
+                  background:   'transparent',
+                  color:        '#3264b8',
+                  fontSize:     12,
+                  cursor:       'pointer',
+                }}
+              >
+                <ArrowCounterClockwiseIcon size={16} />
+                Load more
+              </button>
+            </div>
+          )}
         </div>
       </div>
     </div>
@@ -2583,6 +2728,7 @@ export default function CollapsibleFilterPage() {
           onClose={closeBulkModal}
         />
       )}
+      {showKBModal && <FailedKBsModal onClose={() => setShowKBModal(false)} />}
       {showNewArticle && (
         <DocumentView isNew article={NEW_ARTICLE_STUB} onBack={() => setShowNewArticle(false)} />
       )}
