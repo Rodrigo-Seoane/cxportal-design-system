@@ -33,7 +33,7 @@ const RELEASES: Release[] = [
   {
     date: 'April 15, 2026',
     changes: [
-      { type: 'added',   label: 'Collapsible Filter experiment',   href: '/sandbox/collapsible-filter', note: 'Article table with inline filter panel, tag management, and live pagination.' },
+      { type: 'added',   label: 'Knowledge Management experiment', href: '/sandbox/collapsible-filter', note: 'Article table with inline filter panel, tag management, and live pagination.' },
       { type: 'added',   label: 'System section in sidebar',       note: 'New nav group: Component Status, Contributing, Changelog, Figma Sync.' },
       { type: 'added',   label: 'Component Status dashboard',      href: '/system/status',      note: 'Auto-generated from registry — shows all components, charts, and sandbox experiments.' },
       { type: 'added',   label: 'Contributing guide',              href: '/system/contributing', note: 'Documents the Sandbox → In Review → Validated → Stable lifecycle.' },

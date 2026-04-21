@@ -121,7 +121,7 @@ const NAV_GROUPS: NavGroup[] = [
     items: [
       { label: 'All Experiments',    href: '/sandbox' },
       { label: 'Login Report',       href: '/sandbox/login-report',       status: 'wip' },
-      { label: 'Collapsible Filter', href: '/sandbox/collapsible-filter', status: 'wip' },
+      { label: 'Knowledge Management', href: '/sandbox/collapsible-filter', status: 'wip' },
     ],
   },
   {

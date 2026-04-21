@@ -2336,7 +2336,7 @@ export default function CollapsibleFilterPage() {
 
   return (
     <SandboxShell
-      title="Collapsible Filter"
+      title="Knowledge Management"
       description="Article table with an inline collapsible filter panel. Supports KB, folder, and tag filters with active-filter chips and a pagination bar."
       status="In Review"
       author="Rodrigo S."
