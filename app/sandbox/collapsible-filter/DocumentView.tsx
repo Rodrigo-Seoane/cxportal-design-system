@@ -15,6 +15,11 @@ import {
   UserIcon,
   CalendarIcon,
   ArticleIcon,
+  CloudArrowUpIcon,
+  SpinnerGapIcon,
+  ClockIcon,
+  ShieldCheckIcon,
+  ArrowsSplitIcon,
 } from '@phosphor-icons/react'
 import { MarkdownEditor } from './MarkdownEditor'
 import { TagPanel } from './TagPanel'
@@ -146,6 +151,15 @@ export function DocumentView({ article, onBack, isNew = false }: DocumentViewPro
   const [tagCreateOpen,    setTagCreateOpen]    = useState(false)
   const searchWrapperRef = useRef<HTMLDivElement>(null)
 
+  // Upload tab state
+  type UploadState = 'idle' | 'processing' | 'done'
+  const [uploadState,    setUploadState]    = useState<UploadState>('idle')
+  const [uploadedFile,   setUploadedFile]   = useState<{ name: string } | null>(null)
+  const [uploadProgress, setUploadProgress] = useState(0)
+  const [uploadPage,     setUploadPage]     = useState(0)
+  const [uploadTotal,    setUploadTotal]    = useState(0)
+  const fileInputRef = useRef<HTMLInputElement>(null)
+
   useEffect(() => {
     if (!tagDropdownOpen) return
     function handleMouseDown(e: MouseEvent) {
@@ -166,6 +180,29 @@ export function DocumentView({ article, onBack, isNew = false }: DocumentViewPro
 
   function removeTag(tag: string) {
     setTags(prev => prev.filter(t => t !== tag))
+  }
+
+  function simulateUpload(fileName: string) {
+    const pages = Math.floor(Math.random() * 8) + 3
+    setUploadTotal(pages)
+    setUploadPage(0)
+    setUploadProgress(0)
+    setUploadState('processing')
+    setUploadedFile({ name: fileName })
+    setDocName(fileName.replace(/\.[^.]+$/, ''))
+    let progress = 0
+    const iv = setInterval(() => {
+      progress += Math.random() * 15 + 5
+      if (progress >= 100) {
+        clearInterval(iv)
+        setUploadProgress(100)
+        setUploadPage(pages)
+        setTimeout(() => setUploadState('done'), 400)
+      } else {
+        setUploadProgress(Math.round(progress))
+        setUploadPage(Math.ceil((progress / 100) * pages))
+      }
+    }, 250)
   }
 
   function toggleVersion(id: string) {
@@ -359,7 +396,7 @@ export function DocumentView({ article, onBack, isNew = false }: DocumentViewPro
           >
             <div style={{ padding: '8px 16px', borderBottom: '1px solid #eff1f3', flexShrink: 0 }}>
               <TabList>
-                <Tab value="markdown" icon={<ArticleIcon size={13} />}>Markdown</Tab>
+                <Tab value="markdown" icon={<ArticleIcon size={13} />} disabled={uploadState === 'done'}>Markdown</Tab>
                 <Tab value="upload" icon={<UploadSimpleIcon size={13} />}>Upload File</Tab>
               </TabList>
             </div>
@@ -380,19 +417,107 @@ export function DocumentView({ article, onBack, isNew = false }: DocumentViewPro
               )}
             </TabPanel>
 
-            <TabPanel
-              value="upload"
-              style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center' }}
-            >
-              <div style={{
-                border:       '2px dashed #d9dce0',
-                borderRadius: 8,
-                padding:      '32px 48px',
-                color:        '#7a828c',
-                fontSize:     13,
-              }}>
-                File upload coming soon
-              </div>
+            <TabPanel value="upload" style={{ flex: 1, display: 'flex', flexDirection: 'column', padding: '16px', gap: 8, overflow: 'hidden' }}>
+              <style>{`@keyframes dv-spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}`}</style>
+
+              {uploadState === 'idle' && (
+                <>
+                  <p style={{ fontSize: 18, fontWeight: 400, color: '#021920', margin: 0 }}>Upload Content</p>
+                  <p style={{ fontSize: 14, color: '#021920', margin: 0 }}>Size limit per file: 1 MB bytes.</p>
+                  <div
+                    onDragOver={e => e.preventDefault()}
+                    onDrop={e => { e.preventDefault(); const f = e.dataTransfer.files[0]; if (f) simulateUpload(f.name) }}
+                    onClick={() => fileInputRef.current?.click()}
+                    style={{
+                      height:         300,
+                      background:     '#eff1f3',
+                      border:         '2px dashed #689df6',
+                      borderRadius:   8,
+                      display:        'flex',
+                      flexDirection:  'column',
+                      alignItems:     'center',
+                      justifyContent: 'center',
+                      gap:            12,
+                      cursor:         'pointer',
+                      flexShrink:     0,
+                    }}
+                  >
+                    <CloudArrowUpIcon size={48} color="#689df6" />
+                    <div style={{ textAlign: 'center' }}>
+                      <p style={{ fontSize: 18, fontWeight: 600, color: '#3264b8', margin: '0 0 4px' }}>Drag &amp; Drop your files here</p>
+                      <p style={{ fontSize: 14, color: '#021920', margin: '0 0 8px' }}>or click to browse</p>
+                      <p style={{ fontSize: 12, fontWeight: 300, color: '#7a828c', margin: 0 }}>Supported Format: .docx, .pdf, .txt</p>
+                    </div>
+                  </div>
+                  <input
+                    ref={fileInputRef}
+                    type="file"
+                    accept=".pdf,.docx,.txt,.md"
+                    style={{ display: 'none' }}
+                    onChange={e => { const f = e.target.files?.[0]; if (f) simulateUpload(f.name) }}
+                  />
+                </>
+              )}
+
+              {uploadState === 'processing' && (
+                <div style={{
+                  flex:           1,
+                  background:     '#fff',
+                  border:         '2px dashed #689df6',
+                  borderRadius:   8,
+                  padding:        16,
+                  display:        'flex',
+                  flexDirection:  'column',
+                  justifyContent: 'space-between',
+                  minHeight:      200,
+                }}>
+                  <p style={{ fontSize: 14, fontWeight: 600, color: '#021920', margin: 0 }}>Progress</p>
+                  <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8 }}>
+                    <SpinnerGapIcon size={64} color="#4285f4" style={{ animation: 'dv-spin 1s linear infinite' }} />
+                    <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%' }}>
+                      <span style={{ fontSize: 12, fontWeight: 600, color: '#021920', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
+                        {uploadedFile?.name ?? ''}
+                      </span>
+                      <span style={{ fontSize: 12, fontWeight: 600, color: '#021920' }}>{uploadProgress}%</span>
+                    </div>
+                    <div style={{ width: '100%', height: 12, background: '#d9dce0', borderRadius: 999, overflow: 'hidden' }}>
+                      <div style={{ height: '100%', width: `${uploadProgress}%`, background: '#4285f4', borderRadius: 999, transition: 'width 0.15s' }} />
+                    </div>
+                    <p style={{ fontSize: 12, fontWeight: 300, color: '#7a828c', margin: 0 }}>Page {uploadPage} of {uploadTotal}</p>
+                  </div>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+                    <span style={{ display: 'flex', alignItems: 'center', gap: 4, fontSize: 12, color: '#7a828c' }}>
+                      <ClockIcon size={12} color="#7a828c" /> This usually takes a few seconds
+                    </span>
+                    <span style={{ width: 1, height: 10, background: '#eff1f3' }} />
+                    <span style={{ display: 'flex', alignItems: 'center', gap: 4, fontSize: 12, color: '#7a828c' }}>
+                      <ShieldCheckIcon size={12} color="#7a828c" /> Changes are saved as they process
+                    </span>
+                  </div>
+                </div>
+              )}
+
+              {uploadState === 'done' && (
+                <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 8, minHeight: 0 }}>
+                  <button
+                    onClick={() => { setUploadState('idle'); setUploadedFile(null) }}
+                    style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '4px 0', border: 'none', background: 'transparent', color: '#3264b8', fontSize: 12, cursor: 'pointer', alignSelf: 'flex-start' }}
+                  >
+                    <UploadSimpleIcon size={14} color="#3264b8" />
+                    Upload New File
+                  </button>
+                  <div style={{ flex: 1, background: '#eff1f3', borderRadius: 8, padding: 16, overflow: 'auto', display: 'flex', justifyContent: 'center' }}>
+                    <div style={{ background: '#fff', borderRadius: 4, padding: '24px 32px', width: '100%', maxWidth: 600, boxShadow: '0 1px 4px rgba(0,0,0,0.08)' }}>
+                      <p style={{ fontSize: 11, fontWeight: 600, color: '#7a828c', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 16 }}>
+                        {uploadedFile?.name}
+                      </p>
+                      {[80, 60, 90, 45, 70, 55, 85, 40, 65, 75, 50, 30].map((w, i) => (
+                        <div key={i} style={{ height: 10, background: '#eff1f3', borderRadius: 4, marginBottom: 10, width: `${w}%` }} />
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              )}
             </TabPanel>
           </Tabs>
 
@@ -461,7 +586,16 @@ export function DocumentView({ article, onBack, isNew = false }: DocumentViewPro
             )}
           </SideCard>
 
-          {/* Card 2 — Tags */}
+          {/* Card 2 — Content Association */}
+          <SideCard>
+            <CardHeading>Content Association</CardHeading>
+            <p style={{ fontSize: 12, color: '#021920', margin: '0 0 8px' }}>
+              Associate this content with Connect Contact Flows.
+            </p>
+            <InlineContextData icon={<ArrowsSplitIcon size={16} color="#7a828c" />} label="Association" value="None" />
+          </SideCard>
+
+          {/* Card 3 — Tags */}
           <SideCard>
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
               <CardHeading>Tags</CardHeading>

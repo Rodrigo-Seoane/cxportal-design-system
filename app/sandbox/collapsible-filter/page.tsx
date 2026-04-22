@@ -31,9 +31,27 @@ import {
   XIcon,
   CheckIcon,
   WarningIcon,
+  CloudArrowUpIcon,
+  SpinnerGapIcon,
+  ClockIcon,
+  ShieldCheckIcon,
+  CheckCircleIcon,
+  FloppyDiskIcon,
 } from '@phosphor-icons/react'
 
 // ── Types ──────────────────────────────────────────────────────────────────────
+
+type QueuedFile = {
+  id:       string
+  name:     string
+  fileType: 'Word Document' | 'PDF File' | 'Text File' | 'Markdown'
+  size:     string
+  status:   'pending' | 'success' | 'error'
+  error?:   string
+  canRetry: boolean
+}
+
+type BulkUploadState = 'idle' | 'queued' | 'uploading' | 'complete'
 
 type Article = {
   id: string
@@ -1810,6 +1828,29 @@ function DeleteArticleModal({
   )
 }
 
+// ── Helpers ────────────────────────────────────────────────────────────────────
+
+function fileTypeLabel(name: string): QueuedFile['fileType'] {
+  const ext = name.split('.').pop()?.toLowerCase()
+  if (ext === 'pdf')  return 'PDF File'
+  if (ext === 'docx') return 'Word Document'
+  if (ext === 'md')   return 'Markdown'
+  return 'Text File'
+}
+
+function formatBytes(bytes: number): string {
+  if (bytes < 1024) return `${bytes} B`
+  return `${(bytes / 1024).toFixed(2)} kB`
+}
+
+const KB_NAMES = [
+  'Message Template',
+  'Amazon Integration',
+  'Quick Question',
+  'Self Service Workshop Knowledge',
+  'Custom Tool Workshop Knowledge Base',
+]
+
 // ── Failed KBs Modal ──────────────────────────────────────────────────────────
 
 const KB_STATUS = {
@@ -1987,6 +2028,262 @@ function FailedKBsModal({ onClose }: { onClose: () => void }) {
   )
 }
 
+// ── Bulk Upload Modal ─────────────────────────────────────────────────────────
+
+type BulkUploadModalProps = {
+  uploadState:    BulkUploadState
+  queue:          QueuedFile[]
+  destKB:         string
+  progress:       number
+  currentFile:    number
+  results:        { succeeded: number; failed: QueuedFile[] }
+  onDestKBChange: (kb: string) => void
+  onAddFiles:     (files: FileList) => void
+  onRemoveFile:   (id: string) => void
+  onSave:         () => void
+  onCancel:       () => void
+  onDone:         () => void
+}
+
+function BulkUploadModal({
+  uploadState, queue, destKB, progress, currentFile, results,
+  onDestKBChange, onAddFiles, onRemoveFile, onSave, onCancel, onDone,
+}: BulkUploadModalProps) {
+  const bulkFileInputRef = useRef<HTMLInputElement>(null)
+
+  function handleDrop(e: React.DragEvent) {
+    e.preventDefault()
+    if (e.dataTransfer.files.length > 0) onAddFiles(e.dataTransfer.files)
+  }
+
+  const currentFileName = queue[currentFile - 1]?.name ?? ''
+
+  return createPortal(
+    <>
+      <style>{`@keyframes bulk-spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}`}</style>
+      <div style={{ position: 'fixed', inset: 0, zIndex: 9999, background: 'rgba(2,25,32,0.4)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <div style={{ background: '#fff', borderRadius: 8, boxShadow: '0 8px 32px rgba(5,3,38,0.16)', width: 701, maxHeight: '90vh', overflow: 'auto', padding: 16, display: 'flex', flexDirection: 'column', gap: 16 }}>
+
+          {/* Header */}
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: '1px solid #eff1f3', paddingBottom: 16 }}>
+            <h1 style={{ fontSize: 28, fontWeight: 400, color: '#021920', margin: 0, lineHeight: '34px' }}>Upload Multiple Files</h1>
+            <button onClick={onCancel} style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 4, color: '#7a828c', display: 'flex' }}>
+              <XIcon size={20} />
+            </button>
+          </div>
+
+          {/* States */}
+          {(uploadState === 'idle' || uploadState === 'queued') && (
+            <>
+              {/* KB selector */}
+              <div>
+                <p style={{ fontSize: 18, fontWeight: 400, color: '#021920', margin: '0 0 8px' }}>Files Destination</p>
+                <label style={{ display: 'block', fontSize: 12, fontWeight: 600, color: '#021920', marginBottom: 6, letterSpacing: '0.02em' }}>Knowledge Base</label>
+                <div style={{ position: 'relative' }}>
+                  <select
+                    value={destKB}
+                    onChange={e => onDestKBChange(e.target.value)}
+                    style={{ width: '100%', padding: '8px 32px 8px 8px', border: '1px solid #d9dce0', borderRadius: 8, fontSize: 14, color: destKB === '' ? '#7a828c' : '#021920', background: '#fff', appearance: 'none', outline: 'none', cursor: 'pointer' }}
+                  >
+                    <option value="" disabled>Select Knowledge Base</option>
+                    {KB_NAMES.map(kb => <option key={kb} value={kb}>{kb}</option>)}
+                  </select>
+                  <CaretDownIcon size={16} color="#7a828c" style={{ position: 'absolute', right: 8, top: '50%', transform: 'translateY(-50%)', pointerEvents: 'none' }} />
+                </div>
+              </div>
+
+              {/* Drop zone */}
+              <div>
+                <p style={{ fontSize: 18, fontWeight: 400, color: '#021920', margin: '0 0 4px' }}>Upload Content</p>
+                <p style={{ fontSize: 14, color: '#021920', margin: '0 0 8px' }}>Supported Format: .docx, .pdf, .txt, .md | Size limit per file: 1 MB bytes.</p>
+                <div
+                  onDragOver={e => e.preventDefault()}
+                  onDrop={handleDrop}
+                  onClick={() => bulkFileInputRef.current?.click()}
+                  style={{
+                    background:     '#eff1f3',
+                    border:         '2px dashed #689df6',
+                    borderRadius:   8,
+                    height:         uploadState === 'queued' ? 80 : 260,
+                    display:        'flex',
+                    flexDirection:  'column',
+                    alignItems:     'center',
+                    justifyContent: 'center',
+                    gap:            uploadState === 'queued' ? 4 : 12,
+                    cursor:         'pointer',
+                    overflow:       'hidden',
+                  }}
+                >
+                  {uploadState === 'idle' && <CloudArrowUpIcon size={48} color="#689df6" />}
+                  <p style={{ fontSize: 18, fontWeight: 600, color: '#3264b8', margin: 0 }}>Drag &amp; Drop your files here</p>
+                  <p style={{ fontSize: 14, color: '#021920', margin: 0 }}>or click to browse</p>
+                  {uploadState === 'idle' && <p style={{ fontSize: 12, fontWeight: 300, color: '#7a828c', margin: 0 }}>Supported Format: .docx, .pdf, .txt</p>}
+                </div>
+                <input
+                  ref={bulkFileInputRef}
+                  type="file"
+                  multiple
+                  accept=".pdf,.docx,.txt,.md"
+                  style={{ display: 'none' }}
+                  onChange={e => { if (e.target.files?.length) onAddFiles(e.target.files) }}
+                />
+              </div>
+
+              {/* Queue table */}
+              {uploadState === 'queued' && (
+                <>
+                  <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between' }}>
+                    <div>
+                      <p style={{ fontSize: 18, fontWeight: 400, color: '#021920', margin: '0 0 2px' }}>Upload Queue ({queue.length})</p>
+                      <p style={{ fontSize: 12, color: '#021920', margin: 0 }}>The documents below will be uploaded to your knowledge base.</p>
+                    </div>
+                    <button
+                      onClick={() => bulkFileInputRef.current?.click()}
+                      style={{ display: 'flex', alignItems: 'center', gap: 4, padding: '4px 8px', border: 'none', borderRadius: 4, background: 'transparent', color: '#3264b8', fontSize: 10, fontWeight: 600, cursor: 'pointer' }}
+                    >
+                      <PlusCircleIcon size={14} color="#3264b8" />
+                      Add More Files
+                    </button>
+                  </div>
+                  <div style={{ border: '1px solid #eff1f3', borderRadius: 8, overflow: 'hidden' }}>
+                    {/* Table header */}
+                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 120px 100px 104px', background: '#eff1f3', padding: '8px', gap: 0 }}>
+                      {['Article Title', 'File Type', 'Size', ''].map((col, i) => (
+                        <span key={i} style={{ fontSize: 12, fontWeight: 600, color: '#021920', padding: '4px 8px', letterSpacing: '0.02em' }}>{col}</span>
+                      ))}
+                    </div>
+                    {/* Table rows */}
+                    {queue.map((f, idx) => (
+                      <div key={f.id} style={{ display: 'grid', gridTemplateColumns: '1fr 120px 100px 104px', background: idx % 2 === 0 ? '#fff' : '#f8f8f8', borderTop: '1px solid #eff1f3', alignItems: 'center' }}>
+                        <span style={{ fontSize: 12, color: '#021920', padding: '10px 8px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{f.name}</span>
+                        <span style={{ fontSize: 12, color: '#021920', padding: '10px 8px', whiteSpace: 'nowrap' }}>{f.fileType}</span>
+                        <span style={{ fontSize: 12, color: '#021920', padding: '10px 8px', whiteSpace: 'nowrap' }}>{f.size}</span>
+                        <div style={{ display: 'flex', justifyContent: 'flex-end', padding: '10px 8px' }}>
+                          <button
+                            onClick={() => onRemoveFile(f.id)}
+                            style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 4, border: '1px solid #689df6', borderRadius: 4, background: 'transparent', cursor: 'pointer' }}
+                          >
+                            <TrashIcon size={16} color="#3264b8" />
+                          </button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </>
+              )}
+            </>
+          )}
+
+          {uploadState === 'uploading' && (
+            <div style={{ background: '#fff', border: '2px dashed #689df6', borderRadius: 8, padding: 16, display: 'flex', flexDirection: 'column', justifyContent: 'space-between', minHeight: 260 }}>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                <p style={{ fontSize: 14, fontWeight: 600, color: '#021920', margin: 0 }}>Progress</p>
+                <button onClick={onCancel} style={{ display: 'flex', alignItems: 'center', gap: 4, padding: '4px 8px', border: 'none', borderRadius: 4, background: 'transparent', color: '#3264b8', fontSize: 12, fontWeight: 600, cursor: 'pointer' }}>
+                  Cancel <XIcon size={12} color="#3264b8" />
+                </button>
+              </div>
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8 }}>
+                <SpinnerGapIcon size={64} color="#4285f4" style={{ animation: 'bulk-spin 1s linear infinite' }} />
+                <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%' }}>
+                  <span style={{ fontSize: 12, fontWeight: 600, color: '#021920', textTransform: 'uppercase', letterSpacing: '0.04em' }}>{currentFileName}</span>
+                  <span style={{ fontSize: 12, fontWeight: 600, color: '#021920' }}>{progress}%</span>
+                </div>
+                <div style={{ width: '100%', height: 12, background: '#d9dce0', borderRadius: 999, overflow: 'hidden' }}>
+                  <div style={{ height: '100%', width: `${progress}%`, background: '#4285f4', borderRadius: 999, transition: 'width 0.15s' }} />
+                </div>
+                <p style={{ fontSize: 12, fontWeight: 300, color: '#7a828c', margin: 0 }}>File {currentFile} of {queue.length}</p>
+              </div>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+                <span style={{ display: 'flex', alignItems: 'center', gap: 4, fontSize: 12, color: '#7a828c' }}>
+                  <ClockIcon size={12} color="#7a828c" /> This usually takes a few seconds
+                </span>
+                <span style={{ width: 1, height: 10, background: '#eff1f3' }} />
+                <span style={{ display: 'flex', alignItems: 'center', gap: 4, fontSize: 12, color: '#7a828c' }}>
+                  <ShieldCheckIcon size={12} color="#7a828c" /> Changes are saved as they process
+                </span>
+              </div>
+            </div>
+          )}
+
+          {uploadState === 'complete' && (
+            <>
+              <div>
+                <p style={{ fontSize: 20, fontWeight: 400, color: '#021920', margin: '0 0 4px' }}>Bulk upload completed with errors</p>
+                <p style={{ fontSize: 14, color: '#4b535e', margin: 0 }}>{results.succeeded + results.failed.length} files processed — {results.succeeded} succeeded, {results.failed.length} failed</p>
+              </div>
+              <div style={{ background: '#eff1f3', borderRadius: 8, padding: 8, display: 'flex', gap: 8 }}>
+                {[
+                  { label: 'Succeeded', value: results.succeeded, color: '#021920' },
+                  { label: 'Failed',    value: results.failed.length, color: '#021920' },
+                ].map(card => (
+                  <div key={card.label} style={{ background: '#fff', border: '1px solid #d9dce0', borderRadius: 8, padding: '8px 16px', minWidth: 120 }}>
+                    <p style={{ fontSize: 10, fontWeight: 600, color: '#021920', margin: '0 0 4px' }}>{card.label}</p>
+                    <p style={{ fontSize: 24, fontWeight: 400, color: card.color, margin: 0, lineHeight: 1 }}>{card.value}</p>
+                  </div>
+                ))}
+              </div>
+              {results.failed.length > 0 && (
+                <div style={{ border: '1px solid #eff1f3', borderRadius: 8, overflow: 'hidden' }}>
+                  <div style={{ background: '#eff1f3', padding: '8px 12px', display: 'flex', alignItems: 'center', gap: 6 }}>
+                    <WarningIcon size={14} color="#c0002a" weight="fill" />
+                    <span style={{ fontSize: 12, fontWeight: 600, color: '#021920' }}>{results.failed.length} files failed to upload</span>
+                  </div>
+                  {results.failed.map((f, idx) => (
+                    <div key={f.id} style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 100px', background: idx % 2 === 0 ? '#fff' : '#f8f8f8', borderTop: '1px solid #eff1f3', padding: '10px 12px', alignItems: 'center', gap: 8 }}>
+                      <span style={{ fontSize: 13, fontWeight: 600, color: '#021920' }}>{f.name}</span>
+                      <span style={{ fontSize: 13, color: '#4b535e' }}>{f.error}</span>
+                      <span>{f.canRetry ? <span style={{ fontSize: 13, color: '#4285f4', textDecoration: 'underline', cursor: 'pointer' }}>Retry</span> : <span style={{ fontSize: 13, color: '#7a828c' }}>—</span>}</span>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </>
+          )}
+
+          {/* Footer */}
+          <div style={{ borderTop: '1px solid #eff1f3', paddingTop: 16, display: 'flex', gap: 8, alignItems: 'center' }}>
+            {uploadState === 'idle' && (
+              <>
+                <button onClick={onCancel} style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '12px', border: 'none', borderRadius: 8, background: 'transparent', color: '#3264b8', fontSize: 14, fontWeight: 600, cursor: 'pointer' }}>
+                  <XIcon size={16} /> Cancel
+                </button>
+                <button
+                  onClick={() => bulkFileInputRef.current?.click()}
+                  style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '12px', border: '1.25px solid #689df6', borderRadius: 8, background: '#4285f4', color: '#eff1f3', fontSize: 14, cursor: 'pointer', opacity: destKB === '' ? 0.5 : 1 }}
+                  disabled={destKB === ''}
+                >
+                  <FloppyDiskIcon size={20} /> Upload Files
+                </button>
+              </>
+            )}
+            {uploadState === 'queued' && (
+              <>
+                <button onClick={onCancel} style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '12px', border: 'none', borderRadius: 8, background: 'transparent', color: '#3264b8', fontSize: 14, fontWeight: 600, cursor: 'pointer' }}>
+                  <XIcon size={16} /> Cancel
+                </button>
+                <button
+                  onClick={onSave}
+                  disabled={queue.length === 0 || destKB === ''}
+                  style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '12px', border: '1.25px solid #689df6', borderRadius: 8, background: '#4285f4', color: '#eff1f3', fontSize: 14, cursor: queue.length === 0 || destKB === '' ? 'not-allowed' : 'pointer', opacity: queue.length === 0 || destKB === '' ? 0.5 : 1 }}
+                >
+                  <FloppyDiskIcon size={20} /> Save to Knowledge Base
+                </button>
+              </>
+            )}
+            {uploadState === 'complete' && (
+              <button onClick={onDone} style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '12px', border: '1.25px solid #689df6', borderRadius: 8, background: '#4285f4', color: '#eff1f3', fontSize: 14, cursor: 'pointer' }}>
+                <CheckCircleIcon size={20} /> Done
+              </button>
+            )}
+          </div>
+
+        </div>
+      </div>
+    </>,
+    document.body,
+  )
+}
+
 // ── Page ───────────────────────────────────────────────────────────────────────
 
 export default function CollapsibleFilterPage() {
@@ -1997,6 +2294,13 @@ export default function CollapsibleFilterPage() {
   const [searchQuery,   setSearchQuery]   = useState('')
   const [displayCount,  setDisplayCount]  = useState(10)
   const [showKBModal,   setShowKBModal]   = useState(false)
+  const [showBulkUpload,  setShowBulkUpload]  = useState(false)
+  const [bulkUploadState, setBulkUploadState] = useState<BulkUploadState>('idle')
+  const [bulkQueue,       setBulkQueue]       = useState<QueuedFile[]>([])
+  const [bulkDestKB,      setBulkDestKB]      = useState('')
+  const [bulkProgress,    setBulkProgress]    = useState(0)
+  const [bulkCurrentFile, setBulkCurrentFile] = useState(0)
+  const [bulkResults,     setBulkResults]     = useState<{ succeeded: number; failed: QueuedFile[] }>({ succeeded: 0, failed: [] })
   const [sortCol,       setSortCol]       = useState<keyof Article | null>(null)
   const [sortDir,       setSortDir]       = useState<'asc' | 'desc'>('asc')
   const [activeKBs,     setActiveKBs]     = useState<Set<string>>(new Set())
@@ -2074,6 +2378,36 @@ export default function CollapsibleFilterPage() {
   const toggleKB        = (kb: string) => setActiveKBs(prev  => { const n = new Set(prev); n.has(kb) ? n.delete(kb) : n.add(kb); return n })
   const toggleTag       = (t: string)  => setActiveTags(prev => { const n = new Set(prev); n.has(t)  ? n.delete(t)  : n.add(t);  return n })
   const clearAllFilters = () => { setActiveKBs(new Set()); setActiveTags(new Set()); setDisplayCount(10) }
+
+  function startBulkUpload() {
+    setBulkUploadState('uploading')
+    setBulkCurrentFile(1)
+    let prog = 0
+    let idx = 0
+    const total = bulkQueue.length
+    const iv = setInterval(() => {
+      prog += Math.random() * 20 + 10
+      if (prog >= 100) {
+        prog = 0
+        idx++
+        if (idx >= total) {
+          clearInterval(iv)
+          const failCount = Math.min(2, total)
+          const failed = bulkQueue.slice(-failCount).map(f => ({
+            ...f,
+            status: 'error' as const,
+            error: 'Network error — retry when connection is restored',
+            canRetry: true,
+          }))
+          setBulkResults({ succeeded: total - failCount, failed })
+          setBulkUploadState('complete')
+          return
+        }
+        setBulkCurrentFile(idx + 1)
+      }
+      setBulkProgress(Math.round(prog))
+    }, 200)
+  }
 
   // ── Tag-assign handlers ──────────────────────────────────────────────────────
   const openTagDrop = (articleId: string) => {
@@ -2321,7 +2655,7 @@ export default function CollapsibleFilterPage() {
       heading: 'Knowledge Base',
       items: [
         { label: 'Add New Article',  icon: <PlusCircleIcon size={14} />, onClick: () => setShowNewArticle(true) },
-        { label: 'Upload Files',     icon: <UploadSimpleIcon size={14} /> },
+        { label: 'Upload Files', icon: <UploadSimpleIcon size={14} />, onClick: () => { setShowBulkUpload(true); setBulkUploadState('idle'); setBulkQueue([]); setBulkDestKB('') } },
       ],
     },
     {
@@ -2522,8 +2856,8 @@ export default function CollapsibleFilterPage() {
                     <Checkbox checked={allSelected} indeterminate={someSelected} onChange={toggleAll} />
                   </Th>
                   <ThSort label="Article Title"  col="title"       sortCol={sortCol} sortDir={sortDir} onSort={handleSort} style={{ width: 175 }} />
-                  <ThSort label="Knowledge Base" col="kb"          sortCol={sortCol} sortDir={sortDir} onSort={handleSort} style={{ width: 141 }} />
-                  <ThSort label="Association"    col="association" sortCol={sortCol} sortDir={sortDir} onSort={handleSort} style={{ width: 141 }} />
+                  <ThSort label="Knowledge Base" col="kb"          sortCol={sortCol} sortDir={sortDir} onSort={handleSort} style={{ width: 220 }} />
+                  <ThSort label="Association"    col="association" sortCol={sortCol} sortDir={sortDir} onSort={handleSort} style={{ width: 180 }} />
                   <ThSort label="Tags"           col="tags"        sortCol={sortCol} sortDir={sortDir} onSort={handleSort} style={{ minWidth: 192 }} />
                   <ThSort label="Last Updated"   col="modified"    sortCol={sortCol} sortDir={sortDir} onSort={handleSort} style={{ width: 123 }} />
                   <ThSort label="Modified By"    col="modifiedBy"  sortCol={sortCol} sortDir={sortDir} onSort={handleSort} style={{ width: 113 }} />
@@ -2575,8 +2909,8 @@ export default function CollapsibleFilterPage() {
                           {article.title}
                         </button>
                       </Td>
-                      <Td style={{ color: '#4b535e', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', maxWidth: 141 }}>{article.kb}</Td>
-                      <Td style={{ color: '#4b535e', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', maxWidth: 141 }}>{article.association}</Td>
+                      <Td style={{ color: '#4b535e', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', maxWidth: 220 }}>{article.kb}</Td>
+                      <Td style={{ color: '#4b535e', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', maxWidth: 180 }}>{article.association}</Td>
                       <td
                         ref={el => {
                           if (el) tagCellRefs.current.set(article.id, el)
@@ -2729,6 +3063,33 @@ export default function CollapsibleFilterPage() {
         />
       )}
       {showKBModal && <FailedKBsModal onClose={() => setShowKBModal(false)} />}
+      {showBulkUpload && (
+        <BulkUploadModal
+          uploadState={bulkUploadState}
+          queue={bulkQueue}
+          destKB={bulkDestKB}
+          progress={bulkProgress}
+          currentFile={bulkCurrentFile}
+          results={bulkResults}
+          onDestKBChange={setBulkDestKB}
+          onAddFiles={files => {
+            const newFiles: QueuedFile[] = Array.from(files).map((f, i) => ({
+              id:       `${Date.now()}-${i}`,
+              name:     f.name.replace(/\.[^.]+$/, ''),
+              fileType: fileTypeLabel(f.name),
+              size:     formatBytes(f.size),
+              status:   'pending',
+              canRetry: false,
+            }))
+            setBulkQueue(q => [...q, ...newFiles])
+            setBulkUploadState('queued')
+          }}
+          onRemoveFile={id => setBulkQueue(q => q.filter(f => f.id !== id))}
+          onSave={startBulkUpload}
+          onCancel={() => { setShowBulkUpload(false); setBulkUploadState('idle'); setBulkQueue([]) }}
+          onDone={() => { setShowBulkUpload(false); setBulkUploadState('idle'); setBulkQueue([]) }}
+        />
+      )}
       {showNewArticle && (
         <DocumentView isNew article={NEW_ARTICLE_STUB} onBack={() => setShowNewArticle(false)} />
       )}
