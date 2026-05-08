@@ -1,5 +1,7 @@
 'use client'
 
+import { useState } from 'react'
+import { QuestionIcon, LightningIcon } from '@phosphor-icons/react'
 import { Tooltip } from '@/components/ui/tooltip'
 import type { AgentStatusCategory } from '@/mocks/wfm/store'
 
@@ -16,25 +18,43 @@ const STATUS_STYLES: Record<AgentStatusCategory, { bg: string; text: string; dot
 export interface StatusPillProps {
   status: AgentStatusCategory
   auxCode?: string
+  displayLabel?: string
+  /** True when the AUX code has no Centene mapping yet */
+  unmapped?: boolean
+  /** Shows the inactivity-detected design-only badge */
+  inactivityDetected?: boolean
   size?: 'sm' | 'md'
 }
 
-export function StatusPill({ status, auxCode, size = 'md' }: StatusPillProps) {
+export function StatusPill({
+  status,
+  auxCode,
+  displayLabel,
+  unmapped,
+  inactivityDetected = false,
+  size = 'md',
+}: StatusPillProps) {
+  const [helpOpen, setHelpOpen] = useState(false)
   const s = STATUS_STYLES[status] ?? STATUS_STYLES.Unknown
-  const isPending = status === 'Pending'
-  const hasAux = status === 'Aux' && auxCode
+  const isPending = status === 'Pending' || unmapped
+  const label = displayLabel ?? status
+  const fs = size === 'sm' ? 10 : 12
+  const py = size === 'sm' ? 2 : 3
+  const px = isPending ? 6 : size === 'sm' ? 6 : 8
 
   const pill = (
     <span
+      role="status"
+      aria-label={`Agent status: ${label}${auxCode ? ` (${auxCode})` : ''}`}
       style={{
         display:       'inline-flex',
         alignItems:    'center',
         gap:            4,
-        padding:       size === 'sm' ? '2px 6px' : '3px 8px',
+        padding:       `${py}px ${px}px`,
         borderRadius:   64,
         background:     s.bg,
         fontFamily:    'var(--font-sans)',
-        fontSize:       size === 'sm' ? 10 : 12,
+        fontSize:       fs,
         fontWeight:     600,
         lineHeight:    '16px',
         color:          s.text,
@@ -45,29 +65,87 @@ export function StatusPill({ status, auxCode, size = 'md' }: StatusPillProps) {
       <span
         aria-hidden="true"
         style={{
-          width:        6,
-          height:       6,
-          borderRadius: '50%',
-          background:   s.dot,
-          flexShrink:   0,
+          width: 6, height: 6, borderRadius: '50%',
+          background: s.dot, flexShrink: 0,
         }}
       />
-      {status}
-      {hasAux && (
-        <span style={{ opacity: 0.7, fontSize: size === 'sm' ? 9 : 10 }}>
-          · {auxCode}
+      {label}
+      {auxCode && !isPending && (
+        <span style={{ opacity: 0.7, fontSize: fs - 1 }}>· {auxCode}</span>
+      )}
+      {isPending && (
+        <span
+          onClick={e => { e.stopPropagation(); setHelpOpen(o => !o) }}
+          aria-label="Why is this pending?"
+          title="Awaiting Centene AUX code mapping decision"
+          style={{ display: 'inline-flex', cursor: 'help', opacity: 0.7 }}
+        >
+          <QuestionIcon size={fs} weight="bold" aria-hidden="true" />
         </span>
       )}
     </span>
   )
 
-  if (isPending) {
-    return (
-      <Tooltip content="Awaiting Centene AUX code mapping decision">
-        {pill}
-      </Tooltip>
-    )
-  }
+  return (
+    <span style={{ display: 'inline-flex', alignItems: 'center', gap: 4, position: 'relative' }}>
+      {isPending ? (
+        <Tooltip content="Awaiting Centene AUX code mapping decision (due 2026-04-30)">
+          {pill}
+        </Tooltip>
+      ) : auxCode ? (
+        <Tooltip content={`AUX code: ${auxCode}`}>{pill}</Tooltip>
+      ) : pill}
 
-  return pill
+      {inactivityDetected && (
+        <Tooltip content="Auto-set offline by inactivity detection — design only, out of scope per SOW §e">
+          <span
+            aria-label="Inactivity detected (design-only)"
+            style={{
+              display:    'inline-flex',
+              alignItems: 'center',
+              opacity:     0.55,
+              cursor:     'help',
+            }}
+          >
+            <LightningIcon size={fs + 2} color="#7a828c" weight="fill" aria-hidden="true" />
+          </span>
+        </Tooltip>
+      )}
+
+      {/* Pending help popover */}
+      {isPending && helpOpen && (
+        <div
+          style={{
+            position:   'absolute',
+            top:        '100%',
+            left:        0,
+            zIndex:      9999,
+            marginTop:   6,
+            background: '#ffffff',
+            border:     '1px solid #e2e5e8',
+            borderRadius: 8,
+            padding:    '12px 14px',
+            boxShadow:  '0 4px 16px rgba(2,25,32,0.12)',
+            minWidth:    240,
+            fontFamily: 'var(--font-sans)',
+          }}
+          onClick={e => e.stopPropagation()}
+        >
+          <p style={{ margin: '0 0 6px', fontSize: 12, fontWeight: 600, color: '#021920' }}>
+            AUX Code Not Yet Mapped
+          </p>
+          <p style={{ margin: 0, fontSize: 11, color: '#7a828c', lineHeight: '16px' }}>
+            Centene AUX code mapping is pending (due 2026-04-30). Until then, this agent's activity
+            cannot be categorized. This is a known design placeholder.
+          </p>
+          <button
+            onClick={() => setHelpOpen(false)}
+            style={{ marginTop: 8, fontSize: 11, color: '#4285f4', background: 'none', border: 'none', cursor: 'pointer', padding: 0, fontFamily: 'var(--font-sans)' }}
+          >
+            Got it
+          </button>
+        </div>
+      )}
+    </span>
+  )
 }

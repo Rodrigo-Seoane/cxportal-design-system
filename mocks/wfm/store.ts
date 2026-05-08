@@ -237,6 +237,103 @@ export function generateSparkline(baseValue: number, variance: number, count = 6
   return points
 }
 
+// ── Status event stream ────────────────────────────────────────────────────────
+// Production contract fields: agentId, newStatus, timestamp, auxCode
+// These map to the Connect agent event stream payload (PRDENG-2657 data contract)
+
+export interface StatusEvent {
+  agentId: string
+  newStatus: AgentStatusCategory
+  timestamp: Date
+  auxCode?: string
+}
+
+type StatusEventHandler = (event: StatusEvent) => void
+
+const statusEventListeners = new Map<string, Set<StatusEventHandler>>()
+let statusEventInterval: ReturnType<typeof setInterval> | null = null
+
+export function subscribeToStatusEvents(agentIds: string[], handler: StatusEventHandler): () => void {
+  const key = agentIds.slice(0, 5).join(',') + agentIds.length
+  if (!statusEventListeners.has(key)) statusEventListeners.set(key, new Set())
+  statusEventListeners.get(key)!.add(handler)
+
+  // Start global interval if not running
+  if (!statusEventInterval && agentIds.length > 0) {
+    statusEventInterval = setInterval(() => {
+      const allAgents = AGENT_BANK
+      const pool = agentIds.length > 0
+        ? agentIds.map(id => allAgents.find(a => a.id === id)).filter(Boolean) as Agent[]
+        : allAgents.slice(0, 50)
+
+      if (pool.length === 0) return
+      const agent = pool[Math.floor(Math.random() * Math.min(pool.length, 20))]
+      if (!agent) return
+
+      const statuses: AgentStatusCategory[] = ['Available', 'On Call', 'Aux', 'Offline']
+      const newStatus = statuses[Math.floor(Math.random() * statuses.length)]
+
+      const event: StatusEvent = {
+        agentId:   agent.id,
+        newStatus,
+        timestamp: new Date(),
+        auxCode:   newStatus === 'Aux' ? `AUX-${Math.floor(Math.random() * 5) + 1}` : undefined,
+      }
+
+      statusEventListeners.forEach(listeners =>
+        listeners.forEach(h => h(event))
+      )
+    }, 8000)
+  }
+
+  return () => {
+    statusEventListeners.get(key)?.delete(handler)
+    if (statusEventListeners.get(key)?.size === 0) statusEventListeners.delete(key)
+    if (statusEventListeners.size === 0 && statusEventInterval) {
+      clearInterval(statusEventInterval)
+      statusEventInterval = null
+    }
+  }
+}
+
+// ── Saved views ────────────────────────────────────────────────────────────────
+
+export interface SavedView {
+  id: string
+  label: string
+  staffingGroupIds: string[]
+  forecastGroupIds: string[]
+  statusFilter: string[]
+  sortField: string
+}
+
+export const INITIAL_SAVED_VIEWS: SavedView[] = [
+  {
+    id:              'sv-my-team-out',
+    label:           'My team — out of adherence now',
+    staffingGroupIds:['sg-triage-day'],
+    forecastGroupIds:[],
+    statusFilter:    ['Out of Adherence'],
+    sortField:       'adherence',
+  },
+  {
+    id:              'sv-overnight',
+    label:           'All overnight nurses',
+    staffingGroupIds:['sg-triage-night', 'sg-bh-night', 'sg-pharm-night'],
+    forecastGroupIds:[],
+    statusFilter:    [],
+    sortField:       'name',
+  },
+  {
+    id:              'sv-pending-aux',
+    label:           'Agents with Pending AUX codes',
+    staffingGroupIds:[],
+    forecastGroupIds:[],
+    statusFilter:    ['Pending'],
+    sortField:       'name',
+  },
+]
+
 // ── Context ───────────────────────────────────────────────────────────────────
 
 export const WFMContext = createContext<WFMStore | null>(null)

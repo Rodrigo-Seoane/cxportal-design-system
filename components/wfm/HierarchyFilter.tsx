@@ -1,6 +1,7 @@
 'use client'
 
-import { useState, useCallback, useEffect } from 'react'
+import { useState, useCallback, useEffect, useRef } from 'react'
+import { createPortal } from 'react-dom'
 import { useSearchParams, useRouter, usePathname } from 'next/navigation'
 import { MagnifyingGlassIcon, XIcon, FunnelIcon } from '@phosphor-icons/react'
 import { FORECAST_GROUPS, STAFFING_GROUPS, QUEUES, useWFMStore } from '@/mocks/wfm/store'
@@ -152,8 +153,6 @@ export function HierarchyFilter({ mode = 'top-bar', defaultRange = 'live', onCha
         background:   '#ffffff',
         borderBottom: '1px solid #e2e5e8',
         fontFamily:   'var(--font-sans)',
-        position:     'relative',
-        zIndex:        30,
       }}
     >
       {/* Filter controls row */}
@@ -283,10 +282,63 @@ interface FilterDropdownProps {
   children: React.ReactNode
 }
 
-function FilterDropdown({ label, open, onToggle, children }: FilterDropdownProps) {
+function FilterDropdown({ label, open, onToggle, onClose, children }: FilterDropdownProps) {
+  const triggerRef = useRef<HTMLButtonElement>(null)
+  const [rect, setRect] = useState<DOMRect | null>(null)
+  const [mounted, setMounted] = useState(false)
+
+  useEffect(() => { setMounted(true) }, [])
+
+  useEffect(() => {
+    if (!open || !triggerRef.current) return
+    setRect(triggerRef.current.getBoundingClientRect())
+
+    const updateRect = () => {
+      if (triggerRef.current) setRect(triggerRef.current.getBoundingClientRect())
+    }
+    window.addEventListener('scroll', updateRect, true)
+    window.addEventListener('resize', updateRect)
+    return () => {
+      window.removeEventListener('scroll', updateRect, true)
+      window.removeEventListener('resize', updateRect)
+    }
+  }, [open])
+
+  // Close on outside click
+  useEffect(() => {
+    if (!open) return
+    const handler = (e: MouseEvent) => {
+      if (triggerRef.current && triggerRef.current.contains(e.target as Node)) return
+      onClose()
+    }
+    document.addEventListener('mousedown', handler)
+    return () => document.removeEventListener('mousedown', handler)
+  }, [open, onClose])
+
+  const panel = open && rect && mounted ? createPortal(
+    <div
+      style={{
+        position:   'fixed',
+        top:         rect.bottom + 4,
+        left:        rect.left,
+        background: '#ffffff',
+        border:     '1px solid #e2e5e8',
+        borderRadius: 8,
+        boxShadow:  '0 4px 16px rgba(2,25,32,0.12)',
+        minWidth:    Math.max(200, rect.width),
+        zIndex:      9999,
+        overflow:   'hidden',
+      }}
+    >
+      {children}
+    </div>,
+    document.body
+  ) : null
+
   return (
     <div style={{ position: 'relative' }}>
       <button
+        ref={triggerRef}
         onClick={onToggle}
         style={{
           display:     'inline-flex',
@@ -307,22 +359,7 @@ function FilterDropdown({ label, open, onToggle, children }: FilterDropdownProps
         {label}
         <span style={{ fontSize: 10, color: '#7a828c' }}>{open ? '▲' : '▼'}</span>
       </button>
-      {open && (
-        <div style={{
-          position:   'absolute',
-          top:        'calc(100% + 4px)',
-          left:        0,
-          background: '#ffffff',
-          border:     '1px solid #e2e5e8',
-          borderRadius: 8,
-          boxShadow:  '0 4px 16px rgba(2,25,32,0.12)',
-          minWidth:    200,
-          zIndex:      50,
-          overflow:   'hidden',
-        }}>
-          {children}
-        </div>
-      )}
+      {panel}
     </div>
   )
 }
