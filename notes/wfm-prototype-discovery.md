@@ -111,6 +111,29 @@ These must be built for this prototype family, placed under `components/wfm/`:
 | `useCurrentUser()` | Hook — role + default scope |
 | `mocks/wfm/store.ts` | React Context store + mock generators |
 
+---
+
+## Addendum — PRDENG-2662: Chart Library Decision
+
+**Decision**: Use Recharts v3 (already in repo at `recharts@^3.8.1`).
+
+**Rationale**: Recharts is already used in `components/charts/GraphCard.tsx` and in `KpiTile.tsx` (for sparklines). Introducing a second chart library would split chart rendering patterns and increase bundle size unnecessarily.
+
+**Wrapper**: `AdherenceTrendChart` built at `components/wfm/charts/AdherenceTrendChart.tsx`. This is the shared component that PRDENG-2663 will reuse for team-level rollup.
+
+**What the wrapper handles**:
+- Maps design-system tokens to chart colors
+- All 5 states (loading/data/empty/error/stale)
+- `prefers-reduced-motion` via Framer Motion's `useReducedMotion`
+- Grace-period band via Recharts `ReferenceArea`
+- Event markers via custom `dot` prop function (circle/triangle/square shapes)
+- Tabular toggle for screen-reader alternative
+- Keyboard navigation (Tab to enter, arrows to navigate, Enter to open flyout)
+
+**Not added**: No second chart library. No Recharts upgrade required.
+
+---
+
 Primitives that **exist but need extension**:
 - `StatCard` → `KpiTile` is a net-new component (different enough not to extend)
 - `Chip` → used for filter chips (dismissible variant already exists)

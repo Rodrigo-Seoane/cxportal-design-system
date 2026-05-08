@@ -334,6 +334,146 @@ export const INITIAL_SAVED_VIEWS: SavedView[] = [
   },
 ]
 
+// ── Historical data — scorecard (PRDENG-2662) ─────────────────────────────────
+
+export interface DailyAdherencePoint {
+  date: string           // ISO "2026-04-09"
+  adherencePct: number   // 0..100
+  adherentMin: number
+  scheduledMin: number
+  nonAdherentMin: number
+}
+
+export interface ShiftTrade {
+  id: string
+  date: string
+  counterpartyId: string
+  counterpartyName: string
+  originalShift: string  // "Mon 06:00–14:00"
+  tradedShift: string
+  hoursVariance: number  // positive = gained, negative = lost
+  laborOverride: boolean
+  status: 'approved' | 'pending' | 'rejected'
+}
+
+export interface ShiftExchange {
+  id: string
+  date: string
+  counterpartyId: string
+  counterpartyName: string
+  originalShift: string
+  exchangedShift: string
+  status: 'approved' | 'pending' | 'rejected'
+}
+
+export interface TimeOffEntry {
+  id: string
+  date: string
+  type: 'Vacation' | 'Sick' | 'FMLA' | 'Personal'
+  status: 'approved' | 'pending' | 'rejected'
+}
+
+export const GRACE_PERIOD_MINUTES = 5
+
+// ── Deterministic generators (seeded by agentId) ───────────────────────────────
+
+function seededRandFrom(seed: string) {
+  let s = seed.split('').reduce((a, c) => (a * 31 + c.charCodeAt(0)) | 0, 1)
+  return () => {
+    s = (s * 1664525 + 1013904223) | 0
+    return ((s >>> 0) + 0.5) / 0x100000000
+  }
+}
+
+const HIST_BASE = new Date('2026-05-08')
+
+function isoDateAgo(daysAgo: number): string {
+  const d = new Date(HIST_BASE)
+  d.setDate(d.getDate() - daysAgo)
+  return d.toISOString().split('T')[0]
+}
+
+function addH(time: string, h: number): string {
+  const [hh, mm] = time.split(':').map(Number)
+  return `${String((hh + h) % 24).padStart(2, '0')}:${String(mm).padStart(2, '0')}`
+}
+
+const HIST_SHIFTS = ['06:00', '08:00', '10:00', '14:00', '16:00']
+const HIST_DAYS   = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri']
+const TO_TYPES: TimeOffEntry['type'][] = ['Vacation', 'Sick', 'FMLA', 'Personal']
+
+// Fixed time-off day offsets — matched in generateTimeOff
+const TIME_OFF_OFFSETS = [5, 18, 45, 72]
+
+export function generateAgentHistory(agentId: string, days = 90): DailyAdherencePoint[] {
+  const rand = seededRandFrom(agentId + 'hist')
+  const toSet = new Set(TIME_OFF_OFFSETS.filter(d => d < days).map(isoDateAgo))
+  const out: DailyAdherencePoint[] = []
+  for (let i = days - 1; i >= 0; i--) {
+    const date = isoDateAgo(i)
+    if (toSet.has(date)) continue
+    const base = 79 + rand() * 14
+    const spike = rand() < 0.12 ? -(rand() * 22) : 0
+    const adherencePct = Math.max(62, Math.min(100, Math.round(base + spike)))
+    const scheduledMin = 480
+    const adherentMin = Math.round(scheduledMin * adherencePct / 100)
+    out.push({ date, adherencePct, adherentMin, scheduledMin, nonAdherentMin: scheduledMin - adherentMin })
+  }
+  return out
+}
+
+export function generateShiftTrades(agentId: string): ShiftTrade[] {
+  const rand = seededRandFrom(agentId + 'trades')
+  const count = rand() < 0.25 ? 0 : rand() < 0.6 ? 1 : 2
+  const trades: ShiftTrade[] = []
+  for (let i = 0; i < count; i++) {
+    const s1 = HIST_SHIFTS[Math.floor(rand() * HIST_SHIFTS.length)]
+    const s2 = HIST_SHIFTS[Math.floor(rand() * HIST_SHIFTS.length)]
+    const d1 = HIST_DAYS[Math.floor(rand() * HIST_DAYS.length)]
+    const d2 = HIST_DAYS[Math.floor(rand() * HIST_DAYS.length)]
+    trades.push({
+      id: `trade-${agentId}-${i}`,
+      date: isoDateAgo(5 + Math.floor(rand() * 22)),
+      counterpartyId: `agent-sg-triage-day-${Math.floor(rand() * 100)}`,
+      counterpartyName: `${FIRST_NAMES[Math.floor(rand() * FIRST_NAMES.length)]} ${LAST_NAMES[Math.floor(rand() * LAST_NAMES.length)]}`,
+      originalShift: `${d1} ${s1}–${addH(s1, 8)}`,
+      tradedShift: `${d2} ${s2}–${addH(s2, 8)}`,
+      hoursVariance: Math.round((rand() - 0.5) * 6),
+      laborOverride: rand() < 0.15,
+      status: rand() < 0.7 ? 'approved' : rand() < 0.85 ? 'pending' : 'rejected',
+    })
+  }
+  return trades
+}
+
+export function generateShiftExchanges(agentId: string): ShiftExchange[] {
+  const rand = seededRandFrom(agentId + 'exchanges')
+  if (rand() < 0.4) return []
+  const s1 = HIST_SHIFTS[Math.floor(rand() * HIST_SHIFTS.length)]
+  const s2 = HIST_SHIFTS[Math.floor(rand() * HIST_SHIFTS.length)]
+  const d1 = HIST_DAYS[Math.floor(rand() * HIST_DAYS.length)]
+  const d2 = HIST_DAYS[Math.floor(rand() * HIST_DAYS.length)]
+  return [{
+    id: `exchange-${agentId}-0`,
+    date: isoDateAgo(3 + Math.floor(rand() * 20)),
+    counterpartyId: `agent-sg-bh-day-${Math.floor(rand() * 100)}`,
+    counterpartyName: `${FIRST_NAMES[Math.floor(rand() * FIRST_NAMES.length)]} ${LAST_NAMES[Math.floor(rand() * LAST_NAMES.length)]}`,
+    originalShift: `${d1} ${s1}–${addH(s1, 8)}`,
+    exchangedShift: `${d2} ${s2}–${addH(s2, 8)}`,
+    status: rand() < 0.65 ? 'approved' : 'pending',
+  }]
+}
+
+export function generateTimeOff(agentId: string): TimeOffEntry[] {
+  const rand = seededRandFrom(agentId + 'timeoff')
+  return TIME_OFF_OFFSETS.map((daysAgo, i) => ({
+    id: `to-${agentId}-${i}`,
+    date: isoDateAgo(daysAgo),
+    type: TO_TYPES[Math.floor(rand() * TO_TYPES.length)],
+    status: (rand() < 0.85 ? 'approved' : 'pending') as TimeOffEntry['status'],
+  }))
+}
+
 // ── Context ───────────────────────────────────────────────────────────────────
 
 export const WFMContext = createContext<WFMStore | null>(null)
