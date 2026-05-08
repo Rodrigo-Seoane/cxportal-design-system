@@ -377,6 +377,8 @@ export const GRACE_PERIOD_MINUTES = 5
 
 // ── Deterministic generators (seeded by agentId) ───────────────────────────────
 
+export function seededRandExport(seed: string) { return seededRandFrom(seed) }
+
 function seededRandFrom(seed: string) {
   let s = seed.split('').reduce((a, c) => (a * 31 + c.charCodeAt(0)) | 0, 1)
   return () => {

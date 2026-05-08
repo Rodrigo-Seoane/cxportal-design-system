@@ -126,6 +126,7 @@ const NAV_GROUPS: NavGroup[] = [
       { label: 'Real-Time Workforce', href: '/wfm/reporting/real-time-workforce', status: 'wip' },
       { label: 'Agent Status Summary', href: '/wfm/reporting/agent-status-summary', status: 'wip' },
       { label: 'Agent Scorecard', href: '/wfm/reporting/agent-scorecard', status: 'wip' },
+      { label: 'Supervisor Scorecard', href: '/wfm/reporting/supervisor-scorecard', status: 'wip' },
     ],
   },
   {
