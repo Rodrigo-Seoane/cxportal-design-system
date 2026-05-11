@@ -66,10 +66,16 @@ Users can locate the information they want. Design the information architecture 
       <TableCell>Mouse-over — preview of selection</TableCell>
     </TableRow>
     <TableRow>
-      <TableCell><strong>Active</strong></TableCell>
+      <TableCell><strong>Active (group header)</strong></TableCell>
+      <TableCell>Transparent — label color <code>#4285f4</code></TableCell>
+      <TableCell>SemiBold (600)</TableCell>
+      <TableCell>Open group header containing the active page</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><strong>Active (sub-item)</strong></TableCell>
       <TableCell><code>#3264b8</code> (primary dark)</TableCell>
       <TableCell>SemiBold (600)</TableCell>
-      <TableCell>Currently selected / focused page</TableCell>
+      <TableCell>Currently selected page link</TableCell>
     </TableRow>
     <TableRow>
       <TableCell><strong>Disabled</strong></TableCell>
@@ -202,7 +208,54 @@ In the collapsed state each group header becomes a centered icon button. The sta
 
 ## Code
 
-### Basic vertical nav structure
+### NavMenuItem
+
+```tsx
+import { NavMenuItem } from '@/components/ui/nav-item'
+import { ChartBarIcon } from '@phosphor-icons/react'
+
+// Default
+<NavMenuItem
+  label="Campaigns"
+  icon={<ChartBarIcon size={20} weight="thin" />}
+/>
+
+// Active + open (transparent bg, label turns #4285f4)
+<NavMenuItem
+  label="Campaigns"
+  icon={<ChartBarIcon size={20} weight="thin" />}
+  state="active"
+  isOpen
+/>
+
+// Light mode (CxCentral)
+<NavMenuItem
+  label="Knowledge Management"
+  icon={<BrainIcon size={20} weight="thin" />}
+  state="active"
+  isOpen
+  darkMode={false}
+/>
+
+// Disabled
+<NavMenuItem
+  label="Campaigns"
+  icon={<ChartBarIcon size={20} weight="thin" />}
+  state="disabled"
+/>
+```
+
+### NavSubItem
+
+```tsx
+import { NavSubItem } from '@/components/ui/nav-item'
+
+<NavSubItem label="Queue Availability" />
+<NavSubItem label="Transfer Points" state="active" />
+<NavSubItem label="Change Requests"  state="disabled" />
+```
+
+### Full sidebar (layout component)
 
 ```tsx
 import { Sidebar } from '@/components/layout/Sidebar'
@@ -269,13 +322,13 @@ const COLLAPSED_WIDTH = 64
   <CaretRightIcon size={16} />
 </div>
 
-// Active state
+// Active state (expanded group header — transparent bg, blue text)
 <div style={{
   height: 48,
-  background: '#3264b8',
+  background: 'transparent',
   /* … */
 }}>
-  <span style={{ fontWeight: 600, color: '#eff1f3' }}>Group Label</span>
+  <span style={{ fontWeight: 600, color: '#4285f4' }}>Group Label</span>
 </div>
 ```
 
@@ -321,7 +374,12 @@ const COLLAPSED_WIDTH = 64
     <TableRow>
       <TableCell><code>--content-action/primary/500</code></TableCell>
       <TableCell><code>#3264b8</code></TableCell>
-      <TableCell>Active background</TableCell>
+      <TableCell>Active sub-item background</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><code>--content-action/primary/default</code> (text)</TableCell>
+      <TableCell><code>#4285f4</code></TableCell>
+      <TableCell>Active group header label + caret color</TableCell>
     </TableRow>
     <TableRow>
       <TableCell><code>--text/on-action/primary</code></TableCell>
@@ -342,6 +400,52 @@ const COLLAPSED_WIDTH = 64
       <TableCell>Font weight SemiBold</TableCell>
       <TableCell>600</TableCell>
       <TableCell>Active sub-items</TableCell>
+    </TableRow>
+  </TableBody>
+</Table>
+
+### Light mode (CxCentral)
+
+Pass `darkMode={false}` on both `NavMenuItem` and `NavSubItem` when rendering inside a CxCentral product shell (white sidebar background).
+
+<Table size="compact" className="mb-6">
+  <TableHeader>
+    <tr>
+      <TableHead>State</TableHead>
+      <TableHead>Background</TableHead>
+      <TableHead>Text color</TableHead>
+    </tr>
+  </TableHeader>
+  <TableBody>
+    <TableRow>
+      <TableCell>Group header — Default</TableCell>
+      <TableCell>Transparent</TableCell>
+      <TableCell><code>#021920</code></TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>Group header — Hover</TableCell>
+      <TableCell><code>#3eb5b9</code></TableCell>
+      <TableCell><code>#021920</code></TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>Group header — Active</TableCell>
+      <TableCell>Transparent</TableCell>
+      <TableCell><code>#0ea2a7</code></TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>Sub-item — Default</TableCell>
+      <TableCell><code>#e7f6f6</code> (tinted)</TableCell>
+      <TableCell><code>#021920</code></TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>Sub-item — Hover</TableCell>
+      <TableCell><code>#3eb5b9</code></TableCell>
+      <TableCell><code>#021920</code></TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>Sub-item — Active</TableCell>
+      <TableCell><code>#0ea2a7</code></TableCell>
+      <TableCell><code>#eff1f3</code> semibold</TableCell>
     </TableRow>
   </TableBody>
 </Table>
