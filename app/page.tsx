@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { TopBar } from '@/components/layout/TopBar'
+import { PageTitle } from '@/components/layout/PageTitle'
 
 const sections = [
   {
@@ -37,7 +37,7 @@ const sections = [
 export default function HomePage() {
   return (
     <>
-      <TopBar title="Overview" />
+      <PageTitle title="Overview" />
       <main className="flex-1 px-8 py-10 max-w-4xl">
         {/* Hero */}
         <div className="mb-10">

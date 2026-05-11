@@ -27,9 +27,12 @@ import { Tooltip } from '@/components/ui/tooltip'
 import { StatCard } from '@/components/ui/stats-cards'
 import { ClickableCard, ClickableHorizontalCard } from '@/components/ui/clickable-card'
 import { InlineContextData } from '@/components/ui/inline-context-data'
-import { AddressBookIcon, CalendarIcon, TagIcon, UserListIcon } from '@/components/ui/playground-icons'
+import { AddressBookIcon, CalendarIcon, TagIcon, UserListIcon, SquaresFourIcon } from '@/components/ui/playground-icons'
 import { Stepper } from '@/components/ui/stepper'
 import { DatePicker } from '@/components/ui/date-picker'
+import { NavMenuItem, NavSubItem } from '@/components/ui/nav-item'
+import { PageTitle } from '@/components/ui/page-title'
+import { TopBar } from '@/components/ui/top-bar'
 
 // ─── Prop schema types ──────────────────────────────────────────────────────
 
@@ -1505,6 +1508,109 @@ export const registry: Record<string, ComponentEntry> = {
     },
   },
 
+  // ─── Nav Item ────────────────────────────────────────────────────────────────
+  'nav-item': {
+    slug: 'nav-item',
+    title: 'Nav Item',
+    description:
+      'Atomic navigation item for vertical sidebars. Two types: Menu Item (48px, icon + caret) and Sub Menu Item (40px, indented). Four interaction states.',
+    status: 'stable',
+    scope: { NavMenuItem, NavSubItem, SquaresFourIcon },
+    propSchema: {
+      variant: {
+        type: 'chip-select',
+        label: 'Type',
+        options: ['menu', 'sub'],
+        default: 'menu',
+      },
+      state: {
+        type: 'chip-select',
+        label: 'State',
+        options: ['default', 'hover', 'active', 'disabled'],
+        default: 'default',
+      },
+      label: {
+        type: 'text',
+        label: 'Label',
+        default: 'Campaigns',
+      },
+      isOpen: {
+        type: 'boolean',
+        label: 'Open (menu only)',
+        default: false,
+      },
+    },
+    generateCode: ({ variant, state, label, isOpen }) => {
+      const v   = String(variant)
+      const s   = String(state)
+      const lbl = String(label)
+      const open = isOpen === true || isOpen === 'true'
+
+      if (v === 'sub') {
+        const lines = ['<NavSubItem']
+        lines.push(`  label="${lbl}"`)
+        if (s !== 'default') lines.push(`  state="${s}"`)
+        lines.push('/>')
+        return lines.join('\n')
+      }
+
+      const lines = ['<NavMenuItem']
+      lines.push(`  label="${lbl}"`)
+      lines.push(`  icon={<SquaresFourIcon size={20} weight="thin" />}`)
+      if (s !== 'default') lines.push(`  state="${s}"`)
+      if (open) lines.push(`  isOpen`)
+      lines.push('/>')
+      return lines.join('\n')
+    },
+  },
+
+  // ─── Page Title ───────────────────────────────────────────────────────────────
+  'page-title': {
+    slug: 'page-title',
+    title: 'Page Title',
+    description:
+      'Page-level header with a large blue title, subtitle, and optional chip or KB metadata. Three variants: Default, With Chip, and With KB Details.',
+    status: 'stable',
+    scope: { PageTitle },
+    propSchema: {
+      variant: {
+        type: 'chip-select',
+        label: 'Variant',
+        options: ['default', 'with-chip', 'with-kb-details'] as const,
+        default: 'default',
+      },
+      title: {
+        type: 'text',
+        label: 'Title',
+        default: 'Northeast Quarter',
+      },
+      subtitle: {
+        type: 'text',
+        label: 'Subtitle',
+        default: 'Master list for Northeast Quarter',
+      },
+      chip: {
+        type: 'text',
+        label: 'Chip label',
+        default: 'Current',
+      },
+    },
+    generateCode: ({ variant, title, subtitle, chip }) => {
+      const v   = String(variant)
+      const t   = String(title)
+      const sub = String(subtitle)
+      const ch  = String(chip)
+
+      const lines: string[] = ['<PageTitle']
+      lines.push(`  title="${t}"`)
+      if (sub) lines.push(`  subtitle="${sub}"`)
+      if (v !== 'default') lines.push(`  variant="${v}"`)
+      if (v !== 'default' && ch) lines.push(`  chip="${ch}"`)
+      lines.push('/>')
+      return lines.join('\n')
+    },
+  },
+
   // ─── Inline Context Data ──────────────────────────────────────────────────────
   'inline-context-data': {
     slug: 'inline-context-data',
@@ -1556,6 +1662,54 @@ export const registry: Record<string, ComponentEntry> = {
       return lines.join('\n')
     },
   },
+  // ─── Top Bar ──────────────────────────────────────────────────────────────────
+  'top-bar': {
+    slug: 'top-bar',
+    title: 'Top Bar',
+    description:
+      'Application-level top bar with product branding, instance label, and action icon buttons. Supports three product themes: CxPortal, CxCentral, and Cases.',
+    status: 'stable',
+    scope: { TopBar },
+    propSchema: {
+      product: {
+        type: 'chip-select',
+        label: 'Product',
+        options: ['cx-portal', 'cx-central', 'cases'] as const,
+        default: 'cx-portal',
+      },
+      instance: {
+        type: 'text',
+        label: 'Instance',
+        default: 'pronetxcrawler',
+      },
+      userEmail: {
+        type: 'text',
+        label: 'User email',
+        default: 'rseoane@pronetx.com',
+      },
+      notifCount: {
+        type: 'select',
+        label: 'Notifications',
+        options: ['0', '1', '3', '9', '12'],
+        default: '3',
+      },
+    },
+    generateCode: ({ product, instance, userEmail, notifCount }) => {
+      const prod  = String(product)
+      const inst  = String(instance)
+      const email = String(userEmail)
+      const count = Number(notifCount)
+
+      const lines: string[] = ['<TopBar']
+      if (prod !== 'cx-portal') lines.push(`  product="${prod}"`)
+      if (inst !== 'pronetxcrawler') lines.push(`  instance="${inst}"`)
+      if (email !== 'rseoane@pronetx.com') lines.push(`  userEmail="${email}"`)
+      if (count !== 3) lines.push(`  notifCount={${count}}`)
+      lines.push('/>')
+      return lines.join('\n')
+    },
+  },
+
 }
 
 export function getEntryMeta(slug: string) {

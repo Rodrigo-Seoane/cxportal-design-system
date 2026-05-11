@@ -14,15 +14,16 @@ import {
   ListIcon,
   BookOpenIcon,
   WrenchIcon,
+  ChartBarHorizontalIcon,
 } from '@phosphor-icons/react'
 
 // ── Design tokens ─────────────────────────────────────────────────────────────
 const NAV = {
-  bg:            '#050326',
-  hoverBg:       '#689df6',
-  activeBg:      '#4285f4',
-  activeGroupBg: 'rgba(66,133,244,0.15)',
-  textDefault:   '#eff1f3',
+  bg:          '#050326',
+  hoverBg:     '#689df6',
+  activeBg:    '#4285f4',
+  activeText:  '#4285f4',
+  textDefault: '#eff1f3',
   textMuted:     'rgba(239,241,243,0.55)',
   textSubItem:   'rgba(239,241,243,0.75)',
   divider:       'rgba(239,241,243,0.08)',
@@ -87,6 +88,8 @@ const NAV_GROUPS: NavGroup[] = [
       { label: 'Date Picker',           href: '/components/date-picker',           status: 'stable' },
       { label: 'Checkbox & Radio',      href: '/components/checkbox',              status: 'stable' },
       { label: 'Navigation',            href: '/components/navigation',            status: 'stable' },
+      { label: 'Nav Item',              href: '/components/nav-item',              status: 'stable' },
+      { label: 'Top Bar',               href: '/components/top-bar',               status: 'stable' },
       { label: 'Table',                 href: '/components/table',                 status: 'stable' },
       { label: 'Chips & Tags',          href: '/components/chips',                 status: 'stable' },
       { label: 'Tabs',                  href: '/components/tabs',                  status: 'stable' },
@@ -101,6 +104,7 @@ const NAV_GROUPS: NavGroup[] = [
       { label: 'Stats Cards',           href: '/components/stats-cards',           status: 'stable' },
       { label: 'Inline Context Data',   href: '/components/inline-context-data',   status: 'stable' },
       { label: 'Clickable Card',        href: '/components/clickable-card',        status: 'stable' },
+      { label: 'Page Title',             href: '/components/page-title',            status: 'stable' },
       { label: 'Stepper',               href: '/components/stepper',               status: 'stable' },
       { label: 'Distribution Controls', href: '/components/distribution-controls', status: 'stable' },
     ],
@@ -112,6 +116,17 @@ const NAV_GROUPS: NavGroup[] = [
     items: [
       { label: 'Full Size',    href: '/charts/full-size',    status: 'stable' },
       { label: 'Graph Cards',  href: '/charts/graph-cards',  status: 'stable' },
+    ],
+  },
+  {
+    group: 'WFM Reporting',
+    Icon: ChartBarHorizontalIcon,
+    basePath: '/wfm',
+    items: [
+      { label: 'Real-Time Workforce', href: '/wfm/reporting/real-time-workforce', status: 'wip' },
+      { label: 'Agent Status Summary', href: '/wfm/reporting/agent-status-summary', status: 'wip' },
+      { label: 'Agent Scorecard', href: '/wfm/reporting/agent-scorecard', status: 'wip' },
+      { label: 'Supervisor Scorecard', href: '/wfm/reporting/supervisor-scorecard', status: 'wip' },
     ],
   },
   {
@@ -266,7 +281,7 @@ function GroupHeader({
         justifyContent:  collapsed ? 'center' : 'flex-start',
         gap:             collapsed ? 0 : 8,
         padding:         collapsed ? 0 : '0 12px',
-        background:      hovered ? NAV.hoverBg : isGroupActive && collapsed ? NAV.activeBg : isGroupActive ? NAV.activeGroupBg : 'transparent',
+        background:      hovered ? NAV.hoverBg : isGroupActive && collapsed ? NAV.activeBg : 'transparent',
         border:         'none',
         cursor:         'pointer',
         transition:     'background 100ms ease',
@@ -279,7 +294,8 @@ function GroupHeader({
       <span style={{
         flex:       collapsed ? '0 0 0px' : '1',
         fontSize:    14, fontWeight: 300, lineHeight: '20px',
-        color:       NAV.textDefault, textAlign: 'left',
+        color:       isGroupActive && !collapsed ? NAV.activeText : NAV.textDefault,
+        textAlign:  'left',
         overflow:   'hidden', whiteSpace: 'nowrap',
         opacity:     collapsed ? 0 : 1,
         minWidth:    0,
@@ -296,7 +312,7 @@ function GroupHeader({
         transition: `opacity 0.15s cubic-bezier(${EASE.join(',')}), width 0.15s cubic-bezier(${EASE.join(',')})`,
       }}>
         {isOpen
-          ? <CaretDownIcon  size={16} color={NAV.textDefault} />
+          ? <CaretDownIcon  size={16} color={isGroupActive ? NAV.activeText : NAV.textDefault} />
           : <CaretRightIcon size={16} color={NAV.textDefault} />
         }
       </span>

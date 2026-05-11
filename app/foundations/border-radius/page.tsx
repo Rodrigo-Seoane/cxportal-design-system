@@ -1,10 +1,10 @@
-import { TopBar } from '@/components/layout/TopBar'
+import { PageTitle } from '@/components/layout/PageTitle'
 import { RadiusDemo } from '@/components/ds/RadiusDemo'
 
 export default function BorderRadiusPage() {
   return (
     <>
-      <TopBar title="Border Radius" />
+      <PageTitle title="Border Radius" />
       <main className="flex-1 px-8 py-10 max-w-3xl">
         <div className="mb-8">
           <h2

@@ -1,4 +1,4 @@
-import { TopBar } from '@/components/layout/TopBar'
+import { PageTitle } from '@/components/layout/PageTitle'
 import { ExperimentCard } from '@/components/sandbox/ExperimentCard'
 import { getExperiments } from '@/lib/sandbox-registry'
 
@@ -7,7 +7,7 @@ export default function SandboxIndexPage() {
 
   return (
     <>
-      <TopBar title="Sandbox" />
+      <PageTitle title="Sandbox" />
       <main className="flex-1 px-8 py-10" style={{ maxWidth: 900 }}>
 
         {/* ── Page header ──────────────────────────────────────────────── */}

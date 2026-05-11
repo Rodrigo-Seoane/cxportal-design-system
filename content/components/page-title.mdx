@@ -1,0 +1,184 @@
+---
+title: Page Title
+description: Page-level header with a large blue title, subtitle, and optional chip or KB metadata. Three variants — Default, With Chip, and With KB Details.
+figmaNodeId: 187-8471
+figmaUpdated: Apr 09, 2026
+status: stable
+---
+
+## Overview
+
+Page Title is the primary visual anchor for any content page. It displays the page name in a large blue heading alongside a short subtitle, and optionally includes a status chip or knowledge-base metadata (association, version, date created).
+
+## When to use
+
+- At the top of every content page to identify the current context
+- When a page represents a versioned or classified record — use **With Chip** to show status
+- When viewing a KB article — use **With KB Details** to surface key metadata inline
+
+## Anatomy
+
+- **Title** — 28px, weight 400, `#4285f4`. Always present.
+- **Subtitle** — 12px, weight 400, `#021920`. Descriptive one-liner below the title.
+- **Chip** *(optional)* — Small pill label. `#d9dce0` background, 10px semibold text. Shown in `with-chip` and `with-kb-details` variants.
+- **Actions slot** *(optional)* — Right-aligned buttons. Present in `default` and `with-chip` variants.
+- **KB metadata** *(optional)* — Right-aligned metadata columns (Association, Version, Date Created) separated by vertical dividers. Present in `with-kb-details` variant only.
+
+## Variants
+
+<Table size="compact" className="mb-6">
+  <TableHeader>
+    <tr>
+      <TableHead>Variant</TableHead>
+      <TableHead>Right content</TableHead>
+      <TableHead>Use for</TableHead>
+    </tr>
+  </TableHeader>
+  <TableBody>
+    <TableRow>
+      <TableCell><strong>default</strong></TableCell>
+      <TableCell>Optional <code>actions</code> slot</TableCell>
+      <TableCell>Standard content pages</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><strong>with-chip</strong></TableCell>
+      <TableCell>Chip + optional <code>actions</code> slot</TableCell>
+      <TableCell>Pages with a status or category label</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><strong>with-kb-details</strong></TableCell>
+      <TableCell>Chip + KB metadata columns</TableCell>
+      <TableCell>Knowledge-base article pages</TableCell>
+    </TableRow>
+  </TableBody>
+</Table>
+
+## Do's & Don'ts
+
+<DosDonts>
+  <Do description="Keep the title to the page or record name — one to four words. Users scan it to confirm they're in the right place." />
+  <Dont description="Put navigational cues (breadcrumbs, back arrows) inside the PageTitle component. Those belong above it in the layout hierarchy." />
+</DosDonts>
+
+<DosDonts>
+  <Do description="Use the with-kb-details variant when all three metadata fields (association, version, date) are available. Partial metadata is fine — omitted fields are hidden automatically." />
+  <Dont description="Use with-kb-details for non-KB pages just to show version info. It carries a specific semantic meaning; use the actions slot with InlineContextData for other metadata patterns." />
+</DosDonts>
+
+## Code
+
+### Default
+
+```tsx
+import { PageTitle } from '@/components/ui/page-title'
+
+<PageTitle
+  title="Northeast Quarter"
+  subtitle="Master list for Northeast Quarter"
+/>
+```
+
+### With Chip
+
+```tsx
+<PageTitle
+  title="Northeast Quarter"
+  subtitle="Master list for Northeast Quarter"
+  variant="with-chip"
+  chip="Current"
+/>
+```
+
+### With KB Details
+
+```tsx
+<PageTitle
+  title="Northeast Quarter"
+  subtitle="Master list for Northeast Quarter"
+  variant="with-kb-details"
+  chip="Current"
+  association="Guide Delete My Account"
+  version="v 1.7"
+  dateCreated="11/04/2025"
+/>
+```
+
+### With actions slot
+
+```tsx
+import { PencilSimpleIcon, TrashIcon } from '@phosphor-icons/react'
+
+<PageTitle
+  title="Northeast Quarter"
+  subtitle="Master list for Northeast Quarter"
+  variant="with-chip"
+  chip="Current"
+  actions={
+    <>
+      <button>
+        <PencilSimpleIcon size={16} weight="thin" />
+        Edit List
+      </button>
+      <button>
+        <TrashIcon size={16} weight="thin" />
+        Delete List
+      </button>
+    </>
+  }
+/>
+```
+
+## Token reference
+
+<Table size="compact" className="mb-6">
+  <TableHeader>
+    <tr>
+      <TableHead>Token</TableHead>
+      <TableHead>Value</TableHead>
+      <TableHead>Usage</TableHead>
+    </tr>
+  </TableHeader>
+  <TableBody>
+    <TableRow>
+      <TableCell><code>--content-action/primary/default</code></TableCell>
+      <TableCell><code>#4285f4</code></TableCell>
+      <TableCell>Title color</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><code>--text/body/primary</code></TableCell>
+      <TableCell><code>#021920</code></TableCell>
+      <TableCell>Subtitle and metadata value color</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><code>--text/body/secondary</code></TableCell>
+      <TableCell><code>#7a828c</code></TableCell>
+      <TableCell>KB metadata label color</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><code>--neutral/200</code></TableCell>
+      <TableCell><code>#d9dce0</code></TableCell>
+      <TableCell>Chip background and metadata divider</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>Heading/H1 size</TableCell>
+      <TableCell>28px / 400</TableCell>
+      <TableCell>Title</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>Body/Small size</TableCell>
+      <TableCell>12px / 400</TableCell>
+      <TableCell>Subtitle and metadata values</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>Caption size</TableCell>
+      <TableCell>10px / 600</TableCell>
+      <TableCell>Chip label and metadata keys</TableCell>
+    </TableRow>
+  </TableBody>
+</Table>
+
+## Accessibility
+
+- The title renders as an `<h1>` — use only one `PageTitle` per page to maintain heading hierarchy.
+- The chip is decorative text inside a `<span>`; it does not carry interactive semantics.
+- Actions passed via the `actions` slot should be accessible buttons or links with visible labels.

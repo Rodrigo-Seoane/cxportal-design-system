@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
-import { TopBar } from '@/components/layout/TopBar'
+import { PageTitle } from '@/components/layout/PageTitle'
 import { registry } from '@/lib/component-registry'
 import { getExperiments } from '@/lib/sandbox-registry'
 
@@ -122,7 +122,7 @@ export default function StatusPage() {
 
   return (
     <>
-      <TopBar title="Component Status" figmaUpdated="Apr 14, 2026" />
+      <PageTitle title="Component Status" figmaUpdated="Apr 14, 2026" />
       <main className="flex-1 px-8 py-10" style={{ maxWidth: 960 }}>
 
         {/* Header */}

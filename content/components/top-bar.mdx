@@ -1,0 +1,212 @@
+---
+title: Top Bar
+description: Application-level top bar with product branding, instance context, and utility action buttons. Adapts colors per product theme — CxPortal, CxCentral, and Cases.
+figmaNodeId: 8-5042
+figmaUpdated: Apr 09, 2026
+status: stable
+---
+
+## Overview
+
+The Top Bar is the persistent global navigation bar that runs across the full width at the top of the application. It anchors the user with product identity on the left and surfaces contextual utility actions on the right — notifications, documents, support, user info, and sign out.
+
+It appears once per layout, above all page content, and is not scrollable. Its color accents adapt automatically based on the active product variant.
+
+## When to use
+
+- As the single top-level chrome bar in any CxPortal suite product (CxPortal, CxCentral, Cases)
+- When the application needs to surface persistent utility actions (notifications, support, account) that are always accessible regardless of page context
+- When multi-tenancy requires showing the active instance name to orient the user
+
+**Do not use** the Top Bar inside modals, drawers, or as a secondary navigation layer. There should be exactly one Top Bar per application viewport.
+
+## Anatomy
+
+- **Product brand** *(left)* — Product name rendered with the product's color treatment. CxPortal and Cases include a product icon alongside the name.
+- **Instance label** *(right — first group)* — Semibold "Instance:" label in the product accent color followed by the instance slug in muted text.
+- **Notification bell** — Icon button with a numeric badge showing unread count. Badge hidden when count is 0.
+- **Documents** — Icon button for accessing documents and reports.
+- **Headset** — Icon button for support / contact center.
+- **User email** *(second group)* — User circle icon + email address in a ghost button. Identifies the logged-in user at a glance.
+- **Sign out** — Icon button to end the session.
+- **Vertical dividers** — Separate the instance group from the icon cluster and the icon cluster from the user group.
+
+## Variants
+
+### Product themes
+
+<Table size="compact" className="mb-6">
+  <TableHeader>
+    <tr>
+      <TableHead>Product</TableHead>
+      <TableHead>Brand treatment</TableHead>
+      <TableHead>Accent color</TableHead>
+      <TableHead>Button border</TableHead>
+    </tr>
+  </TableHeader>
+  <TableBody>
+    <TableRow>
+      <TableCell><strong>cx-portal</strong></TableCell>
+      <TableCell>"Cx" dark + "Portal" blue, plug icon</TableCell>
+      <TableCell><code>#4285f4</code></TableCell>
+      <TableCell><code>#689df6</code></TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><strong>cx-central</strong></TableCell>
+      <TableCell>"Cx" dark + "Central" teal, no icon</TableCell>
+      <TableCell><code>#0ea2a7</code></TableCell>
+      <TableCell><code>#3eb5b9</code></TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><strong>cases</strong></TableCell>
+      <TableCell>"Cases" teal, briefcase icon</TableCell>
+      <TableCell><code>#0ea2a7</code></TableCell>
+      <TableCell><code>#3eb5b9</code></TableCell>
+    </TableRow>
+  </TableBody>
+</Table>
+
+## Do's & Don'ts
+
+<DosDonts>
+  <Do description="Use the TopBar once per layout at the top of the application shell, outside any scrollable container. It should be position:fixed or sticky at the top of the viewport." />
+  <Dont description="Nest TopBar inside a page component or a content area. It is global chrome, not page-level content." />
+</DosDonts>
+
+<DosDonts>
+  <Do description="Pass the active product variant so the brand colors reflect the product context the user is working in. CxPortal and Cases show a product icon alongside the name — don't suppress it." />
+  <Dont description="Use one product's color theme in another product's environment. The accent colors are load-bearing identity signals and mixing them confuses multi-product contexts." />
+</DosDonts>
+
+<DosDonts>
+  <Do description="Show the notification badge when the count is greater than zero. Cap the display at '9+' for counts above 9 to keep the badge legible at 18px." />
+  <Dont description="Show a '0' badge on the bell icon when there are no notifications. The badge should be absent entirely when the count is zero." />
+</DosDonts>
+
+<DosDonts>
+  <Do description="Display the user's email address — not their display name — in the user button. It is the primary identifier in multi-tenant environments and helps users confirm they're signed into the correct account." />
+  <Dont description="Truncate the email address with a tooltip approach unless the viewport is very narrow. Email addresses in this component are rendered at 12px in a flex row; they fit in most desktop viewports without truncation." />
+</DosDonts>
+
+## Code
+
+### Basic usage
+
+```tsx
+import { TopBar } from '@/components/ui/top-bar'
+
+// Default — CxPortal theme
+<TopBar
+  instance="pronetxcrawler"
+  userEmail="rseoane@pronetx.com"
+  notifCount={4}
+/>
+```
+
+### Product variants
+
+```tsx
+// CxCentral
+<TopBar
+  product="cx-central"
+  instance="pronetxcrawler"
+  userEmail="rseoane@pronetx.com"
+  notifCount={3}
+/>
+
+// Cases
+<TopBar
+  product="cases"
+  instance="pronetxcrawler"
+  userEmail="rseoane@pronetx.com"
+  notifCount={4}
+/>
+```
+
+### With action handlers
+
+```tsx
+<TopBar
+  product="cx-portal"
+  instance="pronetxcrawler"
+  userEmail="rseoane@pronetx.com"
+  notifCount={2}
+  onNotifications={() => openNotificationPanel()}
+  onDocuments={() => openDocumentsPanel()}
+  onHeadset={() => openSupportModal()}
+  onSignOut={() => signOut()}
+/>
+```
+
+### No notifications
+
+```tsx
+<TopBar
+  product="cx-portal"
+  instance="pronetxcrawler"
+  userEmail="rseoane@pronetx.com"
+  notifCount={0}
+/>
+```
+
+## Token reference
+
+<Table size="compact" className="mb-6">
+  <TableHeader>
+    <tr>
+      <TableHead>Token</TableHead>
+      <TableHead>Value</TableHead>
+      <TableHead>Usage</TableHead>
+    </tr>
+  </TableHeader>
+  <TableBody>
+    <TableRow>
+      <TableCell><code>--surface/section</code></TableCell>
+      <TableCell><code>#ffffff</code></TableCell>
+      <TableCell>TopBar background</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><code>--border-color/neutral</code></TableCell>
+      <TableCell><code>#eff1f3</code></TableCell>
+      <TableCell>Bottom border and dividers</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><code>--content-action/primary/default</code></TableCell>
+      <TableCell><code>#4285f4</code></TableCell>
+      <TableCell>CxPortal accent — instance label, button borders, badge</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><code>--content-action/teal/default</code></TableCell>
+      <TableCell><code>#0ea2a7</code></TableCell>
+      <TableCell>CxCentral / Cases accent</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><code>--text/body/primary</code></TableCell>
+      <TableCell><code>#021920</code></TableCell>
+      <TableCell>Icon fill, user email text, brand "Cx" first part</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><code>--text/breadcrumb</code></TableCell>
+      <TableCell><code>#323840</code></TableCell>
+      <TableCell>Instance value text</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>Height</TableCell>
+      <TableCell>52px</TableCell>
+      <TableCell>Fixed bar height</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>Padding</TableCell>
+      <TableCell>2px 16px</TableCell>
+      <TableCell>Vertical + horizontal inset</TableCell>
+    </TableRow>
+  </TableBody>
+</Table>
+
+## Accessibility
+
+- The `<header>` landmark element wraps the TopBar so screen readers can identify it as the page banner.
+- All icon buttons include `aria-label` attributes describing their action (e.g., "Notifications", "Sign out").
+- The notification badge count is part of the button's rendered subtree and will be announced by screen readers alongside the button label.
+- The user email button is a native `<button>` element, keyboard-focusable and activatable with Enter or Space.
+- Color is not the sole differentiator between product themes — the brand name text and product icon also change per variant.

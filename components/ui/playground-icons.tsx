@@ -7,4 +7,12 @@ export {
   CalendarIcon,
   TagIcon,
   UserListIcon,
+  SquaresFourIcon,
+  BellRingingIcon,
+  FileTextIcon,
+  HeadsetIcon,
+  UserCircleIcon,
+  SignOutIcon,
+  PlugsConnectedIcon,
+  BriefcaseIcon,
 } from '@phosphor-icons/react'
