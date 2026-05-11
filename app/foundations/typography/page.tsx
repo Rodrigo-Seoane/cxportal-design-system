@@ -1,10 +1,10 @@
-import { TopBar } from '@/components/layout/TopBar'
+import { PageTitle } from '@/components/layout/PageTitle'
 import { TypographyScale } from '@/components/ds/TypographyScale'
 
 export default function TypographyPage() {
   return (
     <>
-      <TopBar title="Typography" />
+      <PageTitle title="Typography" />
       <main className="flex-1 px-8 py-10 max-w-5xl">
         <div className="mb-8">
           <h2

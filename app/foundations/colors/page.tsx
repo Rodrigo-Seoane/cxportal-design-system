@@ -1,5 +1,5 @@
 import React from 'react'
-import { TopBar } from '@/components/layout/TopBar'
+import { PageTitle } from '@/components/layout/PageTitle'
 import { TokenSwatch } from '@/components/ds/TokenSwatch'
 
 // ─── Data types ───────────────────────────────────────────────────────────────
@@ -199,7 +199,7 @@ const sections: Section[] = [
 export default function ColorsPage() {
   return (
     <>
-      <TopBar title="Colors" />
+      <PageTitle title="Colors" />
       <main className="flex-1 px-8 py-10 w-full">
 
         {/* Page header */}

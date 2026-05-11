@@ -1,4 +1,4 @@
-import { TopBar } from '@/components/layout/TopBar'
+import { PageTitle } from '@/components/layout/PageTitle'
 import { GraphCard } from '@/components/charts/GraphCard'
 import type { GraphCardChartType } from '@/components/charts/GraphCard'
 
@@ -73,7 +73,7 @@ function Variant({
 export default function GraphCardsPage() {
   return (
     <>
-      <TopBar title="Graph Cards" figmaUpdated="Apr 14, 2026" />
+      <PageTitle title="Graph Cards" figmaUpdated="Apr 14, 2026" />
       <main className="flex-1 px-8 py-10" style={{ maxWidth: 1100 }}>
 
         {/* ── Page header ──────────────────────────────────────────────── */}

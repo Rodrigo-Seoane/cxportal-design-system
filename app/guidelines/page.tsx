@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import { TopBar } from '@/components/layout/TopBar'
+import { PageTitle } from '@/components/layout/PageTitle'
 import { CopyButton } from '@/components/ds/CopyButton'
 import { Tabs, TabList, Tab, TabPanel } from '@/components/ui/tabs'
 
@@ -146,7 +146,7 @@ Additional context:
 export default function GuidelinesPage() {
   return (
     <>
-      <TopBar title="Guidelines" />
+      <PageTitle title="Guidelines" />
       <main className="flex-1 px-8 py-10 max-w-4xl">
 
         {/* ── Hero ────────────────────────────────────────────────────── */}

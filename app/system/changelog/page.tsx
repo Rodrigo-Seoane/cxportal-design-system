@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { TopBar } from '@/components/layout/TopBar'
+import { PageTitle } from '@/components/layout/PageTitle'
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 
@@ -163,7 +163,7 @@ function ReleaseBlock({ release }: { release: Release }) {
 export default function ChangelogPage() {
   return (
     <>
-      <TopBar title="Changelog" figmaUpdated="Apr 15, 2026" />
+      <PageTitle title="Changelog" figmaUpdated="Apr 15, 2026" />
       <main className="flex-1 px-8 py-10" style={{ maxWidth: 800 }}>
         <p style={{ fontSize: 14, lineHeight: '22px', color: 'var(--color-text-secondary)', marginBottom: 40, maxWidth: 600 }}>
           A manually-maintained log of additions, updates, fixes, and deprecations. Add an entry whenever a

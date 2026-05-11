@@ -1,4 +1,4 @@
-import { TopBar } from '@/components/layout/TopBar'
+import { PageTitle } from '@/components/layout/PageTitle'
 
 // ── Primitives ────────────────────────────────────────────────────────────────
 
@@ -94,7 +94,7 @@ function Step({ n, title, children }: { n: number; title: string; children: Reac
 export default function FigmaSyncPage() {
   return (
     <>
-      <TopBar title="Figma Sync" figmaUpdated="Apr 14, 2026" />
+      <PageTitle title="Figma Sync" figmaUpdated="Apr 14, 2026" />
       <main className="flex-1 px-8 py-10" style={{ maxWidth: 800 }}>
 
         <Prose>

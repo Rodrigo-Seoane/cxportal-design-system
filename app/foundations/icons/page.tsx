@@ -1,10 +1,10 @@
-import { TopBar } from '@/components/layout/TopBar'
+import { PageTitle } from '@/components/layout/PageTitle'
 import { IconGrid } from '@/components/ds/IconGrid'
 
 export default function IconsPage() {
   return (
     <>
-      <TopBar title="Icons" />
+      <PageTitle title="Icons" />
       <main className="flex-1 px-8 py-10">
         <div className="mb-8">
           <h2

@@ -1,10 +1,10 @@
-import { TopBar } from '@/components/layout/TopBar'
+import { PageTitle } from '@/components/layout/PageTitle'
 import { SpacingGrid } from '@/components/ds/SpacingGrid'
 
 export default function SpacingPage() {
   return (
     <>
-      <TopBar title="Spacing" />
+      <PageTitle title="Spacing" />
       <main className="flex-1 px-8 py-10 max-w-3xl">
         <div className="mb-8">
           <h2

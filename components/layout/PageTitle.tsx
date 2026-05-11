@@ -10,7 +10,7 @@ const FigmaIcon = (
   </svg>
 )
 
-export function TopBar({ title, figmaUpdated }: { title?: string; figmaUpdated?: string }) {
+export function PageTitle({ title, figmaUpdated }: { title?: string; figmaUpdated?: string }) {
   return (
     <header
       className="sticky top-0 z-10 flex items-center justify-between h-14 px-8 border-b"

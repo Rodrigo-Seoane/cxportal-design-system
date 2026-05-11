@@ -1,5 +1,5 @@
 import { notFound } from 'next/navigation'
-import { TopBar } from '@/components/layout/TopBar'
+import { PageTitle } from '@/components/layout/PageTitle'
 import { ComponentPlayground } from '@/components/ds/ComponentPlayground'
 import { getEntryMeta } from '@/lib/component-registry'
 import { getComponentDoc } from '@/lib/mdx'
@@ -655,7 +655,7 @@ export default async function ComponentPage(props: PageProps<'/components/[slug]
 
   return (
     <>
-      <TopBar title={meta.title} figmaUpdated={doc?.frontmatter.figmaUpdated} />
+      <PageTitle title={meta.title} figmaUpdated={doc?.frontmatter.figmaUpdated} />
       <main className="flex-1 px-8 py-10 max-w-5xl">
 
         {/* ── Header ──────────────────────────────────────────────────── */}

@@ -1,4 +1,4 @@
-import { TopBar } from '@/components/layout/TopBar'
+import { PageTitle } from '@/components/layout/PageTitle'
 import { FullSizeChart } from '@/components/charts/FullSizeChart'
 
 // ── Section header ─────────────────────────────────────────────────────────────
@@ -23,7 +23,7 @@ function Section({ title, description }: { title: string; description?: string }
 export default function FullSizeChartPage() {
   return (
     <>
-      <TopBar title="Full Size Chart" figmaUpdated="Apr 13, 2026" />
+      <PageTitle title="Full Size Chart" figmaUpdated="Apr 13, 2026" />
       <main className="flex-1 px-8 py-10" style={{ maxWidth: 1400 }}>
 
         {/* ── Page header ──────────────────────────────────────────────── */}
