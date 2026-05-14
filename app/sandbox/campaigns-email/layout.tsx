@@ -13,6 +13,7 @@ import {
   ChartBarIcon,
   FlaskIcon,
 } from '@phosphor-icons/react'
+import type { IconWeight } from '@phosphor-icons/react'
 import { PageTitle } from '@/components/layout/PageTitle'
 import { RoleProvider, useRole, ROLES } from './_context/RoleContext'
 
@@ -21,7 +22,7 @@ import { RoleProvider, useRole, ROLES } from './_context/RoleContext'
 type NavItem = {
   label: string
   href:  string
-  Icon:  React.ComponentType<{ size?: number; weight?: string; color?: string }>
+  Icon:  React.ComponentType<{ size?: number; weight?: IconWeight; color?: string }>
 }
 
 type NavSection = {
