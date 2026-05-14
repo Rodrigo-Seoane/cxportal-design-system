@@ -137,7 +137,6 @@ const NAV_GROUPS: NavGroup[] = [
       { label: 'All Experiments',    href: '/sandbox' },
       { label: 'Login Report',       href: '/sandbox/login-report',       status: 'wip' },
       { label: 'Knowledge Management', href: '/sandbox/collapsible-filter', status: 'wip' },
-      { label: 'Email Campaigns',    href: '/sandbox/campaigns-email',    status: 'wip' },
     ],
   },
   {
