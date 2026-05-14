@@ -37,15 +37,11 @@ const T = {
   // Max panel width per size
   widthLg:       701,
   widthMd:       453,
-  widthXl:       860,
-
-  // Min panel height for xlarge (wizard flows)
-  heightXl:      640,
 } as const
 
 // ── Context (passes size down to ModalHeader) ─────────────────────────────────
 
-interface ModalCtxValue { size: 'large' | 'medium' | 'xlarge' }
+interface ModalCtxValue { size: 'large' | 'medium' }
 const ModalCtx = createContext<ModalCtxValue>({ size: 'large' })
 
 // ── Modal (root) ──────────────────────────────────────────────────────────────
@@ -55,8 +51,8 @@ export interface ModalProps {
   open?: boolean
   /** Called when the backdrop is clicked or Escape is pressed */
   onClose?: () => void
-  /** Panel width: large (701 px, H1 header) / medium (453 px, H2 header) / xlarge (860 px, wizard flows). Default: 'large'. */
-  size?: 'large' | 'medium' | 'xlarge'
+  /** Panel width: large (701 px, H1 header) or medium (453 px, H2 header). Default: 'large'. */
+  size?: 'large' | 'medium'
   /**
    * Render inline without backdrop — for playground and docs preview only.
    * When true, `open` is ignored and the panel always renders.
@@ -79,8 +75,7 @@ export function Modal({
   'aria-labelledby': ariaLabelledby,
 }: ModalProps) {
   const panelRef = useRef<HTMLDivElement>(null)
-  const maxWidth  = size === 'xlarge' ? T.widthXl : size === 'large' ? T.widthLg : T.widthMd
-  const minHeight = size === 'xlarge' ? T.heightXl : undefined
+  const maxWidth = size === 'large' ? T.widthLg : T.widthMd
 
   // ── Escape key ────────────────────────────────────────────────────────────
   useEffect(() => {
@@ -140,7 +135,6 @@ export function Modal({
           border:        preview ? `1px solid ${T.borderColor}` : 'none',
           width:         '100%',
           maxWidth,
-          minHeight,
           display:       'flex',
           flexDirection: 'column',
           overflow:      'hidden',
@@ -189,7 +183,7 @@ export interface ModalHeaderProps {
 
 export function ModalHeader({ children, onClose, style }: ModalHeaderProps) {
   const { size } = useContext(ModalCtx)
-  const isLg = size === 'large' || size === 'xlarge'
+  const isLg = size === 'large'
 
   return (
     <div
