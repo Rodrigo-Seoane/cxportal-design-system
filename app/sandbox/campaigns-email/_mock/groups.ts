@@ -11,6 +11,7 @@ export interface SSAComponent {
 
 export interface CampaignGroup {
   id:          string
+  accountId:   string
   componentId: string
   name:        string
   description: string
@@ -41,53 +42,53 @@ export const COMPONENTS: SSAComponent[] = [
 // ── Campaign Groups (keyed by componentId) ────────────────────────────────────
 
 export const CAMPAIGN_GROUPS: CampaignGroup[] = [
-  // Retirement Services
-  { id: 'rsc-g1',  componentId: 'rsc',  name: 'Retirement Benefits Outreach',   description: 'Annual notices and benefit reminders for retirees',     memberCount: 12 },
-  { id: 'rsc-g2',  componentId: 'rsc',  name: 'Survivors Benefit Notifications', description: 'Communications for survivors and dependents',           memberCount: 6  },
-  { id: 'rsc-g3',  componentId: 'rsc',  name: 'Early Retirement Campaigns',      description: 'Outreach for near-retirement age beneficiaries',        memberCount: 8  },
+  // Retirement Services → SSA — Retirement Services
+  { id: 'rsc-g1',  accountId: 'ssa-rsc',  componentId: 'rsc',  name: 'Retirement Benefits Outreach',    description: 'Annual notices and benefit reminders for retirees',     memberCount: 12 },
+  { id: 'rsc-g2',  accountId: 'ssa-rsc',  componentId: 'rsc',  name: 'Survivors Benefit Notifications', description: 'Communications for survivors and dependents',           memberCount: 6  },
+  { id: 'rsc-g3',  accountId: 'ssa-rsc',  componentId: 'rsc',  name: 'Early Retirement Campaigns',      description: 'Outreach for near-retirement age beneficiaries',        memberCount: 8  },
 
-  // Disability Services
-  { id: 'dsc-g1',  componentId: 'dsc',  name: 'SSDI Application Updates',        description: 'Status and decision notices for SSDI applicants',       memberCount: 14 },
-  { id: 'dsc-g2',  componentId: 'dsc',  name: 'SSI Program Notifications',       description: 'Payment and eligibility notices for SSI recipients',    memberCount: 10 },
-  { id: 'dsc-g3',  componentId: 'dsc',  name: 'Continuing Disability Reviews',   description: 'CDR scheduling and outcome communications',             memberCount: 7  },
-  { id: 'dsc-g4',  componentId: 'dsc',  name: 'Ticket to Work Program',          description: 'Employment support and incentive outreach',             memberCount: 5  },
+  // Disability Services → SSA — Field Operations
+  { id: 'dsc-g1',  accountId: 'ssa-foc',  componentId: 'dsc',  name: 'SSDI Application Updates',        description: 'Status and decision notices for SSDI applicants',       memberCount: 14 },
+  { id: 'dsc-g2',  accountId: 'ssa-foc',  componentId: 'dsc',  name: 'SSI Program Notifications',       description: 'Payment and eligibility notices for SSI recipients',    memberCount: 10 },
+  { id: 'dsc-g3',  accountId: 'ssa-foc',  componentId: 'dsc',  name: 'Continuing Disability Reviews',   description: 'CDR scheduling and outcome communications',             memberCount: 7  },
+  { id: 'dsc-g4',  accountId: 'ssa-foc',  componentId: 'dsc',  name: 'Ticket to Work Program',          description: 'Employment support and incentive outreach',             memberCount: 5  },
 
-  // Medicare Coordination
-  { id: 'mcc-g1',  componentId: 'mcc',  name: 'Medicare Initial Enrollment',     description: 'IEP reminders and Part A/B enrollment notices',         memberCount: 9  },
-  { id: 'mcc-g2',  componentId: 'mcc',  name: 'Medicare Annual Notices',         description: 'IRMAA, COLA, and annual notice campaigns',              memberCount: 11 },
+  // Medicare Coordination → SSA — Retirement Services
+  { id: 'mcc-g1',  accountId: 'ssa-rsc',  componentId: 'mcc',  name: 'Medicare Initial Enrollment',     description: 'IEP reminders and Part A/B enrollment notices',         memberCount: 9  },
+  { id: 'mcc-g2',  accountId: 'ssa-rsc',  componentId: 'mcc',  name: 'Medicare Annual Notices',         description: 'IRMAA, COLA, and annual notice campaigns',              memberCount: 11 },
 
-  // Field Operations
-  { id: 'foc-g1',  componentId: 'foc',  name: 'Field Office Appointments',       description: 'In-person appointment reminders and scheduling',        memberCount: 20 },
-  { id: 'foc-g2',  componentId: 'foc',  name: 'Regional Outreach Events',        description: 'Community events and office open-house notifications',  memberCount: 8  },
-  { id: 'foc-g3',  componentId: 'foc',  name: 'Online Services Adoption',        description: 'my Social Security enrollment and feature campaigns',   memberCount: 6  },
+  // Field Operations → SSA — Field Operations
+  { id: 'foc-g1',  accountId: 'ssa-foc',  componentId: 'foc',  name: 'Field Office Appointments',       description: 'In-person appointment reminders and scheduling',        memberCount: 20 },
+  { id: 'foc-g2',  accountId: 'ssa-foc',  componentId: 'foc',  name: 'Regional Outreach Events',        description: 'Community events and office open-house notifications',  memberCount: 8  },
+  { id: 'foc-g3',  accountId: 'ssa-foc',  componentId: 'foc',  name: 'Online Services Adoption',        description: 'my Social Security enrollment and feature campaigns',   memberCount: 6  },
 
-  // Hearing Operations
-  { id: 'hoc-g1',  componentId: 'hoc',  name: 'Hearing Scheduling Notices',      description: 'ALJ hearing dates and virtual hearing instructions',    memberCount: 7  },
-  { id: 'hoc-g2',  componentId: 'hoc',  name: 'Appeals Council Updates',         description: 'AC review status and decision notifications',           memberCount: 5  },
+  // Hearing Operations → SSA — Field Operations
+  { id: 'hoc-g1',  accountId: 'ssa-foc',  componentId: 'hoc',  name: 'Hearing Scheduling Notices',      description: 'ALJ hearing dates and virtual hearing instructions',    memberCount: 7  },
+  { id: 'hoc-g2',  accountId: 'ssa-foc',  componentId: 'hoc',  name: 'Appeals Council Updates',         description: 'AC review status and decision notifications',           memberCount: 5  },
 
-  // Communications
-  { id: 'oc-g1',   componentId: 'oc',   name: 'National Awareness Campaigns',    description: 'SSA.gov and public-facing benefit awareness',           memberCount: 4  },
-  { id: 'oc-g2',   componentId: 'oc',   name: 'Congressional Affairs',           description: 'Constituent casework and liaison communications',       memberCount: 3  },
+  // Communications → SSA — Field Operations
+  { id: 'oc-g1',   accountId: 'ssa-foc',  componentId: 'oc',   name: 'National Awareness Campaigns',    description: 'SSA.gov and public-facing benefit awareness',           memberCount: 4  },
+  { id: 'oc-g2',   accountId: 'ssa-foc',  componentId: 'oc',   name: 'Congressional Affairs',           description: 'Constituent casework and liaison communications',       memberCount: 3  },
 
-  // OIT
-  { id: 'oit-g1',  componentId: 'oit',  name: 'System Maintenance Notices',      description: 'Downtime, upgrade, and outage notifications',           memberCount: 6  },
+  // OIT → SSA — Field Operations
+  { id: 'oit-g1',  accountId: 'ssa-foc',  componentId: 'oit',  name: 'System Maintenance Notices',      description: 'Downtime, upgrade, and outage notifications',           memberCount: 6  },
 
-  // OHR
-  { id: 'ohr-g1',  componentId: 'ohr',  name: 'Employee Benefits Enrollment',    description: 'Open season and benefits update communications',        memberCount: 5  },
+  // OHR → SSA — Retirement Services
+  { id: 'ohr-g1',  accountId: 'ssa-rsc',  componentId: 'ohr',  name: 'Employee Benefits Enrollment',    description: 'Open season and benefits update communications',        memberCount: 5  },
 
-  // OBFM
-  { id: 'obfm-g1', componentId: 'obfm', name: 'Budget Cycle Communications',     description: 'Annual budget and spend guidance',                      memberCount: 4  },
-  { id: 'obfm-g2', componentId: 'obfm', name: 'Financial Audit Notifications',   description: 'Audit scheduling and document request notices',         memberCount: 3  },
+  // OBFM → SSA — Retirement Services
+  { id: 'obfm-g1', accountId: 'ssa-rsc',  componentId: 'obfm', name: 'Budget Cycle Communications',     description: 'Annual budget and spend guidance',                      memberCount: 4  },
+  { id: 'obfm-g2', accountId: 'ssa-rsc',  componentId: 'obfm', name: 'Financial Audit Notifications',   description: 'Audit scheduling and document request notices',         memberCount: 3  },
 
-  // OAO
-  { id: 'oao-g1',  componentId: 'oao',  name: 'Appeals Backlog Outreach',        description: 'Status updates for long-pending appeals',              memberCount: 6  },
-  { id: 'oao-g2',  componentId: 'oao',  name: 'Decision Notice Campaigns',       description: 'Final decision and next-steps communications',          memberCount: 4  },
+  // OAO → SSA — Field Operations
+  { id: 'oao-g1',  accountId: 'ssa-foc',  componentId: 'oao',  name: 'Appeals Backlog Outreach',        description: 'Status updates for long-pending appeals',              memberCount: 6  },
+  { id: 'oao-g2',  accountId: 'ssa-foc',  componentId: 'oao',  name: 'Decision Notice Campaigns',       description: 'Final decision and next-steps communications',          memberCount: 4  },
 
-  // OARO
-  { id: 'oaro-g1', componentId: 'oaro', name: 'Program Evaluation Reports',      description: 'Research findings and program performance notices',     memberCount: 3  },
+  // OARO → SSA — Retirement Services
+  { id: 'oaro-g1', accountId: 'ssa-rsc',  componentId: 'oaro', name: 'Program Evaluation Reports',      description: 'Research findings and program performance notices',     memberCount: 3  },
 
-  // OIG
-  { id: 'oig-g1',  componentId: 'oig',  name: 'Fraud Awareness Campaigns',       description: 'Scam and identity theft prevention outreach',           memberCount: 4  },
+  // OIG → SSA — Field Operations
+  { id: 'oig-g1',  accountId: 'ssa-foc',  componentId: 'oig',  name: 'Fraud Awareness Campaigns',       description: 'Scam and identity theft prevention outreach',           memberCount: 4  },
 ]
 
 // ── Hierarchy (components with their groups inlined) ─────────────────────────

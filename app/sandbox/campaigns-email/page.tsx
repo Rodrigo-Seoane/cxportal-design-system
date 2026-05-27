@@ -1,319 +1,322 @@
 'use client'
 
+import { useState, useMemo, useEffect } from 'react'
 import Link from 'next/link'
-import {
-  EnvelopeIcon,
-  FileTextIcon,
-  TagIcon,
-  UsersThreeIcon,
-  SlidersIcon,
-  UserMinusIcon,
-  ShieldCheckIcon,
-  ChartBarIcon,
-  PaperPlaneTiltIcon,
-  ClockIcon,
-  ArrowUpRightIcon,
-  WarningIcon,
-} from '@phosphor-icons/react'
+import { FunnelIcon, XIcon, MagnifyingGlassIcon } from '@phosphor-icons/react'
+import { MetricTile } from './_components/MetricTile'
+import { SwitchAccountButton } from './_components/SwitchAccountButton'
+import { MessageBox } from '@/components/ui/message-box'
+import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from '@/components/ui/table'
 import { CAMPAIGNS } from './_mock/campaigns'
-import { SENDERS } from './_mock/senders'
-import { LISTS } from './_mock/lists'
-import { TOPICS } from './_mock/topics'
+import type { CampaignType, CampaignStatus } from './_mock/campaigns'
 import { CAMPAIGN_GROUPS } from './_mock/groups'
-import { UNSUBSCRIBES } from './_mock/unsubscribes'
-import { TEMPLATES } from './_mock/templates'
-import { AGGREGATE_METRICS } from './_mock/metrics'
-import { useRole, canEdit } from './_context/RoleContext'
+import { DASHBOARD_METRICS } from './_mock/metrics'
 
-// ── Helpers ───────────────────────────────────────────────────────────────────
+// ── Lookups & chip configs ────────────────────────────────────────────────────
 
-function fmtCount(n: number): string {
-  if (n >= 1_000_000) return `${(n / 1_000_000).toFixed(1)}M`
-  if (n >= 1_000)     return `${(n / 1_000).toFixed(0)}K`
-  return n.toString()
+const GROUP_MAP = Object.fromEntries(CAMPAIGN_GROUPS.map(g => [g.id, g.name]))
+
+const TYPE_CHIP: Record<CampaignType, { label: string; bg: string; color: string }> = {
+  'voice-survey':       { label: 'Voice Survey',       bg: '#eef3fb', color: '#1a4f9e' },
+  'sms-survey':         { label: 'SMS Survey',          bg: '#eef3fb', color: '#1a4f9e' },
+  'voice-notification': { label: 'Voice Notification',  bg: '#fbeed8', color: '#7a4a00' },
+  'sms-notification':   { label: 'SMS Notification',    bg: '#fbeed8', color: '#7a4a00' },
+  'email-campaign':     { label: 'Email Campaign',      bg: '#ddf4d2', color: '#2a5e10' },
 }
 
-function fmtPct(n: number): string {
-  return `${(n * 100).toFixed(1)}%`
+const STATUS_CHIP: Record<string, { label: string; bg: string; color: string }> = {
+  running:     { label: 'Running',     bg: '#d6e2f5', color: '#1a4f9e' },
+  paused:      { label: 'Paused',      bg: '#fbeed8', color: '#7a4a00' },
+  scheduled:   { label: 'Scheduled',   bg: '#ddf4d2', color: '#2a5e10' },
+  initialized: { label: 'Initialized', bg: '#eff1f3', color: '#4b535e' },
+  failed:      { label: 'Failed',      bg: '#fbc6d4', color: '#8b1a2a' },
+  completed:   { label: 'Completed',   bg: '#ddf4d2', color: '#2a5e10' },
+  // legacy aliases
+  sending: { label: 'Running',     bg: '#d6e2f5', color: '#1a4f9e' },
+  sent:    { label: 'Completed',   bg: '#ddf4d2', color: '#2a5e10' },
+  draft:   { label: 'Initialized', bg: '#eff1f3', color: '#4b535e' },
+  cancelled:{ label: 'Failed',     bg: '#fbc6d4', color: '#8b1a2a' },
 }
 
-const STATUS_STYLE: Record<string, { bg: string; color: string; label: string }> = {
-  sent:      { bg: 'var(--color-success-100)', color: '#1a6b1a', label: 'Sent'      },
-  sending:   { bg: 'var(--color-info-100)',    color: '#1a4f9e', label: 'Sending'   },
-  scheduled: { bg: 'var(--color-warning-100)', color: '#7a4a00', label: 'Scheduled' },
-  draft:     { bg: 'var(--color-surface-display)', color: 'var(--color-text-secondary)', label: 'Draft' },
-  paused:    { bg: 'var(--color-error-100)',   color: '#8b1a2a', label: 'Paused'    },
-  cancelled: { bg: 'var(--color-error-100)',   color: '#8b1a2a', label: 'Cancelled' },
-}
+const KPI = [
+  { title: 'Active Campaigns',    format: 'number'  as const, ...DASHBOARD_METRICS.activeCampaigns    },
+  { title: 'Messages Sent',       format: 'number'  as const, ...DASHBOARD_METRICS.messagesSent       },
+  { title: 'Delivery Rate',       format: 'percent' as const, ...DASHBOARD_METRICS.deliveryRate       },
+  { title: 'Survey Responses',    format: 'number'  as const, ...DASHBOARD_METRICS.surveyResponses    },
+  { title: 'Voicemail Responses', format: 'percent' as const, ...DASHBOARD_METRICS.voicemailResponses },
+]
 
-// ── Derived stats ─────────────────────────────────────────────────────────────
+// ── Tiny badge helper ─────────────────────────────────────────────────────────
 
-const sentCampaigns      = CAMPAIGNS.filter(c => c.status === 'sent').length
-const activeCampaigns    = CAMPAIGNS.filter(c => c.status === 'sending' || c.status === 'scheduled').length
-const draftCampaigns     = CAMPAIGNS.filter(c => c.status === 'draft').length
-const pendingSenders     = SENDERS.filter(s => s.status === 'pending').length
-const expiredSenders     = SENDERS.filter(s => s.status === 'expired' || s.status === 'failed').length
-const recentCampaigns    = [...CAMPAIGNS]
-  .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
-  .slice(0, 5)
-
-// ── Sub-section cards ─────────────────────────────────────────────────────────
-
-const SECTIONS = [
-  { label: 'Topics',        href: '/sandbox/campaigns-email/topics',        Icon: TagIcon,         count: TOPICS.length,          desc: 'Communication streams that subscribers opt into'                  },
-  { label: 'Campaigns',     href: '/sandbox/campaigns-email/campaigns',     Icon: EnvelopeIcon,    count: CAMPAIGNS.length,       desc: 'Email sends and schedules'                                        },
-  { label: 'Templates',     href: '/sandbox/campaigns-email/templates',     Icon: FileTextIcon,    count: TEMPLATES.length,       desc: 'Versioned HTML email templates'                                   },
-  { label: 'Senders',       href: '/sandbox/campaigns-email/senders',       Icon: ShieldCheckIcon, count: SENDERS.length,         desc: 'Verified sender identities'                                       },
-  { label: 'Recipient Lists', href: '/sandbox/campaigns-email/recipient-lists', Icon: UsersThreeIcon, count: LISTS.length,          desc: 'Recipient lists scoped to a campaign group'                       },
-  { label: 'Components',    href: '/sandbox/campaigns-email/components',     Icon: SlidersIcon,     count: CAMPAIGN_GROUPS.length, desc: 'Organization structure and campaign groups per SSA component'      },
-  { label: 'Unsubscribers', href: '/sandbox/campaigns-email/unsubscribers', Icon: UserMinusIcon,   count: UNSUBSCRIBES.length,    desc: 'Opt-out tracking with grace-period and CSV export'                },
-  { label: 'Metrics',       href: '/sandbox/campaigns-email/metrics',       Icon: ChartBarIcon,    count: null,                   desc: 'Delivery, open, and click rates'                                  },
-] as const
-
-// ── Component ─────────────────────────────────────────────────────────────────
-
-export default function CampaignsEmailDashboard() {
-  const { role } = useRole()
+function Badge({ label, bg, color }: { label: string; bg: string; color: string }) {
   return (
-    <div style={{ padding: '32px 40px', maxWidth: 1000 }}>
+    <span style={{
+      display: 'inline-block', fontSize: 10, fontWeight: 600,
+      padding: '3px 8px', borderRadius: 6, background: bg, color, whiteSpace: 'nowrap',
+    }}>
+      {label}
+    </span>
+  )
+}
 
-      {/* ── Prototype header ─────────────────────────────────────────── */}
-      <div style={{ marginBottom: 32 }}>
-        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 6 }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-          <h2 style={{ fontSize: 22, fontWeight: 700, color: 'var(--color-text-primary)', margin: 0 }}>
-            Email Campaigns
-          </h2>
-          <span style={{
-            fontSize: 11, fontWeight: 600, padding: '2px 8px', borderRadius: 4,
-            background: 'var(--color-warning-100)', color: '#7a4a00',
-          }}>
-            Prototype · PRDENG-2867
-          </span>
-          </div>
-          {canEdit(role) && (
-            <Link href="/sandbox/campaigns-email/topics">
-              <button style={{
-                display: 'inline-flex', alignItems: 'center', gap: 6,
-                fontSize: 13, fontWeight: 600, padding: '8px 16px', borderRadius: 8,
-                background: 'var(--color-primary)', border: 'none',
-                color: '#fff', cursor: 'pointer',
-              }}>
-                + New Topic
-              </button>
+// ── Dashboard ─────────────────────────────────────────────────────────────────
+
+const SELECT_STYLE: React.CSSProperties = {
+  width: '100%', padding: '6px 8px', borderRadius: 6, fontSize: 12,
+  border: '1px solid var(--color-border)', background: 'var(--color-surface-section)',
+  color: 'var(--color-text-primary)', outline: 'none',
+}
+
+export default function DashboardPage() {
+  const [search,       setSearch]       = useState('')
+  const [visible,      setVisible]      = useState(10)
+  const [filterOpen,   setFilterOpen]   = useState(false)
+  const [filterGroup,  setFilterGroup]  = useState('')
+  const [filterType,   setFilterType]   = useState<CampaignType | ''>('')
+  const [filterStatus, setFilterStatus] = useState<CampaignStatus | ''>('')
+
+  const filtered = useMemo(() => {
+    let r = CAMPAIGNS
+    if (search)        r = r.filter(c => c.name.toLowerCase().includes(search.toLowerCase()))
+    if (filterGroup)   r = r.filter(c => c.groupId  === filterGroup)
+    if (filterType)    r = r.filter(c => c.type     === filterType)
+    if (filterStatus)  r = r.filter(c => c.status   === filterStatus)
+    return r
+  }, [search, filterGroup, filterType, filterStatus])
+
+  useEffect(() => { setVisible(10) }, [search, filterGroup, filterType, filterStatus])
+
+  const rows = filtered.slice(0, visible)
+
+  return (
+    <div style={{ padding: '32px 40px', maxWidth: 1400 }}>
+
+      {/* ── Page header ──────────────────────────────────────────────────── */}
+      <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: 20 }}>
+        <div>
+          <h1 style={{ margin: 0, fontSize: 22, fontWeight: 700, color: 'var(--color-text-primary)', lineHeight: '32px' }}>
+            Dashboard
+          </h1>
+          <p style={{ margin: 0, fontSize: 13, color: 'var(--color-text-secondary)', lineHeight: '20px', marginTop: 2 }}>
+            Track your agencies and campaigns performances
+          </p>
+        </div>
+        <SwitchAccountButton />
+      </div>
+
+      {/* ── Info banner ──────────────────────────────────────────────────── */}
+      <div style={{ marginBottom: 28 }}>
+        <MessageBox type="info" size="line" dismissible={false}>
+          <p style={{ margin: 0, fontSize: 14, lineHeight: '20px', color: '#021920' }}>
+            1 sender identity awaiting verification.{' '}
+            <Link href="/sandbox/campaigns-email/channels" style={{ color: '#4285f4', fontWeight: 600, textDecoration: 'none' }}>
+              Review senders →
             </Link>
-          )}
-        </div>
-        <p style={{ margin: 0, fontSize: 14, color: 'var(--color-text-secondary)', lineHeight: '22px', maxWidth: 620 }}>
-          Click-through prototype for the SSA Digital Communications Campaign Platform.
-          Eight surfaces covering the full campaign lifecycle: sender verification, group
-          hierarchy, list and topic management, template authoring, campaign creation,
-          and post-send analytics.
-        </p>
+          </p>
+        </MessageBox>
       </div>
 
-      {/* ── Attention banners ─────────────────────────────────────────── */}
-      {(pendingSenders > 0 || expiredSenders > 0) && (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 8, marginBottom: 24 }}>
-          {pendingSenders > 0 && (
-            <div style={{
-              display: 'flex', alignItems: 'center', gap: 10,
-              padding: '10px 14px', borderRadius: 8,
-              background: 'var(--color-warning-100)',
-              border: '1px solid var(--color-warning-200)',
-            }}>
-              <ClockIcon size={16} color="#7a4a00" />
-              <span style={{ fontSize: 13, color: '#7a4a00', lineHeight: '20px' }}>
-                <strong>{pendingSenders} sender {pendingSenders === 1 ? 'identity' : 'identities'}</strong> awaiting verification.{' '}
-                <Link href="/sandbox/campaigns-email/senders" style={{ color: '#7a4a00', fontWeight: 600 }}>
-                  Review senders →
-                </Link>
-              </span>
-            </div>
-          )}
-          {expiredSenders > 0 && (
-            <div style={{
-              display: 'flex', alignItems: 'center', gap: 10,
-              padding: '10px 14px', borderRadius: 8,
-              background: 'var(--color-error-100)',
-              border: '1px solid var(--color-error-200)',
-            }}>
-              <WarningIcon size={16} color="#8b1a2a" />
-              <span style={{ fontSize: 13, color: '#8b1a2a', lineHeight: '20px' }}>
-                <strong>{expiredSenders} sender {expiredSenders === 1 ? 'identity has' : 'identities have'}</strong> expired or failed verification.{' '}
-                <Link href="/sandbox/campaigns-email/senders" style={{ color: '#8b1a2a', fontWeight: 600 }}>
-                  Fix senders →
-                </Link>
-              </span>
-            </div>
-          )}
+      {/* ── Overall Performance ──────────────────────────────────────────── */}
+      <div style={{ marginBottom: 32 }}>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 14 }}>
+          <h2 style={{ margin: 0, fontSize: 16, fontWeight: 600, color: 'var(--color-text-primary)' }}>
+            Overall Performance
+          </h2>
+          <select defaultValue="7d" style={{ padding: '5px 10px', borderRadius: 6, fontSize: 12, border: '1px solid var(--color-border)', background: 'var(--color-surface-section)', color: 'var(--color-text-primary)' }}>
+            <option value="7d">Last 7 days</option>
+            <option value="30d">Last 30 days</option>
+            <option value="90d">Last 90 days</option>
+          </select>
         </div>
-      )}
-
-      {/* ── Aggregate KPI row ─────────────────────────────────────────── */}
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 12, marginBottom: 32 }}>
-        {[
-          { label: 'Total Sent',    value: fmtCount(AGGREGATE_METRICS.totalSent),    Icon: PaperPlaneTiltIcon, sub: `across ${sentCampaigns} campaigns` },
-          { label: 'Avg Open Rate', value: fmtPct(AGGREGATE_METRICS.avgOpenRate),    Icon: EnvelopeIcon,       sub: 'across sent campaigns' },
-          { label: 'Avg Click Rate',value: fmtPct(AGGREGATE_METRICS.avgClickRate),   Icon: ChartBarIcon,       sub: 'of delivered messages' },
-          { label: 'Avg Bounce Rate',value: fmtPct(AGGREGATE_METRICS.avgBounceRate), Icon: WarningIcon,        sub: 'hard + soft bounces' },
-        ].map(({ label, value, Icon, sub }) => (
-          <div key={label} style={{
-            padding: '16px 20px',
-            background: 'var(--color-surface-section)',
-            border: '1px solid var(--color-border)',
-            borderRadius: 10,
-          }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8 }}>
-              <Icon size={16} color="var(--color-text-secondary)" />
-              <span style={{ fontSize: 12, color: 'var(--color-text-secondary)', fontWeight: 500 }}>{label}</span>
-            </div>
-            <div style={{ fontSize: 26, fontWeight: 700, color: 'var(--color-text-primary)', lineHeight: 1, marginBottom: 4 }}>
-              {value}
-            </div>
-            <div style={{ fontSize: 11, color: 'var(--color-text-secondary)' }}>{sub}</div>
-          </div>
-        ))}
-      </div>
-
-      {/* ── Two-column: campaign status + sections grid ───────────────── */}
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 24, marginBottom: 32 }}>
-
-        {/* Campaign status summary */}
-        <div style={{
-          padding: '20px 24px',
-          background: 'var(--color-surface-section)',
-          border: '1px solid var(--color-border)',
-          borderRadius: 10,
-        }}>
-          <h3 style={{ fontSize: 14, fontWeight: 600, color: 'var(--color-text-primary)', margin: '0 0 16px' }}>
-            Campaign Status
-          </h3>
-          {[
-            { label: 'Sent',      count: sentCampaigns,   style: STATUS_STYLE.sent      },
-            { label: 'Active',    count: activeCampaigns, style: STATUS_STYLE.sending   },
-            { label: 'Draft',     count: draftCampaigns,  style: STATUS_STYLE.draft     },
-          ].map(({ label, count, style }) => (
-            <div key={label} style={{
-              display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-              padding: '8px 0',
-              borderBottom: '1px solid var(--color-border)',
-            }}>
-              <span style={{ fontSize: 13, color: 'var(--color-text-primary)' }}>{label}</span>
-              <span style={{
-                fontSize: 12, fontWeight: 600, padding: '2px 8px', borderRadius: 4,
-                background: style.bg, color: style.color,
-              }}>
-                {count}
-              </span>
-            </div>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)', gap: 12 }}>
+          {KPI.map(k => (
+            <MetricTile key={k.title} title={k.title} value={k.value} format={k.format} delta={k.delta} deltaLabel="vs last week" />
           ))}
-          <Link
-            href="/sandbox/campaigns-email/campaigns"
-            style={{
-              display: 'flex', alignItems: 'center', gap: 4, marginTop: 14,
-              fontSize: 13, fontWeight: 500, color: 'var(--color-primary)', textDecoration: 'none',
-            }}
-          >
-            View all campaigns <ArrowUpRightIcon size={14} />
+        </div>
+      </div>
+
+      {/* ── Campaigns ────────────────────────────────────────────────────── */}
+      <div>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 14 }}>
+          <h2 style={{ margin: 0, fontSize: 16, fontWeight: 600, color: 'var(--color-text-primary)' }}>
+            Campaigns
+          </h2>
+          <Link href="/sandbox/campaigns-email/campaigns/new">
+            <button style={{
+              display: 'inline-flex', alignItems: 'center', gap: 6,
+              padding: '7px 14px', borderRadius: 8, border: 'none',
+              background: 'var(--color-primary)', color: '#fff',
+              fontSize: 13, fontWeight: 600, cursor: 'pointer',
+            }}>
+              + Create New Campaign
+            </button>
           </Link>
         </div>
 
-        {/* Recent campaigns */}
-        <div style={{
-          padding: '20px 24px',
-          background: 'var(--color-surface-section)',
-          border: '1px solid var(--color-border)',
-          borderRadius: 10,
-        }}>
-          <h3 style={{ fontSize: 14, fontWeight: 600, color: 'var(--color-text-primary)', margin: '0 0 16px' }}>
-            Recent Campaigns
-          </h3>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-            {recentCampaigns.map(c => {
-              const s = STATUS_STYLE[c.status]
-              return (
-                <Link
-                  key={c.id}
-                  href={`/sandbox/campaigns-email/campaigns/${c.id}`}
-                  style={{ display: 'flex', alignItems: 'center', gap: 10, textDecoration: 'none' }}
-                >
-                  <span style={{
-                    fontSize: 11, fontWeight: 600, padding: '2px 6px', borderRadius: 4,
-                    background: s.bg, color: s.color, flexShrink: 0,
-                  }}>
-                    {s.label}
-                  </span>
-                  <span style={{
-                    fontSize: 13, color: 'var(--color-text-primary)',
-                    flex: 1, minWidth: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap',
-                  }}>
-                    {c.name}
-                  </span>
-                  <span style={{ fontSize: 12, color: 'var(--color-text-secondary)', flexShrink: 0 }}>
-                    {fmtCount(c.recipientCount)}
-                  </span>
-                </Link>
-              )
-            })}
+        {/* Search + filter toggle */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 12 }}>
+          <div style={{ position: 'relative', flex: 1, maxWidth: 340 }}>
+            <MagnifyingGlassIcon size={14} color="var(--color-text-secondary)"
+              style={{ position: 'absolute', left: 10, top: '50%', transform: 'translateY(-50%)', pointerEvents: 'none' }} />
+            <input
+              value={search}
+              onChange={e => setSearch(e.target.value)}
+              placeholder="Search campaigns…"
+              style={{
+                width: '100%', padding: '7px 10px 7px 30px', borderRadius: 8,
+                border: '1px solid var(--color-border)', fontSize: 13,
+                background: 'var(--color-surface-section)', color: 'var(--color-text-primary)', outline: 'none',
+                boxSizing: 'border-box',
+              }}
+            />
           </div>
-        </div>
-      </div>
-
-      {/* ── Sections grid ────────────────────────────────────────────────── */}
-      <h3 style={{ fontSize: 14, fontWeight: 600, color: 'var(--color-text-primary)', margin: '0 0 12px' }}>
-        Prototype Sections
-      </h3>
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 12 }}>
-        {SECTIONS.map(({ label, href, Icon, count, desc }) => (
-          <Link
-            key={href}
-            href={href}
+          <button
+            onClick={() => setFilterOpen(o => !o)}
             style={{
-              display: 'flex', alignItems: 'flex-start', gap: 14, padding: '16px 18px',
+              display: 'inline-flex', alignItems: 'center', gap: 6,
+              padding: '7px 12px', borderRadius: 8, cursor: 'pointer',
+              border: `1px solid ${filterOpen ? 'var(--color-primary)' : 'var(--color-border)'}`,
+              background: filterOpen ? 'var(--color-info-100)' : 'var(--color-surface-section)',
+              color: filterOpen ? 'var(--color-primary)' : 'var(--color-text-primary)',
+              fontSize: 13, fontWeight: 500,
+            }}
+          >
+            <FunnelIcon size={14} weight={filterOpen ? 'fill' : 'regular'} />
+            Filters
+          </button>
+        </div>
+
+        {/* Filter panel + table */}
+        <div style={{ display: 'flex', gap: 16, alignItems: 'flex-start' }}>
+
+          {/* Filter panel */}
+          {filterOpen && (
+            <div style={{
+              width: 250, flexShrink: 0,
               background: 'var(--color-surface-section)',
               border: '1px solid var(--color-border)',
-              borderRadius: 10, textDecoration: 'none',
-              transition: 'border-color 100ms ease, box-shadow 100ms ease',
-            }}
-            onMouseEnter={e => {
-              const el = e.currentTarget as HTMLElement
-              el.style.borderColor = 'var(--color-primary)'
-              el.style.boxShadow   = '0 0 0 3px var(--color-info-100)'
-            }}
-            onMouseLeave={e => {
-              const el = e.currentTarget as HTMLElement
-              el.style.borderColor = 'var(--color-border)'
-              el.style.boxShadow   = 'none'
-            }}
-          >
-            <div style={{
-              width: 36, height: 36, borderRadius: 8,
-              background: 'var(--color-info-100)',
-              display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
+              borderRadius: 8, padding: 16,
             }}>
-              <Icon size={18} color="var(--color-primary)" weight="duotone" />
-            </div>
-            <div>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginBottom: 2 }}>
-                <span style={{ fontSize: 14, fontWeight: 600, color: 'var(--color-text-primary)' }}>
-                  {label}
-                </span>
-                {count !== null && (
-                  <span style={{
-                    fontSize: 11, fontWeight: 600, padding: '1px 5px', borderRadius: 3,
-                    background: 'var(--color-surface-display)', color: 'var(--color-text-secondary)',
-                  }}>
-                    {count}
-                  </span>
-                )}
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 14 }}>
+                <span style={{ fontSize: 13, fontWeight: 600, color: 'var(--color-text-primary)' }}>Filters</span>
+                <button onClick={() => setFilterOpen(false)} style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 2, display: 'flex' }}>
+                  <XIcon size={16} color="var(--color-text-secondary)" />
+                </button>
               </div>
-              <p style={{ margin: 0, fontSize: 12, color: 'var(--color-text-secondary)', lineHeight: '18px' }}>
-                {desc}
-              </p>
+
+              {[
+                {
+                  label: 'Campaign Group', value: filterGroup,
+                  onChange: (v: string) => setFilterGroup(v),
+                  options: [{ value: '', label: 'All Groups' }, ...CAMPAIGN_GROUPS.map(g => ({ value: g.id, label: g.name }))],
+                },
+                {
+                  label: 'Type', value: filterType,
+                  onChange: (v: string) => setFilterType(v as CampaignType | ''),
+                  options: [
+                    { value: '', label: 'All Types' },
+                    ...Object.entries(TYPE_CHIP).map(([k, v]) => ({ value: k, label: v.label })),
+                  ],
+                },
+                {
+                  label: 'Status', value: filterStatus,
+                  onChange: (v: string) => setFilterStatus(v as CampaignStatus | ''),
+                  options: [
+                    { value: '', label: 'All Statuses' },
+                    { value: 'running',     label: 'Running'     },
+                    { value: 'paused',      label: 'Paused'      },
+                    { value: 'scheduled',   label: 'Scheduled'   },
+                    { value: 'initialized', label: 'Initialized' },
+                    { value: 'failed',      label: 'Failed'      },
+                    { value: 'completed',   label: 'Completed'   },
+                  ],
+                },
+                {
+                  label: 'Date Range', value: '',
+                  onChange: () => {},
+                  options: [{ value: '', label: 'All time' }, { value: '7d', label: 'Last 7 days' }, { value: '30d', label: 'Last 30 days' }],
+                },
+              ].map(({ label, value, onChange, options }) => (
+                <div key={label} style={{ marginBottom: 12 }}>
+                  <label style={{ display: 'block', fontSize: 11, fontWeight: 600, color: 'var(--color-text-secondary)', marginBottom: 4, textTransform: 'uppercase', letterSpacing: '0.4px' }}>
+                    {label}
+                  </label>
+                  <select value={value} onChange={e => onChange(e.target.value)} style={SELECT_STYLE}>
+                    {options.map(o => <option key={o.value} value={o.value}>{o.label}</option>)}
+                  </select>
+                </div>
+              ))}
             </div>
-          </Link>
-        ))}
+          )}
+
+          {/* Table */}
+          <div style={{ flex: 1, minWidth: 0 }}>
+            <Table size="compact">
+              <TableHeader>
+                <TableRow>
+                  <TableHead>Campaign Name</TableHead>
+                  <TableHead>Campaign Group</TableHead>
+                  <TableHead>Type</TableHead>
+                  <TableHead align="right">Contacts</TableHead>
+                  <TableHead align="right">Delivery Rate</TableHead>
+                  <TableHead>Status</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {rows.map((c, i) => {
+                  const typeCfg   = c.type ? TYPE_CHIP[c.type] : null
+                  const statusCfg = STATUS_CHIP[c.status] ?? { label: c.status, bg: '#eff1f3', color: '#4b535e' }
+                  return (
+                    <TableRow key={c.id} striped={i % 2 === 1}>
+                      <TableCell variant="link">
+                        <Link href={`/sandbox/campaigns-email/campaigns/${c.id}`} style={{ color: 'inherit', textDecoration: 'none' }}>
+                          {c.name}
+                        </Link>
+                      </TableCell>
+                      <TableCell variant="secondary">{GROUP_MAP[c.groupId] ?? c.groupId}</TableCell>
+                      <TableCell>
+                        {typeCfg
+                          ? <Badge label={typeCfg.label} bg={typeCfg.bg} color={typeCfg.color} />
+                          : <span style={{ color: 'var(--color-text-secondary)', fontSize: 12 }}>—</span>
+                        }
+                      </TableCell>
+                      <TableCell align="right">
+                        {c.contacts != null ? c.contacts.toLocaleString() : '—'}
+                      </TableCell>
+                      <TableCell align="right">
+                        {c.deliveryRate ? `${c.deliveryRate.toFixed(1)}%` : '—'}
+                      </TableCell>
+                      <TableCell>
+                        <Badge label={statusCfg.label} bg={statusCfg.bg} color={statusCfg.color} />
+                      </TableCell>
+                    </TableRow>
+                  )
+                })}
+              </TableBody>
+            </Table>
+
+            {visible < filtered.length && (
+              <div style={{ textAlign: 'center', marginTop: 16 }}>
+                <button
+                  onClick={() => setVisible(v => v + 10)}
+                  style={{
+                    padding: '8px 24px', borderRadius: 8, fontSize: 13, fontWeight: 500, cursor: 'pointer',
+                    border: '1px solid var(--color-border)', background: 'var(--color-surface-section)',
+                    color: 'var(--color-text-primary)',
+                  }}
+                >
+                  Load More ({filtered.length - visible} remaining)
+                </button>
+              </div>
+            )}
+
+            {rows.length === 0 && (
+              <div style={{ textAlign: 'center', padding: '40px 0', color: 'var(--color-text-secondary)', fontSize: 13 }}>
+                No campaigns match your filters.
+              </div>
+            )}
+          </div>
+        </div>
       </div>
 
     </div>

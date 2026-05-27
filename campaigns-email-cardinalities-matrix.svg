@@ -1,0 +1,140 @@
+<svg viewBox="0 0 1100 760" xmlns="http://www.w3.org/2000/svg" role="img" font-family="ui-sans-serif, -apple-system, system-ui, sans-serif">
+  <title>Email Campaigns — Entity Cardinalities</title>
+  <desc>Entity relationship diagram. Account contains Campaign Groups one-to-many. Each Campaign Group contains Sender Identities, Email Templates, Topics, and Contact Lists, each one-to-many. Topics contain Email Campaigns one-to-many. Topic to Contact List is many-to-many. Template to Topic is zero-to-one with an open product question. Each Email Campaign references one Sender, one Template, and many Lists.</desc>
+
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#64748b" />
+    </marker>
+    <marker id="arrow-dash" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#94a3b8" />
+    </marker>
+  </defs>
+
+  <style>
+    .box-primary { fill: #ffffff; stroke: #2563eb; stroke-width: 1.75; }
+    .box-asset { fill: #ffffff; stroke: #94a3b8; stroke-width: 1.5; }
+    .box-accent { fill: #ffffff; stroke: #0891b2; stroke-width: 1.5; }
+    .label { fill: #0f172a; font-size: 13px; font-weight: 600; text-anchor: middle; }
+    .sublabel { fill: #64748b; font-size: 10px; text-anchor: middle; }
+    .line { stroke: #64748b; stroke-width: 1.5; fill: none; }
+    .line-dash { stroke: #94a3b8; stroke-width: 1.25; fill: none; stroke-dasharray: 4 3; }
+    .card { font-size: 10.5px; font-weight: 700; fill: #0f172a; text-anchor: middle; }
+    .card-bg { fill: #ffffff; stroke: #cbd5e1; stroke-width: 1; }
+    .title { font-size: 17px; font-weight: 700; fill: #0f172a; text-anchor: middle; }
+    .legend { font-size: 11px; fill: #64748b; }
+    .legend-h { font-size: 11px; fill: #0f172a; font-weight: 700; }
+    .open-q { fill: #d97706; }
+  </style>
+
+  <text class="title" x="550" y="32">Email Campaigns — Entity Cardinalities</text>
+
+  <rect class="box-primary" x="450" y="58" width="200" height="56" rx="8" />
+  <text class="label" x="550" y="82">Account</text>
+  <text class="sublabel" x="550" y="98">SSA — RSC · SSA — FOC</text>
+
+  <line class="line" x1="550" y1="114" x2="550" y2="178" marker-end="url(#arrow)" />
+  <rect class="card-bg" x="538" y="136" width="24" height="16" rx="3" />
+  <text class="card" x="550" y="147">1:N</text>
+
+  <rect class="box-primary" x="425" y="178" width="250" height="56" rx="8" />
+  <text class="label" x="550" y="202">Campaign Group</text>
+  <text class="sublabel" x="550" y="218">accountId + componentId</text>
+
+  <path class="line" d="M 470 234 Q 470 280 180 318" marker-end="url(#arrow)" />
+  <rect class="card-bg" x="282" y="274" width="24" height="16" rx="3" />
+  <text class="card" x="294" y="285">1:N</text>
+
+  <path class="line" d="M 515 234 Q 515 280 427 318" marker-end="url(#arrow)" />
+  <rect class="card-bg" x="442" y="268" width="24" height="16" rx="3" />
+  <text class="card" x="454" y="279">1:N</text>
+
+  <path class="line" d="M 585 234 Q 585 280 674 318" marker-end="url(#arrow)" />
+  <rect class="card-bg" x="630" y="268" width="24" height="16" rx="3" />
+  <text class="card" x="642" y="279">1:N</text>
+
+  <path class="line" d="M 630 234 Q 630 280 921 318" marker-end="url(#arrow)" />
+  <rect class="card-bg" x="800" y="274" width="24" height="16" rx="3" />
+  <text class="card" x="812" y="285">1:N</text>
+
+  <rect class="box-asset" x="100" y="318" width="160" height="56" rx="8" />
+  <text class="label" x="180" y="342">Sender Identity</text>
+  <text class="sublabel" x="180" y="358">("Channel")</text>
+
+  <rect class="box-asset" x="347" y="318" width="160" height="56" rx="8" />
+  <text class="label" x="427" y="342">Email Template</text>
+  <text class="sublabel" x="427" y="358">+ versions</text>
+
+  <rect class="box-accent" x="594" y="318" width="160" height="56" rx="8" />
+  <text class="label" x="674" y="342">Topic</text>
+  <text class="sublabel" x="674" y="358">email channel</text>
+
+  <rect class="box-asset" x="841" y="318" width="160" height="56" rx="8" />
+  <text class="label" x="921" y="342">Contact List</text>
+  <text class="sublabel" x="921" y="358">channel-typed</text>
+
+  <line class="line-dash" x1="754" y1="346" x2="841" y2="346" />
+  <rect class="card-bg" x="784" y="338" width="28" height="16" rx="3" />
+  <text class="card" x="798" y="349">N:N</text>
+
+  <line class="line-dash" x1="507" y1="346" x2="594" y2="346" />
+  <rect class="card-bg" x="532" y="338" width="38" height="16" rx="3" />
+  <text class="card open-q" x="551" y="349">0..1?</text>
+
+  <line class="line" x1="674" y1="374" x2="674" y2="446" marker-end="url(#arrow)" />
+  <rect class="card-bg" x="662" y="400" width="24" height="16" rx="3" />
+  <text class="card" x="674" y="411">1:N</text>
+
+  <rect class="box-accent" x="554" y="446" width="240" height="62" rx="8" />
+  <text class="label" x="674" y="470">Email Campaign</text>
+  <text class="sublabel" x="674" y="486">topicId required</text>
+  <text class="sublabel" x="674" y="500">SMS / Voice → groupId, topicId = null</text>
+
+  <path class="line-dash" d="M 554 472 Q 400 472 220 374" marker-end="url(#arrow-dash)" />
+  <rect class="card-bg" x="328" y="416" width="26" height="16" rx="3" />
+  <text class="card" x="341" y="427">N:1</text>
+
+  <path class="line-dash" d="M 580 446 Q 500 410 440 374" marker-end="url(#arrow-dash)" />
+  <rect class="card-bg" x="487" y="397" width="26" height="16" rx="3" />
+  <text class="card" x="500" y="408">N:1</text>
+
+  <path class="line-dash" d="M 794 472 Q 870 472 921 374" marker-end="url(#arrow-dash)" />
+  <rect class="card-bg" x="850" y="416" width="28" height="16" rx="3" />
+  <text class="card" x="864" y="427">M:N</text>
+
+  <g transform="translate(70, 560)">
+    <text class="legend-h" x="0" y="0">Legend</text>
+
+    <line class="line" x1="0" y1="22" x2="42" y2="22" marker-end="url(#arrow)" />
+    <text class="legend" x="52" y="26">Containment — parent owns child</text>
+
+    <line class="line-dash" x1="0" y1="46" x2="42" y2="46" marker-end="url(#arrow-dash)" />
+    <text class="legend" x="52" y="50">Reference — entity points to another</text>
+
+    <rect class="card-bg" x="380" y="14" width="26" height="16" rx="3" />
+    <text class="card" x="393" y="25">1:N</text>
+    <text class="legend" x="416" y="26">One parent → many children</text>
+
+    <rect class="card-bg" x="380" y="38" width="26" height="16" rx="3" />
+    <text class="card" x="393" y="49">N:N</text>
+    <text class="legend" x="416" y="50">Many-to-many via array</text>
+
+    <rect class="card-bg" x="380" y="62" width="38" height="16" rx="3" />
+    <text class="card open-q" x="399" y="73">0..1?</text>
+    <text class="legend" x="428" y="74">Open product question</text>
+
+    <rect class="card-bg" x="690" y="14" width="26" height="16" rx="3" />
+    <text class="card" x="703" y="25">N:1</text>
+    <text class="legend" x="726" y="26">Many children → one parent</text>
+
+    <rect class="card-bg" x="690" y="38" width="26" height="16" rx="3" />
+    <text class="card" x="703" y="49">M:N</text>
+    <text class="legend" x="726" y="50">Both sides hold arrays</text>
+  </g>
+
+  <g transform="translate(70, 680)">
+    <text class="legend-h" x="0" y="0">Notes</text>
+    <text class="legend" x="0" y="20">• Component is metadata on Campaign Group, not a navigation level (the UI shows Account → Group → Topic only).</text>
+    <text class="legend" x="0" y="38">• Template ↔ Topic open question: schema allows N:N via defaultTemplateId; seed data treats it as 1:1. Product decision pending.</text>
+  </g>
+</svg>

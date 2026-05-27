@@ -1,6 +1,28 @@
 export type ListChannel = 'email' | 'phone' | 'both'
 export type ListStatus  = 'active' | 'updating' | 'archived'
 
+export interface Contact {
+  id:        string
+  email:     string
+  firstName: string
+  lastName:  string
+}
+
+export const MOCK_CONTACTS: Contact[] = [
+  { id: 'c1',  email: 'james.smith@example.gov',    firstName: 'James',    lastName: 'Smith'    },
+  { id: 'c2',  email: 'mary.johnson@example.gov',   firstName: 'Mary',     lastName: 'Johnson'  },
+  { id: 'c3',  email: 'robert.williams@example.gov',firstName: 'Robert',   lastName: 'Williams' },
+  { id: 'c4',  email: 'patricia.brown@example.gov', firstName: 'Patricia', lastName: 'Brown'    },
+  { id: 'c5',  email: 'john.jones@example.gov',     firstName: 'John',     lastName: 'Jones'    },
+  { id: 'c6',  email: 'jennifer.garcia@example.gov',firstName: 'Jennifer', lastName: 'Garcia'   },
+  { id: 'c7',  email: 'michael.miller@example.gov', firstName: 'Michael',  lastName: 'Miller'   },
+  { id: 'c8',  email: 'linda.davis@example.gov',    firstName: 'Linda',    lastName: 'Davis'    },
+  { id: 'c9',  email: 'david.wilson@example.gov',   firstName: 'David',    lastName: 'Wilson'   },
+  { id: 'c10', email: 'barbara.moore@example.gov',  firstName: 'Barbara',  lastName: 'Moore'    },
+  { id: 'c11', email: 'richard.taylor@example.gov', firstName: 'Richard',  lastName: 'Taylor'   },
+  { id: 'c12', email: 'susan.anderson@example.gov', firstName: 'Susan',    lastName: 'Anderson' },
+]
+
 export interface ContactList {
   id:             string
   name:           string

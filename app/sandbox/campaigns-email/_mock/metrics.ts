@@ -76,6 +76,16 @@ export const METRICS_BY_CAMPAIGN: Record<string, CampaignMetrics> = Object.fromE
   METRICS.map(m => [m.campaignId, m])
 )
 
+// ── Dashboard KPI tiles (Last 7 days) ────────────────────────────────────────
+
+export const DASHBOARD_METRICS = {
+  activeCampaigns:    { value: 24,      delta: 0.052 },  // +5.2%
+  messagesSent:       { value: 156_742, delta: 0.023 },  // +2.3%
+  deliveryRate:       { value: 0.877,   delta: 0.016 },  // +1.6pp (percent format)
+  surveyResponses:    { value: 3_421,   delta: 0.052 },  // +5.2%
+  voicemailResponses: { value: 0.141,   delta: 0.027 },  // +2.7pp (percent format)
+}
+
 // Aggregate summary across all fully-sent campaigns
 export const AGGREGATE_METRICS = {
   totalCampaigns:    8,
