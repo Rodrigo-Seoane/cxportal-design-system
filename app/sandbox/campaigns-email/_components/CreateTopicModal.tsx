@@ -122,6 +122,7 @@ export function CreateTopicModal({
       subscriberCount:   0,
       defaultTemplateId: draft.templateId || null,
       defaultSenderId:   draft.senderId   || null,
+      defaultListId:     draft.listIds[0] ?? null,
       listIds:           draft.listIds,
       openRate:          0,
       lastSentAt:        null,
