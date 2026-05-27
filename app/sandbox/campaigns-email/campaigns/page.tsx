@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
-import { EnvelopeIcon } from '@phosphor-icons/react'
+import { EnvelopeIcon, PlusIcon } from '@phosphor-icons/react'
 import { Skeleton } from '@/components/ui/loading'
 import { MessageBox } from '@/components/ui/message-box'
 import { CAMPAIGNS } from '../_mock/campaigns'
@@ -57,13 +57,16 @@ export default function CampaignsListPage() {
             {CAMPAIGNS.length}
           </span>
         </div>
-        <span style={{ fontSize: 13, color: 'var(--color-text-secondary)', lineHeight: '20px' }}>
-          Campaigns are created from a Topic.{' '}
-          <Link href="/sandbox/campaigns-email/topics"
-            style={{ color: 'var(--color-primary)', fontWeight: 600, textDecoration: 'none' }}>
-            Open Topics →
-          </Link>
-        </span>
+        <Link href="/sandbox/campaigns-email/campaigns/new">
+          <button style={{
+            display: 'inline-flex', alignItems: 'center', gap: 6,
+            fontSize: 13, fontWeight: 600, padding: '8px 16px', borderRadius: 8,
+            background: 'var(--color-primary)', border: 'none',
+            color: '#fff', cursor: 'pointer',
+          }}>
+            <PlusIcon size={14} weight="bold" /> New campaign
+          </button>
+        </Link>
       </div>
 
       {/* ── Dev state switcher ───────────────────────────────────── */}
@@ -127,15 +130,16 @@ export default function CampaignsListPage() {
             No campaigns yet
           </p>
           <p style={{ margin: '0 0 20px', fontSize: 13, color: 'var(--color-text-secondary)', lineHeight: '20px' }}>
-            Campaigns are created from a Topic. Open Topics to get started.
+            Create your first campaign to start sending emails to your audience.
           </p>
-          <Link href="/sandbox/campaigns-email/topics"
-            style={{
+          <Link href="/sandbox/campaigns-email/campaigns/new">
+            <button style={{
               display: 'inline-flex', alignItems: 'center', gap: 6,
               fontSize: 13, fontWeight: 600, padding: '8px 16px', borderRadius: 8,
-              background: 'var(--color-primary)', textDecoration: 'none', color: '#fff',
+              background: 'var(--color-primary)', border: 'none', color: '#fff', cursor: 'pointer',
             }}>
-            Browse Topics
+              <PlusIcon size={14} weight="bold" /> Create your first campaign
+            </button>
           </Link>
         </div>
       )}
@@ -147,7 +151,7 @@ export default function CampaignsListPage() {
           <table style={{ width: '100%', borderCollapse: 'collapse' }}>
             <thead>
               <tr style={{ background: 'var(--color-surface-display)' }}>
-                {['Name', 'Status', 'Topic', 'Component', 'Audience', 'Recipients', 'Date'].map(h => (
+                {['Name', 'Status', 'Component', 'Audience', 'Recipients', 'Date'].map(h => (
                   <th key={h} style={{ padding: '10px 16px', fontSize: 11, fontWeight: 600,
                     color: 'var(--color-text-secondary)', textAlign: 'left',
                     borderBottom: '1px solid var(--color-border)',
@@ -190,21 +194,12 @@ export default function CampaignsListPage() {
                         {st.label}
                       </span>
                     </td>
-                    <td style={{ padding: '11px 16px', fontSize: 12, color: 'var(--color-text-secondary)',
-                      maxWidth: 160, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                      {topic
-                        ? <Link href={`/sandbox/campaigns-email/topics/${topic.id}`}
-                            style={{ color: 'var(--color-primary)', textDecoration: 'none', fontWeight: 500, fontSize: 12 }}>
-                            {topic.name}
-                          </Link>
-                        : <span>—</span>
-                      }
-                    </td>
                     <td style={{ padding: '11px 16px', fontSize: 12, color: 'var(--color-text-secondary)' }}>
                       {component?.shortCode ?? c.componentId}
                     </td>
-                    <td style={{ padding: '11px 16px', fontSize: 12, color: 'var(--color-text-secondary)' }}>
-                      {c.listIds.length > 0 ? `${c.listIds.length} list${c.listIds.length > 1 ? 's' : ''}` : '—'}
+                    <td style={{ padding: '11px 16px', fontSize: 12, color: 'var(--color-text-secondary)',
+                      maxWidth: 180, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                      {topic?.name ?? (c.listIds.length > 0 ? `${c.listIds.length} segment${c.listIds.length > 1 ? 's' : ''}` : '—')}
                     </td>
                     <td style={{ padding: '11px 16px', fontSize: 12, color: 'var(--color-text-secondary)' }}>
                       {fmtCount(c.recipientCount)}

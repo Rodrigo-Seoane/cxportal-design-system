@@ -14,6 +14,7 @@ import { TEMPLATES } from '../../_mock/templates'
 import { TOPICS }    from '../../_mock/topics'
 import { LISTS }     from '../../_mock/lists'
 import { CAMPAIGN_GROUPS, COMPONENTS } from '../../_mock/groups'
+import { ACCOUNTS }                   from '../../_mock/accounts'
 import { METRICS_BY_CAMPAIGN } from '../../_mock/metrics'
 import type { CampaignMetrics } from '../../_mock/metrics'
 import { UNSUBSCRIBES, isInGracePeriod, graceDaysRemaining } from '../../_mock/unsubscribes'
@@ -100,6 +101,7 @@ export default function CampaignDetailPage() {
     </div>
   )
 
+  const account   = ACCOUNTS.find(a => a.campaignGroupIds.includes(campaign.groupId))
   const sender    = SENDERS.find(s => s.id === campaign.senderId)
   const template  = TEMPLATES.find(t => t.id === campaign.templateId)
   const topic     = campaign.topicId ? TOPICS.find(t => t.id === campaign.topicId) : null
@@ -180,7 +182,7 @@ export default function CampaignDetailPage() {
         </DetailRow>
         <DetailRow label="Sender">
           {sender
-            ? <Link href="/sandbox/campaigns-email/senders"
+            ? <Link href="/sandbox/campaigns-email/channels"
                 style={{ color: 'var(--color-primary)', textDecoration: 'none' }}>
                 {sender.displayName} &lt;{sender.email}&gt;
               </Link>
@@ -188,7 +190,7 @@ export default function CampaignDetailPage() {
         </DetailRow>
         <DetailRow label="Audience">
           {topic
-            ? <Link href={`/sandbox/campaigns-email/topics/${topic.id}`}
+            ? <Link href={`/sandbox/campaigns-email/account-management?account=${account?.id ?? ''}&group=${campaign.groupId}&topic=${topic.id}`}
                 style={{ color: 'var(--color-primary)', textDecoration: 'none' }}>
                 {topic.name}
               </Link>
@@ -257,9 +259,7 @@ export default function CampaignDetailPage() {
             <MetricTile title="Open Rate"    value={metrics.openRate}     format="percent" sparkline={metrics.opensByHour} />
             <MetricTile title="Click Rate"   value={metrics.clickRate}    format="percent" />
             <MetricTile title="Bounce Rate"  value={metrics.bounceRate}   format="percent" />
-            <Link href="/sandbox/campaigns-email/unsubscribes" style={{ textDecoration: 'none' }}>
-              <MetricTile title="Unsubscribes" value={metrics.unsubscribes} format="number" />
-            </Link>
+            <MetricTile title="Unsubscribes" value={metrics.unsubscribes} format="number" />
           </div>
 
           {/* Opens-over-time area chart */}
@@ -287,10 +287,9 @@ export default function CampaignDetailPage() {
                 <span style={{ fontSize: 13, fontWeight: 600, color: 'var(--color-text-primary)' }}>
                   Recent Unsubscribes{scope === 'topic' && topic ? ` · ${topic.name}` : ''}
                 </span>
-                <Link href="/sandbox/campaigns-email/unsubscribes"
-                  style={{ fontSize: 12, color: 'var(--color-primary)', textDecoration: 'none' }}>
-                  View all →
-                </Link>
+                <span style={{ fontSize: 12, color: 'var(--color-text-secondary)' }}>
+                  Last 25 shown
+                </span>
               </div>
               <table style={{ width: '100%', borderCollapse: 'collapse' }}>
                 <thead>

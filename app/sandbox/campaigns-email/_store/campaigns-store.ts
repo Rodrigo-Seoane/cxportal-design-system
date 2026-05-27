@@ -1,3 +1,4 @@
+// LOAD-BEARING — refactors require explicit approval
 import type { Campaign } from '../_mock/campaigns'
 
 const store: Campaign[] = []

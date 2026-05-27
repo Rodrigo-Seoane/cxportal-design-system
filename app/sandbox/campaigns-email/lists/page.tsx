@@ -2,72 +2,103 @@
 
 import { useState, useMemo, useEffect } from 'react'
 import Link from 'next/link'
-import { useRouter } from 'next/navigation'
-import { PlusIcon, MagnifyingGlassIcon } from '@phosphor-icons/react'
+import { PlusIcon, ArrowsClockwiseIcon, MagnifyingGlassIcon } from '@phosphor-icons/react'
 import { Button } from '@/components/ui/button'
 import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from '@/components/ui/table'
+import { Toaster, toast } from '@/components/ui/toast'
 import { Skeleton } from '@/components/ui/loading'
 import { MessageBox } from '@/components/ui/message-box'
-import { TEMPLATES } from '../_mock/templates'
-import type { TemplateStatus } from '../_mock/templates'
-import { TOPICS } from '../_mock/topics'
-import { ACCOUNTS } from '../_mock/accounts'
+import { LISTS } from '../_mock/lists'
+import type { ContactList, ListChannel, ListStatus } from '../_mock/lists'
 import { CAMPAIGN_GROUPS } from '../_mock/groups'
+import { UploadModal } from './_components/UploadModal'
+import { useRole, canEdit } from '../_context/RoleContext'
 
-// ── Helpers ───────────────────────────────────────────────────────────────────
+const GROUP_MAP = Object.fromEntries(CAMPAIGN_GROUPS.map(g => [g.id, g.name]))
 
-function fmtDate(iso: string): string {
-  return new Date(iso).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
+function fmtCount(n: number): string {
+  if (n >= 1_000_000) return `${(n / 1_000_000).toFixed(1)}M`
+  if (n >= 1_000)     return `${(n / 1_000).toFixed(0)}K`
+  return n.toString()
 }
 
-const GROUP_ACCOUNT_MAP = Object.fromEntries(
-  ACCOUNTS.flatMap(a => a.campaignGroupIds.map(gid => [gid, a.name]))
-)
+const STATUS_CONFIG: Record<ListStatus, { label: string; bg: string; color: string }> = {
+  active:   { label: 'Active',   bg: 'var(--color-success-100)',     color: '#1a6b1a'                       },
+  updating: { label: 'Updating', bg: 'var(--color-warning-100)',     color: '#7a4a00'                       },
+  archived: { label: 'Archived', bg: 'var(--color-surface-display)', color: 'var(--color-text-secondary)'   },
+}
 
-const TOPIC_MAP = Object.fromEntries(TOPICS.map(t => [t.id, t.name]))
+const TYPE_CONFIG: Record<ListChannel, { label: string; bg: string; color: string }> = {
+  email: { label: 'Email',        bg: '#d6e2f5', color: '#2859ab' },
+  phone: { label: 'Phone',        bg: '#ddf4d2', color: '#4b9924' },
+  both:  { label: 'Email + Phone',bg: '#fbeed8', color: '#c79033' },
+}
 
-const STATUS_CONFIG: Record<TemplateStatus, { label: string; bg: string; color: string }> = {
-  published: { label: 'Published', bg: 'var(--color-success-100)',     color: '#1a6b1a'                     },
-  draft:     { label: 'Draft',     bg: 'var(--color-surface-display)', color: 'var(--color-text-secondary)' },
-  archived:  { label: 'Archived',  bg: 'var(--color-surface-display)', color: 'var(--color-text-secondary)' },
+function StatusChip({ status }: { status: ListStatus }) {
+  const { label, bg, color } = STATUS_CONFIG[status]
+  return (
+    <span style={{ fontSize: 11, fontWeight: 600, padding: '2px 7px', borderRadius: 4, background: bg, color }}>
+      {label}
+    </span>
+  )
+}
+
+function TypeChip({ channel }: { channel: ListChannel }) {
+  const { label, bg, color } = TYPE_CONFIG[channel]
+  return (
+    <span style={{ fontSize: 11, fontWeight: 600, padding: '2px 7px', borderRadius: 4, background: bg, color }}>
+      {label}
+    </span>
+  )
 }
 
 type PageState = 'data' | 'loading' | 'empty' | 'error'
 
 // ── Page ──────────────────────────────────────────────────────────────────────
 
-export default function TemplatesPage() {
-  const router                      = useRouter()
-  const [search,    setSearch]      = useState('')
-  const [visible,   setVisible]     = useState(10)
-  const [pageState, setPageState]   = useState<PageState>('data')
+export default function ListsPage() {
+  const { role }                          = useRole()
+  const [lists, setLists]                 = useState<ContactList[]>(LISTS)
+  const [search, setSearch]               = useState('')
+  const [visible, setVisible]             = useState(10)
+  const [modalOpen, setModalOpen]         = useState(false)
+  const [editList, setEditList]           = useState<ContactList | null>(null)
+  const [pageState, setPageState]         = useState<PageState>('data')
 
   const filtered = useMemo(() => {
-    if (!search) return TEMPLATES
+    if (!search) return lists
     const q = search.toLowerCase()
-    return TEMPLATES.filter(t => t.name.toLowerCase().includes(q))
-  }, [search])
+    return lists.filter(l => l.name.toLowerCase().includes(q))
+  }, [lists, search])
 
   useEffect(() => { setVisible(10) }, [search])
 
   const rows = filtered.slice(0, visible)
+
+  function handleAdd(newList: ContactList) {
+    setLists(prev => [newList, ...prev])
+    toast.success('List imported successfully')
+  }
+
+  function openNew() { setEditList(null); setModalOpen(true) }
+  function openEdit(list: ContactList) { setEditList(list); setModalOpen(true) }
 
   return (
     <div style={{ padding: '28px 36px', maxWidth: 960 }}>
 
       {/* ── Page header ──────────────────────────────────────────────── */}
       <h1 style={{ margin: '0 0 4px', fontSize: 22, fontWeight: 700, color: 'var(--color-text-primary)', lineHeight: '32px' }}>
-        Email Templates
+        Recipient Lists
       </h1>
       <p style={{ margin: '0 0 20px', fontSize: 13, color: 'var(--color-text-secondary)', lineHeight: '20px' }}>
-        Reusable email templates scoped to a campaign group. Each template supports versioning and
-        Connect-style variable placeholders.
+        Segmented recipient groups used in campaign sends. Each list contains contact records with
+        email addresses, phone numbers, or both.
       </p>
 
       {/* ── Toolbar ──────────────────────────────────────────────────── */}
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 12 }}>
         <span style={{ fontSize: 14, fontWeight: 600, color: 'var(--color-text-primary)' }}>
-          Templates ({TEMPLATES.length})
+          Lists ({lists.length})
         </span>
         <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
           <div style={{ position: 'relative' }}>
@@ -76,7 +107,7 @@ export default function TemplatesPage() {
             <input
               value={search}
               onChange={e => setSearch(e.target.value)}
-              placeholder="Search templates…"
+              placeholder="Search lists…"
               style={{
                 padding: '7px 10px 7px 30px', borderRadius: 8, width: 220, boxSizing: 'border-box',
                 border: '1px solid var(--color-border)', fontSize: 13, outline: 'none',
@@ -84,9 +115,11 @@ export default function TemplatesPage() {
               }}
             />
           </div>
-          <Button variant="primary" size="sm" onClick={() => router.push('/sandbox/campaigns-email/templates/new')}>
-            <PlusIcon size={14} /> Add New Template
-          </Button>
+          {canEdit(role) && (
+            <Button variant="primary" size="sm" onClick={openNew}>
+              <PlusIcon size={14} /> New List
+            </Button>
+          )}
         </div>
       </div>
 
@@ -112,8 +145,8 @@ export default function TemplatesPage() {
       {/* ── Error banner ─────────────────────────────────────────────── */}
       {pageState === 'error' && (
         <div role="alert" style={{ marginBottom: 16 }}>
-          <MessageBox type="error" size="block" title="Failed to load templates"
-            message="There was a problem fetching your templates. Please refresh the page." />
+          <MessageBox type="error" size="block" title="Failed to load lists"
+            message="There was a problem fetching your lists. Please refresh the page." />
         </div>
       )}
 
@@ -125,10 +158,10 @@ export default function TemplatesPage() {
               borderBottom: '1px solid var(--color-border)', background: 'var(--color-surface-section)' }}>
               <Skeleton width={180} height={14} />
               <Skeleton width={120} height={14} />
-              <Skeleton width={100} height={14} />
-              <Skeleton width={40}  height={14} />
               <Skeleton width={64}  height={20} radius={4} />
-              <Skeleton width={80}  height={14} />
+              <Skeleton width={60}  height={14} />
+              <Skeleton width={80}  height={20} radius={4} />
+              <Skeleton width={50}  height={14} />
             </div>
           ))}
         </div>
@@ -139,15 +172,16 @@ export default function TemplatesPage() {
         <div style={{ padding: '56px 24px', textAlign: 'center',
           border: '1px dashed var(--color-border)', borderRadius: 10 }}>
           <p style={{ margin: '0 0 4px', fontSize: 15, fontWeight: 600, color: 'var(--color-text-primary)' }}>
-            No email templates
+            No recipient lists
           </p>
           <p style={{ margin: '0 0 20px', fontSize: 13, color: 'var(--color-text-secondary)', lineHeight: '20px' }}>
-            Create reusable templates scoped to a campaign group to speed up your sends.
+            Import your first list to start sending campaigns to your audience.
           </p>
-          <Button variant="primary" size="sm"
-            onClick={() => router.push('/sandbox/campaigns-email/templates/new')}>
-            <PlusIcon size={14} /> Add Your First Template
-          </Button>
+          {canEdit(role) && (
+            <Button variant="primary" size="sm" onClick={openNew}>
+              <PlusIcon size={14} /> Import a List
+            </Button>
+          )}
         </div>
       )}
 
@@ -156,47 +190,57 @@ export default function TemplatesPage() {
       <Table size="compact">
         <TableHeader>
           <TableRow>
-            <TableHead>Template Name</TableHead>
-            <TableHead>Account</TableHead>
-            <TableHead>Topic</TableHead>
-            <TableHead>Version</TableHead>
+            <TableHead>Name</TableHead>
+            <TableHead>Campaign Group</TableHead>
             <TableHead>Status</TableHead>
-            <TableHead>Last Edit</TableHead>
+            <TableHead>Topics</TableHead>
+            <TableHead>Type</TableHead>
+            <TableHead align="right">Records</TableHead>
+            {canEdit(role) && <TableHead style={{ width: 120 }} />}
           </TableRow>
         </TableHeader>
         <TableBody>
-          {rows.map(tmpl => {
-            const accountName = GROUP_ACCOUNT_MAP[tmpl.groupId] ?? '—'
-            const topicName   = tmpl.topicId ? (TOPIC_MAP[tmpl.topicId] ?? '—') : '—'
-            const st          = STATUS_CONFIG[tmpl.status]
-
-            return (
-              <TableRow key={tmpl.id}>
-                <TableCell>
-                  <Link
-                    href={`/sandbox/campaigns-email/templates/${tmpl.id}`}
-                    style={{ color: 'var(--color-primary)', fontWeight: 500, fontSize: 13, textDecoration: 'none' }}
+          {rows.map(list => (
+            <TableRow key={list.id}>
+              <TableCell>
+                <Link
+                  href={`/sandbox/campaigns-email/lists/${list.id}`}
+                  style={{ color: 'var(--color-primary)', fontWeight: 500, fontSize: 13, textDecoration: 'none' }}
+                >
+                  {list.name}
+                </Link>
+              </TableCell>
+              <TableCell variant="secondary">{GROUP_MAP[list.groupId] ?? '—'}</TableCell>
+              <TableCell><StatusChip status={list.status} /></TableCell>
+              <TableCell variant="secondary">
+                {list.topicIds.length === 0
+                  ? <span style={{ color: 'var(--color-text-secondary)', fontSize: 13 }}>—</span>
+                  : `${list.topicIds.length} topic${list.topicIds.length > 1 ? 's' : ''}`
+                }
+              </TableCell>
+              <TableCell><TypeChip channel={list.channel} /></TableCell>
+              <TableCell align="right">
+                <span style={{ fontVariantNumeric: 'tabular-nums', fontSize: 13 }}>
+                  {fmtCount(list.recipientCount)}
+                </span>
+              </TableCell>
+              {canEdit(role) && (
+                <TableCell align="center">
+                  <button
+                    onClick={() => openEdit(list)}
+                    style={{
+                      display: 'inline-flex', alignItems: 'center', gap: 5,
+                      padding: '4px 10px', borderRadius: 6, fontSize: 12, fontWeight: 500, cursor: 'pointer',
+                      border: '1px solid var(--color-border)', background: 'var(--color-surface-section)',
+                      color: 'var(--color-text-primary)',
+                    }}
                   >
-                    {tmpl.name}
-                  </Link>
+                    <ArrowsClockwiseIcon size={12} /> Update List
+                  </button>
                 </TableCell>
-                <TableCell variant="secondary">{accountName}</TableCell>
-                <TableCell variant="secondary">{topicName}</TableCell>
-                <TableCell>
-                  <span style={{ fontVariantNumeric: 'tabular-nums', fontSize: 13 }}>
-                    v{tmpl.latestVersion}
-                  </span>
-                </TableCell>
-                <TableCell>
-                  <span style={{ fontSize: 11, fontWeight: 600, padding: '2px 7px', borderRadius: 4,
-                    background: st.bg, color: st.color }}>
-                    {st.label}
-                  </span>
-                </TableCell>
-                <TableCell variant="secondary">{fmtDate(tmpl.lastEditedAt)}</TableCell>
-              </TableRow>
-            )
-          })}
+              )}
+            </TableRow>
+          ))}
         </TableBody>
       </Table>
 
@@ -217,10 +261,13 @@ export default function TemplatesPage() {
 
       {rows.length === 0 && (
         <div style={{ textAlign: 'center', padding: '40px 0', color: 'var(--color-text-secondary)', fontSize: 13 }}>
-          {search ? 'No templates match your search.' : 'No email templates yet.'}
+          {search ? 'No lists match your search.' : 'No recipient lists yet.'}
         </div>
       )}
       </>)}
+
+      <UploadModal open={modalOpen} editList={editList} onClose={() => setModalOpen(false)} onAdd={handleAdd} />
+      <Toaster position="top-right" />
     </div>
   )
 }

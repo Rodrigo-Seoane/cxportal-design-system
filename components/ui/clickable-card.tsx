@@ -13,6 +13,7 @@ import {
   ChatTextIcon,
   ChatDotsIcon,
   UserSoundIcon,
+  EnvelopeIcon,
 } from '@phosphor-icons/react'
 
 // ── Icon map ──────────────────────────────────────────────────────────────────
@@ -28,6 +29,7 @@ export const CLICKABLE_CARD_ICON_KEYS = [
   'voice-notification',
   'sms-survey',
   'sms-notification',
+  'email-campaign',
 ] as const
 
 export type ClickableCardIconKey = (typeof CLICKABLE_CARD_ICON_KEYS)[number]
@@ -44,6 +46,7 @@ const ICONS: Record<ClickableCardIconKey, React.ComponentType<any>> = {
   'voice-notification': BellSimpleIcon,
   'sms-survey':         ChatTextIcon,
   'sms-notification':   ChatDotsIcon,
+  'email-campaign':     EnvelopeIcon,
 }
 
 // ── Radio dot (internal) ──────────────────────────────────────────────────────
