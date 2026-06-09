@@ -62,7 +62,7 @@ The Button component consists of:
 
 ## Variants
 
-CxPortal uses five button variants, each bound to a specific usage context. Picking the wrong variant is a common source of visual hierarchy issues.
+CxPortal uses six button variants, each bound to a specific usage context. Picking the wrong variant is a common source of visual hierarchy issues.
 
 <Table size="compact" className="mb-6">
   <TableHeader>
@@ -98,18 +98,33 @@ CxPortal uses five button variants, each bound to a specific usage context. Pick
       <TableCell>Small only</TableCell>
       <TableCell>Irreversible actions (delete, remove, revoke). Use exclusively inside Modals/Dialogs. Always pair with a cancel button.</TableCell>
     </TableRow>
+    <TableRow>
+      <TableCell><strong>Colored Background</strong></TableCell>
+      <TableCell>Small only</TableCell>
+      <TableCell>Buttons on non-white surfaces (hero banners, colored cards) where default tokens lack contrast against the background.</TableCell>
+    </TableRow>
   </TableBody>
 </Table>
 
-The **Colored Background** state applies to the four core variants above. **Destructive** is a standalone variant reserved for irreversible actions. They are detailed in the sections below.
+**Colored Background** and **Destructive** are standalone variants for specific usage contexts — colored surfaces and irreversible actions respectively. They are detailed in the sections below.
 
 ### Colored Background state
 
-The Colored Background state is used when a button appears on a primary blue surface — such as inside a blue action bar, a colored page header, or a highlighted section. Each variant adapts its styling to maintain contrast and visual hierarchy against the blue background.
+The `colored-bg` variant is for buttons placed on non-white surfaces — blue action bars, colored page headers, hero banners, or highlighted cards. The default white fill and blue border maintain clear button affordance against colored backgrounds while adapting to the surface context.
 
-All four variant types (Primary, Secondary, Form Controls, Text) have a Colored Background treatment. The implementation is handled by the parent container applying the appropriate surface token context.
+**Color spec:**
 
-**When to use:** Any time a button must be placed directly on a `--color-primary` or `bg-action-primary` surface. Do not use this state for buttons on white or neutral backgrounds.
+| State | Background | Border | Text |
+|---|---|---|---|
+| Default | Neutral/0 `#ffffff` | Primary `#689df6` | On Action/Transparent `#3264b8` |
+| Hover | Surface/Action/Hover `#689df6` | `#689df6` | On Action/Primary `#eff1f3` |
+| Active | Neutral/50 `#f8f8f8` | Border/Secondary `#aab0b8` | On Action/Transparent `#3264b8` |
+| Disabled | Surface/Disabled `#eff1f3` | Border/Disabled `#d9dce0` | Text/Disabled `#aab0b8` |
+
+<DosDonts>
+  <Do description="Use colored-bg buttons on non-white surfaces — blue banners, colored cards, tinted page headers — where default button tokens would blend into the background." />
+  <Dont description="Use colored-bg buttons on white or neutral backgrounds. On white, use the default Primary, Secondary, or Form Controls variants instead." />
+</DosDonts>
 
 ### Destructive state
 
@@ -304,13 +319,12 @@ import { Trash } from 'lucide-react'
 </div>
 ```
 
-### Colored background context
+### Colored background button
 
 ```tsx
-// Wrap in a colored surface — button tokens adapt to the surface
-<div className="bg-[#4285f4] p-4 rounded-lg">
-  <Button variant="primary">Get Started</Button>
-  <Button variant="secondary">Learn More</Button>
+// Always render colored-bg inside a non-white surface
+<div className="bg-[#4285f4] p-6 rounded-lg">
+  <Button variant="colored-bg" size="sm">Get Started</Button>
 </div>
 ```
 

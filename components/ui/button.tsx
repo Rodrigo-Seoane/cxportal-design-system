@@ -68,6 +68,18 @@ const buttonVariants = cva(
           'focus-visible:ring-[#ab0c36]/50',
           'disabled:bg-[#eff1f3] disabled:border-[#d9dce0] disabled:text-[#aab0b8]',
         ].join(' '),
+
+        // ── Colored Background ───────────────────────────────────────────
+        // For use on non-white surfaces (hero banners, colored cards). Small only.
+        // Default: Neutral/0 (#ffffff) bg · Primary border (#689df6) · On Action/Transparent text (#3264b8)
+        // Hover: primary fill (#689df6) bg + light text (#eff1f3) · Active: light grey wash (#f8f8f8)
+        'colored-bg': [
+          'bg-[#ffffff] border-[#689df6] text-[#3264b8]',
+          'hover:bg-[#689df6] hover:border-[#689df6] hover:text-[#eff1f3]',
+          'active:bg-[#f8f8f8] active:border-[#aab0b8] active:text-[#3264b8]',
+          'focus-visible:ring-[#689df6]/50',
+          'disabled:bg-[#eff1f3] disabled:border-[#d9dce0] disabled:text-[#aab0b8]',
+        ].join(' '),
       },
 
       size: {
@@ -123,7 +135,7 @@ const buttonVariants = cva(
   }
 )
 
-export type ButtonVariant = 'primary' | 'secondary' | 'form-controls' | 'text' | 'destructive'
+export type ButtonVariant = 'primary' | 'secondary' | 'form-controls' | 'text' | 'destructive' | 'colored-bg'
 export type ButtonSize = 'regular' | 'sm' | 'xs' | 'icon-regular' | 'icon-sm' | 'icon-xs'
 
 function Button({

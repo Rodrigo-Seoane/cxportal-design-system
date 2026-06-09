@@ -242,6 +242,114 @@ function IconOnlyShowcase() {
   )
 }
 
+// ─── Destructive showcase ────────────────────────────────────────────────────
+
+function DestructiveShowcase() {
+  const cols = ['Default', 'Hover', 'Disabled'] as const
+
+  return (
+    <>
+      <ShowcaseHeader
+        title="Destructive buttons"
+        description="Small size only. Use exclusively inside modals for irreversible actions — always paired with a cancel button."
+      />
+      <div className="rounded-lg border overflow-hidden" style={{ borderColor: 'var(--color-border)' }}>
+        <div
+          className="grid border-b"
+          style={{
+            gridTemplateColumns: '160px repeat(3, 1fr)',
+            borderColor: 'var(--color-border)',
+            backgroundColor: 'var(--color-surface-display)',
+          }}
+        >
+          <div className="px-4 py-3" />
+          {cols.map((col) => (
+            <div
+              key={col}
+              className="px-4 py-3 text-xs font-semibold uppercase tracking-wider"
+              style={{ color: 'var(--color-text-secondary)' }}
+            >
+              {col}
+            </div>
+          ))}
+        </div>
+        <div
+          className="grid items-center"
+          style={{ gridTemplateColumns: '160px repeat(3, 1fr)', backgroundColor: 'var(--color-surface-section)' }}
+        >
+          <div className="px-4 py-5">
+            <p className="text-sm font-medium" style={{ color: 'var(--color-text-primary)' }}>Destructive</p>
+            <p className="text-xs mt-0.5" style={{ color: 'var(--color-text-secondary)' }}>Small · modals only</p>
+          </div>
+          <div className="px-4 py-5">
+            <Button variant="destructive" size="sm">Delete Campaign</Button>
+          </div>
+          <div className="px-4 py-5">
+            <Button variant="destructive" size="sm" className="bg-[#f3547d] border-[#f792ac] text-[#021920]">Delete Campaign</Button>
+          </div>
+          <div className="px-4 py-5">
+            <Button variant="destructive" size="sm" disabled>Delete Campaign</Button>
+          </div>
+        </div>
+      </div>
+    </>
+  )
+}
+
+// ─── Colored Background showcase ─────────────────────────────────────────────
+
+function ColoredBgShowcase() {
+  const cols = ['Default', 'Hover', 'Disabled'] as const
+
+  return (
+    <>
+      <ShowcaseHeader
+        title="Colored background buttons"
+        description="Small size only. Use on non-white surfaces where default button tokens lack contrast."
+      />
+      <div className="rounded-lg border overflow-hidden" style={{ borderColor: 'var(--color-border)' }}>
+        <div
+          className="grid border-b"
+          style={{
+            gridTemplateColumns: '160px repeat(3, 1fr)',
+            borderColor: 'var(--color-border)',
+            backgroundColor: 'var(--color-surface-display)',
+          }}
+        >
+          <div className="px-4 py-3" />
+          {cols.map((col) => (
+            <div
+              key={col}
+              className="px-4 py-3 text-xs font-semibold uppercase tracking-wider"
+              style={{ color: 'var(--color-text-secondary)' }}
+            >
+              {col}
+            </div>
+          ))}
+        </div>
+        <div
+          className="grid items-center"
+          style={{ gridTemplateColumns: '160px repeat(3, 1fr)' }}
+        >
+          <div className="px-4 py-5" style={{ backgroundColor: 'var(--color-surface-section)' }}>
+            <p className="text-sm font-medium" style={{ color: 'var(--color-text-primary)' }}>Colored BG</p>
+            <p className="text-xs mt-0.5" style={{ color: 'var(--color-text-secondary)' }}>Small · non-white surfaces</p>
+          </div>
+          <div className="px-4 py-5" style={{ backgroundColor: '#4285f4' }}>
+            <Button variant="colored-bg" size="sm">Get Started</Button>
+          </div>
+          <div className="px-4 py-5" style={{ backgroundColor: '#4285f4' }}>
+            <Button variant="colored-bg" size="sm" className="bg-[#689df6] border-[#689df6] text-[#eff1f3]">Get Started</Button>
+          </div>
+          <div className="px-4 py-5" style={{ backgroundColor: '#4285f4' }}>
+            <Button variant="colored-bg" size="sm" disabled>Get Started</Button>
+          </div>
+        </div>
+      </div>
+    </>
+  )
+}
+
 // ─── Input showcase ──────────────────────────────────────────────────────────
 
 function InputShowcase() {
@@ -686,6 +794,8 @@ export default async function ComponentPage(props: PageProps<'/components/[slug]
             <TextButtonShowcase />
             <IconLabelShowcase />
             <IconOnlyShowcase />
+            <DestructiveShowcase />
+            <ColoredBgShowcase />
           </>
         )}
 

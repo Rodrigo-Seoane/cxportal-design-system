@@ -90,14 +90,14 @@ export const registry: Record<string, ComponentEntry> = {
     slug: 'button',
     title: 'Button',
     description:
-      'Triggers an action or navigation. Four visual variants aligned to usage context, three sizes, and icon support.',
+      'Triggers an action or navigation. Six visual variants aligned to usage context, three sizes, and icon support.',
     status: 'stable',
     scope: { Button, Plus },
     propSchema: {
       variant: {
         type: 'chip-select',
         label: 'Variant',
-        options: ['primary', 'secondary', 'form-controls', 'text'],
+        options: ['primary', 'secondary', 'form-controls', 'text', 'destructive', 'colored-bg'],
         default: 'primary',
       },
       size: {
@@ -125,29 +125,31 @@ export const registry: Record<string, ComponentEntry> = {
     },
     generateCode: ({ variant, size, disabled, children, iconPosition }) => {
       const v = String(variant)
-      const s = String(size)
+      // Destructive and colored-bg are small-only — force sm
+      const s = (v === 'destructive' || v === 'colored-bg') ? 'sm' : String(size)
       const pos = String(iconPosition)
       const label = String(children)
       const disabledAttr = disabled ? ' disabled' : ''
 
-      // Icon-only: swap size to icon-* variant, no label
+      // Build button snippet first, then wrap for colored-bg
+      let btn: string
       if (pos === 'only') {
-        const iconSize = ICON_SIZE_MAP[s] ?? 'icon-regular'
-        return `<Button variant="${v}" size="${iconSize}"${disabledAttr} aria-label="Action">\n  <Plus />\n</Button>`
+        btn = `<Button variant="${v}" size="${ICON_SIZE_MAP[s] ?? 'icon-regular'}"${disabledAttr} aria-label="Action">\n  <Plus />\n</Button>`
+      } else if (pos === 'left') {
+        btn = `<Button variant="${v}" size="${s}"${disabledAttr}>\n  <Plus />\n  ${label}\n</Button>`
+      } else if (pos === 'right') {
+        btn = `<Button variant="${v}" size="${s}"${disabledAttr}>\n  ${label}\n  <Plus />\n</Button>`
+      } else {
+        btn = `<Button variant="${v}" size="${s}"${disabledAttr}>\n  ${label}\n</Button>`
       }
 
-      // Label only
-      if (pos === 'none') {
-        return `<Button variant="${v}" size="${s}"${disabledAttr}>\n  ${label}\n</Button>`
+      // colored-bg must be shown inside a surface div to render correctly
+      if (v === 'colored-bg') {
+        const indented = btn.split('\n').map(l => `  ${l}`).join('\n')
+        return `<div className="bg-[#4285f4] p-6 rounded-lg">\n${indented}\n</div>`
       }
 
-      // Icon left
-      if (pos === 'left') {
-        return `<Button variant="${v}" size="${s}"${disabledAttr}>\n  <Plus />\n  ${label}\n</Button>`
-      }
-
-      // Icon right
-      return `<Button variant="${v}" size="${s}"${disabledAttr}>\n  ${label}\n  <Plus />\n</Button>`
+      return btn
     },
   },
 

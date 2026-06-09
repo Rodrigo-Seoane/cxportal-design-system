@@ -17,9 +17,9 @@ const meta: Meta<typeof Button> = {
   argTypes: {
     variant: {
       control: 'select',
-      options: ['primary', 'secondary', 'form-controls', 'text', 'destructive'],
+      options: ['primary', 'secondary', 'form-controls', 'text', 'destructive', 'colored-bg'],
       description:
-        'Controls the visual style of the button — filled primary, outlined secondary, neutral form-controls, ghost text, or destructive red.',
+        'Controls the visual style of the button — filled primary, outlined secondary, neutral form-controls, ghost text, destructive red, or colored-bg for non-white surfaces.',
     },
     size: {
       control: 'select',
@@ -63,6 +63,15 @@ export const ExtraSmall: Story = {
 
 export const Disabled: Story = {
   args: { variant: 'primary', size: 'regular', children: 'Button', disabled: true },
+}
+
+export const ColoredBg: Story = {
+  render: () => (
+    <div style={{ backgroundColor: '#4285f4', padding: '24px', borderRadius: '8px', display: 'inline-flex', gap: '12px', alignItems: 'center' }}>
+      <Button variant="colored-bg" size="sm">Get Started</Button>
+      <Button variant="colored-bg" size="sm" disabled>Disabled</Button>
+    </div>
+  ),
 }
 
 export const Destructive: Story = {
