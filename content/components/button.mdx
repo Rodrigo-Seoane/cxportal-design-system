@@ -1,14 +1,14 @@
 ---
 title: Button
-description: Triggers an action or navigation. Four visual variants aligned to usage context, three sizes, and icon support.
-figmaNodeId: 1647-34735
-figmaUpdated: Apr 09, 2026
+description: Triggers an action or navigation. Five visual variants aligned to usage context, three sizes, icon support, and two special states — Colored Background and Destructive.
+figmaNodeId: 7-1306
+figmaUpdated: Jun 09, 2026
 status: stable
 ---
 
 ## Overview
 
-Buttons allow users to take actions and make choices with a single tap. They communicate actions that users can take and are typically placed throughout the UI, in places like dialogs, modal windows, forms, cards, and toolbars.
+Buttons allow users to take actions and make choices with a single tap. They communicate actions that users can take and are typically placed throughout the UI, in places like dialogs, modal windows, forms, cards and toolbars.
 
 ## When to use
 
@@ -18,11 +18,11 @@ Buttons allow users to take actions and make choices with a single tap. They com
 
 ## Anatomy
 
-A Button consists of:
+The Button component consists of:
 
 - **Container** — Background with border and border-radius
 - **Label** — Action text describing what the button does
-- **Icon (optional)** — Visual symbol reinforcing the action (left or right position)
+- **Icon (optional)** — Visual symbol reinforcing the action (left position)
 - **States** — Visual feedback for default, hover, active, and disabled interactions
 
 <Table size="compact" className="mb-6">
@@ -49,12 +49,20 @@ A Button consists of:
       <TableCell>Disabled</TableCell>
       <TableCell>Button is not available for interaction, reduced opacity</TableCell>
     </TableRow>
+    <TableRow>
+      <TableCell>Colored Background</TableCell>
+      <TableCell>Button rendered on a primary blue surface — colors adapt to maintain contrast</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>Destructive</TableCell>
+      <TableCell>Signals an irreversible action. Uses a validated red ramp. See variant section below.</TableCell>
+    </TableRow>
   </TableBody>
 </Table>
 
 ## Variants
 
-CxPortal uses four button variants, each bound to a specific usage context. Picking the wrong variant is a common source of visual hierarchy issues.
+CxPortal uses five button variants, each bound to a specific usage context. Picking the wrong variant is a common source of visual hierarchy issues.
 
 <Table size="compact" className="mb-6">
   <TableHeader>
@@ -85,8 +93,60 @@ CxPortal uses four button variants, each bound to a specific usage context. Pick
       <TableCell>Regular · Small · XS</TableCell>
       <TableCell>Minimal prominence. In-line or low-priority actions where a border would add visual noise.</TableCell>
     </TableRow>
+    <TableRow>
+      <TableCell><strong>Destructive</strong></TableCell>
+      <TableCell>Small only</TableCell>
+      <TableCell>Irreversible actions (delete, remove, revoke). Use exclusively inside Modals/Dialogs. Always pair with a cancel button.</TableCell>
+    </TableRow>
   </TableBody>
 </Table>
+
+The **Colored Background** state applies to the four core variants above. **Destructive** is a standalone variant reserved for irreversible actions. They are detailed in the sections below.
+
+### Colored Background state
+
+The Colored Background state is used when a button appears on a primary blue surface — such as inside a blue action bar, a colored page header, or a highlighted section. Each variant adapts its styling to maintain contrast and visual hierarchy against the blue background.
+
+All four variant types (Primary, Secondary, Form Controls, Text) have a Colored Background treatment. The implementation is handled by the parent container applying the appropriate surface token context.
+
+**When to use:** Any time a button must be placed directly on a `--color-primary` or `bg-action-primary` surface. Do not use this state for buttons on white or neutral backgrounds.
+
+### Destructive state
+
+The Destructive state signals to users that the action they are about to confirm **cannot be undone**. It applies to all four variant types, each with its own red-toned treatment:
+
+- **Primary destructive** — Solid dark red fill. Used in Modals/Dialogs as the confirm button for the destructive action.
+- **Secondary destructive** — Pink/rose outline with red text. Used as the paired cancel-style button when an explicit red secondary is needed.
+- **Form Controls destructive** — Dark red fill. Used for inline async destructive controls.
+- **Text destructive** — Red text only. Used for low-prominence destructive links.
+
+**Color spec — Destructive (DS Error ramp):**
+
+| State | Background | Border | Text |
+|---|---|---|---|
+| Default | Error/500 `#ab0c36` | Error/600 `#690821` | On Action/Primary `#eff1f3` |
+| Hover | Error/300 `#f3547d` | Error/200 `#f792ac` | On Action/Secondary `#021920` |
+| Active | Error/500 `#ab0c36` | Error/600 `#690821` | On Action/Primary `#eff1f3` |
+| Disabled | Surface/Disabled `#eff1f3` | Border/Disabled `#d9dce0` | Text/Disabled `#aab0b8` |
+| Focus ring | — | — | Error/500 `#ab0c36` / 50% |
+
+> **Why does hover reverse to light pink?** `#f3547d` (Error/300) with dark `#021920` text meets WCAG AA. The darker Error/500 default with light text also passes. Reversing on hover makes the interaction feel responsive without breaking contrast at either state.
+
+**Usage rules:**
+- Use exclusively in Modals and Dialogs — never as a standalone page action.
+- Always pair with a secondary/cancel button so the user has an explicit escape.
+- The button label must describe the destructive action specifically: **"Delete Campaign"**, not just "Delete". **"Remove Member"**, not just "Remove".
+- Never use Destructive as the sole button in a dialog — that removes the escape hatch.
+
+<DosDonts>
+  <Do description="Label the button with the specific resource being destroyed — 'Delete Article', 'Remove Member', 'Revoke Access'. Specificity reduces accidental clicks." />
+  <Dont description="Use the Destructive state for reversible actions (archive, deactivate, hide). Those belong on a Form Controls or Secondary button." />
+</DosDonts>
+
+<DosDonts>
+  <Do description="Use destructive buttons only for irreversible actions inside modals — deleting a resource, revoking access, permanently removing data." />
+  <Dont description="Use destructive buttons for cancellation or navigation. Those actions belong on a Secondary or Text button." />
+</DosDonts>
 
 ### Icon-only buttons
 
@@ -110,12 +170,63 @@ Icon-only buttons use square sizes: **Icon Regular (48×48)**, **Icon Small (36�
     </TableRow>
     <TableRow>
       <TableCell><strong>Form Controls icon</strong></TableCell>
-      <TableCell>Settings and configuration async controls</TableCell>
+      <TableCell>Settings and configuration async controls (Add row, delete item)</TableCell>
     </TableRow>
   </TableBody>
 </Table>
 
 ## Principles for use
+
+### Design principals
+
+- **Icons are used on the Left** — When buttons include icons, position them to the left of the label text to maintain visual scanning order and reinforce the action meaning.
+- **Guide users to achieve the desired actions** — Use visual hierarchy through button types and styles to direct users toward primary objectives while making secondary options accessible.
+- **Prevent user to make mistakes** — Use appropriate button types and states to communicate availability and consequences, reducing the risk of unintended actions.
+
+### Usage by size
+
+<Table size="compact" className="mb-6">
+  <TableHeader>
+    <tr>
+      <TableHead>Size</TableHead>
+      <TableHead>Primary</TableHead>
+      <TableHead>Secondary</TableHead>
+      <TableHead>Form Controls</TableHead>
+    </tr>
+  </TableHeader>
+  <TableBody>
+    <TableRow>
+      <TableCell><strong>Regular (48px)</strong></TableCell>
+      <TableCell>Page Primary CTA. Maximum of 1 per page.</TableCell>
+      <TableCell>Abort/Cancel Active Page Primary Objective</TableCell>
+      <TableCell>—</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><strong>Small (36px)</strong></TableCell>
+      <TableCell>Section/Feature Primary Action</TableCell>
+      <TableCell>Page secondary actions (e.g. Page Title buttons, Section/Feature secondary actions)</TableCell>
+      <TableCell>Settings and Configuration in page controls</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><strong>XS (24px)</strong></TableCell>
+      <TableCell>Section/Feature Primary Action</TableCell>
+      <TableCell>Compact Table Row actions, Contact Logs List actions</TableCell>
+      <TableCell>Settings and Configuration in page controls</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><strong>Icon Small (36×36)</strong></TableCell>
+      <TableCell>Section/Feature Primary Action</TableCell>
+      <TableCell>Top Bar icons (support/documentation), Table Row Actions</TableCell>
+      <TableCell>Settings and Configuration async controls (e.g. Add row, delete item)</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><strong>Icon XS (24×24)</strong></TableCell>
+      <TableCell>N/A</TableCell>
+      <TableCell>Contact Logs List actions</TableCell>
+      <TableCell>Settings and Configuration async controls (e.g. Add row, delete item)</TableCell>
+    </TableRow>
+  </TableBody>
+</Table>
 
 <DosDonts>
   <Do description="Emphasize the primary action. If there is no primary action, secondary buttons are the safest default." />
@@ -179,6 +290,28 @@ import { Trash } from 'lucide-react'
 <Button variant="primary" disabled>
   Saving…
 </Button>
+```
+
+### Destructive button
+
+```tsx
+// Always pair with a cancel button — never use alone
+<div className="flex gap-2 justify-end">
+  <Button variant="secondary" size="sm">Cancel</Button>
+  <Button variant="destructive" size="sm">
+    Delete Campaign
+  </Button>
+</div>
+```
+
+### Colored background context
+
+```tsx
+// Wrap in a colored surface — button tokens adapt to the surface
+<div className="bg-[#4285f4] p-4 rounded-lg">
+  <Button variant="primary">Get Started</Button>
+  <Button variant="secondary">Learn More</Button>
+</div>
 ```
 
 ## Accessibility
