@@ -166,6 +166,12 @@ export const registry: Record<string, ComponentEntry> = {
         options: ['text', 'email', 'number', 'date', 'password', 'textarea'],
         default: 'text',
       },
+      size: {
+        type: 'chip-select',
+        label: 'Size',
+        options: ['regular', 'small'],
+        default: 'regular',
+      },
       labelVisible: {
         type: 'boolean',
         label: 'Label visible',
@@ -192,8 +198,9 @@ export const registry: Record<string, ComponentEntry> = {
         default: false,
       },
     },
-    generateCode: ({ variant, labelVisible, required, disabled, showError, showHint }) => {
+    generateCode: ({ variant, size, labelVisible, required, disabled, showError, showHint }) => {
       const v   = String(variant)
+      const sm  = size === 'small'
       const lv  = labelVisible === true || labelVisible === 'true'
       const req = required    === true || required    === 'true'
       const dis = disabled    === true || disabled    === 'true'
@@ -211,6 +218,7 @@ export const registry: Record<string, ComponentEntry> = {
 
       const lines: string[] = [`<Input`]
       lines.push(`  variant="${v}"`)
+      if (sm)   lines.push(`  size="small"`)
       lines.push(`  label="${labelMap[v] ?? 'Label'}"`)
       if (!lv)  lines.push(`  labelVisible={false}`)
       if (req)  lines.push(`  required`)

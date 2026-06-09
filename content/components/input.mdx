@@ -2,7 +2,7 @@
 title: Input
 description: Text-entry fields for forms. Combines a Label and a Field — supports text, email, number, date, password, and textarea variants with hint and error states.
 figmaNodeId: 7-280
-figmaUpdated: Apr 09, 2026
+figmaUpdated: Jun 09, 2026
 status: stable
 ---
 
@@ -22,8 +22,8 @@ A basic widget for getting user input. Keyboard and mouse can be used to provide
 
 An Input consists of:
 
-- **Label** — Identifies the field. 12px SemiBold, always above the field. Required fields add a `*` indicator.
-- **Field** — The interactive container. 36px tall (single-line), white background, 8px border-radius, 8px padding.
+- **Label** — Identifies the field. 12px SemiBold (10px in small size), always above the field. Required fields add a `*` indicator.
+- **Field** — The interactive container. 36px tall in regular size, 24px in small. White background, 8px border-radius (4px in small), 8px padding.
 - **Prefix icon (optional)** — Type-specific icon on the left (Email → envelope) or right (Number → caret, Date → calendar).
 - **Password toggle (optional)** — Eye icon to reveal/hide the password value.
 - **Hint text (optional)** — 10px helper copy below the field. Suppressed when an error is shown.
@@ -61,6 +61,54 @@ An Input consists of:
     </TableRow>
   </TableBody>
 </Table>
+
+## Size
+
+The Input comes in two sizes. Use `size="small"` for dense layouts like table filters, inline toolbars, and compact sidebars where vertical space is at a premium.
+
+<Table size="compact" className="mb-6">
+  <TableHeader>
+    <tr>
+      <TableHead>Property</TableHead>
+      <TableHead>Regular</TableHead>
+      <TableHead>Small</TableHead>
+    </tr>
+  </TableHeader>
+  <TableBody>
+    <TableRow>
+      <TableCell>Height</TableCell>
+      <TableCell>~36px (auto)</TableCell>
+      <TableCell>24px (fixed)</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>Border radius</TableCell>
+      <TableCell>8px</TableCell>
+      <TableCell>4px</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>Font size / line-height</TableCell>
+      <TableCell>14px / 20px</TableCell>
+      <TableCell>12px / 20px</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>Icon size</TableCell>
+      <TableCell>18 × 18px</TableCell>
+      <TableCell>16 × 16px</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>Horizontal padding</TableCell>
+      <TableCell>8px</TableCell>
+      <TableCell>8px</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>Label font size / line-height</TableCell>
+      <TableCell>12px / 20px</TableCell>
+      <TableCell>10px / 16px</TableCell>
+    </TableRow>
+  </TableBody>
+</Table>
+
+> **Note:** `textarea` is excluded from the small size — passing `size="small"` with `variant="textarea"` silently falls back to regular.
 
 ## Variants
 
@@ -137,6 +185,11 @@ The label row and hint text are independently toggleable:
   <Dont description="Remove disabled fields from the DOM to hide unavailable options. Users lose context about what functionality exists and how to unlock it." />
 </DosDonts>
 
+<DosDonts>
+  <Do description="Use small inputs in dense layouts — table filters, inline toolbars, and compact sidebars where vertical space is at a premium." />
+  <Dont description="Use small inputs for primary form fields. The reduced target size makes them harder to tap on touch devices and increases error rates in data-entry flows." />
+</DosDonts>
+
 ## Code
 
 ### Basic text input
@@ -189,6 +242,17 @@ import { Input } from '@/components/ui/input'
   variant="textarea"
   label="Message"
   placeholder="Type your message here."
+/>
+```
+
+### Small input
+
+```tsx
+<Input
+  variant="text"
+  size="small"
+  label="Filter"
+  placeholder="Search…"
 />
 ```
 
