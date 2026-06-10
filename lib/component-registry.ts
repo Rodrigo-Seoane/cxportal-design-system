@@ -33,6 +33,8 @@ import { DatePicker } from '@/components/ui/date-picker'
 import { NavMenuItem, NavSubItem } from '@/components/ui/nav-item'
 import { PageTitle } from '@/components/ui/page-title'
 import { TopBar } from '@/components/ui/top-bar'
+import { FileTree } from '@/components/ui/file-tree'
+import type { FileTreeNode } from '@/components/ui/file-tree'
 
 // ─── Prop schema types ──────────────────────────────────────────────────────
 
@@ -76,6 +78,35 @@ export type ComponentEntry = {
 }
 
 // ─── Icon size map (for icon-only mode) ─────────────────────────────────────
+
+const FILE_TREE_DATA: FileTreeNode[] = [
+  {
+    id: 'account-1',
+    label: 'Social Security Admin',
+    type: 'account',
+    children: [
+      {
+        id: 'group-1',
+        label: 'Benefit Status Updates',
+        type: 'group',
+        children: [
+          { id: 'topic-1', label: 'Retirement Planning Reminders', type: 'topic' },
+          { id: 'topic-2', label: 'Disability Claim Follow-ups',   type: 'topic' },
+          { id: 'topic-3', label: 'Medicare Enrollment Alerts',    type: 'topic' },
+        ],
+      },
+      {
+        id: 'group-2',
+        label: 'Outreach Campaigns',
+        type: 'group',
+        children: [
+          { id: 'topic-4', label: 'Q1 Benefits Reminder',  type: 'topic' },
+          { id: 'topic-5', label: 'Annual Review Notices', type: 'topic' },
+        ],
+      },
+    ],
+  },
+]
 
 const ICON_SIZE_MAP: Record<string, string> = {
   regular: 'icon-regular',
@@ -1579,16 +1610,10 @@ export const registry: Record<string, ComponentEntry> = {
     slug: 'page-title',
     title: 'Page Title',
     description:
-      'Page-level header with a large blue title, subtitle, and optional chip or KB metadata. Three variants: Default, With Chip, and With KB Details.',
+      'Page-level header with a large blue title, optional subtitle, optional chip, and a composable right-side actions slot.',
     status: 'stable',
     scope: { PageTitle },
     propSchema: {
-      variant: {
-        type: 'chip-select',
-        label: 'Variant',
-        options: ['default', 'with-chip', 'with-kb-details'] as const,
-        default: 'default',
-      },
       title: {
         type: 'text',
         label: 'Title',
@@ -1599,23 +1624,28 @@ export const registry: Record<string, ComponentEntry> = {
         label: 'Subtitle',
         default: 'Master list for Northeast Quarter',
       },
+      showChip: {
+        type: 'boolean',
+        label: 'Show chip',
+        default: false,
+      },
       chip: {
         type: 'text',
         label: 'Chip label',
         default: 'Current',
       },
     },
-    generateCode: ({ variant, title, subtitle, chip }) => {
-      const v   = String(variant)
+    generateCode: ({ title, subtitle, showChip, chip }) => {
       const t   = String(title)
       const sub = String(subtitle)
       const ch  = String(chip)
+      const sc  = Boolean(showChip)
 
       const lines: string[] = ['<PageTitle']
       lines.push(`  title="${t}"`)
       if (sub) lines.push(`  subtitle="${sub}"`)
-      if (v !== 'default') lines.push(`  variant="${v}"`)
-      if (v !== 'default' && ch) lines.push(`  chip="${ch}"`)
+      if (sc) lines.push('  showChip')
+      if (sc && ch) lines.push(`  chip="${ch}"`)
       lines.push('/>')
       return lines.join('\n')
     },
@@ -1717,6 +1747,34 @@ export const registry: Record<string, ComponentEntry> = {
       if (count !== 3) lines.push(`  notifCount={${count}}`)
       lines.push('/>')
       return lines.join('\n')
+    },
+  },
+
+  'file-tree': {
+    slug: 'file-tree',
+    title: 'File Tree',
+    description:
+      'Hierarchical navigation tree for account → group → topic structures. 24 px rows with expand/collapse carets, connector lines, and topic selection highlight.',
+    status: 'stable',
+    scope: { FileTree, TREE_DATA: FILE_TREE_DATA },
+    propSchema: {
+      selectedId: {
+        type: 'chip-select',
+        label: 'Selected',
+        options: ['topic-1', 'topic-2', 'topic-3', 'topic-4', 'topic-5'],
+        default: 'topic-1',
+      },
+    },
+    generateCode: ({ selectedId }) => {
+      const sel = String(selectedId)
+      return [
+        '<div style={{ width: 280, border: \'1px solid #eff1f3\' }}>',
+        '  <FileTree',
+        '    nodes={TREE_DATA}',
+        `    selectedId="${sel}"`,
+        '  />',
+        '</div>',
+      ].join('\n')
     },
   },
 

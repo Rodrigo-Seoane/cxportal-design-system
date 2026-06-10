@@ -1,0 +1,150 @@
+---
+title: File Tree
+description: Hierarchical navigation tree for account → campaign group → topic structures. Each 24 px row has a controller cell (expand/collapse caret for groups, file icon for topics) and an indented title cell. Selected items highlight in primary blue.
+figmaNodeId: 2244-5496
+figmaUpdated: May 29, 2026
+status: stable
+---
+
+## Overview
+
+The File Tree renders a three-level hierarchy — Account → Campaign Group → Topic — as a compact vertical list. It is used inside the left filter/navigation panel of Campaign and Account Management pages to let users jump between contexts without navigating away.
+
+Each row is 24 px tall and composed of two cells: a **controller cell** (24×24 px) that holds the expand/collapse icon or a file icon, and a **title cell** (remaining width) that shows the node label. Children are indented 24 px per level. Vertical connector lines visually link parent nodes to their children.
+
+## When to use
+
+- Inside a `FilterPanel` or sidebar to display navigable account/group/topic hierarchies.
+- When users need to switch between campaign groups or topics without a full page navigation.
+- When the hierarchy has exactly 3 levels (Account → Group → Topic). For flat lists, use `TableFilter` instead.
+
+## When not to use
+
+- Do not use File Tree for arbitrary file systems or folder structures unrelated to the Campaign hierarchy.
+- Do not use when the hierarchy is more than 3 levels deep.
+- Do not use as a primary page navigation element — it lives inside a collapsible panel, not the main sidebar.
+
+## Anatomy
+
+- **Controller cell** — 24×24 px, always the first cell in a row.
+  - **Account / Group (open):** `CaretDownIcon` (12 px)
+  - **Group (closed):** `CaretRightIcon` (12 px)
+  - **Topic:** `FileTextIcon` (12 px, filled) — topics are leaf nodes, they don't expand
+- **Title cell** — Fills remaining row width. 8 px left padding. 10 px Regular text, `#021920`.
+- **Connector lines** — 1 px vertical lines in `#eff1f3` drawn from the bottom edge of a parent controller to the midpoint of the last visible child.
+- **Indent** — Each depth level adds 24 px of left offset to the entire row.
+
+## States
+
+| Node type | State | Controller bg | Title bg |
+|---|---|---|---|
+| Group | Default, open | White | White |
+| Group | Default, closed | White | White |
+| Group | Selected, open | `#4285f4` (blue) | `#d9e7fd` (tint) |
+| Topic | Default | White | White |
+| Topic | Selected | `#4285f4` (blue) + right border `#689df6` | `#d9e7fd` (tint) |
+
+## Depth / indentation
+
+| Level | Node type | Indent | Row width (in 250 px panel) |
+|---|---|---|---|
+| 0 | Account | 0 px | 250 px |
+| 1 | Campaign Group | 24 px | 226 px |
+| 2 | Topic | 48 px | 202 px |
+
+## Guidelines
+
+### DOs
+
+- Keep node labels short enough to fit on one line — 24 px row height means no line wrapping. Use `title` attribute for full labels if needed.
+- Default to expanding the root-level Account node on first render.
+- Clicking a Group node toggles expand/collapse. Clicking a Topic node triggers selection (`onSelect`).
+- Show connector lines for all expanded groups with children.
+
+### DON'Ts
+
+- Don't make Topics expandable — they are always leaf nodes.
+- Don't nest more than 3 levels. The component doesn't support level 4+.
+- Don't use this component without an `onSelect` handler when topics need to be navigable.
+
+## Code
+
+### Basic usage
+
+```tsx
+import { FileTree } from '@/components/ui/file-tree'
+import type { FileTreeNode } from '@/components/ui/file-tree'
+
+const tree: FileTreeNode[] = [
+  {
+    id:    'account-1',
+    label: 'Social Security Admin',
+    type:  'account',
+    children: [
+      {
+        id:    'group-1',
+        label: 'Benefit Status Updates',
+        type:  'group',
+        children: [
+          { id: 'topic-1', label: 'Retirement Planning Reminders', type: 'topic' },
+          { id: 'topic-2', label: 'Disability Claim Follow-ups',   type: 'topic' },
+        ],
+      },
+    ],
+  },
+]
+
+<FileTree
+  nodes={tree}
+  selectedId={selectedTopicId}
+  onSelect={node => setSelectedTopicId(node.id)}
+/>
+```
+
+### With controlled expansion
+
+```tsx
+<FileTree
+  nodes={tree}
+  selectedId={selectedId}
+  onSelect={handleSelect}
+  defaultExpanded={['account-1', 'group-1']}
+/>
+```
+
+### Inside a FilterPanel
+
+```tsx
+<div style={{ width: 250, borderRight: '1px solid #eff1f3' }}>
+  <FileTree
+    nodes={campaignTree}
+    selectedId={activeTopicId}
+    onSelect={node => router.push(`/campaigns/topics/${node.id}`)}
+    defaultExpanded={[activeAccountId]}
+  />
+</div>
+```
+
+## Token reference
+
+| Token | Value | Usage |
+|---|---|---|
+| `--color-surface-section` | `#ffffff` | Default row background |
+| `--content-action/primary/100` | `#d9e7fd` | Selected title cell background |
+| `--color-primary` / `--surface/action/primary` | `#4285f4` | Selected controller background |
+| `--border-color/surface-active/primary` | `#689df6` | Selected topic controller right border |
+| `--neutral/100` | `#eff1f3` | Connector lines and row bottom border |
+| `--text/on-action/secondary` | `#021920` | Label text color |
+| Row height | 24 px | — |
+| Controller width | 24 px | — |
+| Indent per level | 24 px | — |
+| Label font | 10 px / Regular | — |
+| Icon size | 12 px | CaretDown, CaretRight, FileText |
+
+## Accessibility
+
+- The root container has `role="tree"` and `aria-label="Navigation tree"`.
+- Each group row should carry `aria-expanded={isExpanded}` and `role="treeitem"`.
+- Each topic row should carry `aria-selected={isSelected}` and `role="treeitem"`.
+- Connector lines are decorative and should have `aria-hidden="true"`.
+- Keyboard navigation (arrow keys to move, Enter/Space to activate) should be implemented per the ARIA tree pattern once extracted to a full DS component.

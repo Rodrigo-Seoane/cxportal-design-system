@@ -151,7 +151,7 @@ function generateAgentBank(): Agent[] {
         name:            `${FIRST_NAMES[seed % FIRST_NAMES.length]} ${LAST_NAMES[(seed + 3) % LAST_NAMES.length]}`,
         staffingGroupId: sg.id,
         status:          isUnmapped ? 'Pending' : status,
-        statusDuration:  formatDuration(randInt(30, 1800)),
+        statusDuration:  formatDuration(30 + ((seed * 1664525 + 1013904223) >>> 0) % 1771),
         activity:        ACTIVITIES[seed % ACTIVITIES.length],
         adherence:       seed % 5 === 0 ? 'out' : 'adherent',
         auxCode,

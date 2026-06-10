@@ -8,6 +8,7 @@ import { Input } from '@/components/ui/input'
 import { Checkbox, Radio } from '@/components/ui/checkbox'
 import { Plus } from 'lucide-react'
 import { ToastShowcase } from '@/components/ds/ToastShowcase'
+import { FileTreeShowcase } from '@/components/ds/FileTreeShowcase'
 import { Stepper } from '@/components/ui/stepper'
 
 // ─── Shared types ────────────────────────────────────────────────────────────
@@ -813,6 +814,9 @@ export default async function ComponentPage(props: PageProps<'/components/[slug]
 
         {/* ── Stepper showcase ─────────────────────────────────────────── */}
         {slug === 'stepper' && <StepperShowcase />}
+
+        {/* ── File Tree interactive demo ───────────────────────────────── */}
+        {slug === 'file-tree' && <FileTreeShowcase />}
 
         {/* ── MDX documentation ───────────────────────────────────────── */}
         {doc && (

@@ -107,6 +107,7 @@ const NAV_GROUPS: NavGroup[] = [
       { label: 'Page Title',             href: '/components/page-title',            status: 'stable' },
       { label: 'Stepper',               href: '/components/stepper',               status: 'stable' },
       { label: 'Distribution Controls', href: '/components/distribution-controls', status: 'stable' },
+      { label: 'File Tree',             href: '/components/file-tree',            status: 'stable' },
     ],
   },
   {
