@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import './globals.css'
 import { Sidebar } from '@/components/layout/Sidebar'
+import { CRRTWidget } from '@/components/layout/CRRTWidget'
 
 export const metadata: Metadata = {
   title: 'CxPortal Design System',
@@ -28,6 +29,7 @@ export default function RootLayout({
         >
           {children}
         </div>
+        <CRRTWidget />
       </body>
     </html>
   )
