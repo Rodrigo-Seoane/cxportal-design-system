@@ -57,6 +57,29 @@ const buttonVariants = cva(
           'active:bg-[#dce8fb]',
           'disabled:bg-transparent disabled:border-transparent disabled:text-[#aab0b8]',
         ].join(' '),
+
+        // ── Destructive ──────────────────────────────────────────────────
+        // Default/Active: Error/500 (#ab0c36) bg · Error/600 (#690821) border · On Action/Primary (#eff1f3) text
+        // Hover: reverses to Error/300 (#f3547d) bg · Error/200 (#f792ac) border · dark (#021920) text for WCAG AA
+        destructive: [
+          'bg-[#ab0c36] border-[#690821] text-[#eff1f3]',
+          'hover:bg-[#f3547d] hover:border-[#f792ac] hover:text-[#021920]',
+          'active:bg-[#ab0c36] active:border-[#690821] active:text-[#eff1f3]',
+          'focus-visible:ring-[#ab0c36]/50',
+          'disabled:bg-[#eff1f3] disabled:border-[#d9dce0] disabled:text-[#aab0b8]',
+        ].join(' '),
+
+        // ── Colored Background ───────────────────────────────────────────
+        // For use on non-white surfaces (hero banners, colored cards). Small only.
+        // Default: Neutral/0 (#ffffff) bg · Primary border (#689df6) · On Action/Transparent text (#3264b8)
+        // Hover: primary fill (#689df6) bg + light text (#eff1f3) · Active: light grey wash (#f8f8f8)
+        'colored-bg': [
+          'bg-[#ffffff] border-[#689df6] text-[#3264b8]',
+          'hover:bg-[#689df6] hover:border-[#689df6] hover:text-[#eff1f3]',
+          'active:bg-[#f8f8f8] active:border-[#aab0b8] active:text-[#3264b8]',
+          'focus-visible:ring-[#689df6]/50',
+          'disabled:bg-[#eff1f3] disabled:border-[#d9dce0] disabled:text-[#aab0b8]',
+        ].join(' '),
       },
 
       size: {
@@ -112,7 +135,7 @@ const buttonVariants = cva(
   }
 )
 
-export type ButtonVariant = 'primary' | 'secondary' | 'form-controls' | 'text'
+export type ButtonVariant = 'primary' | 'secondary' | 'form-controls' | 'text' | 'destructive' | 'colored-bg'
 export type ButtonSize = 'regular' | 'sm' | 'xs' | 'icon-regular' | 'icon-sm' | 'icon-xs'
 
 function Button({

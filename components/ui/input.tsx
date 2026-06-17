@@ -14,10 +14,13 @@ import { cn } from '@/lib/utils'
 // ─── Types ────────────────────────────────────────────────────────────────────
 
 export type InputVariant = 'text' | 'email' | 'number' | 'date' | 'password' | 'textarea'
+export type InputSize = 'regular' | 'small'
 
 export interface InputProps {
   /** Visual/semantic variant. Determines icon, html type, and layout. */
   variant?: InputVariant
+  /** Size variant. Small uses 24px height, 12px font, 16px icons. Falls back to regular for textarea. */
+  size?: InputSize
   /** Label text shown above the field. */
   label?: string
   /** Show or hide the label row. */
@@ -60,6 +63,14 @@ const T = {
   textRequired:   '#ef2056',
 } as const
 
+// ─── Size tokens ─────────────────────────────────────────────────────────────
+
+type SizeConfig = { padding: string; borderRadius: string; fontSize: string; lineHeight: string; iconSize: number; labelFontSize: string; labelLineHeight: string; height?: string }
+const SIZE_CONFIG: Record<InputSize, SizeConfig> = {
+  regular: { padding: '8px', borderRadius: '8px', fontSize: '14px', lineHeight: '20px', iconSize: 18, labelFontSize: '12px', labelLineHeight: '20px' },
+  small:   { padding: '0 8px', borderRadius: '4px', fontSize: '12px', lineHeight: '20px', iconSize: 16, labelFontSize: '10px', labelLineHeight: '16px', height: '24px' },
+}
+
 // ─── Default placeholders per variant ────────────────────────────────────────
 
 const DEFAULT_PLACEHOLDER: Record<InputVariant, string> = {
@@ -86,6 +97,7 @@ const RIGHT_ICON: Partial<Record<InputVariant, React.ComponentType<{ size: numbe
 
 export function Input({
   variant = 'text',
+  size = 'regular',
   label = 'Label',
   labelVisible = true,
   required = false,
@@ -102,14 +114,16 @@ export function Input({
   const autoId = useId()
   const id = externalId ?? autoId
 
-  const [focused, setFocused]         = useState(false)
+  const [focused, setFocused]           = useState(false)
   const [showPassword, setShowPassword] = useState(false)
   const [internalValue, setInternalValue] = useState(defaultValue)
 
-  const controlled    = value !== undefined
-  const currentValue  = controlled ? value : internalValue
-  const hasError      = !!error
-
+  const controlled   = value !== undefined
+  const currentValue = controlled ? value : internalValue
+  const hasError     = !!error
+  // Textarea is excluded from small — fall back to regular
+  const effectiveSize = size === 'small' && variant === 'textarea' ? 'regular' : size
+  const sz = SIZE_CONFIG[effectiveSize]
   function handleChange(e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
     if (!controlled) setInternalValue(e.target.value)
     onChange?.(e.target.value)
@@ -124,11 +138,9 @@ export function Input({
   const bgColor   = disabled ? T.bgDisabled : T.bgDefault
   const iconColor = disabled ? T.textDisabled : focused ? T.textFocus : T.textPlaceholder
   const textColor = disabled ? T.textDisabled : focused ? T.textFocus : T.textPlaceholder
-
   const LeftIcon  = LEFT_ICON[variant]
   const RightIcon = RIGHT_ICON[variant]
 
-  // HTML type attribute
   const htmlType =
     variant === 'password' ? (showPassword ? 'text' : 'password')
     : variant === 'textarea' ? undefined
@@ -153,8 +165,8 @@ export function Input({
   }
 
   const inputStyle = {
-    fontSize: '14px',
-    lineHeight: '20px',
+    fontSize: sz.fontSize,
+    lineHeight: sz.lineHeight,
     color: textColor,
     backgroundColor: 'transparent',
     outline: 'none',
@@ -172,8 +184,8 @@ export function Input({
             htmlFor={id}
             className="font-semibold select-none"
             style={{
-              fontSize: '12px',
-              lineHeight: '20px',
+              fontSize: sz.labelFontSize,
+              lineHeight: sz.labelLineHeight,
               letterSpacing: '0.24px',
               color: T.textLabel,
               cursor: disabled ? 'not-allowed' : 'default',
@@ -182,7 +194,7 @@ export function Input({
             {label}
           </label>
           {required && (
-            <span aria-hidden style={{ fontSize: '12px', lineHeight: '20px', color: T.textRequired }}>
+            <span aria-hidden style={{ fontSize: sz.labelFontSize, lineHeight: sz.labelLineHeight, color: T.textRequired }}>
               *
             </span>
           )}
@@ -196,8 +208,9 @@ export function Input({
           variant === 'textarea' ? 'items-start' : 'items-center',
         )}
         style={{
-          padding: '8px',
-          borderRadius: '8px',
+          padding: sz.padding,
+          borderRadius: sz.borderRadius,
+          height: sz.height,
           border: `1px solid ${borderColor}`,
           backgroundColor: bgColor,
           gap: '8px',
@@ -207,7 +220,7 @@ export function Input({
       >
         {/* Left icon (email) */}
         {LeftIcon && (
-          <LeftIcon size={18} color={iconColor} />
+          <LeftIcon size={sz.iconSize} color={iconColor} />
         )}
 
         {/* Native input or textarea */}
@@ -227,7 +240,7 @@ export function Input({
 
         {/* Right icon (number/date) */}
         {RightIcon && !hasError && (
-          <RightIcon size={18} color={iconColor} />
+          <RightIcon size={sz.iconSize} color={iconColor} />
         )}
 
         {/* Password visibility toggle */}
@@ -241,13 +254,13 @@ export function Input({
             style={{ color: iconColor, cursor: disabled ? 'not-allowed' : 'pointer', lineHeight: 0 }}
             aria-label={showPassword ? 'Hide password' : 'Show password'}
           >
-            {showPassword ? <EyeSlashIcon size={18} /> : <EyeIcon size={18} />}
+            {showPassword ? <EyeSlashIcon size={sz.iconSize} /> : <EyeIcon size={sz.iconSize} />}
           </button>
         )}
 
         {/* Error icon */}
         {hasError && variant !== 'textarea' && (
-          <WarningCircleIcon size={18} color={T.textError} weight="fill" className="shrink-0" />
+          <WarningCircleIcon size={sz.iconSize} color={T.textError} weight="fill" className="shrink-0" />
         )}
       </div>
 

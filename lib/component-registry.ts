@@ -33,6 +33,8 @@ import { DatePicker } from '@/components/ui/date-picker'
 import { NavMenuItem, NavSubItem } from '@/components/ui/nav-item'
 import { PageTitle } from '@/components/ui/page-title'
 import { TopBar } from '@/components/ui/top-bar'
+import { FileTree } from '@/components/ui/file-tree'
+import type { FileTreeNode } from '@/components/ui/file-tree'
 
 // ─── Prop schema types ──────────────────────────────────────────────────────
 
@@ -77,6 +79,35 @@ export type ComponentEntry = {
 
 // ─── Icon size map (for icon-only mode) ─────────────────────────────────────
 
+const FILE_TREE_DATA: FileTreeNode[] = [
+  {
+    id: 'account-1',
+    label: 'Social Security Admin',
+    type: 'account',
+    children: [
+      {
+        id: 'group-1',
+        label: 'Benefit Status Updates',
+        type: 'group',
+        children: [
+          { id: 'topic-1', label: 'Retirement Planning Reminders', type: 'topic' },
+          { id: 'topic-2', label: 'Disability Claim Follow-ups',   type: 'topic' },
+          { id: 'topic-3', label: 'Medicare Enrollment Alerts',    type: 'topic' },
+        ],
+      },
+      {
+        id: 'group-2',
+        label: 'Outreach Campaigns',
+        type: 'group',
+        children: [
+          { id: 'topic-4', label: 'Q1 Benefits Reminder',  type: 'topic' },
+          { id: 'topic-5', label: 'Annual Review Notices', type: 'topic' },
+        ],
+      },
+    ],
+  },
+]
+
 const ICON_SIZE_MAP: Record<string, string> = {
   regular: 'icon-regular',
   sm: 'icon-sm',
@@ -90,14 +121,14 @@ export const registry: Record<string, ComponentEntry> = {
     slug: 'button',
     title: 'Button',
     description:
-      'Triggers an action or navigation. Four visual variants aligned to usage context, three sizes, and icon support.',
+      'Triggers an action or navigation. Six visual variants aligned to usage context, three sizes, and icon support.',
     status: 'stable',
     scope: { Button, Plus },
     propSchema: {
       variant: {
         type: 'chip-select',
         label: 'Variant',
-        options: ['primary', 'secondary', 'form-controls', 'text'],
+        options: ['primary', 'secondary', 'form-controls', 'text', 'destructive', 'colored-bg'],
         default: 'primary',
       },
       size: {
@@ -125,29 +156,31 @@ export const registry: Record<string, ComponentEntry> = {
     },
     generateCode: ({ variant, size, disabled, children, iconPosition }) => {
       const v = String(variant)
-      const s = String(size)
+      // Destructive and colored-bg are small-only — force sm
+      const s = (v === 'destructive' || v === 'colored-bg') ? 'sm' : String(size)
       const pos = String(iconPosition)
       const label = String(children)
       const disabledAttr = disabled ? ' disabled' : ''
 
-      // Icon-only: swap size to icon-* variant, no label
+      // Build button snippet first, then wrap for colored-bg
+      let btn: string
       if (pos === 'only') {
-        const iconSize = ICON_SIZE_MAP[s] ?? 'icon-regular'
-        return `<Button variant="${v}" size="${iconSize}"${disabledAttr} aria-label="Action">\n  <Plus />\n</Button>`
+        btn = `<Button variant="${v}" size="${ICON_SIZE_MAP[s] ?? 'icon-regular'}"${disabledAttr} aria-label="Action">\n  <Plus />\n</Button>`
+      } else if (pos === 'left') {
+        btn = `<Button variant="${v}" size="${s}"${disabledAttr}>\n  <Plus />\n  ${label}\n</Button>`
+      } else if (pos === 'right') {
+        btn = `<Button variant="${v}" size="${s}"${disabledAttr}>\n  ${label}\n  <Plus />\n</Button>`
+      } else {
+        btn = `<Button variant="${v}" size="${s}"${disabledAttr}>\n  ${label}\n</Button>`
       }
 
-      // Label only
-      if (pos === 'none') {
-        return `<Button variant="${v}" size="${s}"${disabledAttr}>\n  ${label}\n</Button>`
+      // colored-bg must be shown inside a surface div to render correctly
+      if (v === 'colored-bg') {
+        const indented = btn.split('\n').map(l => `  ${l}`).join('\n')
+        return `<div className="bg-[#4285f4] p-6 rounded-lg">\n${indented}\n</div>`
       }
 
-      // Icon left
-      if (pos === 'left') {
-        return `<Button variant="${v}" size="${s}"${disabledAttr}>\n  <Plus />\n  ${label}\n</Button>`
-      }
-
-      // Icon right
-      return `<Button variant="${v}" size="${s}"${disabledAttr}>\n  ${label}\n  <Plus />\n</Button>`
+      return btn
     },
   },
 
@@ -165,6 +198,12 @@ export const registry: Record<string, ComponentEntry> = {
         label: 'Variant',
         options: ['text', 'email', 'number', 'date', 'password', 'textarea'],
         default: 'text',
+      },
+      size: {
+        type: 'chip-select',
+        label: 'Size',
+        options: ['regular', 'small'],
+        default: 'regular',
       },
       labelVisible: {
         type: 'boolean',
@@ -192,8 +231,9 @@ export const registry: Record<string, ComponentEntry> = {
         default: false,
       },
     },
-    generateCode: ({ variant, labelVisible, required, disabled, showError, showHint }) => {
+    generateCode: ({ variant, size, labelVisible, required, disabled, showError, showHint }) => {
       const v   = String(variant)
+      const sm  = size === 'small'
       const lv  = labelVisible === true || labelVisible === 'true'
       const req = required    === true || required    === 'true'
       const dis = disabled    === true || disabled    === 'true'
@@ -211,6 +251,7 @@ export const registry: Record<string, ComponentEntry> = {
 
       const lines: string[] = [`<Input`]
       lines.push(`  variant="${v}"`)
+      if (sm)   lines.push(`  size="small"`)
       lines.push(`  label="${labelMap[v] ?? 'Label'}"`)
       if (!lv)  lines.push(`  labelVisible={false}`)
       if (req)  lines.push(`  required`)
@@ -1569,16 +1610,10 @@ export const registry: Record<string, ComponentEntry> = {
     slug: 'page-title',
     title: 'Page Title',
     description:
-      'Page-level header with a large blue title, subtitle, and optional chip or KB metadata. Three variants: Default, With Chip, and With KB Details.',
+      'Page-level header with a large blue title, optional subtitle, optional chip, and a composable right-side actions slot.',
     status: 'stable',
     scope: { PageTitle },
     propSchema: {
-      variant: {
-        type: 'chip-select',
-        label: 'Variant',
-        options: ['default', 'with-chip', 'with-kb-details'] as const,
-        default: 'default',
-      },
       title: {
         type: 'text',
         label: 'Title',
@@ -1589,23 +1624,28 @@ export const registry: Record<string, ComponentEntry> = {
         label: 'Subtitle',
         default: 'Master list for Northeast Quarter',
       },
+      showChip: {
+        type: 'boolean',
+        label: 'Show chip',
+        default: false,
+      },
       chip: {
         type: 'text',
         label: 'Chip label',
         default: 'Current',
       },
     },
-    generateCode: ({ variant, title, subtitle, chip }) => {
-      const v   = String(variant)
+    generateCode: ({ title, subtitle, showChip, chip }) => {
       const t   = String(title)
       const sub = String(subtitle)
       const ch  = String(chip)
+      const sc  = Boolean(showChip)
 
       const lines: string[] = ['<PageTitle']
       lines.push(`  title="${t}"`)
       if (sub) lines.push(`  subtitle="${sub}"`)
-      if (v !== 'default') lines.push(`  variant="${v}"`)
-      if (v !== 'default' && ch) lines.push(`  chip="${ch}"`)
+      if (sc) lines.push('  showChip')
+      if (sc && ch) lines.push(`  chip="${ch}"`)
       lines.push('/>')
       return lines.join('\n')
     },
@@ -1707,6 +1747,34 @@ export const registry: Record<string, ComponentEntry> = {
       if (count !== 3) lines.push(`  notifCount={${count}}`)
       lines.push('/>')
       return lines.join('\n')
+    },
+  },
+
+  'file-tree': {
+    slug: 'file-tree',
+    title: 'File Tree',
+    description:
+      'Hierarchical navigation tree for account → group → topic structures. 24 px rows with expand/collapse carets, connector lines, and topic selection highlight.',
+    status: 'stable',
+    scope: { FileTree, TREE_DATA: FILE_TREE_DATA },
+    propSchema: {
+      selectedId: {
+        type: 'chip-select',
+        label: 'Selected',
+        options: ['topic-1', 'topic-2', 'topic-3', 'topic-4', 'topic-5'],
+        default: 'topic-1',
+      },
+    },
+    generateCode: ({ selectedId }) => {
+      const sel = String(selectedId)
+      return [
+        '<div style={{ width: 280, border: \'1px solid #eff1f3\' }}>',
+        '  <FileTree',
+        '    nodes={TREE_DATA}',
+        `    selectedId="${sel}"`,
+        '  />',
+        '</div>',
+      ].join('\n')
     },
   },
 
