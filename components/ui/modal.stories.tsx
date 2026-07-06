@@ -4,7 +4,17 @@ import { Button } from './button'
 
 const meta: Meta = {
   title: 'UI/Modal',
-  parameters: { layout: 'centered' },
+  component: Modal,
+  tags: ['autodocs'],
+  parameters: {
+    layout: 'centered',
+    docs: {
+      description: {
+        component:
+          'Compound dialog component built from Modal + ModalHeader + ModalBody + ModalFooter. Renders in a portal over a dimmed backdrop, traps focus, and closes on Escape or backdrop click. Supports large (701px), medium (453px), and xlarge (860px) panel sizes. Use the `preview` prop in Storybook to render without a portal.',
+      },
+    },
+  },
 }
 export default meta
 

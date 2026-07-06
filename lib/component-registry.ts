@@ -574,6 +574,12 @@ export const registry: Record<string, ComponentEntry> = {
     status: 'stable',
     scope: { Tabs, TabList, Tab, TabPanel, Grid },
     propSchema: {
+      type: {
+        type: 'chip-select',
+        label: 'Type',
+        options: ['button', 'minimal'],
+        default: 'button',
+      },
       count: {
         type: 'chip-select',
         label: 'Tab count',
@@ -591,7 +597,8 @@ export const registry: Record<string, ComponentEntry> = {
         default: false,
       },
     },
-    generateCode: ({ count, showIcons, disabled }) => {
+    generateCode: ({ type, count, showIcons, disabled }) => {
+      const tabType = type === 'minimal' ? 'minimal' : 'button'
       const n     = Math.min(4, Math.max(2, parseInt(String(count)) || 3))
       const icons = showIcons === true || showIcons === 'true'
       const dis   = disabled  === true || disabled  === 'true'
@@ -607,6 +614,8 @@ export const registry: Record<string, ComponentEntry> = {
         ? ` icon={<Grid size={16} strokeWidth={1.5} />}`
         : ''
 
+      const typeProp = tabType === 'minimal' ? ' type="minimal"' : ''
+
       const tabLines = defs
         .map(({ value, label }, i) => {
           const dp = dis && i === n - 1 ? ' disabled' : ''
@@ -615,7 +624,7 @@ export const registry: Record<string, ComponentEntry> = {
         .join('\n')
 
       return [
-        `<Tabs defaultValue="all">`,
+        `<Tabs defaultValue="all"${typeProp}>`,
         `  <TabList aria-label="Filter users">`,
         tabLines,
         `  </TabList>`,

@@ -4,10 +4,27 @@ import { FullSizeChart } from './FullSizeChart'
 const meta: Meta<typeof FullSizeChart> = {
   title: 'Charts/FullSizeChart',
   component: FullSizeChart,
-  parameters: { layout: 'padded' },
+  tags: ['autodocs'],
+  parameters: {
+    layout: 'padded',
+    docs: {
+      description: {
+        component:
+          'Full-width charting panel with an interchangeable header. The calendar header provides a date-range picker with preset shortcuts; the stats header shows three summary KPI values. Supports bar, area, and line chart types via Recharts.',
+      },
+    },
+  },
   argTypes: {
-    graphType: { control: 'select', options: ['bar', 'area', 'line'] },
-    headerType: { control: 'select', options: ['calendar', 'stats'] },
+    graphType: {
+      control: 'select',
+      options: ['bar', 'area', 'line'],
+      description: 'The Recharts chart type rendered in the panel body.',
+    },
+    headerType: {
+      control: 'select',
+      options: ['calendar', 'stats'],
+      description: 'Header layout — calendar provides date-range selection; stats shows three KPI summary values.',
+    },
   },
 }
 export default meta

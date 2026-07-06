@@ -1,0 +1,94 @@
+---
+title: Table Title Pattern
+description: Usage rule defining how to display titles, search inputs, and CTAs before tables — for pages with a single large table and for pages with multiple short tables.
+figmaNodeId: 2216-10266
+figmaUpdated: May 29, 2026
+status: stable
+type: pattern
+---
+
+## Overview
+
+The Table Title Pattern is not a new component — it is a layout rule that governs how table sections are structured on a page. It determines whether a search input is shown, which CTA button variant is used, and how section titles behave depending on whether a page hosts a single table or multiple tables.
+
+Applying this rule consistently ensures that users form a reliable mental model across all CxPortal list views.
+
+---
+
+## The Two Scenarios
+
+### Single Table Page
+
+**When to use:** The page contains one primary table with a **large number of rows (10 or more)**.
+
+**Section structure (top to bottom):**
+
+1. **Table Title** — Section title in large caption style
+2. **Section Description** — One-line subtitle describing the content
+3. **CTA Button(s)** — Aligned to the right of the title row
+4. **Search Input Field** — Always present; positioned below the title row
+5. **Table** — The data table itself
+
+**CTA button rules:**
+- **1 primary action** → Use the **Primary Button** variant
+- **Multiple actions** → Use the **Secondary Button** with a dropdown to surface the available actions
+
+---
+
+### Multiple Tables Page
+
+**When to use:** The page contains two or more tables, each with a **short number of rows (fewer than 10)**.
+
+**Section structure per table:**
+
+1. **Table Title** — Large caption style, one per table
+2. **CTA** — Each table includes its own CTA to add new rows
+3. **Table** — The data table (no search input)
+
+**CTA button rules:**
+- **1st table CTA** → Use the **Primary Button** variant
+- **All other tables CTAs** → Use the **Only-Text Button** variant
+
+**Search:** No search input is provided for any table in a multiple-tables layout.
+
+---
+
+## Decision Guide
+
+| Question | Answer | Rule |
+|---|---|---|
+| How many tables on the page? | 1 | Single Table Pattern |
+| How many tables on the page? | 2 or more | Multiple Tables Pattern |
+| How many rows in the table(s)? | 10+ | Single Table Pattern |
+| How many rows in the table(s)? | < 10 each | Multiple Tables Pattern |
+| Do I show a search input? | Single table page | Always yes |
+| Do I show a search input? | Multiple tables page | Never |
+| Which CTA variant for the first table? | Both patterns | Primary Button |
+| Which CTA variant for secondary tables? | Multiple tables only | Only-Text Button |
+| One action or many? | Single table, 1 action | Primary Button |
+| One action or many? | Single table, multiple actions | Secondary Button + Dropdown |
+
+---
+
+## Guidelines
+
+### DOs
+
+- Always apply the section structure in order: title → description → CTA → search (if applicable) → table.
+- Use the large caption style for all table section titles — never a heading level (H2, H3) inside the content area.
+- On multi-table pages, always put the primary action on the first table and demote all subsequent table CTAs to Only-Text.
+- When a single-table page has multiple actions, consolidate them into a Secondary Button + Dropdown rather than showing multiple primary or secondary buttons.
+
+### DON'Ts
+
+- Don't add a search input to tables on a multiple-tables page — the short row count makes search unnecessary and the added chrome creates visual noise.
+- Don't skip the section description on single-table pages — even a single sentence adds important context.
+- Don't use more than one Primary Button in a multi-table layout — the visual hierarchy breaks if multiple tables compete for primary attention.
+- Don't use a heading element (H2/H3) as the table section title inside the main content panel — use the large caption style from the Table Title component.
+
+---
+
+## Figma Reference
+
+- **DS Page:** [Design System — Table Title Pattern](https://www.figma.com/design/exoHhvasbJSziVGakV8Y0r/CxPortal-%7C-Design-System?node-id=69-1456)
+- **Rules Frame:** [Page Hierarchy — Multiple vs Single Table](https://www.figma.com/design/exoHhvasbJSziVGakV8Y0r/CxPortal-%7C-Design-System?node-id=2216-10266&m=dev)

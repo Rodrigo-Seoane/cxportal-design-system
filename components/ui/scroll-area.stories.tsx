@@ -3,7 +3,17 @@ import { ScrollArea } from './scroll-area'
 
 const meta: Meta = {
   title: 'UI/ScrollArea',
-  parameters: { layout: 'centered' },
+  component: ScrollArea,
+  tags: ['autodocs'],
+  parameters: {
+    layout: 'centered',
+    docs: {
+      description: {
+        component:
+          'Thin wrapper around the Base UI ScrollArea primitive. Renders a scrollable container with a styled custom scrollbar for both vertical and horizontal overflow. Drop-in replacement for overflow containers where native scrollbar styling is inconsistent.',
+      },
+    },
+  },
 }
 export default meta
 

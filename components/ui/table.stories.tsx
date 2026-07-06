@@ -7,7 +7,17 @@ import {
 
 const meta: Meta = {
   title: 'UI/Table',
-  parameters: { layout: 'padded' },
+  component: Table,
+  tags: ['autodocs'],
+  parameters: {
+    layout: 'padded',
+    docs: {
+      description: {
+        component:
+          'Compound data table built from Table + TableHeader + TableBody + TableRow + TableHead + TableCell primitives. Supports two density sizes (wide/compact), striped rows, sortable column headers, row selection via built-in checkbox columns, and disabled row states.',
+      },
+    },
+  },
 }
 export default meta
 

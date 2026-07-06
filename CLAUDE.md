@@ -1,5 +1,7 @@
 @AGENTS.md
 
+Before each new session begins, read LESSONS.md to understand what mistakes to avoid and other important things to remember.
+
 # Development Guidelines & Best Practices
 
 **Purpose:** Keep code clean, maintainable, and context-efficient  

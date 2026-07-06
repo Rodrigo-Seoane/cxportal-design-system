@@ -1,0 +1,144 @@
+---
+title: Breadcrumbs
+description: A horizontal navigation trail showing the user's location within the page hierarchy. Always starts with a Home icon and ends with the current page in semibold. Supports 1 to 4 depth levels.
+figmaNodeId: 1933-2500
+figmaUpdated: May 29, 2026
+status: stable
+---
+
+## Overview
+
+Breadcrumbs render the user's current position within the application hierarchy as a left-to-right trail of links separated by caret icons. The trail always begins with a `House` icon (the home root) and ends with the current page label in semibold — all ancestor links are rendered in regular weight. The component supports up to four depth levels.
+
+Breadcrumbs were previously deprecated in CxPortal; they are being re-introduced as a first-class DS component to support deeper navigation hierarchies introduced in the Campaigns Email and Knowledge Management modules.
+
+## When to use
+
+- On any page that is two or more levels deep in the navigation hierarchy (i.e. below a top-level section).
+- Above the `PageTitle` component, at the very top of the content area.
+- When users need a quick escape back to a parent context without using the sidebar.
+
+## When not to use
+
+- Do not use breadcrumbs on top-level pages — there is nothing to navigate up to.
+- Do not use breadcrumbs inside modals, drawers, or side panels.
+- Do not duplicate information already expressed in the sidebar's active state.
+
+## Anatomy
+
+- **Home icon** — `HouseIcon` (16×16), always the first item. Acts as a link back to the root.
+- **Caret separator** — `CaretRightIcon` (12×12) between each breadcrumb item.
+- **Ancestor labels** — Body/Extra Small Regular (10 px, 400). Each is a link to that level's page.
+- **Current page label** — Body/Extra Small SemiBold (10 px, 600). Not a link — represents where the user is.
+
+All labels use the `--text/breadcrumb` token (`#323840`).
+
+## Variants
+
+The component has four depth variants, determined by the number of ancestor levels:
+
+| Variant | Structure | Use case |
+|---|---|---|
+| **01** — 1 ancestor | 🏠 `›` **Current** | One level below home |
+| **02** — 2 ancestors | 🏠 `›` Parent `›` **Current** | Account-level pages |
+| **3** — 3 ancestors | 🏠 `›` Grandparent `›` Parent `›` **Current** | Campaign Group-level pages |
+| **4** — 4 ancestors | 🏠 `›` Great-grandparent `›` Grandparent `›` Parent `›` **Current** | Topic or item-level pages |
+
+### Real-world examples (from Figma)
+
+| Context | Breadcrumb trail |
+|---|---|
+| Account overview | 🏠 `›` **Social Security Admin** |
+| Campaign Group view | 🏠 `›` Social Security Admin `›` **Benefit Status Updates** |
+| Topic detail | 🏠 `›` Social Security Admin `›` Benefit Status Updates `›` **Retirement Planning Reminders** |
+
+## Guidelines
+
+### DOs
+
+- Always position breadcrumbs above the `PageTitle` — they are a navigation aid, not a heading element.
+- Use the exact variant depth that matches the actual page hierarchy. Don't add placeholder levels.
+- Keep ancestor labels to the actual page/resource name — no generic labels like "Back" or "Parent".
+- All ancestor items should be real links that navigate to their respective pages.
+
+### DON'Ts
+
+- Don't render breadcrumbs on root-level pages — the Home icon alone conveys nothing useful.
+- Don't truncate ancestor labels with ellipsis — if the trail overflows, the hierarchy is too deep for breadcrumbs alone; consider restructuring the navigation.
+- Don't style the current page label as a link — it represents the current location and should not be interactive.
+- Don't add more than 4 depth levels. Beyond that, use a different navigation pattern.
+
+## Code
+
+### Props
+
+```tsx
+type BreadcrumbProps = {
+  /** The current page label — rendered semibold, not a link */
+  activeLink: string
+  /** 1st ancestor (level above current) */
+  prop1stBranch?: string
+  /** 2nd ancestor (2 levels above current) */
+  prop2ndBranch?: string
+  /** 3rd ancestor (3 levels above current) */
+  prop3rdBranch?: string
+  /** Depth variant: '01' | '02' | '3' | '4' */
+  property1?: '01' | '02' | '3' | '4'
+}
+```
+
+### Usage examples
+
+```tsx
+import { Breadcrumb } from '@/components/ui/breadcrumbs'
+
+{/* 1 level — current page only */}
+<Breadcrumb
+  property1="01"
+  activeLink="Social Security Admin"
+/>
+
+{/* 2 levels — account level */}
+<Breadcrumb
+  property1="02"
+  prop1stBranch="Social Security Admin"
+  activeLink="Benefit Status Updates"
+/>
+
+{/* 3 levels — campaign group level */}
+<Breadcrumb
+  property1="3"
+  prop1stBranch="Social Security Admin"
+  prop2ndBranch="Benefit Status Updates"
+  activeLink="Retirement Planning Reminders"
+/>
+
+{/* 4 levels — topic / item level */}
+<Breadcrumb
+  property1="4"
+  prop1stBranch="Social Security Admin"
+  prop2ndBranch="Benefit Status Updates"
+  prop3rdBranch="Retirement Planning Reminders"
+  activeLink="Send Schedule"
+/>
+```
+
+## Token reference
+
+| Token | Value | Usage |
+|---|---|---|
+| `--text/breadcrumb` | `#323840` | All breadcrumb text (ancestor and current) |
+| Body/Extra Small Regular | 10 px / 400 | Ancestor link labels |
+| Body/Extra Small SemiBold | 10 px / 600 | Current page label |
+| Home icon size | 16×16 px | `HouseIcon` |
+| Caret icon size | 12×12 px | `CaretRightIcon` separator |
+| Item padding | 2 px | Each breadcrumb item wrapper |
+| Gap between items | 4 px | Horizontal gap in the trail |
+
+## Accessibility
+
+- The breadcrumb trail should be wrapped in a `<nav aria-label="Breadcrumb">` element.
+- Ancestor items must be rendered as `<a>` or `<Link>` elements — they are navigation targets.
+- The current page item should carry `aria-current="page"` and must **not** be a link.
+- The `HouseIcon` should have an accessible label: `aria-label="Home"` on its wrapping link.
+- Caret separators are decorative — they should have `aria-hidden="true"`.

@@ -1,0 +1,130 @@
+---
+title: Collapsible Filters
+description: A side-panel filter bar that toggles between a collapsed icon-only rail (48 px) and a full filter panel (240 px). Supports multi-select dropdowns and tag-based filtering with active-count badges.
+figmaNodeId: 2212-5926
+figmaUpdated: May 29, 2026
+status: stable
+---
+
+## Overview
+
+Collapsible Filters is a persistent side panel that lives to the left of a data table or list view. In its collapsed state it takes up minimal space — a single icon with an optional active-count badge. Expanding it reveals one or more filter controls. The transition between states is animated so the content area reflows smoothly.
+
+The component is currently used in the Knowledge Management list view, where it drives Knowledge Base and Tag filtering.
+
+## Design Principles
+
+**Space efficiency first.** The panel collapses to 48 px so the content area is never crowded when filters are unused. Users who rely on filters expand once and keep the panel open.
+
+**Always show filter state.** When the panel is collapsed but filters are active, a blue count badge on the icon communicates that the current view is filtered — even before the panel is opened.
+
+**Filtering is reversible.** A "Clear Filters" shortcut is always visible in the expanded header. Users never need to hunt for a way to reset.
+
+## When to use
+
+- Alongside data tables or list views that have more than one filterable dimension (e.g. by Knowledge Base *and* by Tag).
+- When filter controls are secondary to the content — users need the filters occasionally, not on every visit.
+- When the number of filter categories may grow over time (the panel scrolls internally).
+
+## When not to use
+
+- Do not use Collapsible Filters for simple single-dimension filtering — a standard `TableFilter` trigger inline with the table toolbar is sufficient.
+- Do not use it for page-level search; use the search input in the top bar or toolbar instead.
+
+## Anatomy
+
+- **Panel container** — Fixed-width column (`48 px` collapsed / `240 px` expanded) with a `0.2 s ease` width transition. Bordered on the right.
+- **Header row** — 48 px tall. Contains the toggle trigger and, when expanded, the "Filters" label and "Clear Filters" action.
+  - **Collapsed state** — A secondary icon button (`SlidersHorizontalIcon`). If any filters are active a blue circular badge shows the total active count.
+  - **Expanded state** — A form-controls icon button to collapse, an 18 px "Filters" label, and a ghost "Clear Filters" link with an `XCircleIcon`.
+- **Filter content area** — Visible only when expanded. Scrolls vertically. Contains one or more filter controls separated by 16 px gaps.
+  - **TableFilter** — A full-width trigger that opens a portal checkbox dropdown. Shows a blue pill with the active-selection count when filters are applied.
+  - **Tags section** — A label row with a "New Tag" action, followed by `FilterTagItem` rows.
+- **FilterTagItem** — A 32 px row with a custom checkbox, a color dot (solid or dashed), and the tag label. On hover or when the context menu is open, a `⋯` overflow button appears for Edit and Delete actions.
+
+## Variants / States
+
+| State | Width | Description |
+|---|---|---|
+| **Collapsed — no filters** | 48 px | Secondary icon button only |
+| **Collapsed — filters active** | 48 px | Icon button with blue count badge |
+| **Expanded** | 240 px | Full filter panel with header, controls, and tag list |
+
+## Guidelines
+
+### DOs
+
+- Always keep the panel in the leftmost column of a data layout — it pairs with the table's left edge.
+- Show the active count badge on the collapsed icon whenever at least one filter is selected. Users need to know the view is filtered even when the panel is closed.
+- Use `TableFilter` (portal checkbox dropdown) for list-type filters like Knowledge Base. Use the tag list pattern for label-based filters that users may also create or manage.
+- Keep filter sections to a maximum of 2–3 categories. More than that overwhelms the panel.
+
+### DON'Ts
+
+- Don't clear filters automatically when the panel is collapsed. Active filters persist across collapse/expand cycles.
+- Don't place action buttons (Save, Apply) inside the panel — filter changes apply immediately.
+- Don't use this component for temporary, session-only filter overlays. For those, use a Drawer.
+
+## Code
+
+### Basic usage
+
+```tsx
+import { FilterPanel } from '@/app/sandbox/collapsible-filter/page'
+
+<FilterPanel
+  open={filterOpen}
+  onToggle={() => setFilterOpen(v => !v)}
+  activeKBs={activeKBs}
+  onToggleKB={toggleKB}
+  activeTags={activeTags}
+  onToggleTag={toggleTag}
+  onClearAll={clearAll}
+  tagItems={TAG_ITEMS}
+  onNewTag={handleNewTag}
+  onEditTag={handleEditTag}
+  onDeleteTag={handleDeleteTag}
+/>
+```
+
+### TableFilter (standalone)
+
+```tsx
+import { TableFilter } from '@/app/sandbox/collapsible-filter/page'
+
+<TableFilter
+  label="Knowledge Base"
+  items={KB_LIST}
+  active={activeKBs}
+  onToggle={toggleKB}
+/>
+```
+
+### Collapsed with active count badge
+
+The badge renders automatically when `activeKBs.size + activeTags.size > 0` while `open` is `false`. No extra prop required.
+
+## Token reference
+
+| Token | Value | Usage |
+|---|---|---|
+| `--content-action/primary/default` | `#4285f4` | Active count badge background, active filter icon tint, checkbox accent |
+| `--text/body/primary` | `#021920` | "Filters" label, section headings |
+| `--text/body/secondary` | `#7a828c` | Inactive icon color |
+| `--content-action/secondary` | `#3264b8` | "Clear Filters" and "New Tag" link color |
+| `--border/subtle` | `#eff1f3` | Panel right border, header bottom border, row dividers |
+| `--neutral/200` | `#d9dce0` | TableFilter trigger border (inactive) |
+| `--surface/section` | `#ffffff` | Panel background |
+| Panel collapsed width | `48 px` | — |
+| Panel expanded width | `240 px` | — |
+| Header height | `48 px` | — |
+| Tag item height | `32 px` | — |
+| Transition | `width 0.2 s ease` | Collapse/expand animation |
+
+## Accessibility
+
+- The toggle button in both collapsed and expanded states must have a descriptive `title` attribute (`"Expand filters"` / `"Collapse filters"`).
+- When collapsed, the active-count badge is a decorative overlay on the icon button — provide an `aria-label` on the button that includes the count (e.g. `"Expand filters — 3 active"`).
+- `TableFilter` and `FilterTagItem` dropdowns are portal-rendered; they must trap focus and close on `Escape`.
+- Tag color dots are purely visual — tag meaning must never be conveyed by color alone. The text label is always required.
+- Filter changes apply immediately; no explicit Apply button means no confirmation step is needed. Screen readers should announce the updated result count via a live region on the list it filters.

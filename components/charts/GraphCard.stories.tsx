@@ -4,7 +4,16 @@ import { GraphCard } from './GraphCard'
 const meta: Meta<typeof GraphCard> = {
   title: 'Charts/GraphCard',
   component: GraphCard,
-  parameters: { layout: 'padded' },
+  tags: ['autodocs'],
+  parameters: {
+    layout: 'padded',
+    docs: {
+      description: {
+        component:
+          'Compact chart card with a title, description, Recharts visualization, and an optional footer. Supports 20+ chart type variants across area, bar (vertical/horizontal), line, pie, and radial families. The footer shows either a trend insight or a legend of series captions.',
+      },
+    },
+  },
   decorators: [(Story) => <div style={{ width: 380 }}><Story /></div>],
   argTypes: {
     chartType: {
@@ -16,9 +25,18 @@ const meta: Meta<typeof GraphCard> = {
         'pie-disc', 'pie-disc-val', 'pie-donut', 'pie-donut-val', 'pie-donut-pop',
         'radial-5', 'radial-thin', 'radial-thick', 'radial-semi',
       ],
+      description: 'Selects which Recharts chart variant is rendered in the card body.',
     },
-    footerType: { control: 'select', options: ['insight', 'captions'] },
-    trendDirection: { control: 'select', options: ['up', 'down', 'neutral'] },
+    footerType: {
+      control: 'select',
+      options: ['insight', 'captions'],
+      description: 'Footer layout — insight shows a trend statement; captions shows a colour-coded series legend.',
+    },
+    trendDirection: {
+      control: 'select',
+      options: ['up', 'down', 'neutral'],
+      description: 'Trend direction icon shown in the insight footer — up (green), down (red), or neutral.',
+    },
   },
 }
 export default meta

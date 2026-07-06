@@ -19,7 +19,17 @@ const STEPS_WITH_TAGS = [
 
 const meta: Meta = {
   title: 'UI/Stepper',
-  parameters: { layout: 'centered' },
+  component: Stepper,
+  tags: ['autodocs'],
+  parameters: {
+    layout: 'centered',
+    docs: {
+      description: {
+        component:
+          'Vertical step-progress indicator for multi-step wizard flows. Steps before the current index show a filled check indicator; the active step shows a highlighted ring; future steps are outlined. Completed steps can optionally display a removable tag chip.',
+      },
+    },
+  },
   decorators: [(Story) => <div style={{ width: 280 }}><Story /></div>],
 }
 export default meta

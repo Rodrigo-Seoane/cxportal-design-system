@@ -4,10 +4,26 @@ import { SenderIdentityStatus } from './SenderIdentityStatus'
 const meta: Meta<typeof SenderIdentityStatus> = {
   title: 'Campaigns/SenderIdentityStatus',
   component: SenderIdentityStatus,
-  parameters: { layout: 'centered' },
+  tags: ['autodocs'],
+  parameters: {
+    layout: 'centered',
+    docs: {
+      description: {
+        component:
+          'Status badge indicating the verification state of an email sender identity. Used in sender identity lists and campaign setup flows to communicate verification progress (verified/pending/failed/expired) with a semantic colour and icon.',
+      },
+    },
+  },
   argTypes: {
-    status:   { control: 'select', options: ['verified', 'pending', 'failed', 'expired'] },
-    showIcon: { control: 'boolean' },
+    status: {
+      control: 'select',
+      options: ['verified', 'pending', 'failed', 'expired'],
+      description: 'Verification state — sets the badge background colour, text colour, and icon.',
+    },
+    showIcon: {
+      control: 'boolean',
+      description: 'Whether to show the status icon alongside the label text.',
+    },
   },
 }
 export default meta

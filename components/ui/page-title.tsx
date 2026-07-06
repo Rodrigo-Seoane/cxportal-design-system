@@ -1,174 +1,136 @@
 'use client'
 
+import type { ReactNode } from 'react'
+import { XIcon } from '@phosphor-icons/react'
+
 // ── Design tokens ─────────────────────────────────────────────────────────────
 
 const T = {
-  titleColor:   '#4285f4',
-  subtitleColor:'#021920',
-  metaLabel:    '#7a828c',
-  metaValue:    '#021920',
-  chipBg:       '#d9dce0',
-  chipText:     '#021920',
-  divider:      '#d9dce0',
+  titleColor:   '#4285f4',   // --content-action/primary/default
+  subtitleColor:'#021920',   // --text/body/primary
+  chipBg:       '#d6e2f5',   // --info/100
+  chipText:     '#021920',   // --text/on-action/secondary
+  chipIcon:     '#021920',
 } as const
 
-// ── Types ─────────────────────────────────────────────────────────────────────
+// ── Internal: Info Chip ───────────────────────────────────────────────────────
 
-export type PageTitleVariant = 'default' | 'with-chip' | 'with-kb-details'
-
-export interface PageTitleProps {
-  title:        string
-  subtitle?:    string
-  variant?:     PageTitleVariant
-  chip?:        string
-  actions?:     React.ReactNode
-  association?: string
-  version?:     string
-  dateCreated?: string
-}
-
-// ── Internal: Chip ────────────────────────────────────────────────────────────
-
-function Chip({ label }: { label: string }) {
+function InfoChip({
+  label,
+  onDismiss,
+}: {
+  label: string
+  onDismiss?: () => void
+}) {
   return (
     <span style={{
       display:       'inline-flex',
       alignItems:    'center',
+      gap:           8,
       padding:       '4px 12px',
-      borderRadius:  16,
-      background:     T.chipBg,
+      borderRadius:  8,
+      background:    T.chipBg,
       fontSize:      10,
       fontWeight:    600,
       lineHeight:    '12px',
       letterSpacing: '0.4px',
-      color:          T.chipText,
+      color:         T.chipText,
       whiteSpace:    'nowrap',
     }}>
       {label}
+      {onDismiss && (
+        <button
+          onClick={onDismiss}
+          aria-label={`Remove ${label}`}
+          style={{
+            display:    'inline-flex',
+            alignItems: 'center',
+            padding:    0,
+            border:     'none',
+            background: 'transparent',
+            cursor:     'pointer',
+          }}
+        >
+          <XIcon size={12} weight="bold" color={T.chipIcon} />
+        </button>
+      )}
     </span>
-  )
-}
-
-// ── Internal: KB metadata divider ─────────────────────────────────────────────
-
-function KbDivider() {
-  return (
-    <div style={{
-      width:      1,
-      height:     40,
-      background:  T.divider,
-      flexShrink: 0,
-    }} />
-  )
-}
-
-// ── Internal: KB metadata item ────────────────────────────────────────────────
-
-function KbMetaItem({ label, value }: { label: string; value: string }) {
-  return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
-      <span style={{
-        fontSize:      10,
-        fontWeight:    600,
-        lineHeight:    '12px',
-        letterSpacing: '0.4px',
-        color:          T.metaLabel,
-        whiteSpace:    'nowrap',
-      }}>
-        {label}
-      </span>
-      <span style={{
-        fontSize:   12,
-        fontWeight: 400,
-        lineHeight: '20px',
-        color:       T.metaValue,
-        whiteSpace: 'nowrap',
-      }}>
-        {value}
-      </span>
-    </div>
   )
 }
 
 // ── PageTitle ─────────────────────────────────────────────────────────────────
 
+export interface PageTitleProps {
+  /** Primary page title text. */
+  title: string
+  /** Supporting description text below the title. */
+  subtitle?: string
+  /** Category or status chip label. */
+  chip?: string
+  /** Show/hide the chip. Default: false. */
+  showChip?: boolean
+  /** Callback when chip dismiss button is clicked. If omitted, chip has no dismiss. */
+  onChipDismiss?: () => void
+  /** Right-side slot for composable action controls (buttons, search, tabs, etc.). */
+  actions?: ReactNode
+  className?: string
+}
+
 export function PageTitle({
   title,
   subtitle,
-  variant    = 'default',
-  chip       = 'Current',
+  chip = 'Current',
+  showChip = false,
+  onChipDismiss,
   actions,
-  association,
-  version,
-  dateCreated,
+  className,
 }: PageTitleProps) {
-  const showChip    = variant === 'with-chip' || variant === 'with-kb-details'
-  const showKbMeta  = variant === 'with-kb-details'
-  const showActions = variant !== 'with-kb-details' && actions != null
-
   return (
-    <div style={{
-      display:        'flex',
-      alignItems:     'center',
-      justifyContent: 'space-between',
-      padding:        '16px 24px',
-      width:          '100%',
-      backgroundColor:'var(--color-surface-section)',
-    }}>
-      {/* Left — title + optional chip + subtitle */}
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
-            <h1 style={{
-              margin:     0,
-              fontSize:   28,
-              fontWeight: 400,
-              lineHeight: '34px',
-              color:       T.titleColor,
-              whiteSpace: 'nowrap',
-            }}>
-              {title}
-            </h1>
-            {showChip && <Chip label={chip} />}
-          </div>
-          {subtitle && (
-            <p style={{
-              margin:     0,
-              fontSize:   12,
-              fontWeight: 400,
-              lineHeight: '20px',
-              color:       T.subtitleColor,
-            }}>
-              {subtitle}
-            </p>
+    <div
+      className={className}
+      style={{
+        display:         'flex',
+        alignItems:      'center',
+        justifyContent:  'space-between',
+        padding:         '16px 24px',
+        width:           '100%',
+        backgroundColor: 'var(--color-surface-section, white)',
+      }}
+    >
+      {/* Left — title + optional chip + optional subtitle */}
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+          <h2 style={{
+            margin:     0,
+            fontSize:   28,
+            fontWeight: 400,
+            lineHeight: '34px',
+            color:      T.titleColor,
+            whiteSpace: 'nowrap',
+          }}>
+            {title}
+          </h2>
+          {showChip && (
+            <InfoChip label={chip} onDismiss={onChipDismiss} />
           )}
         </div>
+        {subtitle && (
+          <p style={{
+            margin:     0,
+            fontSize:   12,
+            fontWeight: 400,
+            lineHeight: '20px',
+            color:      T.subtitleColor,
+          }}>
+            {subtitle}
+          </p>
+        )}
       </div>
 
-      {/* Right — actions or KB metadata */}
-      {showActions && (
+      {/* Right — composable actions slot */}
+      {actions && (
         <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
           {actions}
-        </div>
-      )}
-
-      {showKbMeta && (association || version || dateCreated) && (
-        <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
-          {association && (
-            <>
-              <KbMetaItem label="Association:" value={association} />
-              {(version || dateCreated) && <KbDivider />}
-            </>
-          )}
-          {version && (
-            <>
-              <KbMetaItem label="Version" value={version} />
-              {dateCreated && <KbDivider />}
-            </>
-          )}
-          {dateCreated && (
-            <KbMetaItem label="Date Created:" value={dateCreated} />
-          )}
         </div>
       )}
     </div>

@@ -4,14 +4,40 @@ import { MessageBox } from './message-box'
 const meta: Meta<typeof MessageBox> = {
   title: 'UI/MessageBox',
   component: MessageBox,
-  parameters: { layout: 'padded' },
+  tags: ['autodocs'],
+  parameters: {
+    layout: 'padded',
+    docs: {
+      description: {
+        component:
+          'Contextual feedback banner for communicating status to the user. Supports four semantic types (info/success/warning/error) and two layouts: line for single-row messages and block for titled rich-content alerts. Optionally dismissible.',
+      },
+    },
+  },
   decorators: [(Story) => <div style={{ maxWidth: 520 }}><Story /></div>],
   argTypes: {
-    type: { control: 'select', options: ['info', 'success', 'warning', 'error'] },
-    size: { control: 'select', options: ['line', 'block'] },
-    dismissible: { control: 'boolean' },
-    message: { control: 'text' },
-    title: { control: 'text' },
+    type: {
+      control: 'select',
+      options: ['info', 'success', 'warning', 'error'],
+      description: 'Semantic intent — sets the background colour, border accent, and icon.',
+    },
+    size: {
+      control: 'select',
+      options: ['line', 'block'],
+      description: 'Layout variant — line is a single compact row; block is an expanded card with a title.',
+    },
+    dismissible: {
+      control: 'boolean',
+      description: 'Renders a dismiss button on the trailing edge of the message.',
+    },
+    message: {
+      control: 'text',
+      description: 'Body text content of the message. In block size, rendered below the title.',
+    },
+    title: {
+      control: 'text',
+      description: 'Heading text — only used in the block size variant.',
+    },
   },
 }
 export default meta

@@ -4,13 +4,41 @@ import { StatCard, STAT_ICON_KEYS } from './stats-cards'
 const meta: Meta<typeof StatCard> = {
   title: 'UI/StatCard',
   component: StatCard,
-  parameters: { layout: 'centered' },
+  tags: ['autodocs'],
+  parameters: {
+    layout: 'centered',
+    docs: {
+      description: {
+        component:
+          'KPI summary card displaying a metric title, numeric value, and optional trend indicator. Used in dashboard stat rows. Supports white and blue surface colours, regular and small sizes, and increase/decrease/neutral trend directions.',
+      },
+    },
+  },
   argTypes: {
-    surface: { control: 'select', options: ['white', 'blue'] },
-    size: { control: 'select', options: ['regular', 'small'] },
-    trendType: { control: 'select', options: ['increase', 'decrease', 'neutral'] },
-    icon: { control: 'select', options: STAT_ICON_KEYS },
-    showTrend: { control: 'boolean' },
+    surface: {
+      control: 'select',
+      options: ['white', 'blue'],
+      description: 'Background colour of the card — white for standard surfaces, blue for highlighted metrics.',
+    },
+    size: {
+      control: 'select',
+      options: ['regular', 'small'],
+      description: 'Controls the overall card dimensions and typography scale.',
+    },
+    trendType: {
+      control: 'select',
+      options: ['increase', 'decrease', 'neutral'],
+      description: 'Direction of the trend arrow and its colour — green for increase, red for decrease.',
+    },
+    icon: {
+      control: 'select',
+      options: STAT_ICON_KEYS,
+      description: 'Key for the metric icon rendered in the card header.',
+    },
+    showTrend: {
+      control: 'boolean',
+      description: 'Toggles visibility of the trend row below the value.',
+    },
   },
 }
 export default meta

@@ -1,0 +1,167 @@
+---
+title: Drawer
+description: A panel that slides in from a screen edge — typically the right side on desktop — to show detail content without a full page navigation. Built on shadcn/ui Drawer (vaul). First consumer is the DFC module.
+figmaNodeId: 2252-6277
+figmaUpdated: May 29, 2026
+status: stable
+---
+
+## Overview
+
+The Drawer is a surface that slides in from the right edge of the viewport to surface detail, contextual actions, or a focused form without navigating away from the current page. It sits above the page content with a backdrop overlay.
+
+The CxPortal Drawer is built on [shadcn/ui Drawer](https://ui.shadcn.com/docs/components/drawer), which is itself built on [vaul](https://vaul.emilkowal.ski/) by Emil Kowalski. It follows shadcn's component API (`Drawer`, `DrawerTrigger`, `DrawerContent`, `DrawerHeader`, `DrawerFooter`, `DrawerTitle`, `DrawerDescription`, `DrawerClose`) and extends it with CxPortal-specific sizing and layout conventions.
+
+The DFC (Dynamic Form Component) module was the first driver for this component. Its growing adoption across other modules is why Drawer is being formalized in the Design System.
+
+## When to use
+
+- When showing detail information about a selected record without losing the context of the list (e.g. clicking a campaign row to view its details).
+- When presenting a form or multi-step flow that is tied to the current page context and should be dismissible.
+- When a modal is too disruptive or too small to hold the required content.
+- When the user may need to reference the underlying page while filling out the drawer content.
+
+## When not to use
+
+- Don't use a Drawer when a simple confirmation is needed — use a `Modal` instead.
+- Don't use a Drawer for top-level navigation — use the sidebar.
+- Don't stack Drawers (no drawer-within-drawer). If a secondary detail is needed, open a Modal inside the Drawer instead.
+- Don't use a Drawer on mobile for content that can be displayed inline — on small screens consider a full-page route instead.
+
+## Anatomy
+
+- **Overlay** — Semi-transparent backdrop that covers the main content. Clicking it closes the Drawer.
+- **DrawerContent** — The panel itself, slides in from the right. Fixed height (full viewport height), variable width.
+- **DrawerHeader** — Contains the `DrawerTitle` and an optional `DrawerDescription`. Also hosts the close button.
+- **DrawerBody** — Scrollable content area between header and footer.
+- **DrawerFooter** — Sticky bottom bar for primary and secondary actions.
+- **DrawerClose** — The `×` button in the header that closes the panel.
+
+## Sizes
+
+CxPortal defines named width sizes for the Drawer. Choose based on the density and complexity of the content:
+
+| Size | Width | Use case |
+|---|---|---|
+| `sm` | 400 px | Simple detail views, short forms |
+| `md` | 560 px | Standard detail views with multiple sections (default) |
+| `lg` | 720 px | Complex forms, multi-column layouts, DFC-style panels |
+| `xl` | 960 px | Full-featured panels with embedded tables or charts |
+
+## Variants observed in DFC (Figma)
+
+The DFC module Figma (node `2252-6277`) contains the reference variants and states for this component:
+
+- **Default / closed** — No overlay, drawer not visible
+- **Open — empty state** — Drawer open, content area loading or empty
+- **Open — with content** — Full detail panel with header, scrollable body, sticky footer actions
+- **Open — form mode** — Body contains form fields with validation states
+
+See [DFC Role-Based Views prototype](https://www.figma.com/proto/SaB9CC6VgtQNgvVLUEISth/DFC---Role-Based-Views?node-id=51-6949) for interaction patterns: how the drawer opens on row click, dismiss behavior, and footer action flows.
+
+## Guidelines
+
+### DOs
+
+- Always provide a `DrawerTitle` for accessibility — even if it's visually hidden.
+- Always include a `DrawerClose` button in the header. Users expect `Esc` and a visible close button.
+- Use `DrawerFooter` for all action buttons. Never put primary/destructive actions inside the scrollable body.
+- Keep `DrawerHeader` minimal — title + optional one-line description only.
+- Persist the user's scroll position within the Drawer if they dismiss and re-open it (where the data is stable).
+
+### DON'Ts
+
+- Don't use the Drawer for confirmation dialogs — those belong in `Modal`.
+- Don't open a new route when the Drawer closes. The Drawer is a layer on top of the current route.
+- Don't put navigation (tabs that change routes) inside a Drawer.
+- Don't let the Drawer body content overflow horizontally — design for the fixed width.
+
+## Installation
+
+The shadcn Drawer component must be added before use. It requires `vaul`:
+
+```bash
+npx shadcn@latest add drawer
+```
+
+This adds `vaul` to the project and creates `components/ui/drawer.tsx`.
+
+## Code
+
+### Basic usage
+
+```tsx
+import {
+  Drawer,
+  DrawerClose,
+  DrawerContent,
+  DrawerDescription,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerTrigger,
+} from '@/components/ui/drawer'
+import { Button } from '@/components/ui/button'
+
+<Drawer>
+  <DrawerTrigger asChild>
+    <Button variant="secondary">View Details</Button>
+  </DrawerTrigger>
+
+  <DrawerContent>
+    <DrawerHeader>
+      <DrawerTitle>Campaign Name</DrawerTitle>
+      <DrawerDescription>Last updated Apr 12, 2026</DrawerDescription>
+    </DrawerHeader>
+
+    {/* Scrollable body */}
+    <div style={{ flex: 1, overflowY: 'auto', padding: '0 24px' }}>
+      {/* content */}
+    </div>
+
+    <DrawerFooter>
+      <Button>Save Changes</Button>
+      <DrawerClose asChild>
+        <Button variant="secondary">Cancel</Button>
+      </DrawerClose>
+    </DrawerFooter>
+  </DrawerContent>
+</Drawer>
+```
+
+### Controlled (open state managed externally)
+
+```tsx
+const [open, setOpen] = useState(false)
+
+<Drawer open={open} onOpenChange={setOpen}>
+  <DrawerContent>
+    {/* ... */}
+  </DrawerContent>
+</Drawer>
+
+{/* Trigger from a table row */}
+<button onClick={() => setOpen(true)}>View</button>
+```
+
+### With custom width (lg)
+
+```tsx
+<DrawerContent className="w-[720px]">
+  {/* ... */}
+</DrawerContent>
+```
+
+## Accessibility
+
+- `DrawerTitle` maps to `aria-labelledby` on the Drawer dialog — always required.
+- `DrawerDescription` maps to `aria-describedby` — use it for a one-line context about the drawer's purpose.
+- The overlay must trap focus within the open Drawer.
+- `Escape` key must close the Drawer and return focus to the trigger element.
+- `DrawerClose` must be focusable and have an accessible label (e.g. `aria-label="Close drawer"`).
+
+## Related components
+
+- **Modal** — For confirmations and short-form dialogs. No scrollable body.
+- **Side Panel** — A persistent (non-overlay) right column that narrows the main content area. See [Side Panel](/components/side-panel).
+- **Collapsible Filters** — Left-side panel for filtering. Not an overlay.

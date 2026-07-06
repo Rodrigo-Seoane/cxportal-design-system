@@ -1,0 +1,182 @@
+---
+title: Combobox
+description: A grouped multi-select dropdown that organizes selectable items under named category headers. Two variants — Filter Combobox (for filter panels) and Tag Assignment Combobox (for inline tag management). Distinct from Select (single-select) and TableFilter (flat multi-select).
+figmaNodeId: 2255-8066
+figmaUpdated: May 29, 2026
+status: stable
+---
+
+## Overview
+
+The Combobox is CxPortal's grouped multi-select dropdown. Unlike `Select` (single choice, no groups) and `TableFilter` (flat checkbox list), the Combobox organizes its options under **named group headers** — e.g. Knowledge Bases grouped by region, or tags grouped by category (Status, Audience, Priority).
+
+Two variants exist, each optimized for a different context.
+
+> **Note:** This component was initially called "Dropdown" in early design iterations. The correct name is Combobox, reflecting its multi-data-point selection behavior.
+
+## Variants
+
+### Variant A — Filter Combobox
+
+Used inside the `CollapsibleFilters` panel to filter table data by grouped options.
+
+**Trigger:** A full-width 36 px button showing the filter label, a `FunnelSimpleIcon`, and a blue count badge when selections are active.
+
+**Dropdown panel (250 px wide):**
+- Group headers — 12 px caption text, 20 px row, 4 px left padding. Non-interactive.
+- `TagFilter Selector` rows (32 px) — color dot indicator + checkbox + label. Checked rows get `#f0f5fe` background.
+
+**Grouping models observed in Figma:**
+
+| Variant | Group by | Items |
+|---|---|---|
+| Folders | Knowledge Base name | Topic/folder items |
+| Tags | Tag category (Status, Audience, Priority) | Individual tag values |
+| KBs | Region name | Knowledge base items |
+
+**When to use:** When a filter has too many items to show flat and they benefit from categorical grouping.
+
+---
+
+### Variant B — Tag Assignment Combobox
+
+Opened from a table cell's Tags column to assign or remove tags on a record. Includes a live search input and an inline tag creation flow.
+
+**Trigger:** Table cell click — no dedicated trigger button.
+
+**Dropdown panel (290 px wide):**
+
+**List view:**
+- Header — 10 px semibold: "Assign Tags to \{recordName\}"
+- Search input — filters the visible tag list in real time
+- Grouped tag list — color dot (solid or dashed) + checkbox + label, grouped by tag key category
+- Footer — `Clear` (deselects all) | `Add New` (switches to creation view)
+
+**Add New view:**
+- Key field — text input (e.g. "audience")
+- Value field — text input (e.g. "Internal")
+- Duplicate detection — shows warning if the key:value pair already exists
+- Tag Color picker — 8 solid color swatches + 1 dashed option (9 total)
+- Footer — `Cancel` (back to list) | `Add New Tag` (disabled until Key + Value are filled and non-duplicate)
+
+**When to use:** When users need to assign, remove, or create tags directly from a table row without opening a detail page.
+
+---
+
+## When to use (both variants)
+
+- When selectable items have a natural grouping that aids understanding (tags by category, items by parent, regions by name).
+- When a flat `TableFilter` would be too long or unorganized to scan.
+- When users may need to select items across multiple groups in one interaction.
+
+## When not to use
+
+- Don't use Combobox for single-select — use `Select` instead.
+- Don't use Combobox when items have no meaningful grouping — use `TableFilter` for flat multi-select.
+- Don't use Variant B (Tag Assignment) outside a table cell context.
+
+## Anatomy — shared
+
+- **Trigger** — Button or table cell that opens the dropdown panel.
+- **Portal panel** — Fixed-position overlay rendered via `createPortal` to avoid z-index clipping.
+- **Group header** — Non-interactive caption dividing items into named sections.
+- **Item row** — Checkbox + optional color dot + label. Checked state highlighted.
+- **Footer** — Clear / action buttons.
+- **Close behavior** — Outside click or `Escape` closes the dropdown.
+
+## Guidelines
+
+### DOs
+
+- Always show a count badge on the Filter Combobox trigger when items are selected — users need to know a filtered state is active even at a glance.
+- Keep group header labels concise — they should match the grouping dimension (region name, tag category), not describe the items.
+- In Tag Assignment Combobox, validate for duplicate key:value pairs before allowing "Add New Tag".
+- Portal-render both variants — their parent containers are often inside `overflow: hidden` elements.
+
+### DON'Ts
+
+- Don't use more than ~5 groups inside a single Combobox — beyond that, users lose orientation. Consider a nested structure instead.
+- Don't use the Tag Assignment variant as a standalone filter control — it's designed to operate in the context of a specific record.
+- Don't allow the panel to open beyond the viewport bounds — implement position flipping if needed.
+
+## Code
+
+### Filter Combobox
+
+The Filter Combobox is already implemented in the KM sandbox. It is composed of the `TableFilter` trigger + grouped `FilterTagItem` rows. See [`CollapsibleFilters`](/components/collapsible-filters) for the full implementation context.
+
+```tsx
+// Simplified structure — see /app/sandbox/collapsible-filter/page.tsx for full impl
+<GroupedFilter
+  label="Knowledge Base"
+  groups={[
+    {
+      heading: 'Region: Northeast',
+      items: ['KB Northeast 01', 'KB Northeast 02'],
+    },
+    {
+      heading: 'Region: Southeast',
+      items: ['KB Southeast 01'],
+    },
+  ]}
+  active={activeItems}
+  onToggle={toggleItem}
+/>
+```
+
+### Tag Assignment Combobox
+
+The Tag Assignment Combobox is already implemented in the KM sandbox as `TagAssignDropdown`. See `/app/sandbox/collapsible-filter/page.tsx` for the full implementation.
+
+```tsx
+<TagAssignDropdown
+  articleTitle="API Documentation Guidelines"
+  articleTags={article.tags}
+  tagRegistry={TAG_ITEMS}
+  tagStyleMap={TAG_STYLE}
+  anchorEl={cellRef.current}
+  view={tagDropView}
+  search={tagSearch}
+  onSearch={setTagSearch}
+  onToggleTag={handleToggleTag}
+  onClear={() => setCheckedTags(new Set())}
+  onSwitchToAddNew={() => setTagDropView('addNew')}
+  onNewKeyChange={setNewKey}
+  onNewValueChange={setNewValue}
+  onNewColorChange={setNewColor}
+  onAddNewTag={handleAddNewTag}
+  onCancel={() => setTagDropView('list')}
+  onClose={() => setTagAnchorEl(null)}
+/>
+```
+
+## Token reference
+
+| Token | Value | Usage |
+|---|---|---|
+| `--color-primary` | `#4285f4` | Count badge background, active icon tint, checked checkbox |
+| `--content-action/primary/100` | `#f0f5fe` | Checked row background |
+| `--neutral/200` | `#d9dce0` | Panel border |
+| `--surface/section` | `#ffffff` | Panel background |
+| `--text/body/secondary` | `#7a828c` | Group header text |
+| Panel shadow | `0 4px 24px rgba(5,3,38,0.10)` | Elevation |
+| Filter panel width | 250 px | Filter Combobox |
+| Tag panel width | 290 px | Tag Assignment Combobox |
+| Trigger height | 36 px | Filter variant |
+| Item row height | 32 px | TagFilter Selector |
+| Group header height | 20 px | — |
+
+## Accessibility
+
+- The panel should have `role="listbox"` or `role="dialog"` depending on interaction model.
+- Group headers should use `role="group"` with `aria-label` matching the header text.
+- Each item should have `role="option"` and `aria-selected` reflecting its checked state.
+- The trigger should communicate the active count: `aria-label="Knowledge Base filter, 3 selected"`.
+- Close on `Escape` must return focus to the trigger element.
+- Color dots in the Tag Assignment Combobox are decorative — tag meaning is conveyed by the label text only.
+
+## Related components
+
+- **TableFilter** — Flat multi-select checkbox dropdown, no groups. See [Collapsible Filters](/components/collapsible-filters).
+- **Select** — Single-select dropdown, no groups.
+- **Collapsible Filters** — The panel container that hosts the Filter Combobox.

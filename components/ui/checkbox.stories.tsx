@@ -3,7 +3,17 @@ import { Checkbox, Radio } from './checkbox'
 
 const meta: Meta = {
   title: 'UI/Checkbox & Radio',
-  parameters: { layout: 'centered' },
+  component: Checkbox,
+  tags: ['autodocs'],
+  parameters: {
+    layout: 'centered',
+    docs: {
+      description: {
+        component:
+          'Accessible Checkbox and Radio selection controls. Both components support controlled and uncontrolled modes, two sizes (regular/small), and disabled states. Use Checkbox for multi-select and Radio within a named group for single-select.',
+      },
+    },
+  },
 }
 export default meta
 
@@ -14,9 +24,19 @@ export const CheckboxDefault: CheckboxStory = {
   render: (args) => <Checkbox {...args} />,
   args: { label: 'Accept terms', size: 'regular', disabled: false, defaultChecked: false },
   argTypes: {
-    size: { control: 'select', options: ['regular', 'small'] },
-    disabled: { control: 'boolean' },
-    defaultChecked: { control: 'boolean' },
+    size: {
+      control: 'select',
+      options: ['regular', 'small'],
+      description: 'Controls the visual size of the checkbox box and label text.',
+    },
+    disabled: {
+      control: 'boolean',
+      description: 'Prevents interaction and applies the disabled visual state.',
+    },
+    defaultChecked: {
+      control: 'boolean',
+      description: 'Sets the initial checked state in uncontrolled mode.',
+    },
   },
 }
 
@@ -46,9 +66,19 @@ export const RadioDefault: RadioStory = {
   render: (args) => <Radio {...args} />,
   args: { label: 'Option A', size: 'regular', disabled: false, checked: false },
   argTypes: {
-    size: { control: 'select', options: ['regular', 'small'] },
-    disabled: { control: 'boolean' },
-    checked: { control: 'boolean' },
+    size: {
+      control: 'select',
+      options: ['regular', 'small'],
+      description: 'Controls the visual size of the radio circle and label text.',
+    },
+    disabled: {
+      control: 'boolean',
+      description: 'Prevents interaction and applies the disabled visual state.',
+    },
+    checked: {
+      control: 'boolean',
+      description: 'Whether the radio button is currently selected (controlled mode).',
+    },
   },
 }
 

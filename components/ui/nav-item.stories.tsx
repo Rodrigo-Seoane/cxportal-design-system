@@ -31,13 +31,36 @@ const LightBg = ({ children }: { children: React.ReactNode }) => (
 const menuMeta: Meta<typeof NavMenuItem> = {
   title: 'UI/NavMenuItem',
   component: NavMenuItem,
-  parameters: { layout: 'centered', backgrounds: { default: 'dark' } },
+  tags: ['autodocs'],
+  parameters: {
+    layout: 'centered',
+    backgrounds: { default: 'dark' },
+    docs: {
+      description: {
+        component:
+          'Sidebar navigation components: NavMenuItem is the top-level group header with icon, label, and expand caret; NavSubItem is a nested child item; NavMenuItemCollapsed is the icon-only form for collapsed sidebar mode. All three support dark (CxPortal) and light (CxCentral) themes.',
+      },
+    },
+  },
   decorators: [(Story) => <NavBg><Story /></NavBg>],
   argTypes: {
-    state:    { control: 'select', options: ['default', 'hover', 'active', 'disabled'] },
-    label:    { control: 'text' },
-    isOpen:   { control: 'boolean' },
-    darkMode: { control: 'boolean' },
+    state: {
+      control: 'select',
+      options: ['default', 'hover', 'active', 'disabled'],
+      description: 'Visual interaction state of the nav item.',
+    },
+    label: {
+      control: 'text',
+      description: 'Text label displayed next to the icon.',
+    },
+    isOpen: {
+      control: 'boolean',
+      description: 'Whether the submenu is expanded — rotates the caret and shows children.',
+    },
+    darkMode: {
+      control: 'boolean',
+      description: 'Switches between dark (CxPortal, dark sidebar) and light (CxCentral) colour schemes.',
+    },
   },
 }
 export default menuMeta

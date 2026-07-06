@@ -10,7 +10,7 @@ status: stable
 
 Tabs organise sibling content into a compact, switchable strip. They let users navigate between related views without leaving the page context — making them ideal for filtering lists, toggling between display modes, or stepping through sections inside a panel or modal.
 
-The tab strip sits inside a rounded pill container and provides clear active, default, hover, and disabled states. The active tab has a white card with a blue border; idle tabs sit transparently within the grey group background.
+The component supports two visual types. **Button** (default) wraps tabs in a rounded pill container with a grey background; the active tab has a white card with a blue border. **Minimal** renders tabs inline with no container — the active tab is distinguished by a blue bottom border underline, ideal for embedded contexts like trays, cards, or side panels.
 
 ## When to use
 
@@ -29,11 +29,38 @@ The tab strip sits inside a rounded pill container and provides clear active, de
 
 ## Anatomy
 
-- **Tab group (`TabList`)** — The outer pill container. Background `#eff1f3`, 4px border-radius, 4px padding all sides, 4px gap between tabs.
-- **Tab trigger (`Tab`)** — 10px SemiBold label, optional 16px icon on the left, 4px vertical and 12px horizontal padding, 4px border-radius.
+- **Tab group (`TabList`)** — The outer container. Button type: `#eff1f3` background, 4px border-radius, 4px padding. Minimal type: transparent, no padding or radius. Both: 4px gap between tabs.
+- **Tab trigger (`Tab`)** — 10px SemiBold label, optional 16px icon on the left, 4px vertical padding. Button type: 12px horizontal padding, 4px border-radius. Minimal type: 4px padding all sides, no radius.
 - **Tab panel (`TabPanel`)** — The content region associated with the active tab. Rendered below the tab strip; hidden when its tab is not active.
 
 ## Variants
+
+### Types
+
+<Table size="compact" className="mb-6">
+  <TableHeader>
+    <tr>
+      <TableHead>Type</TableHead>
+      <TableHead>Container</TableHead>
+      <TableHead>Active indicator</TableHead>
+      <TableHead>Best for</TableHead>
+    </tr>
+  </TableHeader>
+  <TableBody>
+    <TableRow>
+      <TableCell><strong>Button</strong> (default)</TableCell>
+      <TableCell><code>#eff1f3</code> pill, 4px radius + padding</TableCell>
+      <TableCell>White card + <code>1px #689df6</code> border</TableCell>
+      <TableCell>Standalone groups — page filters, view-mode switchers</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><strong>Minimal</strong></TableCell>
+      <TableCell>Transparent, no padding</TableCell>
+      <TableCell>Blue bottom border underline</TableCell>
+      <TableCell>Embedded groups — trays, cards, side panels, modals</TableCell>
+    </TableRow>
+  </TableBody>
+</Table>
 
 ### States
 
@@ -41,8 +68,8 @@ The tab strip sits inside a rounded pill container and provides clear active, de
   <TableHeader>
     <tr>
       <TableHead>State</TableHead>
-      <TableHead>Background</TableHead>
-      <TableHead>Border</TableHead>
+      <TableHead>Button bg</TableHead>
+      <TableHead>Minimal indicator</TableHead>
       <TableHead>Text colour</TableHead>
       <TableHead>Description</TableHead>
     </tr>
@@ -50,29 +77,29 @@ The tab strip sits inside a rounded pill container and provides clear active, de
   <TableBody>
     <TableRow>
       <TableCell><strong>Active</strong></TableCell>
-      <TableCell><code>#ffffff</code></TableCell>
-      <TableCell><code>1px #689df6</code></TableCell>
+      <TableCell><code>#ffffff</code> + <code>1px #689df6</code></TableCell>
+      <TableCell>Bottom <code>2px #689df6</code></TableCell>
       <TableCell><code>#4285f4</code></TableCell>
       <TableCell>Currently selected view</TableCell>
     </TableRow>
     <TableRow>
       <TableCell><strong>Default</strong></TableCell>
       <TableCell>Transparent</TableCell>
-      <TableCell>Transparent</TableCell>
+      <TableCell>None</TableCell>
       <TableCell><code>#021920</code></TableCell>
       <TableCell>Idle, available to select</TableCell>
     </TableRow>
     <TableRow>
       <TableCell><strong>Hover</strong></TableCell>
       <TableCell><code>rgba(255,255,255,0.65)</code></TableCell>
-      <TableCell>Transparent</TableCell>
+      <TableCell>None</TableCell>
       <TableCell><code>#021920</code></TableCell>
       <TableCell>Mouse over an idle tab</TableCell>
     </TableRow>
     <TableRow>
       <TableCell><strong>Disabled</strong></TableCell>
       <TableCell>Transparent</TableCell>
-      <TableCell>Transparent</TableCell>
+      <TableCell>None</TableCell>
       <TableCell><code>#aab0b8</code></TableCell>
       <TableCell>Feature not yet available</TableCell>
     </TableRow>
@@ -206,6 +233,29 @@ const [view, setView] = useState('all')
   <TabList aria-label="Filter content">
     <Tab value="all">All</Tab>
     <Tab value="active">Active</Tab>
+    <Tab value="archived" disabled>Archived</Tab>
+  </TabList>
+</Tabs>
+```
+
+### Minimal type
+
+```tsx
+<Tabs defaultValue="list" type="minimal">
+  <TabList aria-label="View mode">
+    <Tab value="list">List View</Tab>
+    <Tab value="grid">Grid View</Tab>
+  </TabList>
+</Tabs>
+```
+
+### Minimal with disabled
+
+```tsx
+<Tabs defaultValue="active" type="minimal">
+  <TabList aria-label="Filter">
+    <Tab value="active">Active</Tab>
+    <Tab value="draft">Draft</Tab>
     <Tab value="archived" disabled>Archived</Tab>
   </TabList>
 </Tabs>

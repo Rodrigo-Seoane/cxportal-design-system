@@ -45,12 +45,17 @@ const T = {
   letterSpacing: '0.4px',
 } as const
 
+// ── Type ──────────────────────────────────────────────────────────────────────
+
+export type TabType = 'button' | 'minimal'
+
 // ── Context ───────────────────────────────────────────────────────────────────
 
 interface TabsCtxValue {
   value: string
   onChange: (value: string) => void
   uid: string
+  type: TabType
 }
 
 const TabsCtx = createContext<TabsCtxValue | null>(null)
@@ -64,6 +69,8 @@ export interface TabsProps {
   defaultValue?: string
   /** Called when the active tab changes */
   onChange?: (value: string) => void
+  /** Visual type — 'button' (pill container) or 'minimal' (underline). Default: 'button' */
+  type?: TabType
   children: React.ReactNode
   style?: React.CSSProperties
   className?: string
@@ -73,6 +80,7 @@ export function Tabs({
   value: controlledValue,
   defaultValue = '',
   onChange,
+  type = 'button',
   children,
   style,
   className,
@@ -91,7 +99,7 @@ export function Tabs({
   )
 
   return (
-    <TabsCtx.Provider value={{ value, onChange: handleChange, uid }}>
+    <TabsCtx.Provider value={{ value, onChange: handleChange, uid, type }}>
       <div style={style} className={className}>
         {children}
       </div>
@@ -116,6 +124,8 @@ export function TabList({
   'aria-label': ariaLabel,
 }: TabListProps) {
   const ref = useRef<HTMLDivElement>(null)
+  const ctx = useContext(TabsCtx)
+  const isMinimal = ctx?.type === 'minimal'
 
   // Roving-tabindex keyboard navigation
   const handleKeyDown = (e: React.KeyboardEvent) => {
@@ -150,12 +160,12 @@ export function TabList({
       aria-label={ariaLabel}
       onKeyDown={handleKeyDown}
       style={{
-        display:     'inline-flex',
-        alignItems:  'center',
-        gap:         T.groupGap,
-        padding:     T.groupPad,
-        borderRadius: T.groupRadius,
-        background:  T.groupBg,
+        display:      'inline-flex',
+        alignItems:   'center',
+        gap:          T.groupGap,
+        padding:      isMinimal ? 0 : T.groupPad,
+        borderRadius: isMinimal ? 0 : T.groupRadius,
+        background:   isMinimal ? 'transparent' : T.groupBg,
         ...style,
       }}
       className={className}
@@ -187,8 +197,9 @@ export function Tab({
   style,
   className,
 }: TabProps) {
-  const ctx    = useContext(TabsCtx)
-  const active = ctx?.value === value
+  const ctx       = useContext(TabsCtx)
+  const active    = ctx?.value === value
+  const isMinimal = ctx?.type === 'minimal'
   const [hovered, setHovered] = useState(false)
 
   const textColor = disabled
@@ -197,11 +208,25 @@ export function Tab({
     ? T.activeText
     : T.defaultText
 
-  const bg = active
+  const bg = isMinimal
+    ? 'transparent'
+    : active
     ? T.activeBg
     : hovered && !disabled
     ? T.hoverBg
     : T.defaultBg
+
+  const border = isMinimal
+    ? 'none'
+    : active
+    ? `1px solid ${T.activeBorder}`
+    : '1px solid transparent'
+
+  const borderBottom = isMinimal && active
+    ? `2px solid ${T.activeBorder}`
+    : isMinimal
+    ? '2px solid transparent'
+    : undefined
 
   return (
     <button
@@ -216,18 +241,19 @@ export function Tab({
       onMouseEnter={() => setHovered(true)}
       onMouseLeave={() => setHovered(false)}
       style={{
-        display:     'inline-flex',
-        alignItems:  'center',
-        gap:         T.tabGap,
-        padding:     `${T.tabPadV}px ${T.tabPadH}px`,
-        borderRadius: T.tabRadius,
-        background:  bg,
-        border:      active
-          ? `1px solid ${T.activeBorder}`
-          : '1px solid transparent',
-        cursor:      disabled ? 'not-allowed' : 'pointer',
-        transition:  'background 100ms ease, border-color 100ms ease',
-        userSelect:  'none',
+        display:      'inline-flex',
+        alignItems:   'center',
+        gap:          T.tabGap,
+        padding:      isMinimal
+          ? `${T.tabPadV}px`
+          : `${T.tabPadV}px ${T.tabPadH}px`,
+        borderRadius: isMinimal ? 0 : T.tabRadius,
+        background:   bg,
+        border,
+        borderBottom,
+        cursor:       disabled ? 'not-allowed' : 'pointer',
+        transition:   'background 100ms ease, border-color 100ms ease',
+        userSelect:   'none',
         ...style,
       }}
       className={className}
@@ -235,10 +261,10 @@ export function Tab({
       {icon && (
         <span
           style={{
-            display:  'flex',
+            display:    'flex',
             flexShrink: 0,
-            color:    textColor,
-            opacity:  disabled ? 0.4 : 1,
+            color:      textColor,
+            opacity:    disabled ? 0.4 : 1,
             transition: 'color 100ms ease, opacity 100ms ease',
           }}
           aria-hidden="true"

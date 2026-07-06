@@ -1,57 +1,34 @@
 ---
 title: Page Title
-description: Page-level header with a large blue title, subtitle, and optional chip or KB metadata. Three variants — Default, With Chip, and With KB Details.
+description: Page-level header with a large blue title, optional subtitle, optional chip, and a composable right-side actions slot.
 figmaNodeId: 187-8471
-figmaUpdated: Apr 09, 2026
+figmaUpdated: Jun 10, 2026
 status: stable
 ---
 
 ## Overview
 
-Page Title is the primary visual anchor for any content page. It displays the page name in a large blue heading alongside a short subtitle, and optionally includes a status chip or knowledge-base metadata (association, version, date created).
+Page Title is the primary visual anchor for any content page. It displays the page name in a large blue heading alongside an optional subtitle and status chip. The right side is a composable slot where consumers can pass buttons, search bars, tabs, or any other page-level controls.
+
+The component was simplified from three rigid variants to a single composable pattern. The previous `with-kb-details` variant is deprecated — KB metadata should be handled by a separate component if needed.
 
 ## When to use
 
-- At the top of every content page to identify the current context
-- When a page represents a versioned or classified record — use **With Chip** to show status
-- When viewing a KB article — use **With KB Details** to surface key metadata inline
+- At the top of every content page to identify the current context.
+- When a page represents a categorized or classified record — enable `showChip` to display a status label.
+- When page-level actions (edit, delete) or controls (search, role tabs) need to be accessible from the header.
+
+## When not to use
+
+- Do not use Page Title for section headers within the page content. Use H3/H4 headings instead.
+- Do not use in modals, drawers, or side panels.
 
 ## Anatomy
 
-- **Title** — 28px, weight 400, `#4285f4`. Always present.
-- **Subtitle** — 12px, weight 400, `#021920`. Descriptive one-liner below the title.
-- **Chip** *(optional)* — Small pill label. `#d9dce0` background, 10px semibold text. Shown in `with-chip` and `with-kb-details` variants.
-- **Actions slot** *(optional)* — Right-aligned buttons. Present in `default` and `with-chip` variants.
-- **KB metadata** *(optional)* — Right-aligned metadata columns (Association, Version, Date Created) separated by vertical dividers. Present in `with-kb-details` variant only.
-
-## Variants
-
-<Table size="compact" className="mb-6">
-  <TableHeader>
-    <tr>
-      <TableHead>Variant</TableHead>
-      <TableHead>Right content</TableHead>
-      <TableHead>Use for</TableHead>
-    </tr>
-  </TableHeader>
-  <TableBody>
-    <TableRow>
-      <TableCell><strong>default</strong></TableCell>
-      <TableCell>Optional <code>actions</code> slot</TableCell>
-      <TableCell>Standard content pages</TableCell>
-    </TableRow>
-    <TableRow>
-      <TableCell><strong>with-chip</strong></TableCell>
-      <TableCell>Chip + optional <code>actions</code> slot</TableCell>
-      <TableCell>Pages with a status or category label</TableCell>
-    </TableRow>
-    <TableRow>
-      <TableCell><strong>with-kb-details</strong></TableCell>
-      <TableCell>Chip + KB metadata columns</TableCell>
-      <TableCell>Knowledge-base article pages</TableCell>
-    </TableRow>
-  </TableBody>
-</Table>
+- **Title** — H2, 28px, weight 400, `#4285f4` (primary brand color). Always present.
+- **Subtitle** *(optional)* — 12px, weight 400, `#021920`. Descriptive one-liner below the title.
+- **Chip** *(optional)* — Info pill label. `#d6e2f5` background, 10px semibold text, border-radius 8px. Controlled by `showChip` prop.
+- **Actions slot** *(optional)* — Right-aligned composable area. Consumers pass any ReactNode (ghost buttons, search inputs, tab groups, etc.).
 
 ## Do's & Don'ts
 
@@ -61,70 +38,202 @@ Page Title is the primary visual anchor for any content page. It displays the pa
 </DosDonts>
 
 <DosDonts>
-  <Do description="Use the with-kb-details variant when all three metadata fields (association, version, date) are available. Partial metadata is fine — omitted fields are hidden automatically." />
-  <Dont description="Use with-kb-details for non-KB pages just to show version info. It carries a specific semantic meaning; use the actions slot with InlineContextData for other metadata patterns." />
+  <Do description="Limit control actions to 2–3 primary operations. Secondary actions should be positioned within the page content." />
+  <Dont description="Overcrowd the component with too many actions or metadata fields — it should establish hierarchy, not serve as a toolbar." />
 </DosDonts>
+
+## Variants
+
+The Page Title supports 14 property combinations by composing four independent properties: `subtitle`, `showChip`, and the `actions` slot (which accepts Button Controls or DFC Header controls). The table below maps every valid combination shown in the design system.
+
+<Table size="compact" className="mb-6">
+  <TableHeader>
+    <tr>
+      <TableHead>Variant</TableHead>
+      <TableHead>subtitle</TableHead>
+      <TableHead>showChip</TableHead>
+      <TableHead>actions</TableHead>
+    </tr>
+  </TableHeader>
+  <TableBody>
+    <TableRow><TableCell>Title + Subtitle + 2 Buttons</TableCell><TableCell>✓</TableCell><TableCell>—</TableCell><TableCell>Button Group</TableCell></TableRow>
+    <TableRow><TableCell>Title + 2 Buttons</TableCell><TableCell>—</TableCell><TableCell>—</TableCell><TableCell>Button Group</TableCell></TableRow>
+    <TableRow><TableCell>Title + Subtitle + 1 Button</TableCell><TableCell>✓</TableCell><TableCell>—</TableCell><TableCell>Single Button</TableCell></TableRow>
+    <TableRow><TableCell>Title + 1 Button</TableCell><TableCell>—</TableCell><TableCell>—</TableCell><TableCell>Single Button</TableCell></TableRow>
+    <TableRow><TableCell>Title + Subtitle</TableCell><TableCell>✓</TableCell><TableCell>—</TableCell><TableCell>—</TableCell></TableRow>
+    <TableRow><TableCell>Only Title</TableCell><TableCell>—</TableCell><TableCell>—</TableCell><TableCell>—</TableCell></TableRow>
+    <TableRow><TableCell>Title + Subtitle + Chip + 2 Buttons</TableCell><TableCell>✓</TableCell><TableCell>✓</TableCell><TableCell>Button Group</TableCell></TableRow>
+    <TableRow><TableCell>Title + Chip + 2 Buttons</TableCell><TableCell>—</TableCell><TableCell>✓</TableCell><TableCell>Button Group</TableCell></TableRow>
+    <TableRow><TableCell>Title + Subtitle + Chip</TableCell><TableCell>✓</TableCell><TableCell>✓</TableCell><TableCell>—</TableCell></TableRow>
+    <TableRow><TableCell>Title + Chip</TableCell><TableCell>—</TableCell><TableCell>✓</TableCell><TableCell>—</TableCell></TableRow>
+    <TableRow><TableCell>Title + Subtitle + DFC Header</TableCell><TableCell>✓</TableCell><TableCell>—</TableCell><TableCell>DFC Header</TableCell></TableRow>
+    <TableRow><TableCell>Title + DFC Header</TableCell><TableCell>—</TableCell><TableCell>—</TableCell><TableCell>DFC Header</TableCell></TableRow>
+    <TableRow><TableCell>Title + Subtitle + Chip + DFC Header</TableCell><TableCell>✓</TableCell><TableCell>✓</TableCell><TableCell>DFC Header</TableCell></TableRow>
+    <TableRow><TableCell>Title + Chip + DFC Header</TableCell><TableCell>—</TableCell><TableCell>✓</TableCell><TableCell>DFC Header</TableCell></TableRow>
+  </TableBody>
+</Table>
 
 ## Code
 
-### Default
+### Title + Subtitle + 2 Button Controls
 
 ```tsx
 import { PageTitle } from '@/components/ui/page-title'
-
-<PageTitle
-  title="Northeast Quarter"
-  subtitle="Master list for Northeast Quarter"
-/>
-```
-
-### With Chip
-
-```tsx
-<PageTitle
-  title="Northeast Quarter"
-  subtitle="Master list for Northeast Quarter"
-  variant="with-chip"
-  chip="Current"
-/>
-```
-
-### With KB Details
-
-```tsx
-<PageTitle
-  title="Northeast Quarter"
-  subtitle="Master list for Northeast Quarter"
-  variant="with-kb-details"
-  chip="Current"
-  association="Guide Delete My Account"
-  version="v 1.7"
-  dateCreated="11/04/2025"
-/>
-```
-
-### With actions slot
-
-```tsx
 import { PencilSimpleIcon, TrashIcon } from '@phosphor-icons/react'
 
 <PageTitle
   title="Northeast Quarter"
   subtitle="Master list for Northeast Quarter"
-  variant="with-chip"
+  actions={
+    <>
+      <button><PencilSimpleIcon size={16} weight="thin" /> Edit List</button>
+      <button><TrashIcon size={16} weight="thin" /> Delete List</button>
+    </>
+  }
+/>
+```
+
+### Title + 2 Button Controls (no subtitle)
+
+```tsx
+<PageTitle
+  title="Northeast Quarter"
+  actions={
+    <>
+      <button><PencilSimpleIcon size={16} weight="thin" /> Edit List</button>
+      <button><TrashIcon size={16} weight="thin" /> Delete List</button>
+    </>
+  }
+/>
+```
+
+### Title + Subtitle + 1 Button Control
+
+```tsx
+<PageTitle
+  title="Northeast Quarter"
+  subtitle="Master list for Northeast Quarter"
+  actions={<button><TrashIcon size={16} weight="thin" /> Delete List</button>}
+/>
+```
+
+### Title + 1 Button Control
+
+```tsx
+<PageTitle
+  title="Northeast Quarter"
+  actions={<button><PencilSimpleIcon size={16} weight="thin" /> Edit List</button>}
+/>
+```
+
+### Title + Subtitle
+
+```tsx
+<PageTitle
+  title="Northeast Quarter"
+  subtitle="Master list for Northeast Quarter"
+/>
+```
+
+### Only Title
+
+```tsx
+<PageTitle title="Northeast Quarter" />
+```
+
+### Title + Subtitle + Chip + 2 Button Controls
+
+```tsx
+<PageTitle
+  title="Northeast Quarter"
+  subtitle="Master list for Northeast Quarter"
+  showChip
   chip="Current"
   actions={
     <>
-      <button>
-        <PencilSimpleIcon size={16} weight="thin" />
-        Edit List
-      </button>
-      <button>
-        <TrashIcon size={16} weight="thin" />
-        Delete List
-      </button>
+      <button><PencilSimpleIcon size={16} weight="thin" /> Edit List</button>
+      <button><TrashIcon size={16} weight="thin" /> Delete List</button>
     </>
   }
+/>
+```
+
+### Title + Chip + 2 Button Controls
+
+```tsx
+<PageTitle
+  title="Northeast Quarter"
+  showChip
+  chip="Current"
+  actions={
+    <>
+      <button><PencilSimpleIcon size={16} weight="thin" /> Edit List</button>
+      <button><TrashIcon size={16} weight="thin" /> Delete List</button>
+    </>
+  }
+/>
+```
+
+### Title + Subtitle + Chip
+
+```tsx
+<PageTitle
+  title="Northeast Quarter"
+  subtitle="Master list for Northeast Quarter"
+  showChip
+  chip="Current"
+/>
+```
+
+### Title + Chip
+
+```tsx
+<PageTitle
+  title="Northeast Quarter"
+  showChip
+  chip="Current"
+/>
+```
+
+### Title + Subtitle + DFC Header Controls
+
+```tsx
+<PageTitle
+  title="Northeast Quarter"
+  subtitle="Master list for Northeast Quarter"
+  actions={<DfcHeaderControls />}
+/>
+```
+
+### Title + DFC Header Controls (no subtitle)
+
+```tsx
+<PageTitle
+  title="Northeast Quarter"
+  actions={<DfcHeaderControls />}
+/>
+```
+
+### Title + Subtitle + Chip + DFC Header Controls
+
+```tsx
+<PageTitle
+  title="Northeast Quarter"
+  subtitle="Master list for Northeast Quarter"
+  showChip
+  chip="Current"
+  actions={<DfcHeaderControls />}
+/>
+```
+
+### Title + Chip + DFC Header Controls
+
+```tsx
+<PageTitle
+  title="Northeast Quarter"
+  showChip
+  chip="Current"
+  actions={<DfcHeaderControls />}
 />
 ```
 
@@ -147,38 +256,54 @@ import { PencilSimpleIcon, TrashIcon } from '@phosphor-icons/react'
     <TableRow>
       <TableCell><code>--text/body/primary</code></TableCell>
       <TableCell><code>#021920</code></TableCell>
-      <TableCell>Subtitle and metadata value color</TableCell>
+      <TableCell>Subtitle text color</TableCell>
     </TableRow>
     <TableRow>
-      <TableCell><code>--text/body/secondary</code></TableCell>
-      <TableCell><code>#7a828c</code></TableCell>
-      <TableCell>KB metadata label color</TableCell>
+      <TableCell><code>--info/100</code></TableCell>
+      <TableCell><code>#d6e2f5</code></TableCell>
+      <TableCell>Chip background</TableCell>
     </TableRow>
     <TableRow>
-      <TableCell><code>--neutral/200</code></TableCell>
-      <TableCell><code>#d9dce0</code></TableCell>
-      <TableCell>Chip background and metadata divider</TableCell>
-    </TableRow>
-    <TableRow>
-      <TableCell>Heading/H1 size</TableCell>
+      <TableCell>Heading/H2 size</TableCell>
       <TableCell>28px / 400</TableCell>
       <TableCell>Title</TableCell>
     </TableRow>
     <TableRow>
       <TableCell>Body/Small size</TableCell>
       <TableCell>12px / 400</TableCell>
-      <TableCell>Subtitle and metadata values</TableCell>
+      <TableCell>Subtitle</TableCell>
     </TableRow>
     <TableRow>
       <TableCell>Caption size</TableCell>
       <TableCell>10px / 600</TableCell>
-      <TableCell>Chip label and metadata keys</TableCell>
+      <TableCell>Chip label</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>Container padding</TableCell>
+      <TableCell>16px 24px</TableCell>
+      <TableCell>Horizontal and vertical</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>Title → Chip gap</TableCell>
+      <TableCell>16px</TableCell>
+      <TableCell>Horizontal</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>Title → Subtitle gap</TableCell>
+      <TableCell>4px</TableCell>
+      <TableCell>Vertical</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>Actions gap</TableCell>
+      <TableCell>12px</TableCell>
+      <TableCell>Between action items</TableCell>
     </TableRow>
   </TableBody>
 </Table>
 
 ## Accessibility
 
-- The title renders as an `<h1>` — use only one `PageTitle` per page to maintain heading hierarchy.
-- The chip is decorative text inside a `<span>`; it does not carry interactive semantics.
+- The title renders as an `<h2>` — there should be only one PageTitle per page.
+- The chip is decorative text inside a `<span>`; if dismissible, the dismiss button has an `aria-label`.
 - Actions passed via the `actions` slot should be accessible buttons or links with visible labels.
+- Use chips to indicate content type or status only when the categorization aids understanding — they should not be the only method of conveying critical information.

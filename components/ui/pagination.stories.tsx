@@ -4,7 +4,17 @@ import { Pagination } from './pagination'
 
 const meta: Meta = {
   title: 'UI/Pagination',
-  parameters: { layout: 'centered' },
+  component: Pagination,
+  tags: ['autodocs'],
+  parameters: {
+    layout: 'centered',
+    docs: {
+      description: {
+        component:
+          'Navigation control for paginated data sets. Supports four variants: numbered (page numbers with Back/Next), back-next (labeled buttons only), directional (arrow icons only), and directional-counter (arrows with an "X of Y" label). Auto-truncates with ellipsis on large page counts.',
+      },
+    },
+  },
 }
 export default meta
 

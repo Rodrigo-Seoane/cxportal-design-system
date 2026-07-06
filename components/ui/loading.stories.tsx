@@ -3,7 +3,17 @@ import { Skeleton, Spinner } from './loading'
 
 const meta: Meta = {
   title: 'UI/Loading',
-  parameters: { layout: 'centered' },
+  component: Spinner,
+  tags: ['autodocs'],
+  parameters: {
+    layout: 'centered',
+    docs: {
+      description: {
+        component:
+          'Loading state components: Spinner is an animated rotating icon for in-progress feedback in five sizes; Skeleton renders animated placeholder blocks matching typographic or layout shapes (rect, circle, text) while content loads.',
+      },
+    },
+  },
 }
 export default meta
 
@@ -13,7 +23,11 @@ export const SpinnerDefault: Story = {
   render: (args) => <Spinner {...args} />,
   args: { size: 'md' },
   argTypes: {
-    size: { control: 'select', options: ['xs', 'sm', 'md', 'lg', 'xl'] },
+    size: {
+      control: 'select',
+      options: ['xs', 'sm', 'md', 'lg', 'xl'],
+      description: 'Controls the pixel size of the spinner — xs for inputs, xl for full-page loading states.',
+    },
   },
 }
 

@@ -4,9 +4,22 @@ import { ChannelBadge } from './ChannelBadge'
 const meta: Meta<typeof ChannelBadge> = {
   title: 'Campaigns/ChannelBadge',
   component: ChannelBadge,
-  parameters: { layout: 'centered' },
+  tags: ['autodocs'],
+  parameters: {
+    layout: 'centered',
+    docs: {
+      description: {
+        component:
+          'Compact inline badge identifying the communication channel of a campaign or message (email, SMS, voice, WhatsApp). Uses channel-specific icon and colour from the design token chip palette. Coming-soon channels render at reduced opacity.',
+      },
+    },
+  },
   argTypes: {
-    channel: { control: 'select', options: ['email', 'sms', 'voice'] },
+    channel: {
+      control: 'select',
+      options: ['email', 'sms', 'voice'],
+      description: 'The communication channel — determines the badge colour, icon, and label text.',
+    },
   },
 }
 export default meta

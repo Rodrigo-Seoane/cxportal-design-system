@@ -3,7 +3,17 @@ import { Chip, Tag } from './chip'
 
 const meta: Meta = {
   title: 'UI/Chip & Tag',
-  parameters: { layout: 'centered' },
+  component: Chip,
+  tags: ['autodocs'],
+  parameters: {
+    layout: 'centered',
+    docs: {
+      description: {
+        component:
+          'Chip is a compact semantic badge with optional icons, used to highlight status or categories (info/success/warning/error) at four tint levels. Tag is a pill-shaped label for showing filter states or numeric values with optional before/after value transitions.',
+      },
+    },
+  },
 }
 export default meta
 
@@ -13,10 +23,24 @@ export const ChipDefault: Story = {
   render: (args) => <Chip {...args} />,
   args: { label: 'Current', type: 'info', shade: 100, iconLeft: true, iconRight: true },
   argTypes: {
-    type: { control: 'select', options: ['info', 'success', 'warning', 'error'] },
-    shade: { control: 'select', options: [100, 200, 400, 500] },
-    iconLeft: { control: 'boolean' },
-    iconRight: { control: 'boolean' },
+    type: {
+      control: 'select',
+      options: ['info', 'success', 'warning', 'error'],
+      description: 'Semantic colour family applied to the chip background and text.',
+    },
+    shade: {
+      control: 'select',
+      options: [100, 200, 400, 500],
+      description: 'Tint level within the colour family — 100 is lightest, 500 is darkest.',
+    },
+    iconLeft: {
+      control: 'boolean',
+      description: 'Shows the connection icon on the left side of the label.',
+    },
+    iconRight: {
+      control: 'boolean',
+      description: 'Shows the dismiss (×) icon on the right side of the label.',
+    },
   },
 }
 
@@ -54,8 +78,18 @@ export const TagDefault: Story = {
   render: (args) => <Tag {...args} />,
   args: { label: 'Status', state: 'default', type: 'simple', value: '3', newValue: '7' },
   argTypes: {
-    state: { control: 'select', options: ['default', 'active', 'viewed', 'disabled'] },
-    type: { control: 'select', options: ['simple', 'with-value', 'value-update'] },
+    state: {
+      control: 'select',
+      options: ['default', 'active', 'viewed', 'disabled'],
+      description:
+        'Visual state mapping to the neutral colour scale — active is darkest, disabled is washed out.',
+    },
+    type: {
+      control: 'select',
+      options: ['simple', 'with-value', 'value-update'],
+      description:
+        'Layout variant — simple shows label only; with-value adds a numeric count; value-update shows an old → new value transition.',
+    },
   },
 }
 

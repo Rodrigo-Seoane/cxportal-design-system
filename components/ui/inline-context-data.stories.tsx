@@ -5,11 +5,29 @@ import { CalendarBlankIcon, ClockIcon, UserIcon } from '@phosphor-icons/react'
 const meta: Meta<typeof InlineContextData> = {
   title: 'UI/InlineContextData',
   component: InlineContextData,
-  parameters: { layout: 'centered' },
+  tags: ['autodocs'],
+  parameters: {
+    layout: 'centered',
+    docs: {
+      description: {
+        component:
+          'Compact read-only display for labelled metadata pairs — used inline in cards, headers, and detail rows. Optionally shows a leading icon and a second value for compound data like date + time.',
+      },
+    },
+  },
   argTypes: {
-    label: { control: 'text' },
-    value: { control: 'text' },
-    value2: { control: 'text' },
+    label: {
+      control: 'text',
+      description: 'Descriptor text rendered before the value, e.g. "Next Credit Renew:".',
+    },
+    value: {
+      control: 'text',
+      description: 'Primary value displayed after the label.',
+    },
+    value2: {
+      control: 'text',
+      description: 'Optional secondary value for compound data such as a time alongside a date.',
+    },
   },
 }
 export default meta

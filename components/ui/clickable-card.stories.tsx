@@ -4,7 +4,17 @@ import { ClickableCard, ClickableHorizontalCard, CLICKABLE_CARD_ICON_KEYS } from
 
 const meta: Meta = {
   title: 'UI/ClickableCard',
-  parameters: { layout: 'centered' },
+  component: ClickableCard,
+  tags: ['autodocs'],
+  parameters: {
+    layout: 'centered',
+    docs: {
+      description: {
+        component:
+          'Selectable card used in campaign or channel-type pickers. ClickableCard shows an icon, title, and description with a radio indicator; ClickableHorizontalCard is a compact horizontal variant for simple label options. Both update their selected state visually when toggled.',
+      },
+    },
+  },
 }
 export default meta
 
@@ -19,8 +29,16 @@ export const Default: Story = {
     selected: false,
   },
   argTypes: {
-    icon: { control: 'select', options: CLICKABLE_CARD_ICON_KEYS },
-    selected: { control: 'boolean' },
+    icon: {
+      control: 'select',
+      options: CLICKABLE_CARD_ICON_KEYS,
+      description: 'Key of the Phosphor icon rendered in the coloured icon badge.',
+    },
+    selected: {
+      control: 'boolean',
+      description:
+        'Whether the card is in the selected state — applies a highlighted border and background.',
+    },
   },
   decorators: [(Story) => <div style={{ width: 320 }}><Story /></div>],
 }

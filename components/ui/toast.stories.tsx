@@ -4,14 +4,30 @@ import { Toast } from './toast'
 const meta: Meta<typeof Toast> = {
   title: 'UI/Toast',
   component: Toast,
-  parameters: { layout: 'centered' },
+  tags: ['autodocs'],
+  parameters: {
+    layout: 'centered',
+    docs: {
+      description: {
+        component:
+          'In-app notification banner for transient feedback. Supports six types: default, success, error, warning, info, and loading (with animated spinner). Shows an icon, title, optional description, and optional action button. Normally used with the Toaster orchestrator.',
+      },
+    },
+  },
   argTypes: {
     type: {
       control: 'select',
       options: ['default', 'success', 'error', 'warning', 'info', 'loading'],
+      description: 'Semantic type — sets the icon and border accent colour of the toast.',
     },
-    title: { control: 'text' },
-    description: { control: 'text' },
+    title: {
+      control: 'text',
+      description: 'Primary message text shown in the toast.',
+    },
+    description: {
+      control: 'text',
+      description: 'Optional secondary detail text shown below the title.',
+    },
   },
 }
 export default meta

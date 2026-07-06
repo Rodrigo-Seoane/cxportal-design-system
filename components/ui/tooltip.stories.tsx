@@ -5,10 +5,26 @@ import { Button } from './button'
 const meta: Meta<typeof Tooltip> = {
   title: 'UI/Tooltip',
   component: Tooltip,
-  parameters: { layout: 'centered' },
+  tags: ['autodocs'],
+  parameters: {
+    layout: 'centered',
+    docs: {
+      description: {
+        component:
+          'Hover-triggered informational popup that wraps any trigger element. Renders a dark-background text bubble with a directional arrow in one of four placements (top/right/bottom/left).',
+      },
+    },
+  },
   argTypes: {
-    placement: { control: 'select', options: ['top', 'right', 'bottom', 'left'] },
-    content: { control: 'text' },
+    placement: {
+      control: 'select',
+      options: ['top', 'right', 'bottom', 'left'],
+      description: 'Which side of the trigger the tooltip bubble appears on.',
+    },
+    content: {
+      control: 'text',
+      description: 'Text content displayed inside the tooltip bubble.',
+    },
   },
 }
 export default meta

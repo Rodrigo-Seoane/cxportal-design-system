@@ -1,0 +1,97 @@
+---
+title: Main Panel Type Hierarchy
+description: Usage rule defining heading levels and subtitle styles for the main content panel, inner sections, and inner sub-sections in CxPortal.
+figmaNodeId: 4748-81615
+figmaUpdated: May 29, 2026
+status: stable
+type: pattern
+---
+
+## Overview
+
+This is a typography rule, not a new component. It establishes which heading level to use at each layer of the main content panel so that visual hierarchy is consistent and screen readers can navigate the page structure correctly.
+
+There are three levels: the **Main Content Section** (top of the panel), **Inner Sections** (subsections within it), and **Inner Sub-Sections** (tertiary groupings within an inner section).
+
+---
+
+## The Hierarchy
+
+### Level 1 — Main Content Section
+
+The primary title of the main panel or a top-level section of the page.
+
+| Element | Style |
+|---|---|
+| **Title** | H2 — Main Panel / Primary section title |
+| **Subtitle** | Body/Small Regular *(optional)* |
+
+Used for: page-level section headers, the top of a content card, or the primary label of a major panel (e.g. "Articles", "Upload Content", "Knowledge Bases").
+
+---
+
+### Level 2 — Inner Section
+
+A secondary grouping within the main content section.
+
+| Element | Style |
+|---|---|
+| **Title** | H3 — Inner Section title |
+| **Subtitle** | Body/Small Regular *(optional)* |
+
+Used for: labeled subsections within a card or panel that are siblings to other inner sections (e.g. tabs content areas, settings groups, form blocks).
+
+---
+
+### Level 3 — Inner Sub-Section
+
+A tertiary grouping nested within an inner section.
+
+| Element | Style |
+|---|---|
+| **Title** | H4 — Inner Sub-Section title |
+| **Subtitle** | Body/Small Regular *(optional)* |
+
+Used for: fine-grained groupings within a settings block, an accordion panel body, or a form segment that needs a label but doesn't warrant a full section break.
+
+---
+
+## Summary
+
+```
+Main Content Section   →  H2 + Body/Small subtitle (optional)
+  Inner Section        →  H3 + Body/Small subtitle (optional)
+    Inner Sub-Section  →  H4 + Body/Small subtitle (optional)
+```
+
+---
+
+## Guidelines
+
+### DOs
+
+- Always start the main panel with H2 — never H1 (that belongs to the `PageTitle` component above the panel) and never H3 (that skips a level).
+- Use the subtitle slot when a title alone doesn't give enough context — e.g. a size limit, a description of what the section contains, or a count.
+- Keep subtitles to one line whenever possible. Use Body/Small Regular, never semibold or bold.
+- Use H3 for inner sections even when there is only one — it keeps the structure consistent and accessible regardless of how many siblings appear.
+
+### DON'Ts
+
+- Don't use H1 inside the main panel — there should be only one H1 per page, and it lives in the `PageTitle` component.
+- Don't skip heading levels (e.g. going from H2 directly to H4) — this breaks document outline semantics and screen reader navigation.
+- Don't use heading elements for decorative labels that don't introduce a content block. Use `Body/Small Semibold` or a caption instead.
+- Don't style subtitles with semibold or bold — the contrast between the heading and the subtitle depends on the subtitle being Regular weight.
+
+---
+
+## Relationship to Other Patterns
+
+- **PageTitle** (`<h1>`) — Sits above the main panel, outside the content area. Always H1.
+- **Table Title** — The table section label that appears before each data table uses the large caption style (not a heading element). See [Table Title Pattern](/components/table-title-pattern).
+- **Main Content Section Title** (this rule) — H2 for the primary content area header.
+
+---
+
+## Figma Reference
+
+- **Rules Frame:** [Knowledge Management Phase 2 — Type Hierarchy](https://www.figma.com/design/QJU6GQyFjpurCmJ1vKvrb3/Knowledge-Management---Phase-2?node-id=4748-81615&m=dev)

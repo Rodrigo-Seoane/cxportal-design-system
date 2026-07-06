@@ -1,0 +1,157 @@
+---
+title: Inline Stats Cards
+description: Analytics metric tiles for detail-view pages. Display a formatted KPI value with an optional sparkline trend and signed delta vs a comparison period. Used inline within campaign, topic, and account detail views.
+figmaNodeId: 2216-8007
+figmaUpdated: May 29, 2026
+status: stable
+---
+
+## Overview
+
+Inline Stats Cards (component: `MetricTile`) are compact analytics tiles designed to appear inline within detail pages — not as standalone executive dashboards. They surface a single KPI with a formatted value, an optional signed delta against a comparison period, and an optional sparkline for at-a-glance trend reading.
+
+Unlike the dashboard [`StatCard`](/components/stats-cards), Inline Stats Cards have no category icon. They rely on the metric title for identification and are intended to sit in a horizontal row directly below a detail page header.
+
+Current usages:
+- **Campaign Detail** — shows Sent, Delivered, Open Rate, Click Rate, Bounce Rate, Unsubscribes
+- **Campaign List Overview** — shows aggregated KPIs with week-over-week deltas
+- **Topic Detail** — shows per-topic performance metrics
+
+## When to use
+
+- Inside a detail page, directly below the page title, as a summary strip of 4–6 KPIs.
+- When the reader has navigated into a specific record (campaign, topic, account) and needs a quick performance snapshot.
+- When one or more metrics benefit from a sparkline to communicate trend direction over time.
+
+## When not to use
+
+- Do not use Inline Stats Cards as a top-level executive dashboard — use `StatCard` with category icons instead.
+- Do not mix `MetricTile` and `StatCard` in the same row.
+- Do not use for more than 6 tiles in a single row — overflow wraps unpredictably on smaller viewports.
+
+## Anatomy
+
+- **Metric label** — 11 px semibold, secondary text color. Identifies the KPI.
+- **Value** — 26 px bold, primary text color. The primary read. Auto-formatted by format type.
+- **Sparkline** *(optional)* — 80×28 px SVG polyline in primary blue. Positioned to the right of the value. Requires 2+ data points.
+- **Delta** *(optional)* — 11 px with directional arrow (10 px). Green for positive, red for negative. Includes a comparison period label in secondary color.
+
+## Variants
+
+### Surface
+
+| Surface | Background token | Use case |
+|---|---|---|
+| **White** | `--color-surface-section` | Standard on page backgrounds |
+| **Gray** | `--color-surface-display` | When tiles sit on a white page and need subtle separation |
+
+### Value format
+
+| Format | Example output | When to use |
+|---|---|---|
+| `number` | `62.4M`, `1.2K`, `850` | Counts — messages sent, bounces, clicks |
+| `percent` | `59.4%` | Rates — open rate, click rate, bounce rate |
+| `currency` | `$12,400` | Spend or revenue values |
+
+### Delta display
+
+- **With delta** — Shows directional arrow + formatted delta value + period label (e.g. `↑ +2.3pp vs last period`)
+- **Without delta** — Value row stands alone; use when a comparison period is unavailable or irrelevant
+
+Percent deltas are displayed as percentage points (pp) with a `+/−` prefix. Number deltas use the same K/M abbreviation as the main value.
+
+## Guidelines
+
+### DOs
+
+- Always provide a `deltaLabel` when passing a `delta` — naked numbers without context mislead readers.
+- Use `sparkline` on the 1–2 most important rate metrics in a row (e.g. Open Rate, Click Rate). Not every tile needs one.
+- Use `format="percent"` for rate metrics and `format="number"` for volume metrics. Mixing formats in a row is fine and expected.
+- Keep the row to a maximum of 6 tiles. Beyond that, consider grouping or a tabbed breakdown.
+
+### DON'Ts
+
+- Don't use `sparkline` on volume metrics (Sent, Delivered) — absolute counts don't trend-read as naturally as rates.
+- Don't omit `deltaLabel` — the comparison period (vs last campaign, vs last week) is critical context.
+- Don't hardcode values — always derive from real data. Placeholder zeros mislead stakeholders during loading states.
+
+## Code
+
+### Basic usage
+
+```tsx
+import { MetricTile } from '@/app/sandbox/campaigns-email/_components/MetricTile'
+
+<MetricTile
+  title="Open Rate"
+  value={0.594}
+  format="percent"
+  delta={0.023}
+  deltaLabel="vs last period"
+  sparkline={opensByHourData}
+/>
+```
+
+### Campaign detail metrics row
+
+```tsx
+<div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
+  <MetricTile title="Sent"         value={62400000} format="number"  />
+  <MetricTile title="Delivered"    value={61100000} format="number"  />
+  <MetricTile title="Open Rate"    value={0.594}    format="percent" sparkline={opensByHour} />
+  <MetricTile title="Click Rate"   value={0.073}    format="percent" />
+  <MetricTile title="Bounce Rate"  value={0.022}    format="percent" />
+  <MetricTile title="Unsubscribes" value={1150}     format="number"  />
+</div>
+```
+
+### With delta and gray surface
+
+```tsx
+<MetricTile
+  title="Click Rate"
+  value={0.073}
+  format="percent"
+  delta={-0.004}
+  deltaLabel="vs last campaign"
+  surface="gray"
+/>
+```
+
+### Without delta (no comparison available)
+
+```tsx
+<MetricTile
+  title="Bounces"
+  value={1150000}
+  format="number"
+/>
+```
+
+## Token reference
+
+| Token | Value | Usage |
+|---|---|---|
+| `--color-surface-section` | `#ffffff` | White surface background |
+| `--color-surface-display` | (gray) | Gray surface background |
+| `--color-border` | `#eff1f3` | Card border |
+| `--color-primary` | `#4285f4` | Sparkline stroke color |
+| `--color-text-primary` | `#021920` | Value text |
+| `--color-text-secondary` | `#7a828c` | Label and delta period text |
+| Success green | `#1a6b1a` | Positive delta arrow and text |
+| Error red | `#8b1a2a` | Negative delta arrow and text |
+| Card border radius | `10 px` | — |
+| Card padding | `12 px 16 px` | — |
+| Card min-width | `160 px` | — |
+| Value font size | `26 px / 700` | — |
+| Label font size | `11 px / 600` | — |
+| Delta font size | `11 px / 500` | — |
+| Sparkline size | `80 × 28 px` | — |
+
+## Accessibility
+
+- The sparkline SVG should carry `aria-hidden="true"` — it is supplementary to the numeric value and the delta text.
+- Each tile should have a descriptive `aria-label` on its container: e.g. `"Open Rate: 59.4%, up 2.3 percentage points vs last period"`.
+- Use `role="status"` on tiles that update in real time (e.g. live campaign monitoring) so assistive technology announces changes.
+- Color is never the sole indicator of delta direction — the directional arrow icon provides a shape-based redundant signal.
+- Ensure a minimum **4.5:1** contrast ratio for all text against the tile background.

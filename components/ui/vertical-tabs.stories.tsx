@@ -5,7 +5,17 @@ import { Shield, Bell, User, Lock, CreditCard } from '@phosphor-icons/react'
 
 const meta: Meta = {
   title: 'UI/VerticalTabs',
-  parameters: { layout: 'centered' },
+  component: VerticalTabGroup,
+  tags: ['autodocs'],
+  parameters: {
+    layout: 'centered',
+    docs: {
+      description: {
+        component:
+          'Vertical navigation list for settings-style or sub-navigation panels. VerticalTabGroup is the container; VerticalTab is each individual item with an optional leading icon. The active item has a solid blue background; disabled items are grayed out.',
+      },
+    },
+  },
   decorators: [(Story) => <div style={{ width: 200 }}><Story /></div>],
 }
 export default meta

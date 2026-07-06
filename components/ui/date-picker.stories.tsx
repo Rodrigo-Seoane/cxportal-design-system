@@ -4,14 +4,38 @@ import { DatePicker } from './date-picker'
 const meta: Meta<typeof DatePicker> = {
   title: 'UI/DatePicker',
   component: DatePicker,
-  parameters: { layout: 'centered' },
+  tags: ['autodocs'],
+  parameters: {
+    layout: 'centered',
+    docs: {
+      description: {
+        component:
+          'Form field for selecting a single date via a portal-rendered calendar popup. Supports controlled and uncontrolled modes, required indicator, error messaging, and disabled state.',
+      },
+    },
+  },
   decorators: [(Story) => <div style={{ width: 280, paddingBottom: 320 }}><Story /></div>],
   argTypes: {
-    required: { control: 'boolean' },
-    disabled: { control: 'boolean' },
-    label: { control: 'text' },
-    error: { control: 'text' },
-    placeholder: { control: 'text' },
+    required: {
+      control: 'boolean',
+      description: 'Displays a required asterisk (*) before the label text.',
+    },
+    disabled: {
+      control: 'boolean',
+      description: 'Prevents the calendar from opening and applies the disabled visual state.',
+    },
+    label: {
+      control: 'text',
+      description: 'Text label rendered above the date input trigger.',
+    },
+    error: {
+      control: 'text',
+      description: 'Validation error message shown below the input; also applies the error border colour.',
+    },
+    placeholder: {
+      control: 'text',
+      description: 'Placeholder text shown when no date is selected.',
+    },
   },
 }
 export default meta

@@ -6,10 +6,27 @@ const SPARKLINE = [0.52, 0.55, 0.53, 0.58, 0.60, 0.57, 0.61, 0.59, 0.63, 0.62, 0
 const meta: Meta<typeof MetricTile> = {
   title: 'Campaigns/MetricTile',
   component: MetricTile,
-  parameters: { layout: 'centered' },
+  tags: ['autodocs'],
+  parameters: {
+    layout: 'centered',
+    docs: {
+      description: {
+        component:
+          'KPI tile for email campaign analytics dashboards. Displays a metric title, formatted value, optional signed delta vs comparison period, and an optional sparkline trend chart. Supports number, percent, and currency value formats.',
+      },
+    },
+  },
   argTypes: {
-    format:  { control: 'select', options: ['number', 'percent', 'currency'] },
-    surface: { control: 'select', options: ['white', 'gray'] },
+    format: {
+      control: 'select',
+      options: ['number', 'percent', 'currency'],
+      description: 'How the numeric value is formatted — number uses K/M abbreviations, percent multiplies by 100 and appends %, currency formats as USD.',
+    },
+    surface: {
+      control: 'select',
+      options: ['white', 'gray'],
+      description: 'Background surface colour of the tile — use gray to distinguish tiles on white page backgrounds.',
+    },
   },
 }
 export default meta
