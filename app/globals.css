@@ -1,143 +1,507 @@
 @import "tailwindcss";
 
-/* ─── Mona Sans variable font ─────────────────────────────────────────────── */
+/* ─── Roboto (Figma text-styles font family) ──────────────────────────────── */
 @font-face {
-  font-family: 'Mona Sans';
-  src:
-    url('/fonts/MonaSans/MonaSans-VariableFont.woff2') format('woff2 supports variations'),
-    url('/fonts/MonaSans/MonaSans-VariableFont.woff2') format('woff2-variations');
-  font-weight: 200 900;
+  font-family: 'Roboto';
+  src: url('/fonts/Roboto/Roboto-VariableFont_wdth,wght.woff2') format('woff2 supports variations'),
+       url('/fonts/Roboto/Roboto-VariableFont_wdth,wght.woff2') format('woff2-variations');
+  font-weight: 100 900;
   font-style: normal;
   font-display: swap;
 }
-
 @font-face {
-  font-family: 'Mona Sans';
-  src:
-    url('/fonts/MonaSans/MonaSans-VariableFont-Italic.woff2') format('woff2 supports variations'),
-    url('/fonts/MonaSans/MonaSans-VariableFont-Italic.woff2') format('woff2-variations');
-  font-weight: 200 900;
+  font-family: 'Roboto';
+  src: url('/fonts/Roboto/Roboto-Italic-VariableFont_wdth,wght.woff2') format('woff2 supports variations'),
+       url('/fonts/Roboto/Roboto-Italic-VariableFont_wdth,wght.woff2') format('woff2-variations');
+  font-weight: 100 900;
   font-style: italic;
   font-display: swap;
 }
 
-/* ─── CxPortal Design Tokens ──────────────────────────────────────────────── */
+/* ═══════════════════════════════════════════════════════════════════════════
+   CxPortal Design Tokens — generated from Figma export 2026-08-19
+   Source of truth: _sync-state v11 · CxPortal/Light mode
+   Naming: Figma variable path with `/` → `-`, spaces → `-`, lowercase.
+   Multi-mode blocks (CxPortal/Dark, CxCentral/*, Cases/*) — Phase 2.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
 :root {
-  /* Sidebar layout — updated by Sidebar.tsx client component */
+  /* Layout (non-token — kept for consumer parity) */
   --sidebar-w: 240px;
 
-  /* Colors — Primary */
-  --color-primary: #4285f4;
+  /* ─── Raw palette (private — do not consume directly in components) ─── */
+  --raw-pronetx-greys-200: #cdcdcd;
+  --raw-pronetx-greys-300: #adadad;
+  --raw-pronetx-greys-400: #8d8d8d;
+  --raw-pronetx-greys-600: #525252;
+  --raw-pronetx-greys-500: #6f6f6f;
+  --raw-blue-100: #d6e2f5;
+  --raw-blue-200: #a4beea;
+  --raw-blue-300: #5a89d8;
+  --raw-blue-500: #1f4584;
+  --raw-blue-600: #11274a;
+  --raw-blue-700: #060d19;
+  --raw-blue-default: #2859ab;
+  --raw-green-50: #f3fbee;
+  --raw-green-200: #b5e89c;
+  --raw-green-300: #87d95e;
+  --raw-green-500: #4b9924;
+  --raw-green-600: #244a11;
+  --raw-green-700: #0c1906;
+  --raw-green-default: #67d034;
+  --raw-red-100: #fbc6d4;
+  --raw-red-200: #f792ac;
+  --raw-red-300: #f3547d;
+  --raw-red-500: #ab0c36;
+  --raw-red-600: #690821;
+  --raw-red-700: #130106;
+  --raw-red-default: #ef2056;
+  --raw-caylent-green-50: #fbfcf2;
+  --raw-caylent-green-200: #c2ecaa;
+  --raw-caylent-green-300: #97ca6f;
+  --raw-caylent-green-default: #6a9949;
+  --raw-caylent-green-500: #5f7a34;
+  --raw-caylent-green-600: #395718;
+  --raw-caylent-green-700: #1c3f13;
+  --raw-golden-50: #fdf8ef;
+  --raw-golden-200: #f7ddb1;
+  --raw-golden-300: #f1c780;
+  --raw-golden-default: #eaa93c;
+  --raw-golden-500: #c79033;
+  --raw-golden-600: #815d21;
+  --raw-golden-700: #2f220c;
+  --raw-cxportal-purple-100: #f8f9ff;
+  --raw-cxportal-purple-200: #e5e9ff;
+  --raw-cxportal-purple-300: #d6d7ff;
+  --raw-cxportal-purple-default: #b2a3ff;
+  --raw-cxportal-purple-500: #917aff;
+  --raw-cxportal-purple-600: #8565f2;
+  --raw-cxportal-purple-700: #7950e5;
+  --raw-caylent-green-100: #e8f7da;
+  --raw-golden-100: #fbeed8;
+  --raw-pronetx-greys-0: #ffffff;
+  --raw-cxportal-purple-50: #fcfdff;
+  --raw-green-100: #ddf4d2;
+  --raw-blue-50: #eef3fb;
+  --raw-red-50: #fef1f4;
+  --raw-cxportal-purple-750: #6530b9;
+  --raw-cxportal-purple-800: #51078f;
+  --raw-caylent-green-750: #0d3310;
+  --raw-caylent-green-800: #00270e;
+  --raw-pronetx-greys-100: #efefef;
+  --raw-pronetx-greys-700: #373737;
+  --raw-pronetx-greys-50: #f8f8f8;
+  --raw-pronetx-greys-800: #1d1d1d;
+  --raw-teal-50: #e7f6f6;
+  --raw-teal-100: #cfeced;
+  --raw-teal-200: #86d1d3;
+  --raw-teal-300: #3eb5b9;
+  --raw-teal-default: #0ea2a7;
+  --raw-teal-500: #0b8286;
+  --raw-teal-600: #075154;
+  --raw-teal-700: #032021;
+  --raw-teal-750: #010f0f;
+  --raw-teal-800: #000303;
+  --raw-navigation-blue: #050326;
+  --raw-caylent-green-900: #000f09;
+  --raw-cxportal-purple-900: #1b0028;
+  --raw-pronetx-greys-750: #2a2a2a;
+  --raw-pronetx-greys-900: #101010;
+  --raw-disabled-green-50: #f9fbf7;
+  --raw-disabled-green-100: #f1f5ed;
+  --raw-disabled-green-200: #d2e0c8;
+  --raw-disabled-green-300: #cfd7c2;
+  --raw-disabled-green-default: #c4cdba;
+  --raw-disabled-green-500: #b7beac;
+  --raw-disabled-green-600: #8f9785;
+  --raw-disabled-green-700: #6a7260;
+  --raw-disabled-green-750: #4f5746;
+  --raw-disabled-green-800: #373d2f;
+  --raw-disabled-green-900: #0b0f06;
 
-  /* Colors — Text */
-  --color-text-primary: #021920;
-  --color-text-secondary: #7a828c;
-  --color-text-on-dark: #eff1f3;
-  --color-text-placeholder: #7a828c;
+  /* ─── Raw scale (spacing/sizing) ─── */
+  --space-0: 0px;
+  --space-0-5: 2px;
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-7: 28px;
+  --space-8: 32px;
+  --space-9: 36px;
+  --space-10: 40px;
+  --space-12: 48px;
+  --space-16: 64px;
+  --space-20: 80px;
+  --space-30: 120px;
+  --space-0-25: 1px;
 
-  /* Colors — Surfaces */
-  --color-surface-section: #ffffff;
-  --color-surface-display: #eff1f3;
-  --color-surface-panel: #eff1f3;
-  --color-surface-nav: #050326;
-  --color-surface-form-field: #ffffff;
-  --color-surface-zebra: #f8f8f8;
+  /* ─── Font strings ─── */
+  --font-family-heading: "Roboto";
+  --font-family-body: "Roboto";
+  --font-family-caption: "Roboto";
+  --font-weight-light: "Light";
+  --font-weight-regular: "Regular";
+  --font-weight-semibold: "SemiBold";
+  --font-weight-extra-bold: "ExtraBold";
+  --font-family-email-heading: "Lora";
+  --font-family-email-body: "Source Sans Pro";
+  --font-family-email-caption: "Source Sans Pro";
 
-  /* Colors — Interactive states (buttons, hover, active, disabled) */
-  --color-interactive-primary-light: #689df6;
-  --color-interactive-primary-dark: #3264b8;
-  --color-interactive-border-strong: #aab0b8;
-  --color-interactive-border-disabled: #d9dce0;
+  /* ─── Semantic colors (CxPortal/Light) ─── */
+  --neutral-200: #cdcdcd;
+  --neutral-300: #adadad;
+  --neutral-400: #8d8d8d;
+  --neutral-600: #525252;
+  --neutral-500: #6f6f6f;
+  --success-100: #ddf4d2;
+  --success-200: #b5e89c;
+  --success-300: #87d95e;
+  --success-500: #4b9924;
+  --success-600: #244a11;
+  --success-700: #0c1906;
+  --success-default: #67d034;
+  --error-100: #fbc6d4;
+  --error-200: #f792ac;
+  --error-300: #f3547d;
+  --error-500: #ab0c36;
+  --error-600: #690821;
+  --error-700: #130106;
+  --error-default: #ef2056;
+  --info-100: #d6e2f5;
+  --info-200: #a4beea;
+  --info-300: #5a89d8;
+  --info-500: #1f4584;
+  --info-600: #11274a;
+  --info-700: #060d19;
+  --info-default: #2859ab;
+  --neutral-0: #ffffff;
+  --content-action-primary-50: #fcfdff;
+  --content-action-primary-100: #f8f9ff;
+  --content-action-primary-200: #e5e9ff;
+  --content-action-primary-300: #d6d7ff;
+  --content-action-primary-default: #b2a3ff;
+  --content-action-primary-500: #917aff;
+  --content-action-primary-600: #8565f2;
+  --content-action-primary-700: #7950e5;
+  --success-50: #f3fbee;
+  --error-50: #fef1f4;
+  --info-50: #eef3fb;
+  --content-action-secondary-0: #ffffff;
+  --content-action-secondary-200: #cdcdcd;
+  --content-action-secondary-300: #adadad;
+  --content-action-secondary-default: #8d8d8d;
+  --content-action-secondary-500: #6f6f6f;
+  --content-action-secondary-600: #525252;
+  --content-action-primary-750: #6530b9;
+  --content-action-primary-800: #51078f;
+  --content-action-secondary-100: #efefef;
+  --content-action-secondary-700: #373737;
+  --warning-50: #fdf8ef;
+  --warning-100: #fbeed8;
+  --warning-200: #f7ddb1;
+  --warning-300: #f1c780;
+  --warning-default: #eaa93c;
+  --warning-500: #c79033;
+  --warning-600: #815d21;
+  --warning-700: #2f220c;
+  --neutral-100: #efefef;
+  --neutral-700: #373737;
+  --neutral-50: #f8f8f8;
+  --neutral-800: #1d1d1d;
+  --content-action-secondary-800: #1d1d1d;
+  --content-action-secondary-50: #f8f8f8;
+  --navigation-bar: #1b0028;
+  --neutral-900: #101010;
+  --neutral-750: #2a2a2a;
+  --content-action-primary-900: #1b0028;
+  --content-action-secondary-900: #101010;
+  --content-action-secondary-750: #2a2a2a;
+  --content-action-disabled-50: #f9fbf7;
+  --content-action-disabled-100: #f1f5ed;
+  --content-action-disabled-200: #d2e0c8;
+  --content-action-disabled-300: #cfd7c2;
+  --content-action-disabled-default: #c4cdba;
+  --content-action-disabled-500: #b7beac;
+  --content-action-disabled-600: #8f9785;
+  --content-action-disabled-700: #6a7260;
+  --content-action-disabled-750: #4f5746;
+  --content-action-disabled-800: #373d2f;
+  --content-action-disabled-900: #0b0f06;
 
-  /* Colors — Status */
-  --color-success-100: #ddf4d2;
-  --color-success-200: #b5e89c;
-  --color-warning-100: #fbeed8;
-  --color-warning-200: #f7ddb1;
-  --color-error-100: #fbc6d4;
-  --color-error-200: #f792ac;
-  --color-info-100: #d6e2f5;
-  --color-info-200: #a4beea;
+  /* ─── Semantic numbers (border widths, radii, text size, line-height) ─── */
+  --border-width-none: 0px;
+  --border-width-xs: 1px;
+  --border-width-md: 2px;
+  --border-width-lg: 4px;
+  --border-radius-none: 0px;
+  --border-radius-xs: 2px;
+  --border-radius-sm: 4px;
+  --border-radius-md: 8px;
+  --border-radius-lg: 16px;
+  --border-radius-round: 64px;
+  --text-size-heading-h-1-font-size: 28px;
+  --text-size-heading-h-1-line-height: 34px;
+  --text-size-heading-h-1-paragragh-spacing: 16px;
+  --text-size-heading-h-2-font-size: 24px;
+  --text-size-heading-h-2-line-height: 30px;
+  --text-size-heading-h-2-paragragh-spacing: 16px;
+  --text-size-heading-h-3-font-size: 20px;
+  --text-size-heading-h-3-line-height: 28px;
+  --text-size-heading-h-3-paragragh-spacing: 12px;
+  --text-size-heading-h-4-font-size: 18px;
+  --text-size-heading-h-4-line-height: 24px;
+  --text-size-heading-h-4-paragragh-spacing: 12px;
+  --text-size-heading-h-5-font-size: 16px;
+  --text-size-heading-h-5-line-height: 24px;
+  --text-size-heading-h-5-paragragh-spacing: 8px;
+  --text-size-paragraph-large-size: 16px;
+  --text-size-paragraph-large-lne-height: 24px;
+  --text-size-paragraph-large-paragraph-spacing: 12px;
+  --text-size-paragraph-regular-size: 14px;
+  --text-size-paragraph-regular-lne-height: 20px;
+  --text-size-paragraph-regular-paragraph-spacing: 12px;
+  --text-size-paragraph-small-size: 12px;
+  --text-size-paragraph-small-lne-height: 20px;
+  --text-size-paragraph-small-paragraph-spacing: 12px;
+  --text-size-paragraph-extra-small-size: 10px;
+  --text-size-paragraph-extra-small-lne-height: 16px;
+  --text-size-paragraph-extra-small-paragraph-spacing: 12px;
+  --border-width-sm: 1px;
+  --text-size-paragraph-extra-large-size: 18px;
+  --text-size-paragraph-extra-large-lne-height: 28px;
+  --text-size-paragraph-extra-large-paragraph-spacing: 12px;
+  --text-size-captions-large-size: 12px;
+  --text-size-captions-large-lne-height: 16px;
+  --text-size-captions-large-paragraph-spacing: 0px;
+  --text-size-captions-regular-size: 10px;
+  --text-size-captions-regular-lne-height: 12px;
+  --text-size-captions-regular-paragraph-spacing: 0px;
+  --text-size-captions-small-size: 8px;
+  --text-size-captions-small-lne-height: 12px;
+  --text-size-captions-small-paragraph-spacing: 0px;
 
-  /* Border Radius */
-  --radius-xs: 2px;
-  --radius-sm: 4px;
-  --radius-md: 8px;
-  --radius-lg: 16px;
-  --radius-round: 64px;
+  /* ─── Context colors (Text, Icon, Surface, Border) ─── */
+  --surface-disabled: #f1f5ed;
+  --surface-action-empty: rgba(255, 255, 255, 0);
+  --surface-accent-warning-light: #fdf8ef;
+  --border-color-accent-warning-dark: #815d21;
+  --surface-overlay: rgba(8, 17, 31, 0.7);
+  --surface-accent-warning-dark: #c79033;
+  --surface-accent-warning-hover: #815d21;
+  --border-color-accent-warning-light: #f7ddb1;
+  --border-color-accent-warning-hover: #eaa93c;
+  --border-color-surface-active-primary-disabled: #cfd7c2;
+  --border-color-surface-active-secondary-disabled: #d2e0c8;
+  --surface-action-secondary-disabled: rgba(249, 251, 247, 0);
+  --surface-action-terciary-disabled: #f1f5ed;
+  --border-color-surface-active-terciary-disabled: #d2e0c8;
+  --text-on-action-disabled: #cfd7c2;
+  --icon-on-action-disabled: #cfd7c2;
 
-  /* Typography */
-  --font-sans: 'Mona Sans', system-ui, sans-serif;
+  /* ─── Context strings ─── */
+  --message-title: "Message Title";
 
-  /* Shadcn/ui semantic tokens (mapped to CxPortal palette) */
-  --background: var(--color-surface-section);
-  --foreground: var(--color-text-primary);
-  --muted: var(--color-surface-display);
-  --muted-foreground: var(--color-text-secondary);
-  --border: #e2e5e8;
-  --input: var(--color-surface-form-field);
-  --ring: var(--color-primary);
-  --primary: var(--color-primary);
-  --primary-foreground: #ffffff;
-  --secondary: var(--color-surface-display);
-  --secondary-foreground: var(--color-text-primary);
-  --accent: var(--color-surface-display);
-  --accent-foreground: var(--color-text-primary);
-  --destructive: var(--color-error-200);
-  --destructive-foreground: #ffffff;
-  --card: var(--color-surface-section);
-  --card-foreground: var(--color-text-primary);
-  --popover: var(--color-surface-section);
-  --popover-foreground: var(--color-text-primary);
-  --radius: var(--radius-md);
+  /* ─── Context (Text / Icon / Surface / Border) — full alias set from Figma live query ─── */
+  --text-body-primary: var(--neutral-700);
+  --text-body-secondary: var(--neutral-400);
+  --text-body-on-dark-surface: var(--neutral-100);
+  --text-action: var(--content-action-primary-600);
+  --text-success: var(--success-default);
+  --text-info: var(--info-default);
+  --text-warning: var(--warning-default);
+  --text-error: var(--error-default);
+  --text-destructive: var(--error-500);
+  --text-on-action-primary: var(--neutral-100);
+  --text-on-action-secondary: var(--neutral-700);
+  --text-on-action-transparent: var(--content-action-primary-500);
+  --text-form-field-placeholder: var(--neutral-400);
+  --text-form-field-hover: var(--content-action-primary-500);
+  --text-form-field-focus: var(--neutral-700);
+  --text-form-field-disabled: var(--neutral-400);
+  --icon-action: var(--content-action-primary-600);
+  --icon-success: var(--success-300);
+  --icon-info: var(--info-default);
+  --icon-warning: var(--warning-default);
+  --icon-error: var(--error-default);
+  --icon-destructive: var(--error-500);
+  --icon-body-primary: var(--neutral-700);
+  --icon-body-secondary: var(--neutral-400);
+  --icon-body-on-dark-surface: var(--neutral-100);
+  --icon-on-action-primary: var(--neutral-100);
+  --icon-on-action-secondary: var(--neutral-700);
+  --icon-on-action-transparent: var(--content-action-primary-500);
+  --icon-form-field-placeholder: var(--neutral-400);
+  --icon-form-field-hover: var(--content-action-primary-500);
+  --icon-form-field-focus: var(--neutral-500);
+  --icon-form-field-disabled: var(--neutral-400);
+  --surface-main-panel: var(--neutral-100);
+  --surface-section-bg: var(--neutral-0);
+  --surface-section-group-bg: var(--neutral-50);
+  --surface-form-field: var(--neutral-0);
+  --surface-form-group: var(--neutral-50);
+  --surface-action-primary-default: var(--content-action-primary-600);
+  --surface-action-primary-hover: var(--content-action-primary-700);
+  --surface-action-primary-disabled: var(--content-action-disabled-default);
+  --surface-action-secondary-default: var(--neutral-0);
+  --surface-action-secondary-hover: var(--neutral-50);
+  --surface-action-terciary-default: var(--neutral-100);
+  --surface-action-terciary-hover: var(--neutral-300);
+  --surface-action-destructive-default: var(--error-500);
+  --surface-action-destructive-hover: var(--error-600);
+  --surface-action-destructive-disabled: var(--error-200);
+  --surface-accent-success-light: var(--success-50);
+  --surface-accent-success-dark: var(--success-500);
+  --surface-accent-success-hover: var(--success-600);
+  --surface-accent-info-light: var(--info-50);
+  --surface-accent-info-dark: var(--info-500);
+  --surface-accent-info-hover: var(--info-600);
+  --surface-accent-error-light: var(--error-50);
+  --surface-accent-error-dark: var(--error-500);
+  --surface-accent-error-hover: var(--error-600);
+  --surface-vertical-nav: var(--navigation-bar);
+  --surface-table-active-row: var(--content-action-primary-100);
+  --surface-table-table-title-background: var(--surface-action-terciary-default);
+  --surface-table-zebra-row: var(--neutral-50);
+  --surface-table-checkbox-active: var(--content-action-primary-500);
+  --border-color-neutral-light: var(--neutral-100);
+  --border-color-neutral-dark: var(--neutral-600);
+  --border-color-surface-active-primary-default: var(--content-action-primary-default);
+  --border-color-surface-active-primary-hover: var(--content-action-primary-500);
+  --border-color-surface-active-secondary-default: var(--neutral-300);
+  --border-color-surface-active-secondary-hover: var(--neutral-400);
+  --border-color-surface-active-terciary-default: var(--neutral-100);
+  --border-color-surface-active-terciary-hover: var(--neutral-200);
+  --border-color-accent-success-light: var(--success-200);
+  --border-color-accent-success-dark: var(--success-600);
+  --border-color-accent-success-hover: var(--success-default);
+  --border-color-accent-error-light: var(--error-200);
+  --border-color-accent-error-dark: var(--error-600);
+  --border-color-accent-error-dark-hover: var(--error-default);
+  --border-color-accent-info-light: var(--info-200);
+  --border-color-accent-info-dark: var(--info-600);
+  --border-color-accent-info-hover: var(--info-default);
+  --border-color-disabled: var(--neutral-200);
+  --border-color-form-fields-default: var(--neutral-200);
+  --border-color-form-fields-hover: var(--content-action-primary-default);
+  --border-color-form-fields-focus: var(--content-action-primary-default);
+
+  /* ─── Legacy aliases (keep existing consumer surface working during Phase 2 sweep) ─── */
+  --color-primary:                     var(--content-action-primary-600);
+  --color-text-primary:                var(--text-body-primary);
+  --color-text-secondary:              var(--text-body-secondary);
+  --color-text-on-dark:                var(--icon-body-on-dark-surface);
+  --color-text-placeholder:            var(--text-form-field-placeholder);
+  --color-surface-section:             var(--surface-section-bg);
+  --color-surface-display:             var(--neutral-100);
+  --color-surface-panel:               var(--surface-main-panel);
+  --color-surface-nav:                 var(--surface-vertical-nav);
+  --color-surface-form-field:          var(--surface-form-field);
+  --color-surface-zebra:               var(--surface-table-zebra-row);
+  --color-interactive-primary-light:   var(--content-action-primary-500);
+  --color-interactive-primary-dark:    var(--content-action-primary-700);
+  --color-interactive-border-strong:   var(--neutral-300);
+  --color-interactive-border-disabled: var(--neutral-200);
+  --color-success-100:                 var(--success-100);
+  --color-success-200:                 var(--success-200);
+  --color-warning-100:                 var(--warning-100);
+  --color-warning-200:                 var(--warning-200);
+  --color-error-100:                   var(--error-100);
+  --color-error-200:                   var(--error-200);
+  --color-info-100:                    var(--info-100);
+  --color-info-200:                    var(--info-200);
+
+  /* Radius aliases */
+  --radius-xs:    var(--border-radius-xs);
+  --radius-sm:    var(--border-radius-sm);
+  --radius-md:    var(--border-radius-md);
+  --radius-lg:    var(--border-radius-lg);
+  --radius-round: var(--border-radius-round);
+
+  /* Typography aliases */
+  --font-sans: var(--font-family-body), system-ui, sans-serif;
+
+  /* ─── shadcn/ui semantic tokens (mapped to the new palette) ─── */
+  --background:            var(--surface-section-bg);
+  --foreground:            var(--text-body-primary);
+  --muted:                 var(--surface-main-panel);
+  --muted-foreground:      var(--text-body-secondary);
+  --border:                var(--border-color-neutral-light);
+  --input:                 var(--surface-form-field);
+  --ring:                  var(--content-action-primary-600);
+  --primary:               var(--content-action-primary-600);
+  --primary-foreground:    var(--text-on-action-primary);
+  --secondary:             var(--surface-main-panel);
+  --secondary-foreground:  var(--text-body-primary);
+  --accent:                var(--surface-main-panel);
+  --accent-foreground:     var(--text-body-primary);
+  --destructive:           var(--surface-action-destructive-default);
+  --destructive-foreground: var(--text-on-action-primary);
+  --card:                  var(--surface-section-bg);
+  --card-foreground:       var(--text-body-primary);
+  --popover:               var(--surface-section-bg);
+  --popover-foreground:    var(--text-body-primary);
+  --radius:                var(--border-radius-md);
 }
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   Multi-mode scaffolding (Phase 2 — currently disabled).
+   Uncomment and add [data-product] / [data-theme] attributes on <html>
+   once product/theme switching is ready to ship. Values live in
+   figma-export.json under `.collections.Semantic.variables.colors[].values`.
+   ═══════════════════════════════════════════════════════════════════════════ */
+/*
+[data-theme='dark']                       { … CxPortal/Dark overrides … }
+[data-product='cxcentral'][data-theme='light'] { … CxCentral/Light overrides … }
+[data-product='cxcentral'][data-theme='dark']  { … CxCentral/Dark overrides … }
+[data-product='cases'][data-theme='light']     { … Cases/Light overrides … }
+[data-product='cases'][data-theme='dark']      { … Cases/Dark overrides … }
+*/
 
 /* ─── Tailwind v4 @theme mapping ──────────────────────────────────────────── */
 @theme inline {
-  /* Font */
   --font-sans: var(--font-sans);
 
-  /* Colors */
-  --color-primary: var(--color-primary);
-  --color-text-primary: var(--color-text-primary);
-  --color-text-secondary: var(--color-text-secondary);
-  --color-text-on-dark: var(--color-text-on-dark);
-  --color-text-placeholder: var(--color-text-placeholder);
-  --color-surface-section: var(--color-surface-section);
-  --color-surface-display: var(--color-surface-display);
-  --color-surface-panel: var(--color-surface-panel);
-  --color-surface-nav: var(--color-surface-nav);
-  --color-surface-form-field: var(--color-surface-form-field);
-  --color-surface-zebra: var(--color-surface-zebra);
-  --color-success-100: var(--color-success-100);
-  --color-success-200: var(--color-success-200);
-  --color-warning-100: var(--color-warning-100);
-  --color-warning-200: var(--color-warning-200);
-  --color-error-100: var(--color-error-100);
-  --color-error-200: var(--color-error-200);
-  --color-info-100: var(--color-info-100);
-  --color-info-200: var(--color-info-200);
-
-  /* Border Radius */
-  --radius-xs: var(--radius-xs);
-  --radius-sm: var(--radius-sm);
-  --radius-md: var(--radius-md);
-  --radius-lg: var(--radius-lg);
-  --radius-round: var(--radius-round);
+  /* Legacy exports — keep for existing utility classes */
+  --color-primary:              var(--color-primary);
+  --color-text-primary:         var(--color-text-primary);
+  --color-text-secondary:       var(--color-text-secondary);
+  --color-text-on-dark:         var(--color-text-on-dark);
+  --color-text-placeholder:     var(--color-text-placeholder);
+  --color-surface-section:      var(--color-surface-section);
+  --color-surface-display:      var(--color-surface-display);
+  --color-surface-panel:        var(--color-surface-panel);
+  --color-surface-nav:          var(--color-surface-nav);
+  --color-surface-form-field:   var(--color-surface-form-field);
+  --color-surface-zebra:        var(--color-surface-zebra);
+  --color-success-100:          var(--color-success-100);
+  --color-success-200:          var(--color-success-200);
+  --color-warning-100:          var(--color-warning-100);
+  --color-warning-200:          var(--color-warning-200);
+  --color-error-100:            var(--color-error-100);
+  --color-error-200:            var(--color-error-200);
+  --color-info-100:             var(--color-info-100);
+  --color-info-200:             var(--color-info-200);
+  --radius-xs:                  var(--radius-xs);
+  --radius-sm:                  var(--radius-sm);
+  --radius-md:                  var(--radius-md);
+  --radius-lg:                  var(--radius-lg);
+  --radius-round:               var(--radius-round);
 
   /* Shadcn semantic tokens */
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --color-muted: var(--muted);
-  --color-muted-foreground: var(--muted-foreground);
-  --color-border: var(--border);
-  --color-primary: var(--primary);
-  --color-primary-foreground: var(--primary-foreground);
-  --color-secondary: var(--secondary);
-  --color-secondary-foreground: var(--secondary-foreground);
-  --color-card: var(--card);
-  --color-card-foreground: var(--card-foreground);
-  --color-destructive: var(--destructive);
+  --color-background:            var(--background);
+  --color-foreground:            var(--foreground);
+  --color-muted:                 var(--muted);
+  --color-muted-foreground:      var(--muted-foreground);
+  --color-border:                var(--border);
+  --color-primary-foreground:    var(--primary-foreground);
+  --color-secondary:             var(--secondary);
+  --color-secondary-foreground:  var(--secondary-foreground);
+  --color-card:                  var(--card);
+  --color-card-foreground:       var(--card-foreground);
+  --color-destructive:           var(--destructive);
   --color-destructive-foreground: var(--destructive-foreground);
 }
 
@@ -146,12 +510,12 @@ body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-sans);
-  font-size: 14px; /* Body MD is the base */
-  line-height: 20px;
+  font-size: var(--text-size-paragraph-regular-size, 14px);
+  line-height: var(--text-size-paragraph-regular-lne-height, 20px);
   -webkit-font-smoothing: antialiased;
 }
 
-/* ── WFM KPI tile pulse animation ──────────────────────────────────────────── */
+/* ── WFM KPI tile pulse animation (unrelated to tokens — preserved) ──────── */
 @keyframes kpi-pulse {
   0%   { opacity: 0.4; transform: scale(0.98); }
   60%  { opacity: 1;   transform: scale(1.02); }
