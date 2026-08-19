@@ -892,7 +892,7 @@ function TagAssignDropdown({
     border:       '1px solid #eff1f3',
     borderRadius: 8,
     boxShadow:    '0px 4px 24px 0px rgba(5,3,38,0.08)',
-    fontFamily:   'Mona Sans, system-ui, sans-serif',
+    fontFamily:   'Roboto, system-ui, sans-serif',
     overflow:     'hidden',
   }
 
@@ -1295,7 +1295,7 @@ function BulkTagModal({
           background:    '#ffffff',
           borderRadius:  12,
           boxShadow:     '0px 8px 40px 0px rgba(5,3,38,0.16)',
-          fontFamily:    'Mona Sans, system-ui, sans-serif',
+          fontFamily:    'Roboto, system-ui, sans-serif',
           display:       'flex',
           flexDirection: 'column',
           maxHeight:     'calc(100vh - 64px)',

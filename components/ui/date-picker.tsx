@@ -239,7 +239,7 @@ export function DatePicker({
             borderRadius: '8px',
             boxShadow:    '0px 4px 24px 0px rgba(5,3,38,0.08)',
             padding:      '12px',
-            fontFamily:   'Mona Sans, system-ui, sans-serif',
+            fontFamily:   'Roboto, system-ui, sans-serif',
             // DayPicker CSS variable overrides
             '--rdp-accent-color':            '#4285f4',
             '--rdp-accent-background-color': '#eef3fb',

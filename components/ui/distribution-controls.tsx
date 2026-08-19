@@ -28,7 +28,7 @@ const BAR2_Y = 45   // bottom bar y-offset in container
 // ── Typography presets ────────────────────────────────────────────────────────
 
 const captionLg: React.CSSProperties = {
-  fontFamily: "'Mona Sans', sans-serif",
+  fontFamily: "'Roboto', sans-serif",
   fontSize: 12,
   fontWeight: 600,
   lineHeight: '16px',
@@ -37,7 +37,7 @@ const captionLg: React.CSSProperties = {
   whiteSpace: 'nowrap',
 }
 const captionSm: React.CSSProperties = {
-  fontFamily: "'Mona Sans', sans-serif",
+  fontFamily: "'Roboto', sans-serif",
   fontSize: 8,
   fontWeight: 600,
   lineHeight: '12px',
@@ -175,7 +175,7 @@ export function DistributionControls({
       {/* Title */}
       <p style={{
         margin: 0,
-        fontFamily: "'Mona Sans', sans-serif",
+        fontFamily: "'Roboto', sans-serif",
         fontSize: 18,
         fontWeight: 400,
         lineHeight: '24px',
@@ -462,7 +462,7 @@ export function DistributionControls({
               onKeyDown={onWestKey}
               aria-label={`${regionA} traffic percentage`}
               style={{
-                fontFamily: "'Mona Sans', sans-serif",
+                fontFamily: "'Roboto', sans-serif",
                 fontSize: 14, fontWeight: 400, lineHeight: '20px',
                 color: T.textPrimary,
                 width: 28, border: 'none', outline: 'none',
@@ -470,7 +470,7 @@ export function DistributionControls({
               }}
             />
             <span style={{
-              fontFamily: "'Mona Sans', sans-serif",
+              fontFamily: "'Roboto', sans-serif",
               fontSize: 14, color: T.textDisabled, lineHeight: '20px',
               userSelect: 'none',
             }}>%</span>
@@ -492,7 +492,7 @@ export function DistributionControls({
               onKeyDown={onEastKey}
               aria-label={`${regionB} traffic percentage`}
               style={{
-                fontFamily: "'Mona Sans', sans-serif",
+                fontFamily: "'Roboto', sans-serif",
                 fontSize: 14, fontWeight: 400, lineHeight: '20px',
                 color: T.textPrimary,
                 width: 28, border: 'none', outline: 'none',
@@ -500,7 +500,7 @@ export function DistributionControls({
               }}
             />
             <span style={{
-              fontFamily: "'Mona Sans', sans-serif",
+              fontFamily: "'Roboto', sans-serif",
               fontSize: 14, color: T.textDisabled, lineHeight: '20px',
               userSelect: 'none',
             }}>%</span>

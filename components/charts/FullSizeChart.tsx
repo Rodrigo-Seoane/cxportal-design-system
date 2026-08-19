@@ -157,7 +157,7 @@ function ShortcutsSidebar({ selected, onSelect }: { selected: DateRange | undefi
               display: 'block', width: '100%', textAlign: 'left',
               padding: '6px 10px', border: 'none', borderRadius: 6, cursor: 'pointer',
               fontSize: 13, fontWeight: active ? 600 : 400,
-              fontFamily: "'Mona Sans', system-ui, sans-serif",
+              fontFamily: "'Roboto', system-ui, sans-serif",
               color: active ? '#4285f4' : '#021920',
               background: active ? '#eef3fb' : 'transparent',
               transition: 'background 0.1s, color 0.1s',
@@ -196,7 +196,7 @@ function SeriesToggles({ activeSeries, onToggle }: { activeSeries: Set<DataSerie
             }}
           >
             <span style={{ width: 7, height: 7, borderRadius: '50%', background: active ? color : '#aab0b8', flexShrink: 0, transition: 'background 0.12s' }} />
-            <span style={{ fontSize: 12, fontWeight: active ? 600 : 400, color: active ? color : '#7a828c', fontFamily: "'Mona Sans', system-ui, sans-serif", whiteSpace: 'nowrap', transition: 'color 0.12s' }}>
+            <span style={{ fontSize: 12, fontWeight: active ? 600 : 400, color: active ? color : '#7a828c', fontFamily: "'Roboto', system-ui, sans-serif", whiteSpace: 'nowrap', transition: 'color 0.12s' }}>
               {label}
             </span>
           </button>
@@ -221,7 +221,7 @@ const CHART_TYPE_TABS: { type: ChartGraphType; label: string; Icon: React.Compon
 function XTick({ x, y, payload }: any) {
   return (
     <g transform={`translate(${x},${y})`}>
-      <text x={0} y={0} dy={12} textAnchor="middle" fill="#7a828c" fontSize={11} fontFamily="'Mona Sans', system-ui, sans-serif">
+      <text x={0} y={0} dy={12} textAnchor="middle" fill="#7a828c" fontSize={11} fontFamily="'Roboto', system-ui, sans-serif">
         {payload.value}
       </text>
     </g>
@@ -248,7 +248,7 @@ function ChartTypeHeader({ active, onChange }: { active: ChartGraphType; onChang
               cursor: 'pointer',
               color: isActive ? '#021920' : '#7a828c',
               fontSize: 14, fontWeight: isActive ? 600 : 300,
-              fontFamily: "'Mona Sans', system-ui, sans-serif",
+              fontFamily: "'Roboto', system-ui, sans-serif",
               transition: 'color 0.12s, border-color 0.12s',
             }}
           >

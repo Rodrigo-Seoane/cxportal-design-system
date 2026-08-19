@@ -94,7 +94,7 @@ export function Table({ size = 'wide', children, style, ...props }: TableProps) 
           style={{
             width: '100%',
             borderCollapse: 'collapse',
-            fontFamily: 'var(--font-sans, "Mona Sans", sans-serif)',
+            fontFamily: 'var(--font-sans, "Roboto", sans-serif)',
           }}
         >
           {children}

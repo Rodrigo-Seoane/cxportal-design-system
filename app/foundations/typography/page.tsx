@@ -14,7 +14,7 @@ export default function TypographyPage() {
             Typography Scale
           </h2>
           <p style={{ color: 'var(--color-text-secondary)' }}>
-            Mona Sans variable font · weights 300 / 400 / 600 / 800
+            Roboto variable font · weights 300 / 400 / 600 / 800
           </p>
         </div>
 

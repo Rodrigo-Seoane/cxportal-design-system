@@ -31,6 +31,12 @@ const TYPE_BADGE: Record<ChangeType, { label: string; bg: string; color: string 
 
 const RELEASES: Release[] = [
   {
+    date: 'August 19, 2026',
+    changes: [
+      { type: 'updated', label: 'Mona Sans → Roboto', note: 'Swapped the brand variable font across globals.css, design tokens, and inline chart/table styles to match the Figma text styles.' },
+    ],
+  },
+  {
     date: 'April 15, 2026',
     changes: [
       { type: 'added',   label: 'Knowledge Management experiment', href: '/sandbox/collapsible-filter', note: 'Article table with inline filter panel, tag management, and live pagination.' },

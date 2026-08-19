@@ -467,7 +467,7 @@ export function Sidebar() {
           display: 'flex', alignItems: 'center', justifyContent: 'center',
         }}>
           <span style={{
-            fontFamily: 'Mona Sans, system-ui, sans-serif',
+            fontFamily: 'Roboto, system-ui, sans-serif',
             fontSize: 16, fontWeight: 800, color: '#fff', letterSpacing: '-0.5px',
           }}>P</span>
         </div>

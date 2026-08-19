@@ -137,7 +137,7 @@ function XTick({ x, y, payload }: any) {
   return (
     <g transform={`translate(${x},${y})`}>
       <text x={0} y={0} dy={12} textAnchor="middle" fill="#7a828c" fontSize={12}
-        fontFamily="'Mona Sans', system-ui, sans-serif">
+        fontFamily="'Roboto', system-ui, sans-serif">
         {payload.value}
       </text>
     </g>
@@ -149,7 +149,7 @@ function YCatTick({ x, y, payload }: any) {
   return (
     <g transform={`translate(${x},${y})`}>
       <text x={-6} y={0} dy={4} textAnchor="end" fill="#7a828c" fontSize={12}
-        fontFamily="'Mona Sans', system-ui, sans-serif">
+        fontFamily="'Roboto', system-ui, sans-serif">
         {payload.value}
       </text>
     </g>
@@ -266,7 +266,7 @@ function BarSingle({ data }: { data: typeof MONTH_DATA }) {
           cursor={{ fill: 'rgba(66,133,244,0.06)' }} />
         <Bar dataKey="value" fill="#4285f4" radius={[3, 3, 0, 0]}>
           <LabelList dataKey="value" position="top"
-            style={{ fontSize: 11, fill: '#021920', fontFamily: "'Mona Sans', system-ui, sans-serif" }} />
+            style={{ fontSize: 11, fill: '#021920', fontFamily: "'Roboto', system-ui, sans-serif" }} />
         </Bar>
       </BarChart>
     </ResponsiveContainer>
@@ -302,7 +302,7 @@ function BarMultiColor({ data }: { data: typeof MONTH_DATA }) {
             <Cell key={i} fill={PALETTE[i % PALETTE.length]} />
           ))}
           <LabelList dataKey="value" position="top"
-            style={{ fontSize: 11, fill: '#021920', fontFamily: "'Mona Sans', system-ui, sans-serif" }} />
+            style={{ fontSize: 11, fill: '#021920', fontFamily: "'Roboto', system-ui, sans-serif" }} />
         </Bar>
       </BarChart>
     </ResponsiveContainer>
@@ -324,7 +324,7 @@ function BarHorizontal({ multiColor = false }: { multiColor?: boolean }) {
             <Cell key={i} fill={multiColor ? PALETTE[i] : '#4285f4'} />
           ))}
           <LabelList dataKey="value" position="right"
-            style={{ fontSize: 11, fill: '#021920', fontFamily: "'Mona Sans', system-ui, sans-serif" }} />
+            style={{ fontSize: 11, fill: '#021920', fontFamily: "'Roboto', system-ui, sans-serif" }} />
         </Bar>
       </BarChart>
     </ResponsiveContainer>
@@ -410,7 +410,7 @@ function LineDotsVal({ data }: { data: typeof MONTH_DATA }) {
           dot={{ r: 3, fill: '#4285f4', strokeWidth: 0 }}
           activeDot={{ r: 4, fill: '#4285f4' }}>
           <LabelList dataKey="value" position="top"
-            style={{ fontSize: 10, fill: '#021920', fontFamily: "'Mona Sans', system-ui, sans-serif" }} />
+            style={{ fontSize: 10, fill: '#021920', fontFamily: "'Roboto', system-ui, sans-serif" }} />
         </Line>
       </LineChart>
     </ResponsiveContainer>
@@ -428,7 +428,7 @@ function PieValueLabel({ cx, cy, midAngle, innerRadius, outerRadius, value }: an
   return (
     <text x={x} y={y} fill="#021920" textAnchor={x > cx ? 'start' : 'end'}
       dominantBaseline="central" fontSize={11}
-      fontFamily="'Mona Sans', system-ui, sans-serif">
+      fontFamily="'Roboto', system-ui, sans-serif">
       {value}
     </text>
   )
@@ -483,11 +483,11 @@ function PieDonut({ showValue = false, showPop = false }: { showValue?: boolean;
         }}>
           <div style={{ textAlign: 'center' }}>
             <div style={{ fontSize: 26, fontWeight: 400, color: '#021920', lineHeight: 1.1,
-              fontFamily: "'Mona Sans', system-ui, sans-serif" }}>
+              fontFamily: "'Roboto', system-ui, sans-serif" }}>
               {total.toLocaleString()}
             </div>
             <div style={{ fontSize: 12, color: '#7a828c', marginTop: 2,
-              fontFamily: "'Mona Sans', system-ui, sans-serif" }}>
+              fontFamily: "'Roboto', system-ui, sans-serif" }}>
               Visitors
             </div>
           </div>
@@ -552,11 +552,11 @@ function RadialSingle({
         pointerEvents: 'none',
       }}>
         <div style={{ fontSize: 26, fontWeight: 400, color: '#021920', lineHeight: 1.1,
-          fontFamily: "'Mona Sans', system-ui, sans-serif", whiteSpace: 'nowrap' }}>
+          fontFamily: "'Roboto', system-ui, sans-serif", whiteSpace: 'nowrap' }}>
           {value.toLocaleString()}
         </div>
         <div style={{ fontSize: 12, color: '#7a828c', marginTop: 2,
-          fontFamily: "'Mona Sans', system-ui, sans-serif" }}>
+          fontFamily: "'Roboto', system-ui, sans-serif" }}>
           {label}
         </div>
       </div>
@@ -709,14 +709,14 @@ export function GraphCard({
         <HeaderIcon size={14} weight="regular" color="#7a828c" />
         <span style={{
           fontSize: 14, fontWeight: 300, lineHeight: '20px',
-          color: '#7a828c', fontFamily: "'Mona Sans', system-ui, sans-serif",
+          color: '#7a828c', fontFamily: "'Roboto', system-ui, sans-serif",
         }}>
           {group}
         </span>
         <span style={{
           marginLeft: 'auto',
           fontSize: 11, color: '#aab0b8',
-          fontFamily: "'Mona Sans', system-ui, sans-serif",
+          fontFamily: "'Roboto', system-ui, sans-serif",
         }}>
           {VARIANT_LABEL[chartType]}
         </span>
@@ -777,7 +777,7 @@ export function GraphCard({
                 <span style={{
                   fontSize: 12, fontWeight: 400, lineHeight: '20px',
                   color: '#021920', whiteSpace: 'nowrap',
-                  fontFamily: "'Mona Sans', system-ui, sans-serif",
+                  fontFamily: "'Roboto', system-ui, sans-serif",
                 }}>
                   {label}
                 </span>
