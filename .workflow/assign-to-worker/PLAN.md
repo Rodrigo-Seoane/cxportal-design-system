@@ -30,37 +30,19 @@ Prototype source lives outside the workflow folder, under `app/` and `components
 
 ---
 
-## 2. Route path decision — findings + proposal
+## 2. Route path decision
 
-**Finding:** There is no `Open Inventory` folder in the app today. The WFM area is `app/wfm/reporting/`. The Figma reference file the brief links to (`WFM` — node `519-85755`) sits in a broader WFM design space that presumably owns an "Open Inventory" section — but no engineering scaffold exists here.
+**Route (user-directed):** `app/open-inventory/task-queue-visibility-v2/page.tsx`
 
-**Sibling convention (from `app/wfm/reporting/*`):**
-- Top-level page = `page.tsx` (client component, marked `'use client'`).
-- Header comment block documenting focus order, keyboard, ARIA, contrast, click targets, reduced-motion.
-- Section panels colocated as sibling files (`QueuePanel.tsx`, `AgentsPanel.tsx`, `AlertsPanel.tsx`).
-- Mock data centralized in `mocks/wfm/store.ts` — but sibling routes freely add their own inline mocks when they own new domain shapes.
-- Sidebar registration in `components/layout/Sidebar.tsx` under a `NAV_GROUPS` entry.
+This is a v2 sibling of the existing `app/open-inventory/task-queue-visibility/` route — v1 stays untouched, this prototype replaces its interaction model.
 
-**Proposed route:** `app/wfm/open-inventory/task-queue-visibility/assign/page.tsx`
+**⚠ Visibility caveat:** the `app/open-inventory/` folder is not present on this checked-out branch (`claude/assign-worker-flow-prototype-rb4ms4`), on `origin/main`, or anywhere else I can search. It's presumed to exist on a branch not visible from this session. Concrete impact:
 
-Rationale:
-- Mirrors the two-level nesting used by `wfm/reporting/<feature>/`.
-- Leaves room for future Open Inventory siblings under the same parent segment.
-- Path matches how the Figma file organizes the section.
+- I cannot inspect v1's shell/nav/mocks/page structure right now.
+- **Step 3 (react-frontend-architect) will read v1 at execution time** as its Phase-1 discovery target and mirror its conventions (page.tsx layout, header comment block, sibling panel files, sidebar entry structure).
+- **Step 2 (spec writer) will assume the WFM-reporting conventions** documented in §3 unless you tell me otherwise before Step 1 fires — those are the closest visible sibling pattern.
 
-**Sidebar entry (proposed):**
-```ts
-{
-  group:    'WFM Open Inventory',
-  Icon:     ListIcon,   // already imported
-  basePath: '/wfm/open-inventory',
-  items: [
-    { label: 'Task Queue Visibility — Assign', href: '/wfm/open-inventory/task-queue-visibility/assign', status: 'wip' },
-  ],
-},
-```
-
-**Confirm-before-Step-1:** if the intended segment is something other than `open-inventory/task-queue-visibility/assign` (e.g. `task-queue-visibility` at the WFM root, or a different label for the sidebar group), say so — this is baked into the PRD's information architecture and the SPEC's route section.
+**Sidebar entry (to confirm at Checkpoint 2):** the existing v1 already registers a sidebar entry somewhere. v2 either (a) replaces v1 in-place in the sidebar with a `wip` badge, or (b) sits alongside v1 as `Task Queue Visibility (v2)`. My default assumption is **(b) alongside v1** so v1 remains reachable during prototype review — flag if you want (a).
 
 ---
 
@@ -95,14 +77,23 @@ From `components/ui/`:
 2. No StickyBar primitive → inline sticky `<div>`.
 3. No `SectionHeader` / numbered-slot primitive → the brief calls for a reusable "section-header/slot component" (Step 3 explicit deliverable) — this ships in the route folder, not `components/ui/`, since it's prototype-scope.
 
-### 3.3 Reusable domain assets
+### 3.3 Mock data location (user-directed)
 
-- `mocks/wfm/store.ts` already contains a `Queue` shape with 15+ realistic queues (`id`, `label`, `volume`, `sla`, `agentsOnQueue`, `longestWait`). **Recommendation for Step 2:** reuse `QUEUES` from `mocks/wfm/store.ts` for slot ① rather than duplicating. Tasks and Workers are new shapes and get their own mock file.
-- `AGENT_BANK` in the same file is the mock worker pool — reusable for slot ③ if we augment each agent with `eligibleFor: string[]`.
+**Mocks live at `mocks/open-inventory/store.ts`** — a new file authored fresh for this prototype. All three domain shapes (`Queue`, `Task`, `Worker`) are defined and populated there. No reuse of `mocks/wfm/store.ts` — WFM Reporting and Open Inventory are distinct sections with their own domain vocabulary.
+
+Populated by the spec:
+- `QUEUES`: ~15 queues named to match the Figma reference (`Corr_Duals_FL` style IDs).
+- `TASKS`: ~8–12 open tasks per queue (`Task-01144` style IDs), keyed by queue ID.
+- `WORKERS`: ~15–20 workers with numeric IDs (`00767` style) and an `eligibleFor: string[]` referencing queue IDs.
+
+Route-file consumption:
+```ts
+import { QUEUES, TASKS, WORKERS } from '@/mocks/open-inventory/store'
+```
 
 ### 3.4 Sidebar registration
 
-The Sidebar is `components/layout/Sidebar.tsx` and it's a hardcoded array of `NAV_GROUPS`. Any new route must be added there or it won't be reachable from the app shell. **This is a mandatory SPEC line item.**
+The Sidebar is `components/layout/Sidebar.tsx`, a hardcoded `NAV_GROUPS` array. v1 (`task-queue-visibility`) is already registered somewhere in it (per the user; not visible in this branch). v2 needs its own entry — Step 3 reads v1's registration at execution time and mirrors its group placement / label conventions. **Mandatory SPEC line item.**
 
 ### 3.5 Guardrails from `CLAUDE.md` / `AGENTS.md`
 
@@ -156,13 +147,13 @@ Present:
 - Codebase reality (§3).
 - The route path decision from §2 (unless the human amended it at Checkpoint 1).
 - **Constraint envelope:**
-  - Route: `app/wfm/open-inventory/task-queue-visibility/assign/page.tsx` (or the amended path).
-  - Reuse existing `components/ui/*` and `components/wfm/*`. No new tokens. No forking.
-  - All data mocked in-file — but Queue mock reuses `mocks/wfm/store.ts`'s `QUEUES` where possible (see §3.3).
-  - Tasks: ~8–12 per queue. Workers: ~15–20, each with `eligibleFor: string[]` referencing queue IDs.
+  - Route: `app/open-inventory/task-queue-visibility-v2/page.tsx`.
+  - Mocks: `mocks/open-inventory/store.ts` — all three domain shapes authored fresh (see §3.3).
+  - Reuse existing `components/ui/*` (and `components/wfm/*` where applicable). No new tokens. No forking.
+  - Queues: ~15. Tasks: ~8–12 per queue. Workers: ~15–20, each with `eligibleFor: string[]` referencing queue IDs.
   - Local React state only. No global store. No persistence.
   - TypeScript strict. Named exports.
-  - Sidebar registration is a SPEC line item.
+  - Sidebar registration is a SPEC line item (mirror v1's placement — Step 3 discovers it).
 
 **What the SPEC must produce (per skill's own contract + this brief):**
 - New files with paths and one-line purpose.
@@ -215,11 +206,11 @@ Present:
 - Compile check: `npm run dev` starts cleanly on port 3400; route loads at the proposed path; no TypeScript errors; no console errors.
 
 **Expected outputs:**
-- `app/wfm/open-inventory/task-queue-visibility/assign/page.tsx`
-- `app/wfm/open-inventory/task-queue-visibility/assign/mocks.ts` (or `_data.ts` — SPEC decides)
-- `app/wfm/open-inventory/task-queue-visibility/assign/StepSlot.tsx` (the reusable section-header/slot component)
-- Sibling panels: `TaskTable.tsx`, `WorkerTable.tsx` (or as SPEC dictates)
-- Edit: `components/layout/Sidebar.tsx` (nav registration)
+- `app/open-inventory/task-queue-visibility-v2/page.tsx`
+- `app/open-inventory/task-queue-visibility-v2/StepSlot.tsx` (reusable section-header/slot component)
+- Sibling panels: `QueueTable.tsx`, `TaskTable.tsx`, `WorkerTable.tsx`, `FilterRail.tsx`, `StickyActionBar.tsx` (or as SPEC dictates)
+- New file: `mocks/open-inventory/store.ts` (queues, tasks, workers, types)
+- Edit: `components/layout/Sidebar.tsx` (v2 nav registration alongside v1)
 - Commits on `claude/assign-worker-flow-prototype-rb4ms4`, small and focused per Rule 24.
 
 **No Checkpoint 3 gating** — the skill runs to completion, then the human reviews the live prototype.
@@ -241,15 +232,15 @@ Present:
 
 Please confirm or amend each of these — they're baked into what I hand the skills:
 
-1. **Route path** = `app/wfm/open-inventory/task-queue-visibility/assign/page.tsx`.
-   Sidebar group label = `WFM Open Inventory`. Sidebar item label = `Task Queue Visibility — Assign`. Status badge = `wip`.
-2. **Queue data source** = reuse `QUEUES` from `mocks/wfm/store.ts` for slot ① (12 queues today — close enough to "~15", and consistent with sibling routes). Tasks and Workers get new mock shapes in the route folder. If you'd rather have 15 fresh queues named to match the Figma reference (`Corr_Duals_FL` style), say so and I'll instruct Step 2 to author them from scratch.
-3. **Worker pool source** = either reuse `AGENT_BANK` from `mocks/wfm/store.ts` (augmented with `eligibleFor`) or author fresh workers with the Figma-style numeric IDs (`00767`). Same question — reuse or author-fresh?
-4. **"Section-header/slot component" scope** = lives inside the route folder (`StepSlot.tsx`) for prototype-scope, not promoted to `components/ui/`. Aligns with project Rule 4 (rule of three — not yet three uses).
-5. **"Locked decision #7 removes the vertical/horizontal view toggle."** Confirmed: nothing about the toggle carries into the prototype. It's simply gone from the UI.
-6. **Post-Assign daily counter** persists in local component state only — resets on page reload. No `localStorage`. Confirm this matches your intent for a prototype.
-7. **Skill invocation model.** These three skills are project skills already scoped to write to disk and consume codebase context. I will invoke them via the `Skill` tool, one at a time, with the constraint envelopes above. No subagents.
-8. **The existing `PLAN.md` at repo root is unrelated** (it's the design-system project plan) and is left untouched. This workflow's plan lives at `.workflow/assign-to-worker/PLAN.md` — same file as this one.
+1. **Route path** = `app/open-inventory/task-queue-visibility-v2/page.tsx` — user-directed. v1 (`task-queue-visibility`) untouched.
+2. **Mock location** = `mocks/open-inventory/store.ts` — user-directed. Authored fresh: ~15 queues (Figma-style names like `Corr_Duals_FL`), ~8–12 tasks per queue (`Task-01144` style), ~15–20 workers (`00767` style) with `eligibleFor: string[]`.
+3. **v1 folder is not visible on this branch.** Step 3's Phase-1 reads v1 at execution time to mirror its shell/nav/page conventions. If v1 lives under a different path than `app/open-inventory/task-queue-visibility/`, tell me before Step 1 fires.
+4. **Sidebar entry** = new v2 item registered *alongside* v1 in whatever group v1 sits in (label suggestion: `Task Queue Visibility (v2)`, `wip` badge). If you'd rather replace v1 in the sidebar, say so.
+5. **"Section-header/slot component" scope** = lives inside the route folder (`StepSlot.tsx`) for prototype-scope, not promoted to `components/ui/`. Aligns with project Rule 4 (rule of three — not yet three uses).
+6. **Locked decision #7 (remove vertical/horizontal view toggle)** confirmed: nothing about the toggle carries into the prototype.
+7. **Post-Assign daily counter** persists in local component state only — resets on page reload. No `localStorage`. Confirm this matches your intent for a prototype.
+8. **Skill invocation model.** These three skills are project skills already scoped to write to disk and consume codebase context. I will invoke them via the `Skill` tool, one at a time, with the constraint envelopes above. No subagents.
+9. **The existing `PLAN.md` at repo root is unrelated** (it's the design-system project plan) and is left untouched. This workflow's plan lives at `.workflow/assign-to-worker/PLAN.md` — same file as this one.
 
 ---
 
@@ -261,6 +252,6 @@ Please confirm or amend each of these — they're baked into what I hand the ski
 4. You review the PRD, say "go" or amend.
 5. Step 2 runs, produces `SPEC.md`, I pause at Checkpoint 2.
 6. You review the SPEC, say "go" or amend.
-7. Step 3 runs to completion. Route is live at `localhost:3400/wfm/open-inventory/task-queue-visibility/assign`. Small commits pushed to the working branch. No PR opened.
+7. Step 3 runs to completion. Route is live at `localhost:3400/open-inventory/task-queue-visibility-v2`. Small commits pushed to the working branch. No PR opened.
 
 Stopping here.
