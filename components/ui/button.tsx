@@ -80,6 +80,34 @@ const buttonVariants = cva(
           'focus-visible:ring-[#689df6]/50',
           'disabled:bg-[#eff1f3] disabled:border-[#d9dce0] disabled:text-[#aab0b8]',
         ].join(' '),
+
+        // ── CxCentral variants ────────────────────────────────────────────
+        // Access Management runs inside CxCentral, which reuses every CxPortal
+        // token except Primary: Figma node 3130-45109 resolves
+        // --surface/action/primary-default to #0b8286 (was #3264b8) and
+        // --border-color/surface-active/primary-default to #0ea2a7 (was
+        // #4285f4/#689df6 — CxPortal's two lighter blue steps collapse to
+        // this one confirmed teal since no separate lighter step was found).
+        'primary-central': [
+          'bg-[#0b8286] border-[#0ea2a7] text-[#eff1f3]',
+          'hover:bg-[#0ea2a7] hover:border-[#0ea2a7]',
+          'active:bg-[#0b8286] active:border-[#0b8286]',
+          'disabled:bg-[#eff1f3] disabled:border-[#d9dce0] disabled:text-[#aab0b8]',
+        ].join(' '),
+
+        'secondary-central': [
+          'bg-transparent border-[#0ea2a7] text-[#0b8286]',
+          'hover:bg-[#aab0b8]/20',
+          'active:bg-[#aab0b8]/30 active:border-[#0b8286]',
+          'disabled:bg-[#eff1f3] disabled:border-[#d9dce0] disabled:text-[#aab0b8]',
+        ].join(' '),
+
+        'text-central': [
+          'bg-transparent border-transparent text-[#0b8286] font-semibold',
+          'hover:bg-[#e5f6f6]',
+          'active:bg-[#cceeee]',
+          'disabled:bg-transparent disabled:border-transparent disabled:text-[#aab0b8]',
+        ].join(' '),
       },
 
       size: {
@@ -135,7 +163,7 @@ const buttonVariants = cva(
   }
 )
 
-export type ButtonVariant = 'primary' | 'secondary' | 'form-controls' | 'text' | 'destructive' | 'colored-bg'
+export type ButtonVariant = 'primary' | 'secondary' | 'form-controls' | 'text' | 'destructive' | 'colored-bg' | 'primary-central' | 'secondary-central' | 'text-central'
 export type ButtonSize = 'regular' | 'sm' | 'xs' | 'icon-regular' | 'icon-sm' | 'icon-xs'
 
 function Button({

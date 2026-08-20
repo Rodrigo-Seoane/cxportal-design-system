@@ -15,6 +15,7 @@ import {
   BookOpenIcon,
   WrenchIcon,
   ChartBarHorizontalIcon,
+  ShieldCheckIcon,
 } from '@phosphor-icons/react'
 
 // ── Design tokens ─────────────────────────────────────────────────────────────
@@ -128,6 +129,16 @@ const NAV_GROUPS: NavGroup[] = [
       { label: 'Agent Status Summary', href: '/wfm/reporting/agent-status-summary', status: 'wip' },
       { label: 'Agent Scorecard', href: '/wfm/reporting/agent-scorecard', status: 'wip' },
       { label: 'Supervisor Scorecard', href: '/wfm/reporting/supervisor-scorecard', status: 'wip' },
+    ],
+  },
+  {
+    group: 'Access Management',
+    Icon: ShieldCheckIcon,
+    basePath: '/access-management',
+    items: [
+      { label: 'Roles',     href: '/access-management/roles',     status: 'wip' },
+      { label: 'Users',     href: '/access-management/users',     status: 'wip' },
+      { label: 'Companies', href: '/access-management/companies', status: 'wip' },
     ],
   },
   {

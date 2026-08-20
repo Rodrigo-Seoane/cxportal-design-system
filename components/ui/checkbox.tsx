@@ -156,6 +156,8 @@ export interface RadioProps {
   disabled?: boolean
   id?: string
   className?: string
+  /** Overrides the checked-state dot + border color. Default matches the CxPortal DS (#4285f4/#689df6). */
+  accentColor?: string
 }
 
 export function Radio({
@@ -168,6 +170,7 @@ export function Radio({
   disabled = false,
   id: propId,
   className,
+  accentColor,
 }: RadioProps) {
   const generatedId = useId()
   const id = propId ?? generatedId
@@ -196,7 +199,7 @@ export function Radio({
   const boxBorder = disabled
     ? T.borderDisabledRadio
     : checked
-    ? T.borderActive
+    ? (accentColor ?? T.borderActive)
     : hovered
     ? T.borderHoverRadio
     : T.borderNeutral
@@ -259,7 +262,7 @@ export function Radio({
               width: dotSize,
               height: dotSize,
               borderRadius: '50%',
-              background: T.surfaceChecked,
+              background: accentColor ?? T.surfaceChecked,
             }}
           />
         )}
