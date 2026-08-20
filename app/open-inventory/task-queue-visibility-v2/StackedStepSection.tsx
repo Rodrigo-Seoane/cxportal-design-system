@@ -98,9 +98,7 @@ export const StackedStepSection = forwardRef<StackedStepSectionRef, StackedStepS
           with a query-selector effect that sets tabindex="-1" on descendants. */}
       <div
         ref={containerRef}
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-expect-error — React 19 accepts `inert` as a boolean prop; TS lib.dom may lag.
-        inert={isDisabled ? '' : undefined}
+        inert={isDisabled || undefined}
         className={cn('flex flex-col', isDisabled && 'pointer-events-none')}
       >
         {children}
