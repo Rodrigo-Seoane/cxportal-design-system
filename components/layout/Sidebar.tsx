@@ -151,6 +151,7 @@ const NAV_GROUPS: NavGroup[] = [
       { label: 'Regulatory Due Dates (TAT)', href: '/open-inventory/tat', status: 'wip' },
       { label: 'Internal SLA',             href: '/open-inventory/sla', status: 'wip' },
       { label: 'Task Queue Visibility',    href: '/open-inventory/task-queue-visibility/assign', status: 'wip' },
+      { label: 'Task Queue Visibility (v2)', href: '/open-inventory/task-queue-visibility-v2', status: 'wip' },
     ],
   },
   {
