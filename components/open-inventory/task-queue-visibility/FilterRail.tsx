@@ -114,6 +114,12 @@ function FilterGroup<T extends string>({
 
 export interface FilterRailProps {
   step: BuilderStep
+  /**
+   * `'single'` (default) shows facets for the current `step` only — v1 swap
+   * behavior. `'all'` shows all three facet groups stacked simultaneously —
+   * used by v2's stacked layout where every table is always visible.
+   */
+  mode?: 'single' | 'all'
   priorityFilter: Priority[]
   onPriorityFilterChange: (v: Priority[]) => void
   taskStatusFilter: TaskStatus[]
@@ -127,10 +133,12 @@ export interface FilterRailProps {
 /**
  * 240px left rail whose facets swap with the active step — matches the
  * Access Management "Table Filter" left-rail pattern (UserFilters.tsx /
- * RoleFilters.tsx) referenced by the Figma source of truth.
+ * RoleFilters.tsx) referenced by the Figma source of truth. When
+ * `mode === 'all'` all three facet groups render stacked at once.
  */
 export function FilterRail({
-  step, priorityFilter, onPriorityFilterChange, taskStatusFilter, onTaskStatusFilterChange,
+  step, mode = 'single',
+  priorityFilter, onPriorityFilterChange, taskStatusFilter, onTaskStatusFilterChange,
   workerStatusFilter, onWorkerStatusFilterChange, onClearAll, hasActiveFilters,
 }: FilterRailProps) {
   return (
@@ -153,7 +161,7 @@ export function FilterRail({
         )}
       </div>
 
-      {step === 'queue' && (
+      {(step === 'queue' || mode === 'all') && (
         <FilterGroup
           label="Priority"
           options={PRIORITY_OPTIONS.map(o => ({ value: o.value, label: o.label, dotColor: PRIORITY_COLOR[o.value] }))}
@@ -162,18 +170,18 @@ export function FilterRail({
         />
       )}
 
-      {step === 'task' && (
+      {(step === 'task' || mode === 'all') && (
         <FilterGroup
-          label="Status"
+          label={mode === 'all' ? 'Task Status' : 'Status'}
           options={TASK_STATUS_OPTIONS.map(v => ({ value: v, label: v }))}
           selected={taskStatusFilter}
           onChange={onTaskStatusFilterChange}
         />
       )}
 
-      {step === 'worker' && (
+      {(step === 'worker' || mode === 'all') && (
         <FilterGroup
-          label="Status"
+          label={mode === 'all' ? 'Worker Status' : 'Status'}
           options={WORKER_STATUS_OPTIONS.map(v => ({ value: v, label: v, dotColor: WORKER_STATUS_COLOR[v] }))}
           selected={workerStatusFilter}
           onChange={onWorkerStatusFilterChange}
