@@ -16,6 +16,7 @@ import {
   WrenchIcon,
   ChartBarHorizontalIcon,
   ShieldCheckIcon,
+  PackageIcon,
 } from '@phosphor-icons/react'
 
 // ── Design tokens ─────────────────────────────────────────────────────────────
@@ -139,6 +140,17 @@ const NAV_GROUPS: NavGroup[] = [
       { label: 'Roles',     href: '/access-management/roles',     status: 'wip' },
       { label: 'Users',     href: '/access-management/users',     status: 'wip' },
       { label: 'Companies', href: '/access-management/companies', status: 'wip' },
+    ],
+  },
+  {
+    group: 'Open Inventory',
+    Icon: PackageIcon,
+    basePath: '/open-inventory',
+    items: [
+      { label: 'Dashboard',                href: '/open-inventory',     status: 'wip' },
+      { label: 'Regulatory Due Dates (TAT)', href: '/open-inventory/tat', status: 'wip' },
+      { label: 'Internal SLA',             href: '/open-inventory/sla', status: 'wip' },
+      { label: 'Task Queue Visibility',    href: '/open-inventory/task-queue-visibility/assign', status: 'wip' },
     ],
   },
   {
