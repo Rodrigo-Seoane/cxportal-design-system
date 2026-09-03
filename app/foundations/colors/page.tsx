@@ -24,8 +24,8 @@ export default function ColorsPage() {
             <strong style={{ color: 'var(--color-text-primary)', fontWeight: 600 }}>
               Semantic
             </strong>{' '}
-            collection in Figma. Values resolve per <em>context</em> (CxCentral, CxPortal, Cases) and{' '}
-            <em>theme</em> (Light, Dark). Switch below to see how each token adapts; click any swatch to copy its hex.
+            collection in Figma. Caylent Green is the only brand mode shipped in this app —
+            click any swatch to copy its hex.
           </p>
         </div>
 
