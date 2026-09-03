@@ -25,30 +25,30 @@ import { CaretUpDown, CaretUp, CaretDown, CheckIcon } from '@phosphor-icons/reac
 
 const T = {
   // Surfaces
-  headerBg:       '#ffffff',  // --surface/section
-  rowBgDefault:   '#ffffff',  // --surface/section
-  rowBgZebra:     '#f8f8f8',  // --surface/table/zebra-row
-  rowBgHover:     '#f0f4fb',  // subtle blue tint on hover
-  rowBgSelected:  '#eaeff8',  // accent background when selected
+  headerBg:       'var(--surface-section-bg)',
+  rowBgDefault:   'var(--surface-section-bg)',
+  rowBgZebra:     'var(--surface-table-zebra-row)',
+  rowBgHover:     'var(--content-action-primary-50)',
+  rowBgSelected:  'var(--content-action-primary-100)',
   // Borders
-  borderRow:      '#eff1f3',  // --border-color/neutral
-  borderTable:    '#eff1f3',  // outer table border
-  borderActive:   '#689df6',  // --border-color/surface-active/primary
-  borderDisabled: '#d9dce0',  // --border-color/disabled
+  borderRow:      'var(--neutral-100)',
+  borderTable:    'var(--neutral-100)',
+  borderActive:   'var(--content-action-primary-600)',
+  borderDisabled: 'var(--content-action-disabled-300)',
   // Text
-  textHeader:     '#021920',  // header label — Body/Small/sm-semibold
-  textSecondary:  '#7c7b8b',  // --text/body/secondary (sort icon idle)
-  textPrimary:    '#021920',  // --text/body/primary
-  textLink:       '#4285f4',  // --text/action / --content-action/primary
-  textVisited:    '#2859ab',  // --text/info (visited links)
-  textDisabled:   '#aab0b8',  // disabled rows/cells
+  textHeader:     'var(--text-body-primary)',  // header label — Body/Small/sm-semibold
+  textSecondary:  'var(--text-body-secondary)',  // sort icon idle
+  textPrimary:    'var(--text-body-primary)',
+  textLink:       'var(--text-action)',
+  textVisited:    'var(--text-info)',  // visited links
+  textDisabled:   'var(--content-action-disabled-700)',  // disabled rows/cells
   // Checkbox (mirrors checkbox.tsx tokens)
-  cbChecked:      '#4285f4',  // --surface/action/primary
-  cbHover:        '#689df6',  // --content-action/primary/300
-  cbBorder:       '#689df6',  // --border-color/surface-active/primary
-  cbBorderDis:    '#d9dce0',  // --border-color/disabled
-  cbSurface:      '#ffffff',  // --surface/form-field
-  cbSurfaceDis:   '#eff1f3',  // --surface/disabled
+  cbChecked:      'var(--surface-action-primary-default)',
+  cbHover:        'var(--content-action-primary-300)',
+  cbBorder:       'var(--content-action-primary-600)',
+  cbBorderDis:    'var(--content-action-disabled-300)',
+  cbSurface:      'var(--surface-form-field)',
+  cbSurfaceDis:   'var(--content-action-disabled-100)',
 } as const
 
 // ─── Size context ─────────────────────────────────────────────────────────────
@@ -276,10 +276,10 @@ export interface TableCellProps extends TdHTMLAttributes<HTMLTableCellElement> {
   align?: 'left' | 'center' | 'right'
   /**
    * Visual variant:
-   * - `default`   → primary text (#021920)
-   * - `secondary` → muted text (#7c7b8b)
-   * - `link`      → blue clickable (#4285f4)
-   * - `visited`   → visited link (#2859ab)
+   * - `default`   → primary text (var(--text-body-primary))
+   * - `secondary` → muted text (var(--text-body-secondary))
+   * - `link`      → clickable (var(--text-action))
+   * - `visited`   → visited link (var(--text-info))
    */
   variant?: 'default' | 'secondary' | 'link' | 'visited'
 }

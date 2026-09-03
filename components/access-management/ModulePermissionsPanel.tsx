@@ -29,7 +29,7 @@ export function ModulePermissionsPanel({
       {/* ── Header ────────────────────────────────────────────────────────── */}
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 24, flexWrap: 'wrap' }}>
         <div>
-          <p style={{ margin: '0 0 4px', fontSize: 20, fontWeight: 400, lineHeight: '28px', color: '#021920' }}>
+          <p style={{ margin: '0 0 4px', fontSize: 20, fontWeight: 400, lineHeight: '28px', color: 'var(--text-body-primary)' }}>
             Module Permissions
           </p>
           <InlineContextData label="Active Instance" value={activeInstance} />
@@ -44,7 +44,7 @@ export function ModulePermissionsPanel({
             <button
               type="button"
               onClick={onDiscard}
-              style={{ border: 'none', background: 'none', cursor: 'pointer', padding: 0, fontSize: 12, fontWeight: 600, color: '#0b8286' }}
+              style={{ border: 'none', background: 'none', cursor: 'pointer', padding: 0, fontSize: 12, fontWeight: 600, color: 'var(--content-action-primary-default)' }}
             >
               Discard Changes
             </button>

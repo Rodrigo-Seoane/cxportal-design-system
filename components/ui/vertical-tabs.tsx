@@ -18,16 +18,16 @@ const T = {
   lineHeight: '20px',
 
   // States
-  activeText:   '#eff1f3',
-  activeBg:     '#4285f4',
-  defaultText:  '#021920',
+  activeText:   'var(--text-on-action-primary)',
+  activeBg:     'var(--content-action-primary-600)',
+  defaultText:  'var(--text-body-primary)',
   defaultBg:    'transparent',
-  disabledText: '#aab0b8',
+  disabledText: 'var(--content-action-disabled-700)',
   disabledBg:   'transparent',
-  hoverBg:      'rgba(66,133,244,0.08)',
+  hoverBg:      'color-mix(in srgb, var(--content-action-primary-600) 8%, transparent)',
 
   // Group container
-  groupBg:     '#ffffff',
+  groupBg:     'var(--surface-section-bg)',
   groupPad:     8,
   groupGap:     4,
   groupRadius:  8,

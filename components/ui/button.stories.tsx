@@ -67,7 +67,7 @@ export const Disabled: Story = {
 
 export const ColoredBg: Story = {
   render: () => (
-    <div style={{ backgroundColor: '#4285f4', padding: '24px', borderRadius: '8px', display: 'inline-flex', gap: '12px', alignItems: 'center' }}>
+    <div style={{ backgroundColor: 'var(--content-action-primary-600)', padding: '24px', borderRadius: '8px', display: 'inline-flex', gap: '12px', alignItems: 'center' }}>
       <Button variant="colored-bg" size="sm">Get Started</Button>
       <Button variant="colored-bg" size="sm" disabled>Disabled</Button>
     </div>
@@ -83,7 +83,7 @@ export const DestructiveHover: Story = {
     variant: 'destructive',
     size: 'sm',
     children: 'Delete Campaign',
-    className: 'bg-[#f3547d] border-[#f792ac] text-[#021920]',
+    className: 'bg-[var(--error-300)] border-[var(--error-200)] text-[var(--text-body-primary)]',
   },
 }
 

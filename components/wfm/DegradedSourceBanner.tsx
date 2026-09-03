@@ -22,17 +22,17 @@ export function DegradedSourceBanner({ cachedAt, onRetry }: DegradedSourceBanner
         alignItems:     'center',
         gap:             12,
         padding:        '10px 16px',
-        background:     '#fdf8ef',
-        borderBottom:   '1px solid #f7ddb1',
-        borderTop:      '1px solid #f7ddb1',
+        background:     'var(--surface-accent-warning-light)',
+        borderBottom:   '1px solid var(--border-color-accent-warning-light)',
+        borderTop:      '1px solid var(--border-color-accent-warning-light)',
         fontSize:        14,
         lineHeight:     '20px',
         fontFamily:     'var(--font-sans)',
       }}
     >
-      <WarningIcon size={16} color="#c97000" weight="fill" aria-hidden="true" style={{ flexShrink: 0 }} />
+      <WarningIcon size={16} color="var(--icon-warning)" weight="fill" aria-hidden="true" style={{ flexShrink: 0 }} />
 
-      <span style={{ flex: 1, color: '#021920' }}>
+      <span style={{ flex: 1, color: 'var(--text-body-primary)' }}>
         <strong style={{ fontWeight: 600 }}>Agent event stream unavailable.</strong>
         {' '}KPI tiles and agent panel are showing cached data as of {timeStr}. Queue metrics are live.
       </span>
@@ -45,12 +45,12 @@ export function DegradedSourceBanner({ cachedAt, onRetry }: DegradedSourceBanner
           gap:          4,
           padding:     '4px 10px',
           borderRadius: 6,
-          border:      '1px solid #f7ddb1',
+          border:      '1px solid var(--border-color-accent-warning-light)',
           background:  'transparent',
           cursor:      'pointer',
           fontSize:     12,
           fontWeight:   600,
-          color:       '#c97000',
+          color:       'var(--text-warning)',
           fontFamily:  'var(--font-sans)',
           flexShrink:   0,
         }}
@@ -73,7 +73,7 @@ export function DegradedSourceBanner({ cachedAt, onRetry }: DegradedSourceBanner
           cursor:      'pointer',
           borderRadius: 4,
           flexShrink:   0,
-          color:       '#7a828c',
+          color:       'var(--text-body-secondary)',
         }}
       >
         <XIcon size={14} weight="thin" />

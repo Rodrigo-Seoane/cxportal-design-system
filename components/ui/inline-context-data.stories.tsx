@@ -47,7 +47,7 @@ export const WithIcon: Story = {
     label: 'Scheduled for:',
     value: 'Jun 15, 2024',
     value2: '9:00 AM',
-    icon: <CalendarBlankIcon size={14} color="#7a828c" />,
+    icon: <CalendarBlankIcon size={14} color="var(--text-body-secondary)" />,
   },
 }
 
@@ -57,17 +57,17 @@ export const Row: Story = {
       <InlineContextData
         label="Created:"
         value="Jan 10, 2024"
-        icon={<CalendarBlankIcon size={14} color="#7a828c" />}
+        icon={<CalendarBlankIcon size={14} color="var(--text-body-secondary)" />}
       />
       <InlineContextData
         label="Duration:"
         value="5 min"
-        icon={<ClockIcon size={14} color="#7a828c" />}
+        icon={<ClockIcon size={14} color="var(--text-body-secondary)" />}
       />
       <InlineContextData
         label="Author:"
         value="Alice Johnson"
-        icon={<UserIcon size={14} color="#7a828c" />}
+        icon={<UserIcon size={14} color="var(--text-body-secondary)" />}
       />
     </div>
   ),

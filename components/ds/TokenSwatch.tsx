@@ -26,8 +26,8 @@ export function TokenSwatch({ name, hex, cssVar }: TokenSwatchProps) {
       style={{
         minWidth: '240px',
         borderRadius: '4px',
-        backgroundColor: 'white',
-        borderColor: '#eff1f3',
+        backgroundColor: 'var(--neutral-0)',
+        borderColor: 'var(--neutral-100)',
       }}
     >
       {/* ── Color square — click to copy ─────────────────────────────── */}
@@ -59,7 +59,7 @@ export function TokenSwatch({ name, hex, cssVar }: TokenSwatchProps) {
             style={{
               fontSize: '14px',
               lineHeight: '20px',
-              color: '#021920',
+              color: 'var(--text-body-primary)',
             }}
           >
             {name}
@@ -70,12 +70,12 @@ export function TokenSwatch({ name, hex, cssVar }: TokenSwatchProps) {
             onClick={copy}
             className="shrink-0 whitespace-nowrap transition-colors cursor-pointer focus-visible:outline-none"
             style={{
-              backgroundColor: copied ? '#d9e7fd' : '#eff1f3',
+              backgroundColor: copied ? 'var(--content-action-primary-100)' : 'var(--neutral-100)',
               borderRadius: '4px',
               padding: '2px 6px',
               fontSize: '10px',
               lineHeight: '16px',
-              color: '#021920',
+              color: 'var(--text-body-primary)',
             }}
             aria-label={`Copy ${hex}`}
           >
@@ -89,7 +89,7 @@ export function TokenSwatch({ name, hex, cssVar }: TokenSwatchProps) {
           style={{
             fontSize: '10px',
             lineHeight: '16px',
-            color: '#7a828c',
+            color: 'var(--text-body-secondary)',
           }}
         >
           {cssVar}

@@ -112,22 +112,22 @@ export function BulkMoveModal({ articles, onClose, onConfirm }: BulkMoveModalPro
       position:      'fixed',
       inset:         0,
       zIndex:        1001,
-      background:    '#f8f9fb',
+      background:    'var(--neutral-50)',
       display:       'flex',
       flexDirection: 'column',
       overflow:      'hidden',
     }}>
       {/* Page header */}
       <div style={{
-        background:    '#fff',
-        borderBottom:  '1px solid #eff1f3',
+        background:    'var(--neutral-0)',
+        borderBottom:  '1px solid var(--neutral-100)',
         padding:       '16px 24px',
         flexShrink:    0,
       }}>
-        <h2 style={{ fontSize: 18, fontWeight: 700, color: '#021920', margin: 0 }}>
+        <h2 style={{ fontSize: 18, fontWeight: 700, color: 'var(--text-body-primary)', margin: 0 }}>
           Move Files to Folder
         </h2>
-        <p style={{ fontSize: 13, fontWeight: 400, color: '#7a828c', margin: '2px 0 0' }}>
+        <p style={{ fontSize: 13, fontWeight: 400, color: 'var(--text-body-secondary)', margin: '2px 0 0' }}>
           Manage your documents and folders
         </p>
       </div>
@@ -144,9 +144,9 @@ export function BulkMoveModal({ articles, onClose, onConfirm }: BulkMoveModalPro
         <div style={{
           width:         328,
           flexShrink:    0,
-          background:    '#fff',
+          background:    'var(--neutral-0)',
           borderRadius:  8,
-          border:        '1px solid #eff1f3',
+          border:        '1px solid var(--neutral-100)',
           padding:       16,
           display:       'flex',
           flexDirection: 'column',
@@ -164,7 +164,7 @@ export function BulkMoveModal({ articles, onClose, onConfirm }: BulkMoveModalPro
               border:         'none',
               cursor:         'pointer',
               padding:        0,
-              color:          '#3264b8',
+              color:          'var(--content-action-primary-default)',
               fontSize:       12,
               fontWeight:     600,
             }}
@@ -173,11 +173,11 @@ export function BulkMoveModal({ articles, onClose, onConfirm }: BulkMoveModalPro
             Back to Article List
           </button>
 
-          <h2 style={{ fontSize: 24, fontWeight: 400, color: '#021920', margin: 0 }}>
+          <h2 style={{ fontSize: 24, fontWeight: 400, color: 'var(--text-body-primary)', margin: 0 }}>
             Select recipient folder
           </h2>
 
-          <p style={{ fontSize: 12, fontWeight: 400, color: '#7a828c', margin: 0 }}>
+          <p style={{ fontSize: 12, fontWeight: 400, color: 'var(--text-body-secondary)', margin: 0 }}>
             Click on a folder in the tree below to set it as the destination for all selected documents.
           </p>
 
@@ -197,9 +197,9 @@ export function BulkMoveModal({ articles, onClose, onConfirm }: BulkMoveModalPro
         {/* Right main content */}
         <div style={{
           flex:          1,
-          background:    '#fff',
+          background:    'var(--neutral-0)',
           borderRadius:  8,
-          border:        '1px solid #eff1f3',
+          border:        '1px solid var(--neutral-100)',
           display:       'flex',
           flexDirection: 'column',
           overflow:      'hidden',
@@ -207,13 +207,13 @@ export function BulkMoveModal({ articles, onClose, onConfirm }: BulkMoveModalPro
           {/* Right header */}
           <div style={{
             padding:      16,
-            borderBottom: '1px solid #eff1f3',
+            borderBottom: '1px solid var(--neutral-100)',
             flexShrink:   0,
           }}>
-            <h3 style={{ fontSize: 20, fontWeight: 400, color: '#021920', margin: '0 0 4px' }}>
+            <h3 style={{ fontSize: 20, fontWeight: 400, color: 'var(--text-body-primary)', margin: '0 0 4px' }}>
               Affected Documents
             </h3>
-            <p style={{ fontSize: 12, color: '#021920', margin: 0 }}>
+            <p style={{ fontSize: 12, color: 'var(--text-body-primary)', margin: 0 }}>
               The <strong>{articles.length} article{articles.length !== 1 ? 's' : ''}</strong> below will have their location changed in bulk
             </p>
           </div>
@@ -222,7 +222,7 @@ export function BulkMoveModal({ articles, onClose, onConfirm }: BulkMoveModalPro
           <div style={{ flex: 1, overflowY: 'auto' }}>
             <table style={{ width: '100%', borderCollapse: 'collapse', tableLayout: 'fixed' }}>
               <thead>
-                <tr style={{ background: '#eff1f3', borderBottom: '1px solid #eff1f3' }}>
+                <tr style={{ background: 'var(--neutral-100)', borderBottom: '1px solid var(--neutral-100)' }}>
                   <th style={thStyle(280)}>Article Name</th>
                   <th style={thStyle(263)}>Current Folder</th>
                   <th style={thStyle(263)}>Destination Folder</th>
@@ -233,13 +233,13 @@ export function BulkMoveModal({ articles, onClose, onConfirm }: BulkMoveModalPro
                   <tr
                     key={article.id}
                     style={{
-                      background:   i % 2 === 0 ? '#ffffff' : '#f8f8f8',
-                      borderBottom: '1px solid #eff1f3',
+                      background:   i % 2 === 0 ? 'var(--neutral-0)' : 'var(--neutral-50)',
+                      borderBottom: '1px solid var(--neutral-100)',
                     }}
                   >
                     <td style={tdStyle(280)}>{article.title}</td>
                     <td style={tdStyle(263)}>/{article.folder}</td>
-                    <td style={{ ...tdStyle(263), color: selectedFolder ? '#021920' : '#aab0b8' }}>
+                    <td style={{ ...tdStyle(263), color: selectedFolder ? 'var(--text-body-primary)' : 'var(--neutral-300)' }}>
                       {selectedFolder ? selectedFolder.fullPath : '—'}
                     </td>
                   </tr>
@@ -251,7 +251,7 @@ export function BulkMoveModal({ articles, onClose, onConfirm }: BulkMoveModalPro
           {/* Footer */}
           <div style={{
             padding:    16,
-            borderTop:  '1px solid #eff1f3',
+            borderTop:  '1px solid var(--neutral-100)',
             flexShrink: 0,
             display:    'flex',
             gap:        8,
@@ -263,8 +263,8 @@ export function BulkMoveModal({ articles, onClose, onConfirm }: BulkMoveModalPro
                 alignItems:   'center',
                 gap:          6,
                 background:   'transparent',
-                border:       '1px solid #689df6',
-                color:        '#3264b8',
+                border:       '1px solid var(--content-action-primary-600)',
+                color:        'var(--content-action-primary-default)',
                 padding:      8,
                 borderRadius: 8,
                 fontSize:     12,
@@ -286,9 +286,9 @@ export function BulkMoveModal({ articles, onClose, onConfirm }: BulkMoveModalPro
                 display:      'flex',
                 alignItems:   'center',
                 gap:          6,
-                background:   '#4285f4',
-                border:       '1px solid #689df6',
-                color:        '#eff1f3',
+                background:   'var(--content-action-primary-600)',
+                border:       '1px solid var(--content-action-primary-600)',
+                color:        'var(--neutral-100)',
                 padding:      8,
                 borderRadius: 8,
                 fontSize:     12,
@@ -324,9 +324,9 @@ function TreeNode({ node, depth, selectedFolderId, expandedIds, onSelect, onTogg
   const isExpanded  = expandedIds.has(node.id)
   const isSelected  = selectedFolderId === node.id
 
-  const bg        = isSelected ? '#4285f4' : hovered ? '#ebf1fd' : 'transparent'
-  const textColor = isSelected ? '#fff' : '#021920'
-  const iconColor = isSelected ? '#fff' : '#6b7a8d'
+  const bg        = isSelected ? 'var(--content-action-primary-600)' : hovered ? 'var(--content-action-primary-100)' : 'transparent'
+  const textColor = isSelected ? 'var(--neutral-0)' : 'var(--text-body-primary)'
+  const iconColor = isSelected ? 'var(--neutral-0)' : 'var(--text-body-secondary)'
 
   return (
     <div>
@@ -365,7 +365,7 @@ function TreeNode({ node, depth, selectedFolderId, expandedIds, onSelect, onTogg
         {/* Folder icon — open when expanded or selected */}
         <span style={{ display: 'flex', alignItems: 'center', flexShrink: 0 }}>
           {(isExpanded || isSelected)
-            ? <FolderOpenIcon   size={14} color={isSelected ? '#fff' : '#4285f4'} />
+            ? <FolderOpenIcon   size={14} color={isSelected ? 'var(--neutral-0)' : 'var(--content-action-primary-600)'} />
             : <FolderSimpleIcon size={14} color={iconColor} />
           }
         </span>
@@ -393,7 +393,7 @@ function TreeNode({ node, depth, selectedFolderId, expandedIds, onSelect, onTogg
             top:        0,
             bottom:     4,
             width:      1,
-            background: '#d9dce0',
+            background: 'var(--neutral-200)',
           }} />
           {node.children!.map(child => (
             <TreeNode
@@ -421,7 +421,7 @@ function thStyle(width: number): React.CSSProperties {
     padding:    8,
     fontSize:   12,
     fontWeight: 600,
-    color:      '#021920',
+    color:      'var(--text-body-primary)',
     textAlign:  'left',
   }
 }
@@ -431,6 +431,6 @@ function tdStyle(width: number): React.CSSProperties {
     width,
     padding:  8,
     fontSize: 12,
-    color:    '#021920',
+    color:    'var(--text-body-primary)',
   }
 }

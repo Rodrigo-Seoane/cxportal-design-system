@@ -46,16 +46,18 @@ function buildEntries(): Entry[] {
 // ── Badge styles ──────────────────────────────────────────────────────────────
 
 const STATUS_BADGE: Record<Status, { label: string; bg: string; color: string }> = {
-  stable:     { label: 'Stable',     bg: 'var(--color-success-100)', color: '#1a6b1a' },
-  wip:        { label: 'WIP',        bg: 'var(--color-warning-100)', color: '#7a4a00' },
-  deprecated: { label: 'Deprecated', bg: 'var(--color-error-100)',   color: '#8b1a2a' },
-  'in-review':{ label: 'In Review',  bg: 'var(--color-info-100)',    color: '#1a3e6b' },
-  validated:  { label: 'Validated',  bg: 'var(--color-success-200)', color: '#0e4d0e' },
+  stable:     { label: 'Stable',     bg: 'var(--color-success-100)', color: 'var(--success-600)' },
+  wip:        { label: 'WIP',        bg: 'var(--color-warning-100)', color: 'var(--warning-600)' },
+  deprecated: { label: 'Deprecated', bg: 'var(--color-error-100)',   color: 'var(--error-500)' },
+  'in-review':{ label: 'In Review',  bg: 'var(--color-info-100)',    color: 'var(--info-500)' },
+  validated:  { label: 'Validated',  bg: 'var(--color-success-200)', color: 'var(--success-600)' },
 }
 
+// NOTE: 'sandbox' bg/color left as hardcoded hex (#f0ebf8 / #4a1a6b) — see hex-sweep report,
+// needs a design decision (old cxportal-purple ramp is deprecated post-rebrand, no successor defined).
 const CATEGORY_BADGE: Record<Category, { label: string; bg: string; color: string }> = {
-  component: { label: 'Component', bg: '#eff1f3', color: '#3a4a5a' },
-  chart:     { label: 'Chart',     bg: '#e8eef8', color: '#1a3e6b' },
+  component: { label: 'Component', bg: 'var(--neutral-100)', color: 'var(--text-body-primary)' },
+  chart:     { label: 'Chart',     bg: 'var(--info-50)',      color: 'var(--info-500)' },
   sandbox:   { label: 'Sandbox',   bg: '#f0ebf8', color: '#4a1a6b' },
 }
 
@@ -136,7 +138,7 @@ export default function StatusPage() {
         {/* Filter tabs */}
         <div style={{
           display: 'flex', gap: 2, marginTop: 28, marginBottom: 20,
-          borderBottom: '1px solid var(--color-border, #e2e5e9)',
+          borderBottom: '1px solid var(--color-border, var(--border))',
         }}>
           {TABS.map(t => (
             <button
@@ -169,7 +171,7 @@ export default function StatusPage() {
         <div style={{
           background: 'var(--color-surface-section)',
           borderRadius: 8,
-          border: '1px solid var(--color-border, #e2e5e9)',
+          border: '1px solid var(--color-border, var(--border))',
           overflow: 'hidden',
         }}>
           {/* Table header */}
@@ -177,8 +179,8 @@ export default function StatusPage() {
             display: 'grid',
             gridTemplateColumns: '1fr 120px 120px 100px',
             padding: '10px 16px',
-            borderBottom: '1px solid var(--color-border, #e2e5e9)',
-            background: '#f8f8f8',
+            borderBottom: '1px solid var(--color-border, var(--border))',
+            background: 'var(--surface-section-group-bg)',
           }}>
             {['Name', 'Category', 'Status', ''].map(h => (
               <span key={h} style={{ fontSize: 11, fontWeight: 600, color: 'var(--color-text-secondary)', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
@@ -199,8 +201,8 @@ export default function StatusPage() {
                   gridTemplateColumns: '1fr 120px 120px 100px',
                   padding: '12px 16px',
                   alignItems: 'center',
-                  borderBottom: i < filtered.length - 1 ? '1px solid var(--color-border, #e2e5e9)' : 'none',
-                  background: i % 2 === 1 ? '#f8f8f8' : 'var(--color-surface-section)',
+                  borderBottom: i < filtered.length - 1 ? '1px solid var(--color-border, var(--border))' : 'none',
+                  background: i % 2 === 1 ? 'var(--surface-section-group-bg)' : 'var(--color-surface-section)',
                 }}
               >
                 <span style={{ fontSize: 14, fontWeight: 400, color: 'var(--color-text-primary)' }}>

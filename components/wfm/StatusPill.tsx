@@ -6,13 +6,13 @@ import { Tooltip } from '@/components/ui/tooltip'
 import type { AgentStatusCategory } from '@/mocks/wfm/store'
 
 const STATUS_STYLES: Record<AgentStatusCategory, { bg: string; text: string; dot: string }> = {
-  Available:   { bg: '#ddf4d2', text: '#1a6b1a', dot: '#4b9924' },
-  'On Call':   { bg: '#d6e2f5', text: '#1a3561', dot: '#4285f4' },
-  Aux:         { bg: '#fbeed8', text: '#7a4a00', dot: '#c97000' },
-  Offline:     { bg: '#eff1f3', text: '#4b535e', dot: '#7a828c' },
-  'Time Off':  { bg: '#fbc6d4', text: '#8b1a2a', dot: '#ef2056' },
-  Unknown:     { bg: '#eff1f3', text: '#7a828c', dot: '#aab0b8' },
-  Pending:     { bg: '#eff1f3', text: '#aab0b8', dot: '#d9dce0' },
+  Available:   { bg: 'var(--success-100)', text: 'var(--text-success)', dot: 'var(--surface-accent-success-dark)' },
+  'On Call':   { bg: 'var(--info-100)', text: 'var(--text-info)', dot: 'var(--content-action-primary-600)' },
+  Aux:         { bg: 'var(--warning-100)', text: 'var(--text-warning)', dot: 'var(--icon-warning)' },
+  Offline:     { bg: 'var(--neutral-100)', text: 'var(--text-body-primary)', dot: 'var(--text-body-secondary)' },
+  'Time Off':  { bg: 'var(--error-100)', text: 'var(--text-destructive)', dot: 'var(--text-error)' },
+  Unknown:     { bg: 'var(--neutral-100)', text: 'var(--text-body-secondary)', dot: 'var(--neutral-300)' },
+  Pending:     { bg: 'var(--neutral-100)', text: 'var(--neutral-300)', dot: 'var(--neutral-200)' },
 }
 
 export interface StatusPillProps {
@@ -107,7 +107,7 @@ export function StatusPill({
               cursor:     'help',
             }}
           >
-            <LightningIcon size={fs + 2} color="#7a828c" weight="fill" aria-hidden="true" />
+            <LightningIcon size={fs + 2} color="var(--icon-body-secondary)" weight="fill" aria-hidden="true" />
           </span>
         </Tooltip>
       )}
@@ -121,8 +121,8 @@ export function StatusPill({
             left:        0,
             zIndex:      9999,
             marginTop:   6,
-            background: '#ffffff',
-            border:     '1px solid #e2e5e8',
+            background: 'var(--surface-section-bg)',
+            border:     '1px solid var(--neutral-200)',
             borderRadius: 8,
             padding:    '12px 14px',
             boxShadow:  '0 4px 16px rgba(2,25,32,0.12)',
@@ -131,16 +131,16 @@ export function StatusPill({
           }}
           onClick={e => e.stopPropagation()}
         >
-          <p style={{ margin: '0 0 6px', fontSize: 12, fontWeight: 600, color: '#021920' }}>
+          <p style={{ margin: '0 0 6px', fontSize: 12, fontWeight: 600, color: 'var(--text-body-primary)' }}>
             AUX Code Not Yet Mapped
           </p>
-          <p style={{ margin: 0, fontSize: 11, color: '#7a828c', lineHeight: '16px' }}>
+          <p style={{ margin: 0, fontSize: 11, color: 'var(--text-body-secondary)', lineHeight: '16px' }}>
             Centene AUX code mapping is pending (due 2026-04-30). Until then, this agent's activity
             cannot be categorized. This is a known design placeholder.
           </p>
           <button
             onClick={() => setHelpOpen(false)}
-            style={{ marginTop: 8, fontSize: 11, color: '#4285f4', background: 'none', border: 'none', cursor: 'pointer', padding: 0, fontFamily: 'var(--font-sans)' }}
+            style={{ marginTop: 8, fontSize: 11, color: 'var(--content-action-primary-600)', background: 'none', border: 'none', cursor: 'pointer', padding: 0, fontFamily: 'var(--font-sans)' }}
           >
             Got it
           </button>

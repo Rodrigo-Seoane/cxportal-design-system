@@ -15,8 +15,8 @@ export function RolesTable({ roles, onDeleteRole }: RolesTableProps) {
 
   if (roles.length === 0) {
     return (
-      <div style={{ padding: '48px 24px', textAlign: 'center', border: '1px dashed #d9dce0', borderRadius: 8 }}>
-        <p style={{ margin: 0, fontSize: 14, color: '#7a828c' }}>No roles match this filter.</p>
+      <div style={{ padding: '48px 24px', textAlign: 'center', border: '1px dashed var(--neutral-200)', borderRadius: 8 }}>
+        <p style={{ margin: 0, fontSize: 14, color: 'var(--text-body-secondary)' }}>No roles match this filter.</p>
       </div>
     )
   }
@@ -38,7 +38,7 @@ export function RolesTable({ roles, onDeleteRole }: RolesTableProps) {
             <TableCell
               variant="link"
               onClick={() => router.push(`/access-management/roles/${role.id}`)}
-              style={{ cursor: 'pointer', fontWeight: 600, color: '#0ea2a7' }}
+              style={{ cursor: 'pointer', fontWeight: 600, color: 'var(--content-action-primary-default)' }}
             >
               {role.name}
             </TableCell>

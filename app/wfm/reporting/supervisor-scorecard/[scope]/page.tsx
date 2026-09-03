@@ -216,18 +216,18 @@ function SupervisorScorecardInner() {
         {/* ── Page header ────────────────────────────────────────────────── */}
         <header style={{
           display: 'flex', alignItems: 'center', gap: 16, padding: '0 24px', height: 64,
-          background: '#ffffff', borderBottom: '1px solid #e2e5e8',
+          background: 'var(--neutral-0)', borderBottom: '1px solid var(--neutral-100)',
           position: 'sticky', top: 0, zIndex: 20,
         }}>
           <nav aria-label="Breadcrumb" style={{ display: 'flex', alignItems: 'center', gap: 4, flex: 1, minWidth: 0 }}>
-            <HouseIcon size={14} color="#7a828c" aria-hidden="true" />
-            <span style={{ fontSize: 12, color: '#7a828c' }}>Reporting</span>
-            <CaretRightIcon size={12} color="#aab0b8" aria-hidden="true" />
-            <Link href="/wfm/reporting/supervisor-scorecard" style={{ fontSize: 12, color: '#7a828c', textDecoration: 'none' }}>
+            <HouseIcon size={14} color="var(--text-body-secondary)" aria-hidden="true" />
+            <span style={{ fontSize: 12, color: 'var(--text-body-secondary)' }}>Reporting</span>
+            <CaretRightIcon size={12} color="var(--neutral-300)" aria-hidden="true" />
+            <Link href="/wfm/reporting/supervisor-scorecard" style={{ fontSize: 12, color: 'var(--text-body-secondary)', textDecoration: 'none' }}>
               Supervisor Scorecard
             </Link>
-            <CaretRightIcon size={12} color="#aab0b8" aria-hidden="true" />
-            <span style={{ fontSize: 12, fontWeight: 600, color: '#021920', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+            <CaretRightIcon size={12} color="var(--neutral-300)" aria-hidden="true" />
+            <span style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-body-primary)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
               {scopeLabel}
             </span>
           </nav>
@@ -263,22 +263,22 @@ function SupervisorScorecardInner() {
             ) : (
               <>
                 <div>
-                  <div style={{ fontSize: 11, fontWeight: 600, color: '#7a828c', textTransform: 'uppercase', letterSpacing: '0.4px', marginBottom: 2 }}>
+                  <div style={{ fontSize: 11, fontWeight: 600, color: 'var(--text-body-secondary)', textTransform: 'uppercase', letterSpacing: '0.4px', marginBottom: 2 }}>
                     {scopeTypeLabel}
                   </div>
-                  <div style={{ fontSize: 20, fontWeight: 700, color: '#021920' }}>{scopeLabel}</div>
-                  <div style={{ fontSize: 12, color: '#7a828c', marginTop: 2 }}>
+                  <div style={{ fontSize: 20, fontWeight: 700, color: 'var(--text-body-primary)' }}>{scopeLabel}</div>
+                  <div style={{ fontSize: 12, color: 'var(--text-body-secondary)', marginTop: 2 }}>
                     {parentLabel}
                     {supervisorAgent && ` · ${rollupKpi.agentCount} agents`}
                   </div>
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 16, marginLeft: 'auto', flexWrap: 'wrap' }}>
-                  <div style={{ fontSize: 12, color: '#7a828c' }}>
-                    <span style={{ fontWeight: 600, color: '#021920' }}>{rollupKpi.agentCount}</span> agents ·{' '}
-                    <span style={{ fontWeight: 600, color: '#ef2056' }}>{rollupKpi.outOfAdherenceCount}</span> out of adherence today
+                  <div style={{ fontSize: 12, color: 'var(--text-body-secondary)' }}>
+                    <span style={{ fontWeight: 600, color: 'var(--text-body-primary)' }}>{rollupKpi.agentCount}</span> agents ·{' '}
+                    <span style={{ fontWeight: 600, color: 'var(--text-error)' }}>{rollupKpi.outOfAdherenceCount}</span> out of adherence today
                   </div>
                   {isDegraded && (
-                    <span style={{ fontSize: 11, color: '#c97000', background: '#fbeed8', padding: '2px 8px', borderRadius: 64 }}>
+                    <span style={{ fontSize: 11, color: 'var(--text-warning)', background: 'var(--warning-100)', padding: '2px 8px', borderRadius: 64 }}>
                       Stale — source unavailable
                     </span>
                   )}
@@ -289,21 +289,21 @@ function SupervisorScorecardInner() {
 
           {/* ── Rollup-scope picker ───────────────────────────────────────── */}
           <div style={{ display: 'flex', alignItems: 'center', gap: 6, flexWrap: 'wrap' }}>
-            <span style={{ fontSize: 11, fontWeight: 600, color: '#7a828c', textTransform: 'uppercase', letterSpacing: '0.4px' }}>View</span>
-            <div style={{ display: 'flex', border: '1px solid #d9dce0', borderRadius: 6, overflow: 'hidden' }}>
+            <span style={{ fontSize: 11, fontWeight: 600, color: 'var(--text-body-secondary)', textTransform: 'uppercase', letterSpacing: '0.4px' }}>View</span>
+            <div style={{ display: 'flex', border: '1px solid var(--neutral-200)', borderRadius: 6, overflow: 'hidden' }}>
               {SCOPE_TYPE_OPTIONS.map(opt => (
                 <button
                   key={opt.key}
                   onClick={() => handleScopeTypeChange(opt.key)}
                   aria-pressed={currentScopeType === opt.key}
-                  style={{ ...segBtn, background: currentScopeType === opt.key ? '#f0f4fb' : '#ffffff', color: currentScopeType === opt.key ? '#1a3561' : '#4b535e', fontWeight: currentScopeType === opt.key ? 600 : 400, borderRight: opt.key === 'queue' ? 'none' : '1px solid #d9dce0' }}
+                  style={{ ...segBtn, background: currentScopeType === opt.key ? 'var(--content-action-primary-100)' : 'var(--neutral-0)', color: currentScopeType === opt.key ? 'var(--content-action-primary-700)' : 'var(--neutral-700)', fontWeight: currentScopeType === opt.key ? 600 : 400, borderRight: opt.key === 'queue' ? 'none' : '1px solid var(--neutral-200)' }}
                 >
                   {opt.label}
                 </button>
               ))}
             </div>
             {currentScopeType === 'queue' && (
-              <span style={{ fontSize: 11, color: '#7a828c', background: '#eff1f3', padding: '3px 10px', borderRadius: 64, marginLeft: 4 }}>
+              <span style={{ fontSize: 11, color: 'var(--text-body-secondary)', background: 'var(--neutral-100)', padding: '3px 10px', borderRadius: 64, marginLeft: 4 }}>
                 ⚠ Agents serving multiple queues are counted once per queue — totals may exceed agent count
               </span>
             )}
@@ -311,7 +311,7 @@ function SupervisorScorecardInner() {
 
           {/* ── Time-range selector ───────────────────────────────────────── */}
           <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
-            <span style={{ fontSize: 11, fontWeight: 600, color: '#7a828c', textTransform: 'uppercase', letterSpacing: '0.4px' }}>Range</span>
+            <span style={{ fontSize: 11, fontWeight: 600, color: 'var(--text-body-secondary)', textTransform: 'uppercase', letterSpacing: '0.4px' }}>Range</span>
             {(Object.keys(RANGE_LABELS) as TimeRange[]).map(r => (
               <button
                 key={r}
@@ -327,7 +327,7 @@ function SupervisorScorecardInner() {
                 <input type="date" value={customFrom} max={customTo || TODAY}
                   onChange={e => setCustomDate('cfrom', e.target.value)}
                   style={dateInput} aria-label="From date" />
-                <span style={{ color: '#aab0b8', fontSize: 12 }}>–</span>
+                <span style={{ color: 'var(--neutral-300)', fontSize: 12 }}>–</span>
                 <input type="date" value={customTo} min={customFrom} max={TODAY}
                   onChange={e => setCustomDate('cto', e.target.value)}
                   style={dateInput} aria-label="To date" />
@@ -376,7 +376,7 @@ function SupervisorScorecardInner() {
             />
           </div>
           {!isLoading && !isEmpty && rollupKpi.nonAdherentMin > 0 && (
-            <div style={{ marginTop: -8, fontSize: 11, color: '#7a828c', paddingLeft: 2 }}>
+            <div style={{ marginTop: -8, fontSize: 11, color: 'var(--text-body-secondary)', paddingLeft: 2 }}>
               Non-adherent sub-buckets — Late: {fmtMin(rollupKpi.late)} · Early-out: {fmtMin(rollupKpi.earlyOut)} · Off-activity: {fmtMin(rollupKpi.offActivity)}
             </div>
           )}
@@ -392,9 +392,9 @@ function SupervisorScorecardInner() {
 
           {/* ── Team trend chart ──────────────────────────────────────────── */}
           <div style={panel}>
-            <h2 style={{ margin: '0 0 16px', fontSize: 15, fontWeight: 600, color: '#021920' }}>
+            <h2 style={{ margin: '0 0 16px', fontSize: 15, fontWeight: 600, color: 'var(--text-body-primary)' }}>
               Team Adherence Trend
-              <span style={{ fontSize: 12, fontWeight: 400, color: '#7a828c', marginLeft: 8 }}>
+              <span style={{ fontSize: 12, fontWeight: 400, color: 'var(--text-body-secondary)', marginLeft: 8 }}>
                 Rollup across {rollupKpi.agentCount} agents · labor-override shift trades marked
               </span>
             </h2>
@@ -409,20 +409,20 @@ function SupervisorScorecardInner() {
           </div>
 
           {/* ── Agent list ────────────────────────────────────────────────── */}
-          <div style={{ background: '#ffffff', borderRadius: 8, border: '1px solid #e2e5e8', overflow: 'hidden' }}>
+          <div style={{ background: 'var(--neutral-0)', borderRadius: 8, border: '1px solid var(--neutral-100)', overflow: 'hidden' }}>
             <div style={{
               display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-              padding: '14px 20px', borderBottom: '1px solid #eff1f3',
+              padding: '14px 20px', borderBottom: '1px solid var(--neutral-100)',
             }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                <UserIcon size={14} color="#7a828c" aria-hidden="true" />
-                <span style={{ fontSize: 14, fontWeight: 600, color: '#021920' }}>Team Members</span>
+                <UserIcon size={14} color="var(--text-body-secondary)" aria-hidden="true" />
+                <span style={{ fontSize: 14, fontWeight: 600, color: 'var(--text-body-primary)' }}>Team Members</span>
                 {isDegraded && (
-                  <span style={{ fontSize: 11, color: '#c97000', background: '#fbeed8', padding: '1px 7px', borderRadius: 64 }}>Stale</span>
+                  <span style={{ fontSize: 11, color: 'var(--text-warning)', background: 'var(--warning-100)', padding: '1px 7px', borderRadius: 64 }}>Stale</span>
                 )}
               </div>
               <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-                <span style={{ fontSize: 11, color: '#7a828c' }}>Sort:</span>
+                <span style={{ fontSize: 11, color: 'var(--text-body-secondary)' }}>Sort:</span>
                 {([['adherence-asc', 'Worst first'], ['adherence-desc', 'Best first'], ['name', 'Name A–Z']] as [AgentSort, string][]).map(([s, label]) => (
                   <button key={s} onClick={() => setAgentSort(s)} aria-pressed={agentSort === s}
                     style={rangeBtn(agentSort === s)}>
@@ -435,15 +435,15 @@ function SupervisorScorecardInner() {
             {isLoading ? (
               <div style={{ padding: 20 }}><Skeleton variant="rect" height={160} /></div>
             ) : agentList.length === 0 ? (
-              <div style={{ padding: '32px 20px', textAlign: 'center', fontSize: 13, color: '#7a828c' }}>
+              <div style={{ padding: '32px 20px', textAlign: 'center', fontSize: 13, color: 'var(--text-body-secondary)' }}>
                 No agents in this group for the selected period
               </div>
             ) : (
               <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 12, fontFamily: 'var(--font-sans)' }}>
                 <thead>
-                  <tr style={{ background: '#f8f9fa' }}>
+                  <tr style={{ background: 'var(--neutral-50)' }}>
                     {['Agent', 'Adherence %', 'Days OOA', 'Scheduled', 'Time Off', 'Status', ''].map(h => (
-                      <th key={h} style={{ padding: '8px 16px', textAlign: 'left', fontSize: 11, fontWeight: 600, color: '#7a828c', whiteSpace: 'nowrap' }}>{h}</th>
+                      <th key={h} style={{ padding: '8px 16px', textAlign: 'left', fontSize: 11, fontWeight: 600, color: 'var(--text-body-secondary)', whiteSpace: 'nowrap' }}>{h}</th>
                     ))}
                   </tr>
                 </thead>
@@ -451,23 +451,23 @@ function SupervisorScorecardInner() {
                   {agentList.map(({ agent, adherencePct, outDays, scheduledH, timeOffDays }) => (
                     <tr
                       key={agent.id}
-                      style={{ borderTop: '1px solid #eff1f3', cursor: 'pointer', transition: 'background 80ms' }}
+                      style={{ borderTop: '1px solid var(--neutral-100)', cursor: 'pointer', transition: 'background 80ms' }}
                       onClick={() => router.push(`/wfm/reporting/agent-scorecard/${agent.id}?range=${rangeParam}&cfrom=${customFrom}&cto=${customTo}&origin=${scopeId}`)}
-                      onMouseOver={e => { (e.currentTarget as HTMLElement).style.background = '#f8f9fa' }}
+                      onMouseOver={e => { (e.currentTarget as HTMLElement).style.background = 'var(--neutral-50)' }}
                       onMouseOut={e  => { (e.currentTarget as HTMLElement).style.background = '' }}
                       tabIndex={0}
                       onKeyDown={e => { if (e.key === 'Enter') router.push(`/wfm/reporting/agent-scorecard/${agent.id}?range=${rangeParam}&origin=${scopeId}`) }}
                       aria-label={`${agent.name}, adherence ${adherencePct.toFixed(1)}%`}
                     >
-                      <td style={{ padding: '10px 16px', fontWeight: 600, color: '#021920' }}>{agent.name}</td>
-                      <td style={{ padding: '10px 16px', color: adherencePct < 80 ? '#ef2056' : '#021920', fontWeight: 600 }}>
+                      <td style={{ padding: '10px 16px', fontWeight: 600, color: 'var(--text-body-primary)' }}>{agent.name}</td>
+                      <td style={{ padding: '10px 16px', color: adherencePct < 80 ? 'var(--text-error)' : 'var(--text-body-primary)', fontWeight: 600 }}>
                         {adherencePct.toFixed(1)}%
                       </td>
-                      <td style={{ padding: '10px 16px', color: outDays > 3 ? '#c97000' : '#021920' }}>
+                      <td style={{ padding: '10px 16px', color: outDays > 3 ? 'var(--text-warning)' : 'var(--text-body-primary)' }}>
                         {outDays}
                       </td>
-                      <td style={{ padding: '10px 16px', color: '#4b535e' }}>{scheduledH.toFixed(0)}h</td>
-                      <td style={{ padding: '10px 16px', color: '#4b535e' }}>{timeOffDays > 0 ? `${timeOffDays} day${timeOffDays > 1 ? 's' : ''}` : '—'}</td>
+                      <td style={{ padding: '10px 16px', color: 'var(--neutral-700)' }}>{scheduledH.toFixed(0)}h</td>
+                      <td style={{ padding: '10px 16px', color: 'var(--neutral-700)' }}>{timeOffDays > 0 ? `${timeOffDays} day${timeOffDays > 1 ? 's' : ''}` : '—'}</td>
                       <td style={{ padding: '10px 16px' }}>
                         <StatusPill status={agent.status} />
                       </td>
@@ -488,7 +488,7 @@ function SupervisorScorecardInner() {
           {/* ── Drill-out row ─────────────────────────────────────────────── */}
           {!isLoading && (
             <div style={{ ...panel, display: 'flex', alignItems: 'center', gap: 20, flexWrap: 'wrap' }}>
-              <span style={{ fontSize: 12, fontWeight: 600, color: '#7a828c', marginRight: 4 }}>Open in FCS</span>
+              <span style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-body-secondary)', marginRight: 4 }}>Open in FCS</span>
               <DrillOutLink
                 report="intraday-management"
                 params={{
@@ -529,13 +529,13 @@ export default function SupervisorScorecardPage() {
 // ── Styles ─────────────────────────────────────────────────────────────────────
 
 const panel: React.CSSProperties = {
-  background: '#ffffff', borderRadius: 8, border: '1px solid #e2e5e8', padding: '20px',
+  background: 'var(--neutral-0)', borderRadius: 8, border: '1px solid var(--neutral-100)', padding: '20px',
 }
 
 const iconBtn: React.CSSProperties = {
   display: 'flex', alignItems: 'center', justifyContent: 'center',
-  width: 44, height: 44, borderRadius: 6, border: '1px solid #d9dce0',
-  background: '#ffffff', cursor: 'pointer', color: '#7a828c',
+  width: 44, height: 44, borderRadius: 6, border: '1px solid var(--neutral-200)',
+  background: 'var(--neutral-0)', cursor: 'pointer', color: 'var(--text-body-secondary)',
 }
 
 const segBtn: React.CSSProperties = {
@@ -544,16 +544,16 @@ const segBtn: React.CSSProperties = {
 }
 
 const dateInput: React.CSSProperties = {
-  padding: '5px 8px', border: '1px solid #d9dce0', borderRadius: 6,
-  fontSize: 12, color: '#021920', fontFamily: 'var(--font-sans)', background: '#ffffff',
+  padding: '5px 8px', border: '1px solid var(--neutral-200)', borderRadius: 6,
+  fontSize: 12, color: 'var(--text-body-primary)', fontFamily: 'var(--font-sans)', background: 'var(--neutral-0)',
 }
 
 function rangeBtn(active: boolean): React.CSSProperties {
   return {
     padding: '5px 12px', borderRadius: 6, fontSize: 13,
-    border: `1px solid ${active ? '#4285f4' : '#d9dce0'}`,
-    background: active ? '#f0f4fb' : '#ffffff',
-    color: active ? '#1a3561' : '#021920',
+    border: `1px solid ${active ? 'var(--content-action-primary-600)' : 'var(--neutral-200)'}`,
+    background: active ? 'var(--content-action-primary-100)' : 'var(--neutral-0)',
+    color: active ? 'var(--content-action-primary-700)' : 'var(--text-body-primary)',
     fontWeight: active ? 600 : 400,
     cursor: 'pointer', fontFamily: 'var(--font-sans)',
   }

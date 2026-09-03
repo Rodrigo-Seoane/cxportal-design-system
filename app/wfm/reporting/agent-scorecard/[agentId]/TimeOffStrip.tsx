@@ -12,10 +12,10 @@ interface Props {
 }
 
 const TYPE_COLORS: Record<TimeOffEntry['type'], { bg: string; text: string }> = {
-  Vacation: { bg: '#d6e2f5', text: '#1a3561' },
-  Sick:     { bg: '#fce4e4', text: '#8b1a2a' },
-  FMLA:     { bg: '#fbeed8', text: '#7a4a00' },
-  Personal: { bg: '#f3f0fb', text: '#4a1a8b' },
+  Vacation: { bg: 'var(--info-100)', text: 'var(--content-action-primary-700)' },
+  Sick:     { bg: 'var(--error-50)', text: 'var(--text-destructive)' },
+  FMLA:     { bg: 'var(--warning-100)', text: 'var(--text-warning)' },
+  Personal: { bg: 'var(--content-action-primary-100)', text: 'var(--content-action-primary-700)' },
 }
 
 function daysInRange(from: string, to: string): string[] {
@@ -44,7 +44,7 @@ export function TimeOffStrip({ timeOff, from, to }: Props) {
   if (days.length > 90) {
     const approvedCount = timeOff.filter(t => t.status === 'approved').length
     return (
-      <div style={{ padding: '12px 16px', fontSize: 13, color: '#7a828c', fontFamily: 'var(--font-sans)' }}>
+      <div style={{ padding: '12px 16px', fontSize: 13, color: 'var(--text-body-secondary)', fontFamily: 'var(--font-sans)' }}>
         {approvedCount > 0
           ? `${approvedCount} approved time-off day${approvedCount > 1 ? 's' : ''} in this period — narrow range to see day-by-day view`
           : 'No approved time off in this period'}
@@ -57,7 +57,7 @@ export function TimeOffStrip({ timeOff, from, to }: Props) {
   return (
     <div style={{ fontFamily: 'var(--font-sans)' }}>
       {/* Legend */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 10, fontSize: 11, color: '#7a828c' }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 10, fontSize: 11, color: 'var(--text-body-secondary)' }}>
         {(Object.keys(TYPE_COLORS) as TimeOffEntry['type'][]).map(type => (
           <span key={type} style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
             <span style={{ width: 10, height: 10, borderRadius: 2, background: TYPE_COLORS[type].bg, border: `1px solid ${TYPE_COLORS[type].text}30`, display: 'inline-block' }} />
@@ -65,13 +65,13 @@ export function TimeOffStrip({ timeOff, from, to }: Props) {
           </span>
         ))}
         <span style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
-          <span style={{ width: 10, height: 10, borderRadius: 2, background: '#eff1f3', display: 'inline-block' }} />
+          <span style={{ width: 10, height: 10, borderRadius: 2, background: 'var(--neutral-100)', display: 'inline-block' }} />
           Worked
         </span>
       </div>
 
       {!hasAny ? (
-        <div style={{ padding: '16px 0', fontSize: 13, color: '#7a828c' }}>
+        <div style={{ padding: '16px 0', fontSize: 13, color: 'var(--text-body-secondary)' }}>
           No time off in this period
         </div>
       ) : (
@@ -89,8 +89,8 @@ export function TimeOffStrip({ timeOff, from, to }: Props) {
                   title={entry ? `${fmtDay(date)} — ${entry.type} (${entry.status})` : fmtDay(date)}
                   style={{
                     width: 14, height: 14, borderRadius: 2,
-                    background: color ? color.bg : '#eff1f3',
-                    border: `1px solid ${color ? color.text + '40' : '#d9dce0'}`,
+                    background: color ? color.bg : 'var(--neutral-100)',
+                    border: `1px solid ${color ? color.text + '40' : 'var(--neutral-200)'}`,
                     cursor: entry ? 'pointer' : 'default',
                     flexShrink: 0,
                     transition: 'opacity 80ms',
@@ -106,7 +106,7 @@ export function TimeOffStrip({ timeOff, from, to }: Props) {
           {hovered && byDate[hovered] && (
             <div style={{
               position: 'absolute', bottom: 'calc(100% + 6px)', left: 0,
-              background: '#021920', color: '#ffffff', borderRadius: 6,
+              background: 'var(--text-body-primary)', color: 'var(--neutral-0)', borderRadius: 6,
               padding: '6px 10px', fontSize: 12, pointerEvents: 'none', zIndex: 100,
               whiteSpace: 'nowrap',
             }}>

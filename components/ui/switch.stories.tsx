@@ -108,7 +108,7 @@ export const AllVariants: Story = {
   render: () => (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
       <div>
-        <p style={{ fontSize: 11, fontWeight: 600, marginBottom: 8, color: '#6b7280' }}>
+        <p style={{ fontSize: 11, fontWeight: 600, marginBottom: 8, color: 'var(--text-body-secondary)' }}>
           REGULAR — DARK SURFACE
         </p>
         <div style={{ display: 'flex', gap: 16, alignItems: 'center' }}>
@@ -119,7 +119,7 @@ export const AllVariants: Story = {
         </div>
       </div>
       <div>
-        <p style={{ fontSize: 11, fontWeight: 600, marginBottom: 8, color: '#6b7280' }}>
+        <p style={{ fontSize: 11, fontWeight: 600, marginBottom: 8, color: 'var(--text-body-secondary)' }}>
           REGULAR — LIGHT SURFACE
         </p>
         <div style={{ display: 'flex', gap: 16, alignItems: 'center' }}>
@@ -130,7 +130,7 @@ export const AllVariants: Story = {
         </div>
       </div>
       <div>
-        <p style={{ fontSize: 11, fontWeight: 600, marginBottom: 8, color: '#6b7280' }}>
+        <p style={{ fontSize: 11, fontWeight: 600, marginBottom: 8, color: 'var(--text-body-secondary)' }}>
           SMALL — DARK SURFACE
         </p>
         <div style={{ display: 'flex', gap: 16, alignItems: 'center' }}>
@@ -141,7 +141,7 @@ export const AllVariants: Story = {
         </div>
       </div>
       <div>
-        <p style={{ fontSize: 11, fontWeight: 600, marginBottom: 8, color: '#6b7280' }}>
+        <p style={{ fontSize: 11, fontWeight: 600, marginBottom: 8, color: 'var(--text-body-secondary)' }}>
           SMALL — LIGHT SURFACE
         </p>
         <div style={{ display: 'flex', gap: 16, alignItems: 'center' }}>

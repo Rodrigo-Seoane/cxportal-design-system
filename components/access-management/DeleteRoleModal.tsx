@@ -19,7 +19,7 @@ export function DeleteRoleModal({ open, roleName, onClose, onConfirm }: DeleteRo
         <span id="delete-role-title">Delete Role</span>
       </ModalHeader>
       <ModalBody>
-        <p style={{ margin: 0, fontSize: 14, lineHeight: '20px', color: '#021920' }}>
+        <p style={{ margin: 0, fontSize: 14, lineHeight: '20px', color: 'var(--text-body-primary)' }}>
           Are you sure you want to delete {roleName ?? 'this role'}?
         </p>
       </ModalBody>

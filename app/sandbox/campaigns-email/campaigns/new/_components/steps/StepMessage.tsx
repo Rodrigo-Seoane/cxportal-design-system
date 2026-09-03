@@ -133,7 +133,7 @@ export function StepMessage({ draft, update }: Props) {
               </div>
               <div
                 className="flex-1 overflow-y-auto p-3 text-[13px] text-[var(--color-text-primary)] bg-white"
-                dangerouslySetInnerHTML={{ __html: applyVars(draft.bodyHtml) || '<p style="color:#7a828c;font-size:12px">Preview will appear here…</p>' }}
+                dangerouslySetInnerHTML={{ __html: applyVars(draft.bodyHtml) || '<p style="color:var(--text-body-secondary);font-size:12px">Preview will appear here…</p>' }}
               />
             </div>
           </div>

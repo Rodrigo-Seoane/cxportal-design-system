@@ -62,7 +62,7 @@ export const Default: Story = {
   render: () => {
     const [selected, setSelected] = useState<string | undefined>('topic-1')
     return (
-      <div style={{ width: 250, border: '1px solid #eff1f3' }}>
+      <div style={{ width: 250, border: '1px solid var(--neutral-100)' }}>
         <FileTree
           nodes={SAMPLE_TREE}
           selectedId={selected}
@@ -75,7 +75,7 @@ export const Default: Story = {
 
 export const NoSelection: Story = {
   render: () => (
-    <div style={{ width: 250, border: '1px solid #eff1f3' }}>
+    <div style={{ width: 250, border: '1px solid var(--neutral-100)' }}>
       <FileTree nodes={SAMPLE_TREE} />
     </div>
   ),
@@ -85,7 +85,7 @@ export const CollapsedGroup: Story = {
   render: () => {
     const [selected, setSelected] = useState<string | undefined>()
     return (
-      <div style={{ width: 250, border: '1px solid #eff1f3' }}>
+      <div style={{ width: 250, border: '1px solid var(--neutral-100)' }}>
         <FileTree
           nodes={SAMPLE_TREE}
           selectedId={selected}
@@ -99,7 +99,7 @@ export const CollapsedGroup: Story = {
 
 export const SelectedGroup: Story = {
   render: () => (
-    <div style={{ width: 250, border: '1px solid #eff1f3' }}>
+    <div style={{ width: 250, border: '1px solid var(--neutral-100)' }}>
       <FileTree
         nodes={SAMPLE_TREE}
         selectedId="group-1"

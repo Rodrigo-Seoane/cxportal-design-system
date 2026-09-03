@@ -12,25 +12,25 @@ import {
 // ── Design tokens (Figma: nodes 280-20671 / 280-20700) ────────────────────────
 const T = {
   // Tab group container
-  groupBg:       '#eff1f3',          // --surface/main-panel
+  groupBg:       'var(--neutral-100)',
   groupPad:       4,
   groupGap:       4,
   groupRadius:    4,                 // --border-radius/sm
 
   // Active tab
-  activeBg:      '#ffffff',          // --surface/form-field
-  activeBorder:  '#689df6',          // --border-color/surface-active/primary
-  activeText:    '#4285f4',          // --text/action
+  activeBg:      'var(--surface-form-field)',
+  activeBorder:  'var(--content-action-primary-600)',
+  activeText:    'var(--text-action)',
 
   // Default (idle) tab
   defaultBg:     'transparent',
-  defaultText:   '#021920',          // --text/on-action/secondary
+  defaultText:   'var(--text-body-primary)',
 
   // Hover tab (not in Figma spec — inferred)
-  hoverBg:       'rgba(255,255,255,0.65)',
+  hoverBg:       'color-mix(in srgb, var(--neutral-0) 65%, transparent)',
 
   // Disabled tab
-  disabledText:  '#aab0b8',          // --text/form-field/disabled
+  disabledText:  'var(--content-action-disabled-700)',
 
   // Tab trigger shared
   tabPadV:        4,

@@ -28,14 +28,14 @@ type TagView = 'list' | 'createNew'
 // ── Data ──────────────────────────────────────────────────────────────────────
 
 const INITIAL_TAG_ITEMS: { key: string; dotBg: string; dotDashed?: boolean }[] = [
-  { key: 'status:Archived',     dotBg: '#d6e2f5' },
-  { key: 'status:Deprecated',   dotBg: '#a4beea' },
-  { key: 'priority:High',       dotBg: '#ddf4d2' },
-  { key: 'priority:Urgent',     dotBg: '#b5e89c' },
-  { key: 'audience:Internal',   dotBg: '#fbeed8' },
-  { key: 'audience:External',   dotBg: '#f1c780' },
-  { key: 'access:Confidential', dotBg: '#fbc6d4' },
-  { key: 'access:Public',       dotBg: '#f792ac' },
+  { key: 'status:Archived',     dotBg: 'var(--info-100)' },
+  { key: 'status:Deprecated',   dotBg: 'var(--border-color-accent-info-light)' },
+  { key: 'priority:High',       dotBg: 'var(--success-100)' },
+  { key: 'priority:Urgent',     dotBg: 'var(--border-color-accent-success-light)' },
+  { key: 'audience:Internal',   dotBg: 'var(--warning-100)' },
+  { key: 'audience:External',   dotBg: 'var(--warning-300)' },
+  { key: 'access:Confidential', dotBg: 'var(--error-100)' },
+  { key: 'access:Public',       dotBg: 'var(--surface-action-destructive-disabled)' },
   { key: 'dep:Engineering',     dotBg: 'transparent', dotDashed: true },
   { key: 'dep:Product',         dotBg: 'transparent', dotDashed: true },
   { key: 'dep:Marketing',       dotBg: 'transparent', dotDashed: true },
@@ -44,8 +44,8 @@ const INITIAL_TAG_ITEMS: { key: string; dotBg: string; dotDashed?: boolean }[] =
 ]
 
 const TAG_COLORS: { hex: string; dashed?: boolean }[] = [
-  { hex: '#d6e2f5' }, { hex: '#a4beea' }, { hex: '#ddf4d2' }, { hex: '#b5e89c' },
-  { hex: '#fbeed8' }, { hex: '#f7ddb1' }, { hex: '#fbc6d4' }, { hex: '#f792ac' },
+  { hex: 'var(--info-100)' }, { hex: 'var(--border-color-accent-info-light)' }, { hex: 'var(--success-100)' }, { hex: 'var(--border-color-accent-success-light)' },
+  { hex: 'var(--warning-100)' }, { hex: 'var(--border-color-accent-warning-light)' }, { hex: 'var(--error-100)' }, { hex: 'var(--surface-action-destructive-disabled)' },
   { hex: 'dashed', dashed: true },
 ]
 
@@ -67,7 +67,7 @@ export function TagPanel({
   const [localTags,   setLocalTags]   = useState(INITIAL_TAG_ITEMS)
   const [createKey,   setCreateKey]   = useState('')
   const [createValue, setCreateValue] = useState('')
-  const [createColor, setCreateColor] = useState('#d6e2f5')
+  const [createColor, setCreateColor] = useState('var(--info-100)')
 
   const available    = localTags.filter(t => !existingTags.includes(t.key))
   const activeSearch = floating ? externalSearch : search
@@ -99,7 +99,7 @@ export function TagPanel({
     setCheckedTags(prev => new Set([...prev, key]))
     setCreateKey('')
     setCreateValue('')
-    setCreateColor('#d6e2f5')
+    setCreateColor('var(--info-100)')
     setView('list')
   }
 
@@ -117,14 +117,14 @@ export function TagPanel({
             padding:      0,
             fontSize:     12,
             fontWeight:   600,
-            color:        '#3264b8',
+            color:        'var(--content-action-primary-default)',
             marginBottom: 8,
           }}
         >
           ← Back to tags
         </button>
 
-        <p style={{ fontSize: 12, color: '#7a828c', marginBottom: 12, marginTop: 0 }}>
+        <p style={{ fontSize: 12, color: 'var(--text-body-secondary)', marginBottom: 12, marginTop: 0 }}>
           Create a new tag and add it to this article.
         </p>
 
@@ -136,7 +136,7 @@ export function TagPanel({
             fontWeight:    600,
             textTransform: 'uppercase',
             letterSpacing: '0.4px',
-            color:         '#021920',
+            color:         'var(--text-body-primary)',
             marginBottom:  4,
           }}>
             Key
@@ -148,7 +148,7 @@ export function TagPanel({
             style={{
               width:        '100%',
               padding:      8,
-              border:       `1px solid ${createKey.trim() ? '#4285f4' : '#d9dce0'}`,
+              border:       `1px solid ${createKey.trim() ? 'var(--content-action-primary-600)' : 'var(--neutral-200)'}`,
               borderRadius: 8,
               fontSize:     13,
               outline:      'none',
@@ -165,7 +165,7 @@ export function TagPanel({
             fontWeight:    600,
             textTransform: 'uppercase',
             letterSpacing: '0.4px',
-            color:         '#021920',
+            color:         'var(--text-body-primary)',
             marginBottom:  4,
           }}>
             Value
@@ -177,7 +177,7 @@ export function TagPanel({
             style={{
               width:        '100%',
               padding:      8,
-              border:       `1px solid ${createValue.trim() ? '#4285f4' : '#d9dce0'}`,
+              border:       `1px solid ${createValue.trim() ? 'var(--content-action-primary-600)' : 'var(--neutral-200)'}`,
               borderRadius: 8,
               fontSize:     13,
               outline:      'none',
@@ -187,7 +187,7 @@ export function TagPanel({
         </div>
 
         {isDuplicate && (
-          <p style={{ fontSize: 12, color: '#ef2056', margin: '0 0 10px' }}>
+          <p style={{ fontSize: 12, color: 'var(--text-error)', margin: '0 0 10px' }}>
             This tag already exists.
           </p>
         )}
@@ -200,7 +200,7 @@ export function TagPanel({
             fontWeight:    600,
             textTransform: 'uppercase',
             letterSpacing: '0.4px',
-            color:         '#021920',
+            color:         'var(--text-body-primary)',
             marginBottom:  6,
           }}>
             Tag Color
@@ -218,9 +218,9 @@ export function TagPanel({
                     borderRadius:    '50%',
                     background:      c.dashed ? 'transparent' : c.hex,
                     border:          isSelected
-                      ? '2px solid #4285f4'
+                      ? '2px solid var(--content-action-primary-600)'
                       : c.dashed
-                        ? '1.5px dashed #323840'
+                        ? '1.5px dashed var(--neutral-700)'
                         : '2px solid transparent',
                     cursor:          'pointer',
                     display:         'flex',
@@ -230,7 +230,7 @@ export function TagPanel({
                     flexShrink:      0,
                   }}
                 >
-                  {isSelected && <XIcon size={9} weight="bold" color="#4285f4" />}
+                  {isSelected && <XIcon size={9} weight="bold" color="var(--content-action-primary-600)" />}
                 </button>
               )
             })}
@@ -242,9 +242,9 @@ export function TagPanel({
           <button
             onClick={onClose}
             style={{
-              border:       '1px solid #d9dce0',
-              color:        '#4b535e',
-              background:   '#fff',
+              border:       '1px solid var(--neutral-200)',
+              color:        'var(--neutral-700)',
+              background:   'var(--neutral-0)',
               padding:      '6px 12px',
               borderRadius: 8,
               fontSize:     12,
@@ -257,9 +257,9 @@ export function TagPanel({
             onClick={commitNewTag}
             disabled={!canCreate}
             style={{
-              background:   '#4285f4',
-              color:        '#eff1f3',
-              border:       '1px solid #689df6',
+              background:   'var(--content-action-primary-600)',
+              color:        'var(--neutral-100)',
+              border:       '1px solid var(--content-action-primary-600)',
               padding:      '6px 12px',
               borderRadius: 8,
               fontSize:     12,
@@ -297,7 +297,7 @@ export function TagPanel({
             style={{
               width:        '100%',
               padding:      '6px 32px 6px 10px',
-              background:   '#f5f7fa',
+              background:   'var(--neutral-50)',
               border:       'none',
               borderRadius: 6,
               fontSize:     13,
@@ -307,7 +307,7 @@ export function TagPanel({
           />
           <MagnifyingGlassIcon
             size={14}
-            color="#aab0b8"
+            color="var(--neutral-300)"
             style={{ position: 'absolute', right: 10, top: '50%', transform: 'translateY(-50%)' }}
           />
         </div>
@@ -315,14 +315,14 @@ export function TagPanel({
 
       {/* Tag list */}
       <div style={{
-        border:       '1px solid #eff1f3',
+        border:       '1px solid var(--neutral-100)',
         borderRadius: 8,
         overflow:     'hidden',
         maxHeight:    200,
         overflowY:    'auto',
       }}>
         {showEmpty && (
-          <div style={{ padding: '10px 10px 0', fontSize: 12, color: '#7a828c' }}>
+          <div style={{ padding: '10px 10px 0', fontSize: 12, color: 'var(--text-body-secondary)' }}>
             No matches.
           </div>
         )}
@@ -339,14 +339,14 @@ export function TagPanel({
               padding:     '6px 10px 10px',
               fontSize:    12,
               fontWeight:  600,
-              color:       '#3264b8',
+              color:       'var(--content-action-primary-default)',
             }}
           >
             Create New Tag
           </button>
         )}
         {showAllApplied && (
-          <div style={{ padding: '10px', fontSize: 12, color: '#7a828c' }}>
+          <div style={{ padding: '10px', fontSize: 12, color: 'var(--text-body-secondary)' }}>
             All tags already applied.
           </div>
         )}
@@ -362,34 +362,34 @@ export function TagPanel({
                 gap:          10,
                 padding:      '0 10px',
                 cursor:       'pointer',
-                background:   checked ? '#f0f5fe' : '#ffffff',
-                borderBottom: idx < filtered.length - 1 ? '1px solid #f5f7fa' : 'none',
+                background:   checked ? 'var(--content-action-primary-100)' : 'var(--neutral-0)',
+                borderBottom: idx < filtered.length - 1 ? '1px solid var(--neutral-50)' : 'none',
               }}
               onMouseEnter={e => {
-                if (!checked) (e.currentTarget as HTMLElement).style.background = '#f5f7fa'
+                if (!checked) (e.currentTarget as HTMLElement).style.background = 'var(--neutral-50)'
               }}
               onMouseLeave={e => {
-                (e.currentTarget as HTMLElement).style.background = checked ? '#f0f5fe' : '#ffffff'
+                (e.currentTarget as HTMLElement).style.background = checked ? 'var(--content-action-primary-100)' : 'var(--neutral-0)'
               }}
             >
               <input
                 type="checkbox"
                 checked={checked}
                 onChange={() => toggleTag(tag.key)}
-                style={{ accentColor: '#4285f4', flexShrink: 0 }}
+                style={{ accentColor: 'var(--content-action-primary-600)', flexShrink: 0 }}
               />
               <span style={{
                 width:        10,
                 height:       10,
                 borderRadius: '50%',
                 background:   tag.dotBg,
-                border:       tag.dotDashed ? '1.5px dashed #323840' : 'none',
+                border:       tag.dotDashed ? '1.5px dashed var(--neutral-700)' : 'none',
                 flexShrink:   0,
               }} />
-              <span style={{ fontSize: 12, color: '#4b535e', flex: 1, userSelect: 'none' }}>
+              <span style={{ fontSize: 12, color: 'var(--neutral-700)', flex: 1, userSelect: 'none' }}>
                 {tag.key}
               </span>
-              {checked && <CheckIcon size={12} color="#4285f4" />}
+              {checked && <CheckIcon size={12} color="var(--content-action-primary-600)" />}
             </label>
           )
         })}
@@ -406,12 +406,12 @@ export function TagPanel({
             width:       '100%',
             background:  'none',
             border:      'none',
-            borderTop:   '1px solid #eff1f3',
+            borderTop:   '1px solid var(--neutral-100)',
             cursor:      'pointer',
             padding:     '8px 10px 6px',
             fontSize:    12,
             fontWeight:  600,
-            color:       '#3264b8',
+            color:       'var(--content-action-primary-default)',
           }}
         >
           <PlusCircleIcon size={13} />
@@ -420,13 +420,13 @@ export function TagPanel({
       )}
 
       {/* Footer */}
-      <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 8, padding: '8px 10px 4px', borderTop: '1px solid #eff1f3', marginTop: 4 }}>
+      <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 8, padding: '8px 10px 4px', borderTop: '1px solid var(--neutral-100)', marginTop: 4 }}>
         <button
           onClick={onClose}
           style={{
-            border:       '1px solid #d9dce0',
-            color:        '#4b535e',
-            background:   '#fff',
+            border:       '1px solid var(--neutral-200)',
+            color:        'var(--neutral-700)',
+            background:   'var(--neutral-0)',
             padding:      '6px 12px',
             borderRadius: 8,
             fontSize:     12,
@@ -439,9 +439,9 @@ export function TagPanel({
           onClick={() => onApply([...checkedTags])}
           disabled={checkedTags.size === 0}
           style={{
-            background:   '#4285f4',
-            color:        '#eff1f3',
-            border:       '1px solid #689df6',
+            background:   'var(--content-action-primary-600)',
+            color:        'var(--neutral-100)',
+            border:       '1px solid var(--content-action-primary-600)',
             padding:      '6px 12px',
             borderRadius: 8,
             fontSize:     12,

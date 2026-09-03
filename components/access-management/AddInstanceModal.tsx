@@ -65,7 +65,7 @@ export function AddInstanceModal({ open, companyName, companyId, onClose, onCrea
           <Input label="Instance Alias" size="small" required placeholder="Enter instance alias" value={alias} onChange={setAlias} />
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
-            <span style={{ fontSize: 10, fontWeight: 600, color: '#021920' }}>Region *</span>
+            <span style={{ fontSize: 10, fontWeight: 600, color: 'var(--text-body-primary)' }}>Region *</span>
             <select value={region} onChange={e => setRegion(e.target.value)} style={selectStyle}>
               <option value="" disabled>Select a region</option>
               {REGIONS.map(r => <option key={r} value={r}>{r}</option>)}
@@ -77,7 +77,7 @@ export function AddInstanceModal({ open, companyName, companyId, onClose, onCrea
           <Input label="Domain ID" size="small" placeholder="Enter domain ID (optional)" value={domainId} onChange={setDomainId} />
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
-            <span style={{ fontSize: 10, fontWeight: 600, color: '#021920' }}>Status</span>
+            <span style={{ fontSize: 10, fontWeight: 600, color: 'var(--text-body-primary)' }}>Status</span>
             <select value={status} onChange={e => setStatus(e.target.value)} style={selectStyle}>
               <option value="">Select status (optional)</option>
               <option value="active">Active</option>
@@ -95,6 +95,6 @@ export function AddInstanceModal({ open, companyName, companyId, onClose, onCrea
 }
 
 const selectStyle: React.CSSProperties = {
-  height: 24, padding: '0 8px', border: '1px solid #d9dce0', borderRadius: 4,
-  fontSize: 12, color: '#021920', fontFamily: 'var(--font-sans)', background: '#ffffff',
+  height: 24, padding: '0 8px', border: '1px solid var(--neutral-200)', borderRadius: 4,
+  fontSize: 12, color: 'var(--text-body-primary)', fontFamily: 'var(--font-sans)', background: 'var(--neutral-0)',
 }

@@ -5,17 +5,17 @@ import { CheckIcon } from '@phosphor-icons/react'
 
 // ── Design tokens ──────────────────────────────────────────────────────────────
 const T = {
-  borderActive:         '#689df6',  // --border-color/surface-active/primary
-  borderDisabledBox:    '#d9dce0',  // --border-color/disabled  (checkbox)
-  borderDisabledRadio:  '#aab0b8',  // --border-color/surface-active/secondary (radio)
-  borderNeutral:        '#eff1f3',  // --border-color/neutral (radio default)
-  borderHoverRadio:     '#a0c2f9',  // --border-color/form-fields/hover
-  surfaceField:         'white',    // --surface/form-field
-  surfaceChecked:       '#4285f4',  // --surface/action/primary
-  surfaceHover:         '#689df6',  // --content-action/primary/300
-  surfaceDisabled:      '#eff1f3',  // --surface/disabled
-  textPrimary:          '#021920',  // --text/body/primary
-  textDisabled:         '#aab0b8',  // --text/form-field/disabled
+  borderActive:         'var(--content-action-primary-600)',  // --border-color/surface-active/primary
+  borderDisabledBox:    'var(--content-action-disabled-300)', // --border-color/disabled  (checkbox)
+  borderDisabledRadio:  'var(--content-action-disabled-300)', // --border-color/surface-active/secondary (radio)
+  borderNeutral:        'var(--neutral-100)',                 // --border-color/neutral (radio default)
+  borderHoverRadio:     'var(--content-action-primary-700)',  // --border-color/form-fields/hover
+  surfaceField:         'var(--neutral-0)',                   // --surface/form-field
+  surfaceChecked:       'var(--content-action-primary-600)',  // --surface/action/primary
+  surfaceHover:         'var(--content-action-primary-700)',  // --content-action/primary/300
+  surfaceDisabled:      'var(--content-action-disabled-100)', // --surface/disabled
+  textPrimary:          'var(--text-body-primary)',           // --text/body/primary
+  textDisabled:         'var(--content-action-disabled-700)', // --text/form-field/disabled
 } as const
 
 // ── Checkbox ───────────────────────────────────────────────────────────────────
@@ -156,7 +156,7 @@ export interface RadioProps {
   disabled?: boolean
   id?: string
   className?: string
-  /** Overrides the checked-state dot + border color. Default matches the CxPortal DS (#4285f4/#689df6). */
+  /** Overrides the checked-state dot + border color. Default matches the CxPortal DS (content-action-primary-600). */
   accentColor?: string
 }
 

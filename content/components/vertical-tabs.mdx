@@ -37,7 +37,7 @@ The component ships as two primitives:
 - **Tab button** — 14 px label, 16 px horizontal padding, 12 px vertical padding, 8 px border radius. Full-width within its container.
 - **Icon** — optional 16 × 16 px leading element. Matches the current text colour for each state.
 - **Right slot** — optional trailing region for count chips or status badges. Sits flush to the right edge.
-- **Active indicator** — solid blue fill (`#4285f4`) replaces the transparent background; label colour inverts to `#eff1f3` and weight increases to SemiBold (600).
+- **Active indicator** — solid blue fill (`#204704`) replaces the transparent background; label colour inverts to `#efefef` and weight increases to SemiBold (600).
 
 ---
 
@@ -56,25 +56,25 @@ The component ships as two primitives:
     <TableRow>
       <TableCell><strong>Default</strong></TableCell>
       <TableCell>Transparent</TableCell>
-      <TableCell><code>#021920</code></TableCell>
+      <TableCell><code>#373737</code></TableCell>
       <TableCell>400 (Regular)</TableCell>
     </TableRow>
     <TableRow>
       <TableCell><strong>Hover</strong></TableCell>
-      <TableCell><code>rgba(66, 133, 244, 0.08)</code></TableCell>
-      <TableCell><code>#021920</code></TableCell>
+      <TableCell><code>rgba(32, 71, 4, 0.08)</code></TableCell>
+      <TableCell><code>#373737</code></TableCell>
       <TableCell>400 (Regular)</TableCell>
     </TableRow>
     <TableRow>
       <TableCell><strong>Active</strong></TableCell>
-      <TableCell><code>#4285f4</code></TableCell>
-      <TableCell><code>#eff1f3</code></TableCell>
+      <TableCell><code>#204704</code></TableCell>
+      <TableCell><code>#efefef</code></TableCell>
       <TableCell>600 (SemiBold)</TableCell>
     </TableRow>
     <TableRow>
       <TableCell><strong>Disabled</strong></TableCell>
       <TableCell>Transparent</TableCell>
-      <TableCell><code>#aab0b8</code></TableCell>
+      <TableCell><code>#6a7260</code></TableCell>
       <TableCell>400 (Regular)</TableCell>
     </TableRow>
   </TableBody>
@@ -219,27 +219,27 @@ const [active, setActive] = useState<Section>('Production')
     </TableRow>
     <TableRow>
       <TableCell><code>--surface/action/primary</code></TableCell>
-      <TableCell><code>#4285f4</code></TableCell>
+      <TableCell><code>#204704</code></TableCell>
       <TableCell>Active tab background</TableCell>
     </TableRow>
     <TableRow>
       <TableCell><code>--surface/action/hover</code></TableCell>
-      <TableCell><code>rgba(66, 133, 244, 0.08)</code></TableCell>
+      <TableCell><code>rgba(32, 71, 4, 0.08)</code></TableCell>
       <TableCell>Hover state background</TableCell>
     </TableRow>
     <TableRow>
       <TableCell><code>--text/body/primary</code></TableCell>
-      <TableCell><code>#021920</code></TableCell>
+      <TableCell><code>#373737</code></TableCell>
       <TableCell>Default tab label</TableCell>
     </TableRow>
     <TableRow>
       <TableCell><code>--text/on-action/filled</code></TableCell>
-      <TableCell><code>#eff1f3</code></TableCell>
+      <TableCell><code>#efefef</code></TableCell>
       <TableCell>Active tab label (inverted)</TableCell>
     </TableRow>
     <TableRow>
       <TableCell><code>--text/disabled</code></TableCell>
-      <TableCell><code>#aab0b8</code></TableCell>
+      <TableCell><code>#6a7260</code></TableCell>
       <TableCell>Disabled tab label and icon</TableCell>
     </TableRow>
     <TableRow>

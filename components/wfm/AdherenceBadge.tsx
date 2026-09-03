@@ -13,9 +13,9 @@ export interface AdherenceBadgeProps {
 }
 
 const META: Record<AdherenceState, { bg: string; text: string; dot: string; label: string; tooltip: string }> = {
-  'in-adherence':     { bg: '#ddf4d2', text: '#1a6b1a', dot: '#4b9924', label: 'In Adherence',   tooltip: 'Agent is performing their scheduled activity.' },
-  'out-of-adherence': { bg: '#fbc6d4', text: '#8b1a2a', dot: '#ef2056', label: 'Out',            tooltip: 'Agent is not performing their scheduled activity.' },
-  'using-thresholds': { bg: '#fbeed8', text: '#7a4a00', dot: '#c97000', label: 'Grace Period',   tooltip: 'Agent is within the configured grace period (up to 10 min). Not yet counted as out of adherence.' },
+  'in-adherence':     { bg: 'var(--success-100)', text: 'var(--text-success)', dot: 'var(--surface-accent-success-dark)', label: 'In Adherence',   tooltip: 'Agent is performing their scheduled activity.' },
+  'out-of-adherence': { bg: 'var(--error-100)', text: 'var(--text-destructive)', dot: 'var(--text-error)', label: 'Out',            tooltip: 'Agent is not performing their scheduled activity.' },
+  'using-thresholds': { bg: 'var(--warning-100)', text: 'var(--text-warning)', dot: 'var(--icon-warning)', label: 'Grace Period',   tooltip: 'Agent is within the configured grace period (up to 10 min). Not yet counted as out of adherence.' },
 }
 
 export function AdherenceBadge({ state, adherence, lastChangeAt, size = 'md' }: AdherenceBadgeProps) {

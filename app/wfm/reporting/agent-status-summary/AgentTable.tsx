@@ -160,7 +160,7 @@ export function AgentTable({
 
   if (isError) {
     return (
-      <div style={{ padding: '16px', background: '#fef1f4', border: '1px solid #f792ac', borderRadius: 8, fontSize: 13, color: '#8b1a2a', fontFamily: 'var(--font-sans)' }}>
+      <div style={{ padding: '16px', background: 'var(--surface-accent-error-light)', border: '1px solid var(--surface-action-destructive-disabled)', borderRadius: 8, fontSize: 13, color: 'var(--text-destructive)', fontFamily: 'var(--font-sans)' }}>
         Failed to load agent data. Cached values may be stale.
       </div>
     )
@@ -169,8 +169,8 @@ export function AgentTable({
   if (agents.length === 0) {
     return (
       <div style={{ textAlign: 'center', padding: '48px 0', fontFamily: 'var(--font-sans)' }}>
-        <p style={{ fontSize: 14, color: '#021920', fontWeight: 600, margin: '0 0 8px' }}>No agents match this filter</p>
-        <p style={{ fontSize: 12, color: '#7a828c', margin: 0 }}>Try clearing the status chips or adjusting your scope.</p>
+        <p style={{ fontSize: 14, color: 'var(--text-body-primary)', fontWeight: 600, margin: '0 0 8px' }}>No agents match this filter</p>
+        <p style={{ fontSize: 12, color: 'var(--text-body-secondary)', margin: 0 }}>Try clearing the status chips or adjusting your scope.</p>
       </div>
     )
   }
@@ -192,9 +192,9 @@ export function AgentTable({
         {liveAnnounce}
       </div>
 
-      <div style={{ border: '1px solid #e2e5e8', borderRadius: 8, overflow: 'hidden', fontFamily: 'var(--font-sans)' }}>
+      <div style={{ border: '1px solid var(--neutral-100)', borderRadius: 8, overflow: 'hidden', fontFamily: 'var(--font-sans)' }}>
         {/* Sticky header */}
-        <div style={{ display: 'grid', gridTemplateColumns: GRID_COLS, background: '#ffffff', borderBottom: '1px solid #e2e5e8', position: 'sticky', top: 0, zIndex: 2 }}>
+        <div style={{ display: 'grid', gridTemplateColumns: GRID_COLS, background: 'var(--neutral-0)', borderBottom: '1px solid var(--neutral-100)', position: 'sticky', top: 0, zIndex: 2 }}>
           {(['Agent', 'Status', 'Duration', 'Activity', 'Scheduled', 'Adherence', 'FG · SG', ''] as const).map((col, i) => (
             <div
               key={col + i}
@@ -207,7 +207,7 @@ export function AgentTable({
                 padding:    '10px 12px',
                 fontSize:    11,
                 fontWeight:  700,
-                color:      '#7a828c',
+                color:      'var(--text-body-secondary)',
                 textTransform: 'uppercase',
                 letterSpacing: '0.4px',
                 cursor:     ['Agent','Duration','Adherence'].includes(col) ? 'pointer' : 'default',
@@ -220,7 +220,7 @@ export function AgentTable({
               {col === 'Agent' && sortField === 'name' && <ArrowUpIcon size={10} weight="bold" />}
               {col === 'Adherence' && sortField === 'adherence' && <ArrowDownIcon size={10} weight="bold" />}
               {isDegraded && col === '' && (
-                <span style={{ fontSize: 10, color: '#c97000', fontWeight: 600 }}>Stale</span>
+                <span style={{ fontSize: 10, color: 'var(--text-warning)', fontWeight: 600 }}>Stale</span>
               )}
             </div>
           ))}
@@ -239,7 +239,7 @@ export function AgentTable({
                 const absIdx   = startIdx + relIdx
                 const isHl     = highlighted.has(agent.id)
                 const isOdd    = absIdx % 2 === 1
-                const bgColor  = isHl ? '#eef3fb' : isOdd ? '#f8f8f8' : '#ffffff'
+                const bgColor  = isHl ? 'var(--surface-accent-info-light)' : isOdd ? 'var(--neutral-50)' : 'var(--neutral-0)'
                 const isOut    = agent.adherence === 'out'
 
                 return (
@@ -261,12 +261,12 @@ export function AgentTable({
                       height:      rowH,
                       alignItems: 'center',
                       background:  bgColor,
-                      borderBottom:'1px solid #eff1f3',
+                      borderBottom:'1px solid var(--neutral-100)',
                       cursor:     'pointer',
                       transition: isHl && !prefersReducedMotion ? 'background 3s ease' : undefined,
-                      borderLeft: isOut ? '3px solid #ef2056' : '3px solid transparent',
+                      borderLeft: isOut ? '3px solid var(--text-error)' : '3px solid transparent',
                     }}
-                    onMouseOver={e => { if (!isHl) (e.currentTarget as HTMLElement).style.background = '#f0f4fb' }}
+                    onMouseOver={e => { if (!isHl) (e.currentTarget as HTMLElement).style.background = 'var(--content-action-primary-100)' }}
                     onMouseOut={e  => { (e.currentTarget as HTMLElement).style.background = bgColor }}
                   >
                     {/* Agent name */}
@@ -275,13 +275,13 @@ export function AgentTable({
                         <div style={{
                           width: density === 'comfortable' ? 28 : 20,
                           height: density === 'comfortable' ? 28 : 20,
-                          borderRadius: '50%', background: '#4285f4',
+                          borderRadius: '50%', background: 'var(--content-action-primary-600)',
                           display: 'flex', alignItems: 'center', justifyContent: 'center',
-                          fontSize: density === 'comfortable' ? 11 : 8, fontWeight: 700, color: '#fff', flexShrink: 0,
+                          fontSize: density === 'comfortable' ? 11 : 8, fontWeight: 700, color: 'var(--neutral-0)', flexShrink: 0,
                         }}>
                           {agent.name.split(' ').map(n => n[0]).join('').slice(0, 2)}
                         </div>
-                        <span style={{ fontSize: 13, fontWeight: 500, color: '#021920', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                        <span style={{ fontSize: 13, fontWeight: 500, color: 'var(--text-body-primary)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                           {agent.name}
                         </span>
                       </div>
@@ -298,7 +298,7 @@ export function AgentTable({
                     </div>
 
                     {/* Duration */}
-                    <div style={{ padding: '0 12px', fontSize: 12, color: '#7a828c' }}>
+                    <div style={{ padding: '0 12px', fontSize: 12, color: 'var(--text-body-secondary)' }}>
                       {agent.statusDuration}
                     </div>
 
@@ -321,7 +321,7 @@ export function AgentTable({
                     </div>
 
                     {/* FG · SG */}
-                    <div style={{ padding: '0 12px', fontSize: 11, color: '#7a828c', fontFamily: 'monospace', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                    <div style={{ padding: '0 12px', fontSize: 11, color: 'var(--text-body-secondary)', fontFamily: 'monospace', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                       {parseSgLabel(agent)}
                     </div>
 
@@ -361,17 +361,17 @@ export function AgentTable({
           alignItems: 'center',
           gap:         8,
           padding:    '8px 16px',
-          borderTop:  '1px solid #e2e5e8',
-          background: '#ffffff',
+          borderTop:  '1px solid var(--neutral-100)',
+          background: 'var(--neutral-0)',
           fontSize:    11,
-          color:      '#7a828c',
+          color:      'var(--text-body-secondary)',
           fontFamily: 'var(--font-sans)',
         }}>
           <span style={{ flex: 1 }}>
             {agents.length.toLocaleString()} agent{agents.length !== 1 ? 's' : ''}
           </span>
           {isDegraded ? (
-            <span style={{ color: '#c97000', fontWeight: 600 }}>Paused — source unavailable</span>
+            <span style={{ color: 'var(--text-warning)', fontWeight: 600 }}>Paused — source unavailable</span>
           ) : (
             <LiveFooter lastEvent={lastEvent} />
           )}

@@ -22,21 +22,21 @@ function AlertRow({ alert, onToggle }: { alert: ActiveAlert & { enabled: boolean
   return (
     <div style={{
       padding:     '14px 0',
-      borderBottom:'1px solid #eff1f3',
+      borderBottom:'1px solid var(--neutral-100)',
       display:     'flex',
       gap:          12,
       alignItems:  'flex-start',
       fontFamily:  'var(--font-sans)',
     }}>
       <div style={{ flex: 1 }}>
-        <div style={{ fontSize: 13, fontWeight: 600, color: '#021920', marginBottom: 2 }}>
+        <div style={{ fontSize: 13, fontWeight: 600, color: 'var(--text-body-primary)', marginBottom: 2 }}>
           {alert.metric} {alert.operator} {alert.threshold}
           {alert.metric.includes('%') ? '%' : ''}
         </div>
-        <div style={{ fontSize: 12, color: '#7a828c' }}>
-          {alert.scope} · Now: <strong style={{ color: '#021920' }}>{alert.currentValue}</strong>
+        <div style={{ fontSize: 12, color: 'var(--text-body-secondary)' }}>
+          {alert.scope} · Now: <strong style={{ color: 'var(--text-body-primary)' }}>{alert.currentValue}</strong>
         </div>
-        <div style={{ fontSize: 11, color: '#aab0b8', marginTop: 2 }}>
+        <div style={{ fontSize: 11, color: 'var(--neutral-300)', marginTop: 2 }}>
           Triggered {formatTimeAgo(alert.triggeredAt)}
         </div>
       </div>
@@ -46,8 +46,8 @@ function AlertRow({ alert, onToggle }: { alert: ActiveAlert & { enabled: boolean
         style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 4 }}
       >
         {alert.enabled
-          ? <ToggleRightIcon size={24} color="#4285f4" weight="fill" />
-          : <ToggleLeftIcon  size={24} color="#aab0b8" weight="fill" />
+          ? <ToggleRightIcon size={24} color="var(--content-action-primary-600)" weight="fill" />
+          : <ToggleLeftIcon  size={24} color="var(--neutral-300)" weight="fill" />
         }
       </button>
     </div>
@@ -102,8 +102,8 @@ export function AlertConfigFlyout({ open, onClose }: AlertConfigFlyoutProps) {
           )}
 
           {alerts.length === 0 && (
-            <div style={{ textAlign: 'center', padding: '48px 0', color: '#7a828c', fontFamily: 'var(--font-sans)' }}>
-              <BellIcon size={32} color="#aab0b8" weight="thin" />
+            <div style={{ textAlign: 'center', padding: '48px 0', color: 'var(--text-body-secondary)', fontFamily: 'var(--font-sans)' }}>
+              <BellIcon size={32} color="var(--neutral-300)" weight="thin" />
               <p style={{ marginTop: 12, fontSize: 14 }}>No alerts configured.</p>
               <p style={{ fontSize: 12 }}>Create your first alert to get notified when a metric crosses a threshold.</p>
             </div>
@@ -155,10 +155,10 @@ function AlertForm({ step, form, metrics, scopes, onFormChange, onNext, onBack, 
           <div key={l} style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
             <div style={{
               width: 22, height: 22, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center',
-              background: i + 1 === step ? '#4285f4' : i + 1 < step ? '#ddf4d2' : '#eff1f3',
-              fontSize: 10, fontWeight: 700, color: i + 1 === step ? '#fff' : '#7a828c',
+              background: i + 1 === step ? 'var(--content-action-primary-600)' : i + 1 < step ? 'var(--success-100)' : 'var(--neutral-100)',
+              fontSize: 10, fontWeight: 700, color: i + 1 === step ? 'var(--neutral-0)' : 'var(--text-body-secondary)',
             }}>{i + 1}</div>
-            {i < stepLabels.length - 1 && <div style={{ width: 16, height: 1, background: '#eff1f3' }} />}
+            {i < stepLabels.length - 1 && <div style={{ width: 16, height: 1, background: 'var(--neutral-100)' }} />}
           </div>
         ))}
       </div>
@@ -169,8 +169,8 @@ function AlertForm({ step, form, metrics, scopes, onFormChange, onNext, onBack, 
             <label style={formLabel}>Which metric?</label>
             {metrics.map(m => (
               <label key={m} style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '8px 0', cursor: 'pointer' }}>
-                <input type="radio" name="metric" value={m} checked={form.metric === m} onChange={() => onFormChange({ metric: m })} style={{ accentColor: '#4285f4' }} />
-                <span style={{ fontSize: 13, color: '#021920' }}>{m}</span>
+                <input type="radio" name="metric" value={m} checked={form.metric === m} onChange={() => onFormChange({ metric: m })} style={{ accentColor: 'var(--content-action-primary-600)' }} />
+                <span style={{ fontSize: 13, color: 'var(--text-body-primary)' }}>{m}</span>
               </label>
             ))}
           </div>
@@ -186,7 +186,7 @@ function AlertForm({ step, form, metrics, scopes, onFormChange, onNext, onBack, 
               <input type="number" value={form.threshold} onChange={e => onFormChange({ threshold: e.target.value })}
                 placeholder="e.g. 90" style={{ ...selectStyle, width: 100 }} />
             </div>
-            <p style={{ fontSize: 12, color: '#7a828c' }}>Alert triggers when {form.metric || 'metric'} is {form.operator} {form.threshold || '—'}.</p>
+            <p style={{ fontSize: 12, color: 'var(--text-body-secondary)' }}>Alert triggers when {form.metric || 'metric'} is {form.operator} {form.threshold || '—'}.</p>
           </div>
         )}
         {step === 3 && (
@@ -194,8 +194,8 @@ function AlertForm({ step, form, metrics, scopes, onFormChange, onNext, onBack, 
             <label style={formLabel}>Scope</label>
             {scopes.map(s => (
               <label key={s} style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '8px 0', cursor: 'pointer' }}>
-                <input type="radio" name="scope" value={s} checked={form.scope === s} onChange={() => onFormChange({ scope: s })} style={{ accentColor: '#4285f4' }} />
-                <span style={{ fontSize: 13, color: '#021920' }}>{s}</span>
+                <input type="radio" name="scope" value={s} checked={form.scope === s} onChange={() => onFormChange({ scope: s })} style={{ accentColor: 'var(--content-action-primary-600)' }} />
+                <span style={{ fontSize: 13, color: 'var(--text-body-primary)' }}>{s}</span>
               </label>
             ))}
           </div>
@@ -205,8 +205,8 @@ function AlertForm({ step, form, metrics, scopes, onFormChange, onNext, onBack, 
             <label style={formLabel}>Recipients</label>
             {['Centene email', 'Slack #wfm-alerts', 'Teams'].map(ch => (
               <label key={ch} style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '6px 0', cursor: 'pointer' }}>
-                <input type="checkbox" style={{ accentColor: '#4285f4' }} />
-                <span style={{ fontSize: 13, color: '#021920' }}>{ch}</span>
+                <input type="checkbox" style={{ accentColor: 'var(--content-action-primary-600)' }} />
+                <span style={{ fontSize: 13, color: 'var(--text-body-primary)' }}>{ch}</span>
               </label>
             ))}
           </div>
@@ -216,8 +216,8 @@ function AlertForm({ step, form, metrics, scopes, onFormChange, onNext, onBack, 
             <label style={formLabel}>Frequency</label>
             {['immediate', 'batched'].map(f => (
               <label key={f} style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '8px 0', cursor: 'pointer' }}>
-                <input type="radio" name="freq" value={f} checked={form.frequency === f} onChange={() => onFormChange({ frequency: f })} style={{ accentColor: '#4285f4' }} />
-                <span style={{ fontSize: 13, color: '#021920' }}>{f === 'immediate' ? 'Immediate (send as triggered)' : 'Batched (hourly digest)'}</span>
+                <input type="radio" name="freq" value={f} checked={form.frequency === f} onChange={() => onFormChange({ frequency: f })} style={{ accentColor: 'var(--content-action-primary-600)' }} />
+                <span style={{ fontSize: 13, color: 'var(--text-body-primary)' }}>{f === 'immediate' ? 'Immediate (send as triggered)' : 'Batched (hourly digest)'}</span>
               </label>
             ))}
           </div>
@@ -226,10 +226,10 @@ function AlertForm({ step, form, metrics, scopes, onFormChange, onNext, onBack, 
           <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
             <label style={formLabel}>Enable alert</label>
             <label style={{ display: 'flex', alignItems: 'center', gap: 10, cursor: 'pointer' }}>
-              <input type="checkbox" checked={form.enabled} onChange={e => onFormChange({ enabled: e.target.checked })} style={{ accentColor: '#4285f4', width: 16, height: 16 }} />
-              <span style={{ fontSize: 13, color: '#021920' }}>Active — start monitoring immediately after save</span>
+              <input type="checkbox" checked={form.enabled} onChange={e => onFormChange({ enabled: e.target.checked })} style={{ accentColor: 'var(--content-action-primary-600)', width: 16, height: 16 }} />
+              <span style={{ fontSize: 13, color: 'var(--text-body-primary)' }}>Active — start monitoring immediately after save</span>
             </label>
-            <div style={{ padding: 12, background: '#f8f8f8', borderRadius: 6, fontSize: 12, color: '#7a828c' }}>
+            <div style={{ padding: 12, background: 'var(--surface-section-group-bg)', borderRadius: 6, fontSize: 12, color: 'var(--text-body-secondary)' }}>
               {form.metric} {form.operator} {form.threshold} · {form.scope} · {form.frequency}
             </div>
           </div>
@@ -251,17 +251,17 @@ const formLabel: React.CSSProperties = {
   display:    'block',
   fontSize:    13,
   fontWeight:  600,
-  color:      '#021920',
+  color:      'var(--text-body-primary)',
   marginBottom: 8,
 }
 
 const selectStyle: React.CSSProperties = {
   padding:    '6px 10px',
   borderRadius: 6,
-  border:     '1px solid #d9dce0',
+  border:     '1px solid var(--neutral-200)',
   fontSize:    13,
-  color:      '#021920',
-  background: '#ffffff',
+  color:      'var(--text-body-primary)',
+  background: 'var(--surface-section-bg)',
   fontFamily: 'var(--font-sans)',
   flex:        1,
 }
@@ -273,8 +273,8 @@ const primaryBtn: React.CSSProperties = {
   padding:     '8px 16px',
   borderRadius: 6,
   border:      'none',
-  background:  '#4285f4',
-  color:       '#ffffff',
+  background:  'var(--content-action-primary-600)',
+  color:       'var(--neutral-0)',
   fontSize:     13,
   fontWeight:   600,
   cursor:      'pointer',
@@ -284,9 +284,9 @@ const primaryBtn: React.CSSProperties = {
 const secondaryBtn: React.CSSProperties = {
   padding:     '8px 16px',
   borderRadius: 6,
-  border:      '1px solid #d9dce0',
-  background:  '#ffffff',
-  color:       '#021920',
+  border:      '1px solid var(--neutral-200)',
+  background:  'var(--surface-section-bg)',
+  color:       'var(--text-body-primary)',
   fontSize:     13,
   fontWeight:   500,
   cursor:      'pointer',

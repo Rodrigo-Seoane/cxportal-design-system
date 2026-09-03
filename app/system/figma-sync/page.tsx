@@ -27,7 +27,7 @@ function Code({ children }: { children: string }) {
       fontFamily: 'ui-monospace, monospace',
       fontSize: 12,
       padding: '1px 5px', borderRadius: 4,
-      background: '#eff1f3', color: '#3a4a5a',
+      background: 'var(--neutral-100)', color: 'var(--text-body-primary)',
     }}>
       {children}
     </code>
@@ -40,7 +40,7 @@ function CodeBlock({ children }: { children: string }) {
       fontFamily: 'ui-monospace, monospace',
       fontSize: 12, lineHeight: '20px',
       padding: '14px 18px', borderRadius: 8,
-      background: '#021920', color: '#eff1f3',
+      background: 'var(--neutral-900)', color: 'var(--neutral-50)',
       overflowX: 'auto', margin: '12px 0 20px',
       maxWidth: 680,
     }}>
@@ -74,7 +74,7 @@ function Step({ n, title, children }: { n: number; title: string; children: Reac
           width: 28, height: 28, borderRadius: '50%',
           background: 'var(--color-primary)',
           display: 'flex', alignItems: 'center', justifyContent: 'center',
-          fontSize: 12, fontWeight: 700, color: '#fff',
+          fontSize: 12, fontWeight: 700, color: 'var(--neutral-0)',
         }}>
           {n}
         </div>
@@ -126,7 +126,7 @@ export default function FigmaSyncPage() {
             {[
               { label: 'Figma file key', value: 'exoHhvasbJSziVGakV8Y0r' },
               { label: 'Token source',   value: 'Figma Variables API' },
-              { label: 'Target file',    value: 'lib/tokens.ts' },
+              { label: 'Target files',   value: 'app/globals.css, lib/tokens.ts, semantic-tokens.ts' },
             ].map(item => (
               <div key={item.label} style={{
                 background: 'var(--color-surface-section)',
@@ -162,55 +162,67 @@ mcp__Figma__get_variable_defs({ fileKey: "exoHhvasbJSziVGakV8Y0r" })`}</CodeBloc
             </Prose>
           </Step>
 
-          <Step n={2} title="Diff against the current tokens file">
+          <Step n={2} title="Diff against the current token layers">
             <Prose>
-              Open <Code>lib/tokens.ts</Code> and compare it against the Figma output. Look for:
+              Compare the Figma output against <Code>app/globals.css</Code>. Tokens live in five layers,
+              cascading via CSS <Code>var()</Code> references — a value fix only needs to happen at the
+              layer that actually owns it:
             </Prose>
             <ul style={{ paddingLeft: 20, margin: '8px 0 16px', display: 'flex', flexDirection: 'column', gap: 6 }}>
               {[
-                'New variables not yet in tokens.ts',
-                'Renamed variables (old name should be removed)',
-                'Value changes (hex, size, weight)',
-                'Deleted variables still present in tokens.ts',
+                'Raw palette (--raw-*) — the literal hex ramps per brand family (e.g. --raw-caylent-green-*)',
+                'Semantic (--neutral-*, --content-action-*, --success-*, etc.) — Figma Semantic collection, mostly var() refs into raw',
+                'Context (--text-*, --icon-*, --surface-*, --border-color-*) — role-based aliases into semantic',
+                'Legacy flat aliases (--color-*, --radius-*) — kept for older consumers, alias into context',
+                'shadcn/ui tokens (--background, --primary, etc.) — alias into context, exported via @theme inline for Tailwind utilities',
               ].map(item => (
                 <li key={item} style={{ fontSize: 14, color: 'var(--color-text-secondary)', lineHeight: '22px' }}>
                   {item}
                 </li>
               ))}
             </ul>
+            <Prose>
+              Look for: new variables not yet in <Code>globals.css</Code>, renamed variables (old name
+              should be removed or aliased), value changes at the raw or semantic layer, and deleted
+              variables still present in the file.
+            </Prose>
           </Step>
 
-          <Step n={3} title="Update lib/tokens.ts">
+          <Step n={3} title="Update app/globals.css">
             <Prose>
-              Apply only the confirmed changes. Keep the file typed, immutable (<Code>as const</Code>), and
-              organized by token category. Do not remove a token without checking that nothing references it.
+              Apply confirmed raw-layer value changes first, then re-point any semantic tokens whose
+              Figma mode value changed. Prefer <Code>var()</Code> references over literal hex at the
+              semantic layer so a future raw-value fix cascades automatically.
             </Prose>
-            <CodeBlock>{`// Example: updating a color token
-export const colors = {
-  primary: '#4285f4',          // unchanged
-  text: {
-    primary:   '#021920',
-    secondary: '#7a828c',      // updated from previous value
-    onDark:    '#eff1f3',
-  },
-  // ...
-} as const`}</CodeBlock>
-          </Step>
+            <CodeBlock>{`/* app/globals.css */
+:root {
+  /* Raw palette — literal hex lives only here */
+  --raw-caylent-green-600: #204704;
 
-          <Step n={4} title="Update styles/globals.css">
-            <Prose>
-              For any new or renamed tokens, add or update the corresponding CSS variable in the{' '}
-              <Code>@theme</Code> block. Existing components reference these variables — renaming a
-              CSS variable is a breaking change; alias the old name if needed.
-            </Prose>
-            <CodeBlock>{`/* styles/globals.css */
-@theme {
-  --color-primary:         #4285f4;
-  --color-text-primary:    #021920;
-  --color-text-secondary:  #7a828c;
-  /* new token: */
-  --color-surface-overlay: rgba(0, 0, 0, 0.4);
+  /* Semantic — references raw, no literal hex */
+  --content-action-primary-600: var(--raw-caylent-green-600);
 }`}</CodeBlock>
+          </Step>
+
+          <Step n={4} title="Update lib/tokens.ts and semantic-tokens.ts">
+            <Prose>
+              <Code>lib/tokens.ts</Code> mirrors <Code>app/globals.css</Code> 1:1 — its <Code>raw</Code>{' '}
+              block holds the same literal hex, while <Code>semantic</Code> and <Code>context</Code> are
+              already <Code>var(--…)</Code> string references that cascade automatically once{' '}
+              <Code>globals.css</Code> is fixed. Also update{' '}
+              <Code>app/foundations/colors/semantic-tokens.ts</Code> — it&apos;s an independent, hardcoded
+              hex catalog powering the <Code>/foundations/colors</Code> explorer page and does NOT read
+              from CSS vars, so it needs its resolved hex values updated by hand to match.
+            </Prose>
+            <CodeBlock>{`// lib/tokens.ts — keep raw in sync with globals.css
+export const raw = {
+  caylentGreen: {
+    600: '#204704', // must match --raw-caylent-green-600 in globals.css
+  },
+} as const
+
+// app/foundations/colors/semantic-tokens.ts — independent hex catalog
+{ name: 'Primary/600', token: 'content-action-primary-600', hex: '#204704' }`}</CodeBlock>
           </Step>
 
           <Step n={5} title="Verify visually">
@@ -233,10 +245,11 @@ export const colors = {
 
           <Step n={6} title="Commit and log the change">
             <Prose>
-              Commit only <Code>lib/tokens.ts</Code> and <Code>styles/globals.css</Code> in the token
-              sync commit. Add a Changelog entry under the sync date.
+              Commit <Code>app/globals.css</Code>, <Code>lib/tokens.ts</Code>, and{' '}
+              <Code>app/foundations/colors/semantic-tokens.ts</Code> together in the token sync commit —
+              all three must stay in sync. Add a Changelog entry under the sync date.
             </Prose>
-            <CodeBlock>{`git add lib/tokens.ts styles/globals.css
+            <CodeBlock>{`git add app/globals.css lib/tokens.ts app/foundations/colors/semantic-tokens.ts
 git commit -m "sync: pull Figma token updates — <date>"`}</CodeBlock>
           </Step>
 

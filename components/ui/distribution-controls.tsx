@@ -4,17 +4,17 @@ import { useState, useRef, useCallback } from 'react'
 
 // ── Design tokens ──────────────────────────────────────────────────────────────
 const T = {
-  primaryFill:   '#a0c2f9',   // Region A active bar  --content-action/primary/200
-  secondaryFill: '#3264b8',   // Region B active bar  --content-action/primary/500
-  passiveBg:     '#f8f8f8',   // Passive zone         --neutral/50
-  passiveBorder: '#eff1f3',   // Passive zone border  --border-color/neutral
-  cardBg:        '#ffffff',   // --surface/section
-  cardBorder:    '#eff1f3',   // --border-color/neutral
-  textPrimary:   '#021920',   // --text/body/primary
-  textOnDark:    '#eff1f3',   // --text/body/on-dark-surface
-  textDisabled:  '#aab0b8',   // --text/form-field/disabled
-  inputBorder:   '#4285f4',   // --border-color/form-fields/focus
-  handle:        '#4285f4',
+  primaryFill:   'var(--content-action-primary-200)', // Region A active bar
+  secondaryFill: 'var(--content-action-primary-500)', // Region B active bar
+  passiveBg:     'var(--neutral-50)',                 // Passive zone
+  passiveBorder: 'var(--neutral-100)',                // Passive zone border
+  cardBg:        'var(--neutral-0)',
+  cardBorder:    'var(--neutral-100)',
+  textPrimary:   'var(--text-body-primary)',
+  textOnDark:    'var(--neutral-100)',
+  textDisabled:  'var(--content-action-disabled-700)',
+  inputBorder:   'var(--content-action-primary-600)',
+  handle:        'var(--content-action-primary-600)',
 } as const
 
 const STEP = 10
@@ -387,7 +387,7 @@ export function DistributionControls({
               <div key={i} style={{
                 width: 1,
                 height: i === 0 || i === 5 || i === 10 ? 4 : 2,
-                background: '#c5cdd6',
+                background: 'var(--neutral-200)',
                 borderRadius: 1,
               }} />
             ))}
@@ -424,7 +424,7 @@ export function DistributionControls({
               transform: 'translateY(-50%)',
               width: 14, height: 14,
               borderRadius: '50%',
-              background: '#fff',
+              background: 'var(--neutral-0)',
               border: `2px solid ${T.handle}`,
               boxShadow: '0 1px 4px rgba(2,25,32,0.18)',
               zIndex: 1,

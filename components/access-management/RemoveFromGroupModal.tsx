@@ -32,16 +32,16 @@ export function RemoveFromGroupModal({ open, entityLabel, selectedCount, current
       </ModalHeader>
       <ModalBody>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-          <p style={{ margin: 0, fontSize: 20, fontWeight: 400, lineHeight: '28px', color: '#021920' }}>
+          <p style={{ margin: 0, fontSize: 20, fontWeight: 400, lineHeight: '28px', color: 'var(--text-body-primary)' }}>
             Remove selected {entityLabel} from groups.
           </p>
-          <p style={{ margin: 0, fontSize: 12, color: '#021920' }}>
+          <p style={{ margin: 0, fontSize: 12, color: 'var(--text-body-primary)' }}>
             <strong>{selectedCount} Selected {entityLabel[0].toUpperCase() + entityLabel.slice(1)}</strong> will be removed from the selected group.
           </p>
 
-          <div style={{ background: '#f8f8f8', borderRadius: 8, padding: 16, display: 'flex', flexDirection: 'column' }}>
+          <div style={{ background: 'var(--neutral-50)', borderRadius: 8, padding: 16, display: 'flex', flexDirection: 'column' }}>
             {currentGroups.map(group => (
-              <div key={group} style={{ display: 'flex', alignItems: 'center', height: 32, padding: '0 8px', background: checked.includes(group) ? '#d9e7fd' : 'transparent', borderBottom: '1px solid #eff1f3' }}>
+              <div key={group} style={{ display: 'flex', alignItems: 'center', height: 32, padding: '0 8px', background: checked.includes(group) ? 'var(--content-action-primary-100)' : 'transparent', borderBottom: '1px solid var(--neutral-100)' }}>
                 <Checkbox label={group} size="small" checked={checked.includes(group)} onChange={() => toggle(group)} />
               </div>
             ))}

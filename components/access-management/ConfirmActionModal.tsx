@@ -22,7 +22,7 @@ export function ConfirmActionModal({
         <span id="confirm-action-title">{title}</span>
       </ModalHeader>
       <ModalBody>
-        <p style={{ margin: 0, fontSize: 14, lineHeight: '20px', color: '#021920' }}>{message}</p>
+        <p style={{ margin: 0, fontSize: 14, lineHeight: '20px', color: 'var(--text-body-primary)' }}>{message}</p>
       </ModalBody>
       <ModalFooter>
         <Button variant="text-central" size="sm" onClick={onClose}>Cancel</Button>

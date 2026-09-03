@@ -86,9 +86,9 @@ function StepUpload({ dropped, onDrop, source }: { dropped: boolean; onDrop: () 
           display: 'flex', alignItems: 'center', gap: 12, padding: '14px 16px', borderRadius: 8,
           border: '1px solid var(--color-border)', background: 'var(--color-success-100)',
         }}>
-          <CheckCircleIcon size={18} color="#1a6b1a" weight="fill" />
+          <CheckCircleIcon size={18} color="var(--text-success)" weight="fill" />
           <div>
-            <div style={{ fontSize: 13, fontWeight: 600, color: '#1a6b1a' }}>subscribers_export.csv</div>
+            <div style={{ fontSize: 13, fontWeight: 600, color: 'var(--text-success)' }}>subscribers_export.csv</div>
             <div style={{ fontSize: 12, color: 'var(--color-text-secondary)' }}>42,180 rows detected</div>
           </div>
         </div>

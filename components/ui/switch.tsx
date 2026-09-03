@@ -8,27 +8,27 @@ import { CheckIcon, XIcon } from '@phosphor-icons/react'
 const T = {
   // Surface: Dark (switch on dark/colored backgrounds)
   dark: {
-    trackOn:    '#ffffff',   // --surface/form-field
-    trackOff:   '#ffffff',   // --surface/form-field
-    thumbOn:    '#4285f4',   // --content-action/primary/default
-    thumbOff:   '#d9dce0',   // --surface/form-group
+    trackOn:    'var(--surface-form-field)',
+    trackOff:   'var(--surface-form-field)',
+    thumbOn:    'var(--content-action-primary-default)',
+    thumbOff:   'var(--neutral-200)',
   },
   // Surface: Light (switch on white/light backgrounds)
   light: {
-    trackOn:    '#4285f4',   // --surface/action/primary
-    trackOff:   '#d9dce0',   // --surface/form-group
-    thumbOn:    '#ffffff',   // --neutral/0
-    thumbOff:   '#ffffff',   // --neutral/0
+    trackOn:    'var(--surface-action-primary-default)',
+    trackOff:   'var(--neutral-200)',
+    thumbOn:    'var(--neutral-0)',
+    thumbOff:   'var(--neutral-0)',
   },
-  trackBorder:     '#eff1f3',   // --border-color/neutral
-  trackDisabledBg: '#eff1f3',   // --surface/disabled
-  thumbDisabled:   '#d9dce0',   // muted off-state when disabled
-  textPrimary:     '#021920',   // --text/body/primary
-  textDisabled:    '#aab0b8',   // --text/form-field/disabled
-  successBg:       '#4b9924',   // --success/500
-  successBorder:   '#b5e89c',   // --border-color/message/success
-  errorBg:         '#ef2056',   // --error/default
-  errorBorder:     '#f792ac',   // --border-color/message/error
+  trackBorder:     'var(--neutral-100)',
+  trackDisabledBg: 'var(--content-action-disabled-100)',
+  thumbDisabled:   'var(--content-action-disabled-300)',
+  textPrimary:     'var(--text-body-primary)',
+  textDisabled:    'var(--content-action-disabled-700)',
+  successBg:       'var(--success-500)',
+  successBorder:   'var(--border-color-accent-success-light)',
+  errorBg:         'var(--error-default)',
+  errorBorder:     'var(--border-color-accent-error-light)',
 } as const
 
 // ── Size presets ───────────────────────────────────────────────────────────────

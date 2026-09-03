@@ -17,25 +17,25 @@ import { DASHBOARD_METRICS } from './_mock/metrics'
 const GROUP_MAP = Object.fromEntries(CAMPAIGN_GROUPS.map(g => [g.id, g.name]))
 
 const TYPE_CHIP: Record<CampaignType, { label: string; bg: string; color: string }> = {
-  'voice-survey':       { label: 'Voice Survey',       bg: '#eef3fb', color: '#1a4f9e' },
-  'sms-survey':         { label: 'SMS Survey',          bg: '#eef3fb', color: '#1a4f9e' },
-  'voice-notification': { label: 'Voice Notification',  bg: '#fbeed8', color: '#7a4a00' },
-  'sms-notification':   { label: 'SMS Notification',    bg: '#fbeed8', color: '#7a4a00' },
-  'email-campaign':     { label: 'Email Campaign',      bg: '#ddf4d2', color: '#2a5e10' },
+  'voice-survey':       { label: 'Voice Survey',       bg: 'var(--surface-accent-info-light)', color: 'var(--text-info)' },
+  'sms-survey':         { label: 'SMS Survey',          bg: 'var(--surface-accent-info-light)', color: 'var(--text-info)' },
+  'voice-notification': { label: 'Voice Notification',  bg: 'var(--warning-100)', color: 'var(--text-warning)' },
+  'sms-notification':   { label: 'SMS Notification',    bg: 'var(--warning-100)', color: 'var(--text-warning)' },
+  'email-campaign':     { label: 'Email Campaign',      bg: 'var(--success-100)', color: 'var(--text-success)' },
 }
 
 const STATUS_CHIP: Record<string, { label: string; bg: string; color: string }> = {
-  running:     { label: 'Running',     bg: '#d6e2f5', color: '#1a4f9e' },
-  paused:      { label: 'Paused',      bg: '#fbeed8', color: '#7a4a00' },
-  scheduled:   { label: 'Scheduled',   bg: '#ddf4d2', color: '#2a5e10' },
-  initialized: { label: 'Initialized', bg: '#eff1f3', color: '#4b535e' },
-  failed:      { label: 'Failed',      bg: '#fbc6d4', color: '#8b1a2a' },
-  completed:   { label: 'Completed',   bg: '#ddf4d2', color: '#2a5e10' },
+  running:     { label: 'Running',     bg: 'var(--info-100)', color: 'var(--text-info)' },
+  paused:      { label: 'Paused',      bg: 'var(--warning-100)', color: 'var(--text-warning)' },
+  scheduled:   { label: 'Scheduled',   bg: 'var(--success-100)', color: 'var(--text-success)' },
+  initialized: { label: 'Initialized', bg: 'var(--neutral-100)', color: 'var(--neutral-700)' },
+  failed:      { label: 'Failed',      bg: 'var(--error-100)', color: 'var(--text-error)' },
+  completed:   { label: 'Completed',   bg: 'var(--success-100)', color: 'var(--text-success)' },
   // legacy aliases
-  sending: { label: 'Running',     bg: '#d6e2f5', color: '#1a4f9e' },
-  sent:    { label: 'Completed',   bg: '#ddf4d2', color: '#2a5e10' },
-  draft:   { label: 'Initialized', bg: '#eff1f3', color: '#4b535e' },
-  cancelled:{ label: 'Failed',     bg: '#fbc6d4', color: '#8b1a2a' },
+  sending: { label: 'Running',     bg: 'var(--info-100)', color: 'var(--text-info)' },
+  sent:    { label: 'Completed',   bg: 'var(--success-100)', color: 'var(--text-success)' },
+  draft:   { label: 'Initialized', bg: 'var(--neutral-100)', color: 'var(--neutral-700)' },
+  cancelled:{ label: 'Failed',     bg: 'var(--error-100)', color: 'var(--text-error)' },
 }
 
 const KPI = [
@@ -107,9 +107,9 @@ export default function DashboardPage() {
       {/* ── Info banner ──────────────────────────────────────────────────── */}
       <div style={{ marginBottom: 28 }}>
         <MessageBox type="info" size="line" dismissible={false}>
-          <p style={{ margin: 0, fontSize: 14, lineHeight: '20px', color: '#021920' }}>
+          <p style={{ margin: 0, fontSize: 14, lineHeight: '20px', color: 'var(--text-body-primary)' }}>
             1 sender identity awaiting verification.{' '}
-            <Link href="/sandbox/campaigns-email/channels" style={{ color: '#4285f4', fontWeight: 600, textDecoration: 'none' }}>
+            <Link href="/sandbox/campaigns-email/channels" style={{ color: 'var(--content-action-primary-600)', fontWeight: 600, textDecoration: 'none' }}>
               Review senders →
             </Link>
           </p>
@@ -145,7 +145,7 @@ export default function DashboardPage() {
             <button style={{
               display: 'inline-flex', alignItems: 'center', gap: 6,
               padding: '7px 14px', borderRadius: 8, border: 'none',
-              background: 'var(--color-primary)', color: '#fff',
+              background: 'var(--color-primary)', color: 'var(--neutral-0)',
               fontSize: 13, fontWeight: 600, cursor: 'pointer',
             }}>
               + Create New Campaign
@@ -265,7 +265,7 @@ export default function DashboardPage() {
               <TableBody>
                 {rows.map((c, i) => {
                   const typeCfg   = c.type ? TYPE_CHIP[c.type] : null
-                  const statusCfg = STATUS_CHIP[c.status] ?? { label: c.status, bg: '#eff1f3', color: '#4b535e' }
+                  const statusCfg = STATUS_CHIP[c.status] ?? { label: c.status, bg: 'var(--neutral-100)', color: 'var(--neutral-700)' }
                   return (
                     <TableRow key={c.id} striped={i % 2 === 1}>
                       <TableCell variant="link">

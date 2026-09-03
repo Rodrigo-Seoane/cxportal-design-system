@@ -224,16 +224,16 @@ function AgentScorecardInner() {
         <header style={{
           display: 'flex', alignItems: 'center', gap: 16,
           padding: '0 24px', height: 64,
-          background: '#ffffff', borderBottom: '1px solid #e2e5e8',
+          background: 'var(--neutral-0)', borderBottom: '1px solid var(--neutral-100)',
           position: 'sticky', top: 0, zIndex: 20,
         }}>
           <nav aria-label="Breadcrumb" style={{ display: 'flex', alignItems: 'center', gap: 4, flex: 1, minWidth: 0 }}>
-            <HouseIcon size={14} color="#7a828c" aria-hidden="true" />
-            <span style={{ fontSize: 12, color: '#7a828c' }}>Reporting</span>
-            <CaretRightIcon size={12} color="#aab0b8" aria-hidden="true" />
-            <Link href={backHref} style={{ fontSize: 12, color: '#7a828c', textDecoration: 'none' }}>Agent Status Summary</Link>
-            <CaretRightIcon size={12} color="#aab0b8" aria-hidden="true" />
-            <span style={{ fontSize: 12, fontWeight: 600, color: '#021920', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+            <HouseIcon size={14} color="var(--text-body-secondary)" aria-hidden="true" />
+            <span style={{ fontSize: 12, color: 'var(--text-body-secondary)' }}>Reporting</span>
+            <CaretRightIcon size={12} color="var(--neutral-300)" aria-hidden="true" />
+            <Link href={backHref} style={{ fontSize: 12, color: 'var(--text-body-secondary)', textDecoration: 'none' }}>Agent Status Summary</Link>
+            <CaretRightIcon size={12} color="var(--neutral-300)" aria-hidden="true" />
+            <span style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-body-primary)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
               {agent?.name ?? agentId}
             </span>
           </nav>
@@ -269,13 +269,13 @@ function AgentScorecardInner() {
           {/* ── Insufficient permissions state ──────────────────────────── */}
           {!isPermitted && !isLoading && (
             <div style={{ ...panel, display: 'flex', flexDirection: 'column', alignItems: 'center', padding: '48px 40px', textAlign: 'center', gap: 16 }}>
-              <div style={{ width: 64, height: 64, borderRadius: '50%', background: '#fbeed8', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <ShieldWarningIcon size={28} color="#c97000" weight="regular" />
+              <div style={{ width: 64, height: 64, borderRadius: '50%', background: 'var(--warning-100)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <ShieldWarningIcon size={28} color="var(--text-warning)" weight="regular" />
               </div>
-              <h2 style={{ margin: 0, fontSize: 20, fontWeight: 600, color: '#021920' }}>
+              <h2 style={{ margin: 0, fontSize: 20, fontWeight: 600, color: 'var(--text-body-primary)' }}>
                 You don't have access to this agent's scorecard
               </h2>
-              <p style={{ margin: 0, fontSize: 14, color: '#7a828c', maxWidth: 420, lineHeight: '20px' }}>
+              <p style={{ margin: 0, fontSize: 14, color: 'var(--text-body-secondary)', maxWidth: 420, lineHeight: '20px' }}>
                 Your supervisor scope is limited to <strong>{defaultStaffingGroupId}</strong>.
                 This agent belongs to a different staffing group. Ask your WFM Lead to review this agent's scorecard,
                 or request expanded access below.
@@ -287,7 +287,7 @@ function AgentScorecardInner() {
                 </Link>
                 <button
                   onClick={() => alert('Request access flow — out of scope for this prototype')}
-                  style={{ ...headerBtn, background: '#f0f4fb', borderColor: '#4285f4', color: '#1a3561' }}
+                  style={{ ...headerBtn, background: 'var(--content-action-primary-100)', borderColor: 'var(--content-action-primary-600)', color: 'var(--content-action-primary-700)' }}
                 >
                   Request access
                 </button>
@@ -305,14 +305,14 @@ function AgentScorecardInner() {
                   <>
                     <div style={{
                       width: 48, height: 48, borderRadius: '50%',
-                      background: '#d6e2f5', display: 'flex', alignItems: 'center', justifyContent: 'center',
-                      fontSize: 18, fontWeight: 700, color: '#1a3561', flexShrink: 0,
+                      background: 'var(--info-100)', display: 'flex', alignItems: 'center', justifyContent: 'center',
+                      fontSize: 18, fontWeight: 700, color: 'var(--content-action-primary-700)', flexShrink: 0,
                     }}>
                       {agent?.name.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase() ?? '?'}
                     </div>
                     <div style={{ flex: 1, minWidth: 160 }}>
-                      <div style={{ fontSize: 18, fontWeight: 700, color: '#021920', marginBottom: 2 }}>{agent?.name ?? agentId}</div>
-                      <div style={{ fontSize: 12, color: '#7a828c' }}>
+                      <div style={{ fontSize: 18, fontWeight: 700, color: 'var(--text-body-primary)', marginBottom: 2 }}>{agent?.name ?? agentId}</div>
+                      <div style={{ fontSize: 12, color: 'var(--text-body-secondary)' }}>
                         ID: {agentId} · {agent?.staffingGroupId ?? '—'}
                       </div>
                     </div>
@@ -324,7 +324,7 @@ function AgentScorecardInner() {
                       <AdherenceBadge adherence={agent?.adherence ?? 'adherent'} />
                     </div>
                     {isDegraded && (
-                      <span style={{ fontSize: 11, color: '#c97000', background: '#fbeed8', padding: '2px 8px', borderRadius: 64 }}>
+                      <span style={{ fontSize: 11, color: 'var(--text-warning)', background: 'var(--warning-100)', padding: '2px 8px', borderRadius: 64 }}>
                         Stale — source unavailable
                       </span>
                     )}
@@ -334,7 +334,7 @@ function AgentScorecardInner() {
 
               {/* ── Time-range selector ───────────────────────────────────── */}
               <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
-                <span style={{ fontSize: 11, fontWeight: 600, color: '#7a828c', textTransform: 'uppercase', letterSpacing: '0.4px' }}>Range</span>
+                <span style={{ fontSize: 11, fontWeight: 600, color: 'var(--text-body-secondary)', textTransform: 'uppercase', letterSpacing: '0.4px' }}>Range</span>
                 {(Object.keys(RANGE_LABELS) as TimeRange[]).map(r => (
                   <button
                     key={r}
@@ -342,9 +342,9 @@ function AgentScorecardInner() {
                     aria-pressed={rangeParam === r}
                     style={{
                       padding: '5px 12px', borderRadius: 6, fontSize: 13,
-                      border: `1px solid ${rangeParam === r ? '#4285f4' : '#d9dce0'}`,
-                      background: rangeParam === r ? '#f0f4fb' : '#ffffff',
-                      color: rangeParam === r ? '#1a3561' : '#021920',
+                      border: `1px solid ${rangeParam === r ? 'var(--content-action-primary-600)' : 'var(--neutral-200)'}`,
+                      background: rangeParam === r ? 'var(--content-action-primary-100)' : 'var(--neutral-0)',
+                      color: rangeParam === r ? 'var(--content-action-primary-700)' : 'var(--text-body-primary)',
                       fontWeight: rangeParam === r ? 600 : 400,
                       cursor: 'pointer', fontFamily: 'var(--font-sans)',
                     }}
@@ -357,7 +357,7 @@ function AgentScorecardInner() {
                     <input type="date" value={customFrom} max={customTo || TODAY}
                       onChange={e => setCustomDate('cfrom', e.target.value)}
                       style={dateInput} aria-label="From date" />
-                    <span style={{ color: '#aab0b8', fontSize: 12 }}>–</span>
+                    <span style={{ color: 'var(--neutral-300)', fontSize: 12 }}>–</span>
                     <input type="date" value={customTo} min={customFrom} max={TODAY}
                       onChange={e => setCustomDate('cto', e.target.value)}
                       style={dateInput} aria-label="To date" />
@@ -398,7 +398,7 @@ function AgentScorecardInner() {
                 />
               </div>
               {!isLoading && !isEmpty && kpi.nonAdherentMin > 0 && (
-                <div style={{ marginTop: -8, fontSize: 11, color: '#7a828c', paddingLeft: 4 }}>
+                <div style={{ marginTop: -8, fontSize: 11, color: 'var(--text-body-secondary)', paddingLeft: 4 }}>
                   Non-adherent sub-buckets — Late: {fmtMin(kpi.late)} · Early-out: {fmtMin(kpi.earlyOut)} · Off-activity: {fmtMin(kpi.offActivity)}
                 </div>
               )}
@@ -407,9 +407,9 @@ function AgentScorecardInner() {
               <div style={panel}>
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 16 }}>
                   <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-                    <h2 style={{ margin: 0, fontSize: 15, fontWeight: 600, color: '#021920' }}>Adherence Trend</h2>
+                    <h2 style={{ margin: 0, fontSize: 15, fontWeight: 600, color: 'var(--text-body-primary)' }}>Adherence Trend</h2>
                     {isPartial && (
-                      <span style={{ fontSize: 11, color: '#7a828c', background: '#eff1f3', padding: '2px 7px', borderRadius: 64 }}>
+                      <span style={{ fontSize: 11, color: 'var(--text-body-secondary)', background: 'var(--neutral-100)', padding: '2px 7px', borderRadius: 64 }}>
                         Partial data
                       </span>
                     )}
@@ -422,8 +422,8 @@ function AgentScorecardInner() {
                     <div style={{
                       display: 'inline-flex', alignItems: 'center', gap: 5,
                       padding: '4px 10px', borderRadius: 64,
-                      background: '#f0f7f0', border: '1px solid #b8ddb8',
-                      fontSize: 12, color: '#2e6b2e', cursor: 'help',
+                      background: 'var(--success-50)', border: '1px solid var(--success-200)',
+                      fontSize: 12, color: 'var(--success-600)', cursor: 'help',
                     }}>
                       <InfoIcon size={12} aria-hidden="true" />
                       Grace: ±{GRACE_PERIOD_MINUTES} min per activity
@@ -463,7 +463,7 @@ function AgentScorecardInner() {
 
               {/* ── Time-off strip ────────────────────────────────────────── */}
               <div style={panel}>
-                <h2 style={{ margin: '0 0 14px', fontSize: 15, fontWeight: 600, color: '#021920' }}>Time Off</h2>
+                <h2 style={{ margin: '0 0 14px', fontSize: 15, fontWeight: 600, color: 'var(--text-body-primary)' }}>Time Off</h2>
                 {isLoading ? (
                   <Skeleton variant="rect" height={40} />
                 ) : (
@@ -474,7 +474,7 @@ function AgentScorecardInner() {
               {/* ── Drill-out CTAs ────────────────────────────────────────── */}
               {!isLoading && (
                 <div style={{ ...panel, display: 'flex', alignItems: 'center', gap: 20, flexWrap: 'wrap' }}>
-                  <span style={{ fontSize: 12, fontWeight: 600, color: '#7a828c', marginRight: 4 }}>Open in FCS</span>
+                  <span style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-body-secondary)', marginRight: 4 }}>Open in FCS</span>
                   <DrillOutLink
                     report="schedule-adherence"
                     params={{ agentId, from, to }}
@@ -510,9 +510,9 @@ function AgentScorecardInner() {
 
 function EventDetailContent({ event }: { event: ChartEvent }) {
   const row = (label: string, value: string) => (
-    <div key={label} style={{ display: 'flex', justifyContent: 'space-between', padding: '10px 0', borderBottom: '1px solid #eff1f3', fontSize: 13 }}>
-      <span style={{ color: '#7a828c' }}>{label}</span>
-      <span style={{ color: '#021920', fontWeight: 500 }}>{value}</span>
+    <div key={label} style={{ display: 'flex', justifyContent: 'space-between', padding: '10px 0', borderBottom: '1px solid var(--neutral-100)', fontSize: 13 }}>
+      <span style={{ color: 'var(--text-body-secondary)' }}>{label}</span>
+      <span style={{ color: 'var(--text-body-primary)', fontWeight: 500 }}>{value}</span>
     </div>
   )
 
@@ -525,7 +525,7 @@ function EventDetailContent({ event }: { event: ChartEvent }) {
         {row('Duration', `${event.durationMin}m non-adherent`)}
         {row('Activity', event.activityName)}
         {row('Status', 'Out of adherence')}
-        <p style={{ fontSize: 12, color: '#7a828c', marginTop: 16, lineHeight: '18px' }}>
+        <p style={{ fontSize: 12, color: 'var(--text-body-secondary)', marginTop: 16, lineHeight: '18px' }}>
           This event occurred outside the ±{GRACE_PERIOD_MINUTES}-min grace period per FCS configuration.
           Check shift schedule and supervisor notes before taking action.
         </p>
@@ -540,7 +540,7 @@ function EventDetailContent({ event }: { event: ChartEvent }) {
       {row('Type', label)}
       {row('Counterparty', event.counterpartyAgent)}
       {row('Status', event.status.charAt(0).toUpperCase() + event.status.slice(1))}
-      <p style={{ fontSize: 12, color: '#7a828c', marginTop: 16, lineHeight: '18px' }}>
+      <p style={{ fontSize: 12, color: 'var(--text-body-secondary)', marginTop: 16, lineHeight: '18px' }}>
         {event.kind === 'shift-trade'
           ? 'Shift trades permanently reassign a shift to another agent. Approved trades affect schedule adherence calculations.'
           : 'Shift exchanges are temporary swaps between agents. Both agents retain their original assignments in the long term.'}
@@ -558,25 +558,25 @@ export default function AgentScorecardPage() {
 // ── Shared styles ──────────────────────────────────────────────────────────────
 
 const panel: React.CSSProperties = {
-  background: '#ffffff', borderRadius: 8, border: '1px solid #e2e5e8', padding: '20px',
+  background: 'var(--neutral-0)', borderRadius: 8, border: '1px solid var(--neutral-100)', padding: '20px',
 }
 
 const headerBtn: React.CSSProperties = {
   display: 'inline-flex', alignItems: 'center', gap: 6,
-  padding: '6px 14px', borderRadius: 6, border: '1px solid #d9dce0',
-  background: '#ffffff', cursor: 'pointer', fontSize: 13, fontWeight: 500,
-  color: '#021920', fontFamily: 'var(--font-sans)', minHeight: 44,
+  padding: '6px 14px', borderRadius: 6, border: '1px solid var(--neutral-200)',
+  background: 'var(--neutral-0)', cursor: 'pointer', fontSize: 13, fontWeight: 500,
+  color: 'var(--text-body-primary)', fontFamily: 'var(--font-sans)', minHeight: 44,
 }
 
 const iconBtn: React.CSSProperties = {
   display: 'flex', alignItems: 'center', justifyContent: 'center',
-  width: 44, height: 44, borderRadius: 6, border: '1px solid #d9dce0',
-  background: '#ffffff', cursor: 'pointer', color: '#7a828c',
+  width: 44, height: 44, borderRadius: 6, border: '1px solid var(--neutral-200)',
+  background: 'var(--neutral-0)', cursor: 'pointer', color: 'var(--text-body-secondary)',
 }
 
 const dateInput: React.CSSProperties = {
-  padding: '5px 8px', border: '1px solid #d9dce0', borderRadius: 6,
-  fontSize: 12, color: '#021920', fontFamily: 'var(--font-sans)', background: '#ffffff',
+  padding: '5px 8px', border: '1px solid var(--neutral-200)', borderRadius: 6,
+  fontSize: 12, color: 'var(--text-body-primary)', fontFamily: 'var(--font-sans)', background: 'var(--neutral-0)',
 }
 
 export const dynamic = 'force-dynamic'

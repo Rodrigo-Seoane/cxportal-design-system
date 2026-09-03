@@ -15,15 +15,15 @@ const sections: Section[] = [
       {
         caption: 'Text / Body',
         swatches: [
-          { name: 'Primary',         hex: '#021920', cssVar: '--color-text-body-primary' },
-          { name: 'Secondary',       hex: '#7a828c', cssVar: '--color-text-body-secondary' },
-          { name: 'On Dark Surface', hex: '#eff1f3', cssVar: '--color-text-body-on-dark' },
+          { name: 'Primary',         hex: '#373737', cssVar: '--color-text-body-primary' },
+          { name: 'Secondary',       hex: '#8d8d8d', cssVar: '--color-text-body-secondary' },
+          { name: 'On Dark Surface', hex: '#efefef', cssVar: '--color-text-body-on-dark' },
         ],
       },
       {
         caption: 'Text / States',
         swatches: [
-          { name: 'Action',  hex: '#4285f4', cssVar: '--color-text-action' },
+          { name: 'Action',  hex: '#204704', cssVar: '--color-text-action' },
           { name: 'Success', hex: '#67d034', cssVar: '--color-text-success' },
           { name: 'Info',    hex: '#2859ab', cssVar: '--color-text-info' },
           { name: 'Warning', hex: '#eaa93c', cssVar: '--color-text-warning' },
@@ -33,18 +33,18 @@ const sections: Section[] = [
       {
         caption: 'Text / On Action',
         swatches: [
-          { name: 'Primary',     hex: '#eff1f3', cssVar: '--color-text-on-action-primary' },
-          { name: 'Secondary',   hex: '#021920', cssVar: '--color-text-on-action-secondary' },
-          { name: 'Transparent', hex: '#3264b8', cssVar: '--color-text-on-action-transparent' },
+          { name: 'Primary',     hex: '#efefef', cssVar: '--color-text-on-action-primary' },
+          { name: 'Secondary',   hex: '#373737', cssVar: '--color-text-on-action-secondary' },
+          { name: 'Transparent', hex: '#366618', cssVar: '--color-text-on-action-transparent' },
         ],
       },
       {
         caption: 'Text / Form Field',
         swatches: [
-          { name: 'Placeholder', hex: '#7a828c', cssVar: '--color-text-form-placeholder' },
-          { name: 'Hover',       hex: '#689df6', cssVar: '--color-text-form-hover' },
-          { name: 'Focus',       hex: '#4b535e', cssVar: '--color-text-form-focus' },
-          { name: 'Disabled',    hex: '#aab0b8', cssVar: '--color-text-form-disabled' },
+          { name: 'Placeholder', hex: '#8d8d8d', cssVar: '--color-text-form-placeholder' },
+          { name: 'Hover',       hex: '#366618', cssVar: '--color-text-form-hover' },
+          { name: 'Focus',       hex: '#373737', cssVar: '--color-text-form-focus' },
+          { name: 'Disabled',    hex: '#8d8d8d', cssVar: '--color-text-form-disabled' },
         ],
       },
     ],
@@ -56,15 +56,15 @@ const sections: Section[] = [
       {
         caption: 'Icon / Body',
         swatches: [
-          { name: 'Primary',         hex: '#021920', cssVar: '--color-icon-body-primary' },
-          { name: 'Secondary',       hex: '#7a828c', cssVar: '--color-icon-body-secondary' },
-          { name: 'On Dark Surface', hex: '#eff1f3', cssVar: '--color-icon-body-on-dark' },
+          { name: 'Primary',         hex: '#373737', cssVar: '--color-icon-body-primary' },
+          { name: 'Secondary',       hex: '#8d8d8d', cssVar: '--color-icon-body-secondary' },
+          { name: 'On Dark Surface', hex: '#efefef', cssVar: '--color-icon-body-on-dark' },
         ],
       },
       {
         caption: 'Icon / States',
         swatches: [
-          { name: 'Action',  hex: '#4285f4', cssVar: '--color-icon-action' },
+          { name: 'Action',  hex: '#204704', cssVar: '--color-icon-action' },
           { name: 'Success', hex: '#87d95e', cssVar: '--color-icon-success' },
           { name: 'Info',    hex: '#2859ab', cssVar: '--color-icon-info' },
           { name: 'Warning', hex: '#eaa93c', cssVar: '--color-icon-warning' },
@@ -74,18 +74,18 @@ const sections: Section[] = [
       {
         caption: 'Icon / On Action',
         swatches: [
-          { name: 'Primary',     hex: '#eff1f3', cssVar: '--color-icon-on-action-primary' },
-          { name: 'Secondary',   hex: '#021920', cssVar: '--color-icon-on-action-secondary' },
-          { name: 'Transparent', hex: '#3264b8', cssVar: '--color-icon-on-action-transparent' },
+          { name: 'Primary',     hex: '#efefef', cssVar: '--color-icon-on-action-primary' },
+          { name: 'Secondary',   hex: '#373737', cssVar: '--color-icon-on-action-secondary' },
+          { name: 'Transparent', hex: '#366618', cssVar: '--color-icon-on-action-transparent' },
         ],
       },
       {
         caption: 'Icon / Form Field',
         swatches: [
-          { name: 'Placeholder', hex: '#7a828c', cssVar: '--color-icon-form-placeholder' },
-          { name: 'Hover',       hex: '#689df6', cssVar: '--color-icon-form-hover' },
-          { name: 'Focus',       hex: '#4b535e', cssVar: '--color-icon-form-focus' },
-          { name: 'Disabled',    hex: '#aab0b8', cssVar: '--color-icon-form-disabled' },
+          { name: 'Placeholder', hex: '#8d8d8d', cssVar: '--color-icon-form-placeholder' },
+          { name: 'Hover',       hex: '#366618', cssVar: '--color-icon-form-hover' },
+          { name: 'Focus',       hex: '#6f6f6f', cssVar: '--color-icon-form-focus' },
+          { name: 'Disabled',    hex: '#8d8d8d', cssVar: '--color-icon-form-disabled' },
         ],
       },
     ],
@@ -97,12 +97,12 @@ const sections: Section[] = [
       {
         caption: 'Surface / Base',
         swatches: [
-          { name: 'Main Panel',       hex: '#eff1f3', cssVar: '--color-surface-main-panel' },
+          { name: 'Main Panel',       hex: '#efefef', cssVar: '--color-surface-main-panel' },
           { name: 'Section',          hex: '#ffffff', cssVar: '--color-surface-section' },
           { name: 'Form Field',       hex: '#ffffff', cssVar: '--color-surface-form-field' },
-          { name: 'Form Group',       hex: '#d9dce0', cssVar: '--color-surface-form-group' },
-          { name: 'Section Display',  hex: '#eff1f3', cssVar: '--color-surface-section-display' },
-          { name: 'Disabled',         hex: '#eff1f3', cssVar: '--color-surface-disabled' },
+          { name: 'Form Group',       hex: '#f8f8f8', cssVar: '--color-surface-form-group' },
+          { name: 'Section Display',  hex: '#efefef', cssVar: '--color-surface-section-display' },
+          { name: 'Disabled',         hex: '#f1f5ed', cssVar: '--color-surface-disabled' },
         ],
       },
       {
@@ -124,19 +124,19 @@ const sections: Section[] = [
       {
         caption: 'Surface / Actions',
         swatches: [
-          { name: 'Primary',         hex: '#4285f4',                cssVar: '--color-surface-action-primary' },
-          { name: 'Secondary',       hex: '#eff1f3',                cssVar: '--color-surface-action-secondary' },
+          { name: 'Primary',         hex: '#204704',                cssVar: '--color-surface-action-primary' },
+          { name: 'Secondary',       hex: '#ffffff',                cssVar: '--color-surface-action-secondary' },
           { name: 'Empty',           hex: 'rgba(255, 255, 255, 0)', cssVar: '--color-surface-action-empty' },
-          { name: 'Hover Primary',   hex: '#689df6',                cssVar: '--color-surface-action-hover-primary' },
-          { name: 'Hover Secondary', hex: '#aab0b8',                cssVar: '--color-surface-action-hover-secondary' },
+          { name: 'Hover Primary',   hex: '#123200',                cssVar: '--color-surface-action-hover-primary' },
+          { name: 'Hover Secondary', hex: '#f8f8f8',                cssVar: '--color-surface-action-hover-secondary' },
         ],
       },
       {
         caption: 'Surface / Table',
         swatches: [
-          { name: 'Active Row', hex: '#d9e7fd', cssVar: '--color-surface-table-active' },
+          { name: 'Active Row', hex: '#d0ecc1', cssVar: '--color-surface-table-active' },
           { name: 'Zebra Row',  hex: '#f8f8f8', cssVar: '--color-surface-table-zebra' },
-          { name: 'Checkbox',   hex: '#4285f4', cssVar: '--color-surface-table-checkbox' },
+          { name: 'Checkbox',   hex: '#366618', cssVar: '--color-surface-table-checkbox' },
         ],
       },
     ],
@@ -148,16 +148,16 @@ const sections: Section[] = [
       {
         caption: 'Border / Base',
         swatches: [
-          { name: 'Neutral',  hex: '#eff1f3', cssVar: '--color-border-neutral' },
-          { name: 'Bold',     hex: '#323840', cssVar: '--color-border-bold' },
-          { name: 'Disabled', hex: '#d9dce0', cssVar: '--color-border-disabled' },
+          { name: 'Neutral',  hex: '#efefef', cssVar: '--color-border-neutral' },
+          { name: 'Bold',     hex: '#525252', cssVar: '--color-border-bold' },
+          { name: 'Disabled', hex: '#cdcdcd', cssVar: '--color-border-disabled' },
         ],
       },
       {
         caption: 'Border / Active',
         swatches: [
-          { name: 'Surface Active · Primary',   hex: '#689df6', cssVar: '--color-border-surface-active-primary' },
-          { name: 'Surface Active · Secondary', hex: '#aab0b8', cssVar: '--color-border-surface-active-secondary' },
+          { name: 'Surface Active · Primary',   hex: '#3a8015', cssVar: '--color-border-surface-active-primary' },
+          { name: 'Surface Active · Secondary', hex: '#adadad', cssVar: '--color-border-surface-active-secondary' },
         ],
       },
       {
@@ -172,9 +172,9 @@ const sections: Section[] = [
       {
         caption: 'Border / Form Fields',
         swatches: [
-          { name: 'Default', hex: '#d9dce0', cssVar: '--color-border-form-default' },
-          { name: 'Hover',   hex: '#a0c2f9', cssVar: '--color-border-form-hover' },
-          { name: 'Focus',   hex: '#4285f4', cssVar: '--color-border-form-focus' },
+          { name: 'Default', hex: '#cdcdcd', cssVar: '--color-border-form-default' },
+          { name: 'Hover',   hex: '#3a8015', cssVar: '--color-border-form-hover' },
+          { name: 'Focus',   hex: '#3a8015', cssVar: '--color-border-form-focus' },
         ],
       },
     ],
@@ -197,17 +197,17 @@ export const AllTokens: Story = {
       {sections.map((section, si) => (
         <div key={section.title} style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
           {si > 0 && (
-            <div style={{ height: 2, backgroundColor: '#d9dce0', width: '100%' }} />
+            <div style={{ height: 2, backgroundColor: 'var(--neutral-200)', width: '100%' }} />
           )}
           <div>
-            <h3 style={{ fontSize: 18, fontWeight: 400, color: '#021920', marginBottom: 4 }}>
+            <h3 style={{ fontSize: 18, fontWeight: 400, color: 'var(--text-body-primary)', marginBottom: 4 }}>
               {section.title}
             </h3>
-            <p style={{ fontSize: 14, color: '#7a828c' }}>{section.description}</p>
+            <p style={{ fontSize: 14, color: 'var(--text-body-secondary)' }}>{section.description}</p>
           </div>
           {section.groups.map((group) => (
             <div key={group.caption} style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-              <p style={{ fontSize: 12, fontWeight: 600, letterSpacing: '0.48px', textTransform: 'uppercase', color: '#021920' }}>
+              <p style={{ fontSize: 12, fontWeight: 600, letterSpacing: '0.48px', textTransform: 'uppercase', color: 'var(--text-body-primary)' }}>
                 {group.caption}
               </p>
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>

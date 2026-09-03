@@ -81,15 +81,15 @@ export function StatCard({
 
   const TrendArrow = trendType === 'decrease' ? ArrowFatLineDownIcon : ArrowFatLineUpIcon
   const trendColor =
-    trendType === 'increase' ? '#1a6b1a' :
-    trendType === 'decrease' ? '#8b1a2a' :
-    '#7a828c'
+    trendType === 'increase' ? 'var(--text-success)' :
+    trendType === 'decrease' ? 'var(--text-destructive)' :
+    'var(--text-body-secondary)'
 
   return (
     <div
       className={cn(
-        'flex flex-col gap-2 rounded-[8px] border border-[#eff1f3]',
-        surface === 'white' ? 'bg-white' : 'bg-[#f8f8f8]',
+        'flex flex-col gap-2 rounded-[8px] border border-[var(--neutral-100)]',
+        surface === 'white' ? 'bg-white' : 'bg-[var(--neutral-50)]',
         className,
       )}
       style={{
@@ -102,21 +102,21 @@ export function StatCard({
       <div className="flex items-start justify-between w-full">
         {/* Category icon */}
         <div
-          className="bg-[#4285f4] flex items-center justify-center shrink-0 overflow-hidden"
+          className="bg-[var(--content-action-primary-600)] flex items-center justify-center shrink-0 overflow-hidden"
           style={{
             width:        iconContainerSize,
             height:       iconContainerSize,
             borderRadius: iconContainerRadius,
           }}
         >
-          <IconComp size={iconInnerSize} color="#ffffff" weight="fill" />
+          <IconComp size={iconInnerSize} color="var(--neutral-0)" weight="fill" />
         </div>
 
         {/* Trend indicator */}
         {showTrend && (
           <div className="flex items-center gap-[2px]">
             <TrendArrow size={8} color={trendColor} weight="fill" />
-            <span className="text-[10px] leading-[16px] font-normal text-[#7a828c] whitespace-nowrap">
+            <span className="text-[10px] leading-[16px] font-normal text-[var(--text-body-secondary)] whitespace-nowrap">
               {trend}
             </span>
           </div>
@@ -125,12 +125,12 @@ export function StatCard({
 
       {/* Metric label + value */}
       <div className="flex flex-col gap-1">
-        <span className="text-[10px] leading-[16px] font-semibold text-[#021920]">
+        <span className="text-[10px] leading-[16px] font-semibold text-[var(--text-body-primary)]">
           {title}
         </span>
         <span
           className={cn(
-            'font-normal text-[#021920]',
+            'font-normal text-[var(--text-body-primary)]',
             size === 'regular' ? 'text-[24px] leading-[30px]' : 'text-[20px] leading-[28px]',
           )}
         >

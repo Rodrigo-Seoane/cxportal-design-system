@@ -78,7 +78,7 @@ export default function UsersIndexPage() {
 
       <div style={{ flex: 1, minWidth: 0, padding: 16, display: 'flex', flexDirection: 'column', gap: 16 }}>
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-          <h2 style={{ margin: 0, fontSize: 24, fontWeight: 400, lineHeight: '30px', color: '#021920' }}>
+          <h2 style={{ margin: 0, fontSize: 24, fontWeight: 400, lineHeight: '30px', color: 'var(--text-body-primary)' }}>
             Users ({filteredUsers.length})
           </h2>
           <Button variant="primary-central" size="xs" onClick={() => setAddOpen(true)}>
@@ -89,28 +89,28 @@ export default function UsersIndexPage() {
 
         <div style={{ display: 'flex', alignItems: 'center', gap: 24, flexWrap: 'wrap' }}>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
-            <span style={{ fontSize: 12, fontWeight: 600, color: '#021920' }}>Search</span>
+            <span style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-body-primary)' }}>Search</span>
             <div style={{ display: 'flex' }}>
               <select
                 value={searchField}
                 onChange={e => setSearchField(e.target.value as SearchField)}
                 style={{
-                  height: 39, padding: '0 8px', border: '1px solid #d9dce0', borderRight: 'none',
-                  borderRadius: '8px 0 0 8px', fontSize: 12, color: '#021920', fontFamily: 'var(--font-sans)', background: '#ffffff',
+                  height: 39, padding: '0 8px', border: '1px solid var(--neutral-200)', borderRight: 'none',
+                  borderRadius: '8px 0 0 8px', fontSize: 12, color: 'var(--text-body-primary)', fontFamily: 'var(--font-sans)', background: 'var(--neutral-0)',
                 }}
               >
                 {SEARCH_FIELDS.map(f => <option key={f} value={f}>{f}</option>)}
               </select>
-              <div style={{ display: 'flex', alignItems: 'center', gap: 6, flex: 1, minWidth: 200, height: 39, padding: '0 8px', border: '1px solid #d9dce0', borderRadius: '0 8px 8px 0', background: '#ffffff' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 6, flex: 1, minWidth: 200, height: 39, padding: '0 8px', border: '1px solid var(--neutral-200)', borderRadius: '0 8px 8px 0', background: 'var(--neutral-0)' }}>
                 <input
                   type="search"
                   value={search}
                   onChange={e => setSearch(e.target.value)}
                   placeholder={`Search ${searchField.toLowerCase()}`}
                   aria-label={`Search users by ${searchField}`}
-                  style={{ flex: 1, border: 'none', outline: 'none', background: 'transparent', fontSize: 13, color: '#021920', fontFamily: 'var(--font-sans)' }}
+                  style={{ flex: 1, border: 'none', outline: 'none', background: 'transparent', fontSize: 13, color: 'var(--text-body-primary)', fontFamily: 'var(--font-sans)' }}
                 />
-                <MagnifyingGlassIcon size={16} color="#7a828c" weight="regular" aria-hidden="true" />
+                <MagnifyingGlassIcon size={16} color="var(--text-body-secondary)" weight="regular" aria-hidden="true" />
               </div>
             </div>
           </div>

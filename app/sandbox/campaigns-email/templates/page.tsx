@@ -27,7 +27,7 @@ const GROUP_ACCOUNT_MAP = Object.fromEntries(
 const TOPIC_MAP = Object.fromEntries(TOPICS.map(t => [t.id, t.name]))
 
 const STATUS_CONFIG: Record<TemplateStatus, { label: string; bg: string; color: string }> = {
-  published: { label: 'Published', bg: 'var(--color-success-100)',     color: '#1a6b1a'                     },
+  published: { label: 'Published', bg: 'var(--color-success-100)',     color: 'var(--text-success)'                     },
   draft:     { label: 'Draft',     bg: 'var(--color-surface-display)', color: 'var(--color-text-secondary)' },
   archived:  { label: 'Archived',  bg: 'var(--color-surface-display)', color: 'var(--color-text-secondary)' },
 }
@@ -102,7 +102,7 @@ export default function TemplatesPage() {
             fontSize: 11, fontWeight: 600, padding: '3px 10px', borderRadius: 4,
             border: '1px solid',
             background:  pageState === s ? 'var(--color-primary)' : 'transparent',
-            color:       pageState === s ? '#fff' : 'var(--color-text-secondary)',
+            color:       pageState === s ? 'var(--neutral-0)' : 'var(--color-text-secondary)',
             borderColor: pageState === s ? 'var(--color-primary)' : 'var(--color-border)',
             cursor: 'pointer',
           }}>{s}</button>

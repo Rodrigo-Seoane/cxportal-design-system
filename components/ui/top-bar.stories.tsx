@@ -76,7 +76,7 @@ export const NoNotifications: Story = {
 
 export const AllProducts: Story = {
   render: () => (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 1, background: '#e0e0e0' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 1, background: 'var(--neutral-200)' }}>
       <TopBar product="cx-portal"  instance="pronetxcrawler" userEmail="rseoane@pronetx.com" notifCount={4} />
       <TopBar product="cx-central" instance="pronetxcrawler" userEmail="rseoane@pronetx.com" notifCount={3} />
       <TopBar product="cases"      instance="pronetxcrawler" userEmail="rseoane@pronetx.com" notifCount={4} />

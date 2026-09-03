@@ -81,27 +81,27 @@ export default function UserDetailPage() {
       {/* ── Breadcrumb ────────────────────────────────────────────────────── */}
       <nav aria-label="Breadcrumb" style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
         <button onClick={() => router.push('/access-management/users')} aria-label="Home" style={{ display: 'flex', border: 'none', background: 'none', cursor: 'pointer', padding: 0 }}>
-          <HouseIcon size={14} color="#7a828c" weight="regular" />
+          <HouseIcon size={14} color="var(--text-body-secondary)" weight="regular" />
         </button>
-        <CaretRightIcon size={12} color="#aab0b8" weight="regular" aria-hidden="true" />
-        <button onClick={() => router.push('/access-management/users')} style={{ border: 'none', background: 'none', cursor: 'pointer', padding: 0, fontSize: 12, color: '#7a828c' }}>
+        <CaretRightIcon size={12} color="var(--neutral-300)" weight="regular" aria-hidden="true" />
+        <button onClick={() => router.push('/access-management/users')} style={{ border: 'none', background: 'none', cursor: 'pointer', padding: 0, fontSize: 12, color: 'var(--text-body-secondary)' }}>
           Users
         </button>
-        <CaretRightIcon size={12} color="#aab0b8" weight="regular" aria-hidden="true" />
-        <span style={{ fontSize: 12, fontWeight: 600, color: '#021920' }}>{fullName}</span>
+        <CaretRightIcon size={12} color="var(--neutral-300)" weight="regular" aria-hidden="true" />
+        <span style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-body-primary)' }}>{fullName}</span>
       </nav>
 
       {/* ── User header ───────────────────────────────────────────────────── */}
-      <div style={{ padding: 24, background: '#ffffff', borderRadius: 8, display: 'flex', flexDirection: 'column', gap: 16 }}>
+      <div style={{ padding: 24, background: 'var(--neutral-0)', borderRadius: 8, display: 'flex', flexDirection: 'column', gap: 16 }}>
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 16 }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-            <div style={{ width: 32, height: 32, borderRadius: '50%', background: '#0b8286', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 14, fontWeight: 600, color: '#eff1f3', flexShrink: 0 }}>
+            <div style={{ width: 32, height: 32, borderRadius: '50%', background: 'var(--content-action-primary-600)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 14, fontWeight: 600, color: 'var(--neutral-100)', flexShrink: 0 }}>
               {initials}
             </div>
-            <h1 style={{ margin: 0, fontSize: 24, fontWeight: 400, lineHeight: '30px', color: '#021920' }}>{fullName}</h1>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 4, paddingLeft: 8, borderLeft: '1px solid #d9dce0', fontSize: 10, color: '#7a828c' }}>
-              <EnvelopeSimpleIcon size={16} color="#021920" weight="regular" aria-hidden="true" />
-              <span style={{ fontWeight: 600, color: '#021920' }}>Email:</span> {user.email}
+            <h1 style={{ margin: 0, fontSize: 24, fontWeight: 400, lineHeight: '30px', color: 'var(--text-body-primary)' }}>{fullName}</h1>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 4, paddingLeft: 8, borderLeft: '1px solid var(--neutral-200)', fontSize: 10, color: 'var(--text-body-secondary)' }}>
+              <EnvelopeSimpleIcon size={16} color="var(--text-body-primary)" weight="regular" aria-hidden="true" />
+              <span style={{ fontWeight: 600, color: 'var(--text-body-primary)' }}>Email:</span> {user.email}
             </div>
           </div>
 
@@ -109,18 +109,18 @@ export default function UserDetailPage() {
             <button
               disabled={!prevUser}
               onClick={() => prevUser && router.push(`/access-management/users/${prevUser.id}`)}
-              style={{ display: 'flex', alignItems: 'center', gap: 4, border: 'none', background: 'none', cursor: prevUser ? 'pointer' : 'not-allowed', padding: 0, fontSize: 10, fontWeight: 600, color: prevUser ? '#0b8286' : '#aab0b8' }}
+              style={{ display: 'flex', alignItems: 'center', gap: 4, border: 'none', background: 'none', cursor: prevUser ? 'pointer' : 'not-allowed', padding: 0, fontSize: 10, fontWeight: 600, color: prevUser ? 'var(--content-action-primary-default)' : 'var(--content-action-disabled-700)' }}
             >
               <CaretLeftIcon size={16} weight="thin" aria-hidden="true" />
               Prev
             </button>
             <span style={{ fontSize: 12 }}>
-              <strong style={{ color: '#021920' }}>{index + 1}</strong> <span style={{ color: '#7a828c' }}>of {USER_SUMMARIES.length}</span>
+              <strong style={{ color: 'var(--text-body-primary)' }}>{index + 1}</strong> <span style={{ color: 'var(--text-body-secondary)' }}>of {USER_SUMMARIES.length}</span>
             </span>
             <button
               disabled={!nextUser}
               onClick={() => nextUser && router.push(`/access-management/users/${nextUser.id}`)}
-              style={{ display: 'flex', alignItems: 'center', gap: 4, border: 'none', background: 'none', cursor: nextUser ? 'pointer' : 'not-allowed', padding: 0, fontSize: 10, fontWeight: 600, color: nextUser ? '#0b8286' : '#aab0b8' }}
+              style={{ display: 'flex', alignItems: 'center', gap: 4, border: 'none', background: 'none', cursor: nextUser ? 'pointer' : 'not-allowed', padding: 0, fontSize: 10, fontWeight: 600, color: nextUser ? 'var(--content-action-primary-default)' : 'var(--content-action-disabled-700)' }}
             >
               Next
               <CaretRightIcon size={16} weight="thin" aria-hidden="true" />
@@ -129,7 +129,7 @@ export default function UserDetailPage() {
         </div>
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-          <p style={{ margin: 0, fontSize: 10, fontWeight: 600, letterSpacing: '0.4px', textTransform: 'uppercase', color: '#021920' }}>
+          <p style={{ margin: 0, fontSize: 10, fontWeight: 600, letterSpacing: '0.4px', textTransform: 'uppercase', color: 'var(--text-body-primary)' }}>
             Profile Controls
           </p>
           <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
@@ -140,7 +140,7 @@ export default function UserDetailPage() {
                 style={{
                   display: 'flex', alignItems: 'center', gap: 8, border: 'none', background: 'none',
                   cursor: 'pointer', padding: 0, fontSize: 10, fontWeight: 600,
-                  color: destructive ? '#ef2056' : '#0b8286',
+                  color: destructive ? 'var(--text-error)' : 'var(--content-action-primary-default)',
                 }}
               >
                 <Icon size={16} weight="thin" aria-hidden="true" />
@@ -152,7 +152,7 @@ export default function UserDetailPage() {
       </div>
 
       {/* ── Instances + Module Permissions ───────────────────────────────── */}
-      <div style={{ display: 'flex', background: '#ffffff', borderRadius: 8 }}>
+      <div style={{ display: 'flex', background: 'var(--neutral-0)', borderRadius: 8 }}>
         <InstancePanel
           groups={user.instances}
           ungrouped={user.ungrouped}

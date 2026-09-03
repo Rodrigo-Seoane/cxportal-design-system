@@ -86,7 +86,7 @@ function RowActions({ sender, onRemove, onResend, editable, deletable }: {
           )}
           {deletable && (
             <button onClick={() => { onRemove(sender.id); setOpen(false) }}
-              style={{ ...menuItemStyle, color: '#8b1a2a' }}>
+              style={{ ...menuItemStyle, color: 'var(--text-error)' }}>
               <TrashIcon size={14} />
               Remove sender
             </button>
@@ -166,7 +166,7 @@ export default function SendersPage() {
               fontSize: 11, fontWeight: 600, padding: '3px 10px', borderRadius: 4,
               border: '1px solid',
               background:   pageState === s ? 'var(--color-primary)' : 'transparent',
-              color:        pageState === s ? '#fff' : 'var(--color-text-secondary)',
+              color:        pageState === s ? 'var(--neutral-0)' : 'var(--color-text-secondary)',
               borderColor:  pageState === s ? 'var(--color-primary)' : 'var(--color-border)',
               cursor: 'pointer',
             }}>

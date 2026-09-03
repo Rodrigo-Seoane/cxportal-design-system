@@ -11,30 +11,30 @@ import {
 // ── Design tokens ──────────────────────────────────────────────────────────────
 const VARIANTS = {
   info: {
-    bg:         '#eef3fb',  // --surface/message/info
-    border:     '#a4beea',  // --border-color/message/info (info-200)
-    iconColor:  '#4285f4',  // primary blue
+    bg:         'var(--surface-accent-info-light)',
+    border:     'var(--border-color-accent-info-light)',
+    iconColor:  'var(--icon-info)',
     titleSize:  16,         // H5
     titleLh:    '24px',
   },
   success: {
-    bg:         '#f3fbee',  // --surface/message/success
-    border:     '#b5e89c',  // --border-color/message/success (success-200)
-    iconColor:  '#4b9924',  // --success/500
+    bg:         'var(--surface-accent-success-light)',
+    border:     'var(--border-color-accent-success-light)',
+    iconColor:  'var(--icon-success)',
     titleSize:  16,         // H5
     titleLh:    '24px',
   },
   warning: {
-    bg:         '#fdf8ef',  // --surface/message/warning
-    border:     '#f7ddb1',  // --border-color/message/warning (warning-200)
-    iconColor:  '#c97000',  // warning-600 (derived from token ramp)
+    bg:         'var(--surface-accent-warning-light)',
+    border:     'var(--border-color-accent-warning-light)',
+    iconColor:  'var(--icon-warning)',
     titleSize:  18,         // H4 — matches Figma Block treatment for warning/error
     titleLh:    '24px',
   },
   error: {
-    bg:         '#fef1f4',  // --surface/message/error
-    border:     '#f792ac',  // --border-color/message/error (error-200)
-    iconColor:  '#ef2056',  // --error/default
+    bg:         'var(--surface-accent-error-light)',
+    border:     'var(--border-color-accent-error-light)',
+    iconColor:  'var(--icon-error)',
     titleSize:  18,         // H4
     titleLh:    '24px',
   },
@@ -146,7 +146,7 @@ export function MessageBox({
               fontSize: config.titleSize,
               fontWeight: 400,
               lineHeight: config.titleLh,
-              color: '#021920',
+              color: 'var(--text-body-primary)',
             }}
           >
             {title}
@@ -163,7 +163,7 @@ export function MessageBox({
                   fontSize: 14,
                   fontWeight: 400,
                   lineHeight: '20px',
-                  color: '#021920',
+                  color: 'var(--text-body-primary)',
                 }}
               >
                 {message}

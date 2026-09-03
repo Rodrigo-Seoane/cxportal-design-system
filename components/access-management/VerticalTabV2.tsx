@@ -7,10 +7,10 @@ import { useState } from 'react'
 // not-in-group (224px, compensates for the group's extra left indent).
 
 const T = {
-  default:  { bg: '#ffffff', border: '#aab0b8', text: '#021920' },
-  hover:    { bg: '#f8f8f8', border: '#7a828c', text: '#021920' },
-  active:   { bg: '#0b8286', border: '#0ea2a7', text: '#eff1f3' },
-  disabled: { bg: '#d9dce0', border: '#eff1f3', text: '#aab0b8' },
+  default:  { bg: 'var(--neutral-0)', border: 'var(--neutral-300)', text: 'var(--text-body-primary)' },
+  hover:    { bg: 'var(--surface-section-group-bg)', border: 'var(--text-body-secondary)', text: 'var(--text-body-primary)' },
+  active:   { bg: 'var(--content-action-primary-600)', border: 'var(--content-action-primary-600)', text: 'var(--neutral-100)' },
+  disabled: { bg: 'var(--content-action-disabled-100)', border: 'var(--content-action-disabled-300)', text: 'var(--content-action-disabled-700)' },
 } as const
 
 export interface VerticalTabV2Props {

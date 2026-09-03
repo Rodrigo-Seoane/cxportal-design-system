@@ -40,7 +40,7 @@ export default function CompaniesIndexPage() {
     <>
       <main style={{ padding: 16, display: 'flex', flexDirection: 'column', gap: 16 }}>
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-          <h2 style={{ margin: 0, fontSize: 24, fontWeight: 400, lineHeight: '30px', color: '#021920' }}>
+          <h2 style={{ margin: 0, fontSize: 24, fontWeight: 400, lineHeight: '30px', color: 'var(--text-body-primary)' }}>
             Companies ({filteredCompanies.length})
           </h2>
           <Button variant="primary-central" size="xs" onClick={() => setAddOpen(true)}>
@@ -54,22 +54,22 @@ export default function CompaniesIndexPage() {
             value={searchField}
             onChange={e => setSearchField(e.target.value as SearchField)}
             style={{
-              height: 36, padding: '0 8px', border: '1px solid #d9dce0', borderRight: 'none',
-              borderRadius: '8px 0 0 8px', fontSize: 13, color: '#021920', fontFamily: 'var(--font-sans)', background: '#ffffff',
+              height: 36, padding: '0 8px', border: '1px solid var(--neutral-200)', borderRight: 'none',
+              borderRadius: '8px 0 0 8px', fontSize: 13, color: 'var(--text-body-primary)', fontFamily: 'var(--font-sans)', background: 'var(--neutral-0)',
             }}
           >
             {SEARCH_FIELDS.map(f => <option key={f} value={f}>{f}</option>)}
           </select>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 6, width: 320, height: 36, padding: '0 8px', border: '1px solid #d9dce0', borderRadius: '0 8px 8px 0', background: '#ffffff' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 6, width: 320, height: 36, padding: '0 8px', border: '1px solid var(--neutral-200)', borderRadius: '0 8px 8px 0', background: 'var(--neutral-0)' }}>
             <input
               type="search"
               value={search}
               onChange={e => setSearch(e.target.value)}
               placeholder={`Search ${searchField.toLowerCase()}`}
               aria-label={`Search companies by ${searchField}`}
-              style={{ flex: 1, border: 'none', outline: 'none', background: 'transparent', fontSize: 13, color: '#021920', fontFamily: 'var(--font-sans)' }}
+              style={{ flex: 1, border: 'none', outline: 'none', background: 'transparent', fontSize: 13, color: 'var(--text-body-primary)', fontFamily: 'var(--font-sans)' }}
             />
-            <MagnifyingGlassIcon size={16} color="#7a828c" weight="regular" aria-hidden="true" />
+            <MagnifyingGlassIcon size={16} color="var(--text-body-secondary)" weight="regular" aria-hidden="true" />
           </div>
         </div>
 

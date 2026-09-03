@@ -32,12 +32,12 @@ export interface KpiTileProps {
 // ── Threshold color ───────────────────────────────────────────────────────────
 
 function getThresholdColor(value: number | string | undefined, thresholds?: KpiThresholds): string {
-  if (!thresholds || value === undefined) return '#d9dce0'  // unknown gray
+  if (!thresholds || value === undefined) return 'var(--neutral-200)'  // unknown gray
   const num = typeof value === 'string' ? parseFloat(value) : value
-  if (isNaN(num)) return '#d9dce0'
-  if (num >= thresholds.green) return '#4b9924'   // green
-  if (num >= thresholds.amber) return '#c97000'   // amber
-  return '#ef2056'                                 // red
+  if (isNaN(num)) return 'var(--neutral-200)'
+  if (num >= thresholds.green) return 'var(--surface-accent-success-dark)'   // green
+  if (num >= thresholds.amber) return 'var(--icon-warning)'   // amber
+  return 'var(--text-error)'                                 // red
 }
 
 // ── KPI Tile ──────────────────────────────────────────────────────────────────
@@ -76,7 +76,7 @@ export function KpiTile({
   }, [value, prefersReducedMotion])
 
   const borderColor = state === 'stale' || state === 'empty'
-    ? '#f7ddb1'
+    ? 'var(--border-color-accent-warning-light)'
     : getThresholdColor(value, thresholds)
 
   const isClickable = !!onClick && state === 'data'
@@ -102,7 +102,7 @@ export function KpiTile({
       style={tileWrap(borderColor, isClickable)}
     >
       {/* Label */}
-      <span style={{ fontSize: 10, fontWeight: 600, color: '#7a828c', textTransform: 'uppercase', letterSpacing: '0.4px' }}>
+      <span style={{ fontSize: 10, fontWeight: 600, color: 'var(--text-body-secondary)', textTransform: 'uppercase', letterSpacing: '0.4px' }}>
         {label}
       </span>
 
@@ -113,7 +113,7 @@ export function KpiTile({
 
       {/* Empty */}
       {state === 'empty' && (
-        <span style={{ fontSize: 12, color: '#aab0b8', marginTop: 8, display: 'block' }}>
+        <span style={{ fontSize: 12, color: 'var(--neutral-300)', marginTop: 8, display: 'block' }}>
           No data in current scope
         </span>
       )}
@@ -126,22 +126,22 @@ export function KpiTile({
             fontSize:   32,
             fontWeight:  400,
             lineHeight: '38px',
-            color:      '#021920',
+            color:      'var(--text-body-primary)',
             marginTop:   4,
             animation:  pulseKey > 0 && !prefersReducedMotion ? 'kpi-pulse 0.6s ease' : undefined,
           }}
         >
-          {value}{unit && <span style={{ fontSize: 18, color: '#7a828c', marginLeft: 2 }}>{unit}</span>}
+          {value}{unit && <span style={{ fontSize: 18, color: 'var(--text-body-secondary)', marginLeft: 2 }}>{unit}</span>}
         </div>
       )}
 
       {/* Delta */}
       {delta !== undefined && state === 'data' && (
         <div style={{ display: 'flex', alignItems: 'center', gap: 4, marginTop: 2 }}>
-          <span style={{ fontSize: 11, color: delta >= 0 ? '#4b9924' : '#ef2056', fontWeight: 600 }}>
+          <span style={{ fontSize: 11, color: delta >= 0 ? 'var(--surface-accent-success-dark)' : 'var(--text-error)', fontWeight: 600 }}>
             {delta >= 0 ? '↑' : '↓'} {Math.abs(delta)}{unit ?? '%'}
           </span>
-          <span style={{ fontSize: 10, color: '#aab0b8' }}>{deltaWindow}</span>
+          <span style={{ fontSize: 10, color: 'var(--neutral-300)' }}>{deltaWindow}</span>
         </div>
       )}
 
@@ -153,7 +153,7 @@ export function KpiTile({
               <Line
                 type="monotone"
                 dataKey="v"
-                stroke="#4285f4"
+                stroke="var(--content-action-primary-600)"
                 strokeWidth={1.5}
                 dot={false}
                 isAnimationActive={false}
@@ -165,14 +165,14 @@ export function KpiTile({
 
       {/* Cached-as-of for stale */}
       {state === 'stale' && cachedAt && (
-        <span style={{ fontSize: 10, color: '#c97000' }}>
+        <span style={{ fontSize: 10, color: 'var(--icon-warning)' }}>
           Cached as of {cachedAt.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
         </span>
       )}
 
       {/* Last updated */}
       {(state === 'data' || state === 'unknown') && (
-        <span style={{ fontSize: 10, color: '#aab0b8', marginTop: 'auto', display: 'block' }}>
+        <span style={{ fontSize: 10, color: 'var(--neutral-300)', marginTop: 'auto', display: 'block' }}>
           Updated {secondsAgo}s ago
         </span>
       )}
@@ -188,9 +188,9 @@ function tileWrap(borderColor: string, clickable: boolean): React.CSSProperties 
     flexDirection:  'column',
     gap:             2,
     padding:        '12px 14px',
-    background:     '#ffffff',
+    background:     'var(--surface-section-bg)',
     borderRadius:    8,
-    border:         '1px solid #eff1f3',
+    border:         '1px solid var(--neutral-100)',
     borderBottom:   `3px solid ${borderColor}`,
     cursor:          clickable ? 'pointer' : 'default',
     minHeight:       140,
@@ -206,8 +206,8 @@ const stalePill: React.CSSProperties = {
   right:        10,
   padding:     '2px 6px',
   borderRadius: 64,
-  background:  '#fbeed8',
+  background:  'var(--warning-100)',
   fontSize:     10,
   fontWeight:   600,
-  color:       '#c97000',
+  color:       'var(--icon-warning)',
 }

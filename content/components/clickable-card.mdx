@@ -55,19 +55,19 @@ Two variants serve different contexts:
     <TableRow>
       <TableCell><strong>Default</strong></TableCell>
       <TableCell><code>#ffffff</code></TableCell>
-      <TableCell><code>#eff1f3</code> (neutral)</TableCell>
+      <TableCell><code>#efefef</code> (neutral)</TableCell>
       <TableCell>Empty ring, neutral border</TableCell>
     </TableRow>
     <TableRow>
       <TableCell><strong>Hover</strong></TableCell>
       <TableCell><code>#ffffff</code></TableCell>
-      <TableCell><code>#689df6</code> (primary light)</TableCell>
+      <TableCell><code>#204704</code> (primary light)</TableCell>
       <TableCell>Empty ring, neutral border</TableCell>
     </TableRow>
     <TableRow>
       <TableCell><strong>Selected</strong></TableCell>
-      <TableCell><code>#d9dce0</code> (form-group)</TableCell>
-      <TableCell><code>#689df6</code> (primary light)</TableCell>
+      <TableCell><code>#f8f8f8</code> (form-group)</TableCell>
+      <TableCell><code>#204704</code> (primary light)</TableCell>
       <TableCell>Filled — blue dot inside blue ring</TableCell>
     </TableRow>
   </TableBody>
@@ -151,7 +151,7 @@ Used for compact two-option selection (e.g. scheduling type). The entire card is
 - In a group, manage selection state in the parent; only one card should have `selected` at a time
 - Add `aria-pressed={selected}` or use a `role="radio"` with `aria-checked` when the cards form a logical radio group
 - Do not rely on color alone to show selection — the radio dot provides a shape-based signal
-- Ensure sufficient contrast for the title and description text against both white and selected (`#d9dce0`) backgrounds
+- Ensure sufficient contrast for the title and description text against both white and selected (`#f8f8f8`) backgrounds
 
 ## Principles for use
 

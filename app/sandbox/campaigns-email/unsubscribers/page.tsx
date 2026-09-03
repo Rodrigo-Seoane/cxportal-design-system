@@ -195,7 +195,7 @@ export default function UnsubscribersPage() {
                       {grace
                         ? <span style={{ display: 'inline-block', fontSize: 11, fontWeight: 600,
                             padding: '2px 8px', borderRadius: 4,
-                            background: 'var(--color-warning-100)', color: '#7a4a00' }}>
+                            background: 'var(--color-warning-100)', color: 'var(--text-warning)' }}>
                             In grace — {days}d left
                           </span>
                         : <span style={{ display: 'inline-block', fontSize: 11, fontWeight: 600,

@@ -25,7 +25,7 @@ export function CopyButton({ text, label = 'Copy prompt' }: CopyButtonProps) {
       style={{
         border: '1px solid var(--color-border)',
         backgroundColor: copied ? 'var(--color-success-100)' : 'var(--color-surface-section)',
-        color: copied ? '#1a6b1a' : 'var(--color-text-secondary)',
+        color: copied ? 'var(--text-success)' : 'var(--color-text-secondary)',
         cursor: 'pointer',
         fontFamily: 'inherit',
       }}

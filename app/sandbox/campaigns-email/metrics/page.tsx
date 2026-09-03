@@ -20,12 +20,12 @@ function fmtPct(n: number): string {
 }
 
 const STATUS_STYLE: Record<string, { bg: string; color: string; label: string }> = {
-  sent:      { bg: 'var(--color-success-100)', color: '#1a6b1a', label: 'Sent'      },
-  sending:   { bg: 'var(--color-info-100)',    color: '#1a4f9e', label: 'Sending'   },
-  scheduled: { bg: 'var(--color-warning-100)', color: '#7a4a00', label: 'Scheduled' },
+  sent:      { bg: 'var(--color-success-100)', color: 'var(--text-success)', label: 'Sent'      },
+  sending:   { bg: 'var(--color-info-100)',    color: 'var(--text-info)', label: 'Sending'   },
+  scheduled: { bg: 'var(--color-warning-100)', color: 'var(--text-warning)', label: 'Scheduled' },
   draft:     { bg: 'var(--color-surface-display)', color: 'var(--color-text-secondary)', label: 'Draft' },
-  paused:    { bg: 'var(--color-error-100)',   color: '#8b1a2a', label: 'Paused'    },
-  cancelled: { bg: 'var(--color-error-100)',   color: '#8b1a2a', label: 'Cancelled' },
+  paused:    { bg: 'var(--color-error-100)',   color: 'var(--text-error)', label: 'Paused'    },
+  cancelled: { bg: 'var(--color-error-100)',   color: 'var(--text-error)', label: 'Cancelled' },
 }
 
 // Build per-campaign bar data from METRICS (sent campaigns only)

@@ -32,9 +32,9 @@ Modals are intentionally disruptive. Use them only when that disruption is warra
 
 - **Backdrop** — full-screen semi-transparent overlay (`rgba(5, 3, 38, 0.60)`). Clicking outside the panel closes the modal.
 - **Panel** — white container with 8 px border-radius and a drop shadow. Max-width depends on size.
-- **Header** — title text + optional × close button. Separated from the body by a 1 px `#eff1f3` border.
+- **Header** — title text + optional × close button. Separated from the body by a 1 px `#efefef` border.
 - **Body** — scrollable content area. Padding: 16 px. Can contain any layout: prose, forms, file lists, progress indicators.
-- **Footer** — action buttons. Separated from the body by a 1 px `#eff1f3` border. Always placed at the bottom.
+- **Footer** — action buttons. Separated from the body by a 1 px `#efefef` border. Always placed at the bottom.
 
 ---
 
@@ -187,7 +187,7 @@ export function CreateTagModal() {
 <Modal open={open} onClose={() => setOpen(false)} size="medium">
   <ModalHeader onClose={() => setOpen(false)}>Delete Tag</ModalHeader>
   <ModalBody>
-    <p style={{ fontSize: 14, color: '#7a828c', lineHeight: '20px' }}>
+    <p style={{ fontSize: 14, color: 'var(--text-body-secondary)', lineHeight: '20px' }}>
       Are you sure you want to delete the tag <strong>"Image Space"</strong>?
       This action cannot be undone.
     </p>
@@ -259,12 +259,12 @@ export function CreateTagModal() {
     </TableRow>
     <TableRow>
       <TableCell><code>--border-color/neutral</code></TableCell>
-      <TableCell><code>#eff1f3</code></TableCell>
+      <TableCell><code>#efefef</code></TableCell>
       <TableCell>Header bottom border, footer top border</TableCell>
     </TableRow>
     <TableRow>
       <TableCell><code>--text/body/primary</code></TableCell>
-      <TableCell><code>#021920</code></TableCell>
+      <TableCell><code>#373737</code></TableCell>
       <TableCell>Header title colour, close icon colour</TableCell>
     </TableRow>
     <TableRow>

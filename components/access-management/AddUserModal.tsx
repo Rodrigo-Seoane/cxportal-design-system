@@ -55,26 +55,26 @@ export function AddUserModal({ open, onClose, onCreate }: AddUserModalProps) {
           <Input label="User ID" placeholder="Enter user ID" value={userId} onChange={setUserId} />
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-            <span style={{ fontSize: 12, fontWeight: 600, letterSpacing: '0.24px', color: '#021920' }}>Login Method</span>
+            <span style={{ fontSize: 12, fontWeight: 600, letterSpacing: '0.24px', color: 'var(--text-body-primary)' }}>Login Method</span>
             <div style={{ display: 'flex', gap: 24 }}>
-              <Radio label="Password" name="login-method" value="password" checked={loginMethod === 'password'} onChange={() => setLoginMethod('password')} size="small" accentColor="#0b8286" />
-              <Radio label="SSO" name="login-method" value="sso" checked={loginMethod === 'sso'} onChange={() => setLoginMethod('sso')} size="small" accentColor="#0b8286" />
+              <Radio label="Password" name="login-method" value="password" checked={loginMethod === 'password'} onChange={() => setLoginMethod('password')} size="small" accentColor="var(--content-action-primary-600)" />
+              <Radio label="SSO" name="login-method" value="sso" checked={loginMethod === 'sso'} onChange={() => setLoginMethod('sso')} size="small" accentColor="var(--content-action-primary-600)" />
             </div>
             {loginMethod === 'sso' && (
-              <p style={{ margin: 0, fontSize: 10, lineHeight: '16px', color: '#7a828c' }}>
+              <p style={{ margin: 0, fontSize: 10, lineHeight: '16px', color: 'var(--text-body-secondary)' }}>
                 SSO users will be able to log in once they authenticate through their identity provider. No invitation email will be sent.
               </p>
             )}
           </div>
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-            <span style={{ fontSize: 12, fontWeight: 600, letterSpacing: '0.24px', color: '#021920' }}>Role *</span>
+            <span style={{ fontSize: 12, fontWeight: 600, letterSpacing: '0.24px', color: 'var(--text-body-primary)' }}>Role *</span>
             <select
               value={roleId}
               onChange={e => setRoleId(e.target.value)}
               style={{
-                height: 36, padding: '0 8px', border: '1px solid #d9dce0', borderRadius: 8,
-                fontSize: 14, color: roleId ? '#021920' : '#7a828c', fontFamily: 'var(--font-sans)', background: '#ffffff',
+                height: 36, padding: '0 8px', border: '1px solid var(--neutral-200)', borderRadius: 8,
+                fontSize: 14, color: roleId ? 'var(--text-body-primary)' : 'var(--text-body-secondary)', fontFamily: 'var(--font-sans)', background: 'var(--neutral-0)',
               }}
             >
               <option value="" disabled>Select a role</option>

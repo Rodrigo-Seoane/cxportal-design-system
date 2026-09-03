@@ -74,8 +74,8 @@ function EventDot(props: {
     return (
       <circle
         cx={cx} cy={cy} r={3}
-        fill={isFocused ? '#021920' : '#4285f4'}
-        stroke={isFocused ? '#ffffff' : 'none'}
+        fill={isFocused ? 'var(--text-body-primary)' : 'var(--content-action-primary-600)'}
+        stroke={isFocused ? 'var(--neutral-0)' : 'none'}
         strokeWidth={isFocused ? 2 : 0}
       />
     )
@@ -86,12 +86,12 @@ function EventDot(props: {
   return (
     <g onClick={handleClick} style={{ cursor: 'pointer' }} aria-label={EVENT_KIND_LABEL[primaryEvent.kind]}>
       {nonAdherent && (
-        <circle cx={cx} cy={cy} r={8} fill="#ef2056" stroke="white" strokeWidth={2} />
+        <circle cx={cx} cy={cy} r={8} fill="var(--text-error)" stroke="white" strokeWidth={2} />
       )}
       {!nonAdherent && shiftTrade && (
         <polygon
           points={`${cx},${cy - 9} ${cx - 8},${cy + 6} ${cx + 8},${cy + 6}`}
-          fill="#4285f4" stroke="white" strokeWidth={2}
+          fill="var(--content-action-primary-600)" stroke="white" strokeWidth={2}
         />
       )}
       {!nonAdherent && !shiftTrade && shiftExchange && (
@@ -115,20 +115,20 @@ function ChartTooltipContent({ active, payload, label, eventsByDate }: {
 
   return (
     <div style={{
-      background: '#ffffff', border: '1px solid #e2e5e8', borderRadius: 8,
+      background: 'var(--surface-section-bg)', border: '1px solid var(--neutral-200)', borderRadius: 8,
       padding: '10px 14px', boxShadow: '0 4px 16px rgba(2,25,32,0.12)',
       fontSize: 12, fontFamily: 'var(--font-sans)', minWidth: 180,
     }}>
-      <div style={{ fontWeight: 600, color: '#021920', marginBottom: 6 }}>{fmtDate(point.date)}</div>
-      <div style={{ color: '#4b535e' }}>Adherence: <strong>{point.adherencePct}%</strong></div>
-      <div style={{ color: '#4b535e' }}>Adherent: {fmtMin(point.adherentMin)} of {fmtMin(point.scheduledMin)}</div>
+      <div style={{ fontWeight: 600, color: 'var(--text-body-primary)', marginBottom: 6 }}>{fmtDate(point.date)}</div>
+      <div style={{ color: 'var(--text-body-primary)' }}>Adherence: <strong>{point.adherencePct}%</strong></div>
+      <div style={{ color: 'var(--text-body-primary)' }}>Adherent: {fmtMin(point.adherentMin)} of {fmtMin(point.scheduledMin)}</div>
       {point.nonAdherentMin > 0 && (
-        <div style={{ color: '#ef2056' }}>Non-adherent: {fmtMin(point.nonAdherentMin)}</div>
+        <div style={{ color: 'var(--text-error)' }}>Non-adherent: {fmtMin(point.nonAdherentMin)}</div>
       )}
       {dayEvents.length > 0 && (
-        <div style={{ marginTop: 6, borderTop: '1px solid #eff1f3', paddingTop: 6 }}>
+        <div style={{ marginTop: 6, borderTop: '1px solid var(--neutral-100)', paddingTop: 6 }}>
           {dayEvents.map((e, i) => (
-            <div key={i} style={{ color: '#7a828c', fontSize: 11 }}>{EVENT_KIND_LABEL[e.kind]}</div>
+            <div key={i} style={{ color: 'var(--text-body-secondary)', fontSize: 11 }}>{EVENT_KIND_LABEL[e.kind]}</div>
           ))}
         </div>
       )}
@@ -196,12 +196,12 @@ export function AdherenceTrendChart({
     return (
       <div style={{
         height: 284, display: 'flex', flexDirection: 'column', alignItems: 'center',
-        justifyContent: 'center', gap: 12, background: '#fff8f8',
-        border: '1px solid #fbc6c6', borderRadius: 8, fontFamily: 'var(--font-sans)',
+        justifyContent: 'center', gap: 12, background: 'var(--surface-accent-error-light)',
+        border: '1px solid var(--error-100)', borderRadius: 8, fontFamily: 'var(--font-sans)',
       }}>
-        <span style={{ fontSize: 14, color: '#8b1a2a' }}>Chart data unavailable</span>
+        <span style={{ fontSize: 14, color: 'var(--text-destructive)' }}>Chart data unavailable</span>
         {onRetry && (
-          <button onClick={onRetry} style={{ fontSize: 13, color: '#4285f4', border: 'none', background: 'none', cursor: 'pointer' }}>
+          <button onClick={onRetry} style={{ fontSize: 13, color: 'var(--content-action-primary-600)', border: 'none', background: 'none', cursor: 'pointer' }}>
             Retry
           </button>
         )}
@@ -224,17 +224,17 @@ export function AdherenceTrendChart({
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 10 }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
           {/* Legend */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: 10, fontSize: 11, color: '#7a828c' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10, fontSize: 11, color: 'var(--text-body-secondary)' }}>
             <span style={{ display: 'inline-flex', alignItems: 'center', gap: 4 }}>
-              <span style={{ width: 24, height: 2, background: '#4285f4', display: 'inline-block' }} />
+              <span style={{ width: 24, height: 2, background: 'var(--content-action-primary-600)', display: 'inline-block' }} />
               Adherence %
             </span>
             <span style={{ display: 'inline-flex', alignItems: 'center', gap: 4 }}>
-              <svg width="10" height="10" style={{ flexShrink: 0 }}><circle cx="5" cy="5" r="4" fill="#ef2056" /></svg>
+              <svg width="10" height="10" style={{ flexShrink: 0 }}><circle cx="5" cy="5" r="4" fill="var(--text-error)" /></svg>
               Non-adherent event
             </span>
             <span style={{ display: 'inline-flex', alignItems: 'center', gap: 4 }}>
-              <svg width="10" height="10" style={{ flexShrink: 0 }}><polygon points="5,1 0,9 10,9" fill="#4285f4" /></svg>
+              <svg width="10" height="10" style={{ flexShrink: 0 }}><polygon points="5,1 0,9 10,9" fill="var(--content-action-primary-600)" /></svg>
               Shift trade
             </span>
             <span style={{ display: 'inline-flex', alignItems: 'center', gap: 4 }}>
@@ -248,8 +248,8 @@ export function AdherenceTrendChart({
           onClick={() => setShowTable(t => !t)}
           aria-pressed={showTable}
           style={{
-            fontSize: 12, color: '#4285f4', border: '1px solid #d9dce0',
-            background: '#ffffff', borderRadius: 6, padding: '4px 10px',
+            fontSize: 12, color: 'var(--content-action-primary-600)', border: '1px solid var(--neutral-200)',
+            background: 'var(--surface-section-bg)', borderRadius: 6, padding: '4px 10px',
             cursor: 'pointer', fontFamily: 'var(--font-sans)',
           }}
         >
@@ -260,8 +260,8 @@ export function AdherenceTrendChart({
       {/* Stale banner */}
       {state === 'stale' && (
         <div style={{
-          background: '#fbeed8', border: '1px solid #f7ddb1', borderRadius: 6,
-          padding: '6px 12px', fontSize: 12, color: '#7a4a00', marginBottom: 8,
+          background: 'var(--warning-100)', border: '1px solid var(--border-color-accent-warning-light)', borderRadius: 6,
+          padding: '6px 12px', fontSize: 12, color: 'var(--text-warning)', marginBottom: 8,
         }}>
           Showing cached data — live refresh unavailable
         </div>
@@ -272,9 +272,9 @@ export function AdherenceTrendChart({
         <div style={{ overflowX: 'auto' }}>
           <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 12, fontFamily: 'var(--font-sans)' }}>
             <thead>
-              <tr style={{ background: '#f8f9fa', borderBottom: '2px solid #e2e5e8' }}>
+              <tr style={{ background: 'var(--neutral-50)', borderBottom: '2px solid var(--neutral-200)' }}>
                 {['Date', 'Adherence %', 'Adherent', 'Scheduled', 'Non-Adherent', 'Events'].map(h => (
-                  <th key={h} style={{ padding: '8px 12px', textAlign: 'left', fontWeight: 600, color: '#4b535e', whiteSpace: 'nowrap' }}>{h}</th>
+                  <th key={h} style={{ padding: '8px 12px', textAlign: 'left', fontWeight: 600, color: 'var(--text-body-primary)', whiteSpace: 'nowrap' }}>{h}</th>
                 ))}
               </tr>
             </thead>
@@ -282,17 +282,17 @@ export function AdherenceTrendChart({
               {series.map((p, i) => {
                 const dayEvents = eventsByDate[p.date] ?? []
                 return (
-                  <tr key={p.date} style={{ borderBottom: '1px solid #eff1f3', background: i % 2 === 0 ? '#ffffff' : '#fafbfc' }}>
-                    <td style={{ padding: '7px 12px', color: '#021920' }}>{fmtDate(p.date)}</td>
-                    <td style={{ padding: '7px 12px', fontWeight: 600, color: p.adherencePct < 85 ? '#ef2056' : '#021920' }}>
+                  <tr key={p.date} style={{ borderBottom: '1px solid var(--neutral-100)', background: i % 2 === 0 ? 'var(--surface-section-bg)' : 'var(--neutral-50)' }}>
+                    <td style={{ padding: '7px 12px', color: 'var(--text-body-primary)' }}>{fmtDate(p.date)}</td>
+                    <td style={{ padding: '7px 12px', fontWeight: 600, color: p.adherencePct < 85 ? 'var(--text-error)' : 'var(--text-body-primary)' }}>
                       {p.adherencePct}%
                     </td>
-                    <td style={{ padding: '7px 12px', color: '#4b535e' }}>{fmtMin(p.adherentMin)}</td>
-                    <td style={{ padding: '7px 12px', color: '#4b535e' }}>{fmtMin(p.scheduledMin)}</td>
-                    <td style={{ padding: '7px 12px', color: p.nonAdherentMin > 0 ? '#ef2056' : '#aab0b8' }}>
+                    <td style={{ padding: '7px 12px', color: 'var(--text-body-primary)' }}>{fmtMin(p.adherentMin)}</td>
+                    <td style={{ padding: '7px 12px', color: 'var(--text-body-primary)' }}>{fmtMin(p.scheduledMin)}</td>
+                    <td style={{ padding: '7px 12px', color: p.nonAdherentMin > 0 ? 'var(--text-error)' : 'var(--neutral-300)' }}>
                       {p.nonAdherentMin > 0 ? fmtMin(p.nonAdherentMin) : '—'}
                     </td>
-                    <td style={{ padding: '7px 12px', color: '#7a828c' }}>
+                    <td style={{ padding: '7px 12px', color: 'var(--text-body-secondary)' }}>
                       {dayEvents.map(e => EVENT_KIND_LABEL[e.kind]).join(', ') || '—'}
                     </td>
                   </tr>
@@ -307,11 +307,11 @@ export function AdherenceTrendChart({
           {state === 'empty' ? (
             <div style={{
               height: 260, display: 'flex', flexDirection: 'column', alignItems: 'center',
-              justifyContent: 'center', gap: 8, background: '#f8f9fa', borderRadius: 8,
-              border: '1px dashed #d9dce0',
+              justifyContent: 'center', gap: 8, background: 'var(--neutral-50)', borderRadius: 8,
+              border: '1px dashed var(--neutral-200)',
             }}>
-              <span style={{ fontSize: 14, fontWeight: 600, color: '#4b535e' }}>No adherence data yet</span>
-              <span style={{ fontSize: 12, color: '#7a828c' }}>Trend will appear after 7 days of activity</span>
+              <span style={{ fontSize: 14, fontWeight: 600, color: 'var(--text-body-primary)' }}>No adherence data yet</span>
+              <span style={{ fontSize: 12, color: 'var(--text-body-secondary)' }}>Trend will appear after 7 days of activity</span>
             </div>
           ) : (
             <div
@@ -319,18 +319,18 @@ export function AdherenceTrendChart({
               tabIndex={0}
               aria-label="Adherence trend chart. Use arrow keys to navigate between data points, Enter to open event detail."
               onKeyDown={handleKeyDown}
-              style={{ outline: 'none', borderRadius: 8, border: '1px solid #eff1f3' }}
+              style={{ outline: 'none', borderRadius: 8, border: '1px solid var(--neutral-100)' }}
               onFocus={() => { if (!focusedDate && series.length) setFocusedDate(series[0].date) }}
               onBlur={() => setFocusedDate(null)}
             >
               <ResponsiveContainer width="100%" height={260}>
                 <LineChart data={series} margin={{ top: 16, right: 16, left: 0, bottom: 0 }}>
-                  <CartesianGrid vertical={false} stroke="#eff1f3" />
+                  <CartesianGrid vertical={false} stroke="var(--neutral-100)" />
                   <XAxis
                     dataKey="date"
                     tickFormatter={fmtDate}
                     interval={tickInterval}
-                    tick={{ fontSize: 11, fill: '#7a828c', fontFamily: 'var(--font-sans)' }}
+                    tick={{ fontSize: 11, fill: 'var(--text-body-secondary)', fontFamily: 'var(--font-sans)' }}
                     axisLine={false}
                     tickLine={false}
                   />
@@ -338,7 +338,7 @@ export function AdherenceTrendChart({
                     domain={[60, 100]}
                     ticks={[60, 70, 80, 90, 100]}
                     tickFormatter={v => `${v}%`}
-                    tick={{ fontSize: 11, fill: '#7a828c', fontFamily: 'var(--font-sans)' }}
+                    tick={{ fontSize: 11, fill: 'var(--text-body-secondary)', fontFamily: 'var(--font-sans)' }}
                     axisLine={false}
                     tickLine={false}
                     width={38}
@@ -348,7 +348,7 @@ export function AdherenceTrendChart({
                   <ReferenceArea
                     y1={graceLow}
                     y2={100}
-                    fill="#d4edda"
+                    fill="var(--success-100)"
                     fillOpacity={state === 'stale' ? 0.25 : 0.45}
                     ifOverflow="visible"
                   />
@@ -362,13 +362,13 @@ export function AdherenceTrendChart({
                         eventsByDate={eventsByDate}
                       />
                     )}
-                    cursor={{ stroke: '#d9dce0', strokeWidth: 1 }}
+                    cursor={{ stroke: 'var(--neutral-200)', strokeWidth: 1 }}
                   />
 
                   <Line
                     type="monotone"
                     dataKey="adherencePct"
-                    stroke="#4285f4"
+                    stroke="var(--content-action-primary-600)"
                     strokeWidth={2}
                     strokeOpacity={state === 'stale' ? 0.5 : 1}
                     dot={(dotProps: Record<string, unknown>) => (
@@ -381,7 +381,7 @@ export function AdherenceTrendChart({
                         focusedDate={focusedDate}
                       />
                     )}
-                    activeDot={{ r: 5, fill: '#4285f4', stroke: 'white', strokeWidth: 2 }}
+                    activeDot={{ r: 5, fill: 'var(--content-action-primary-600)', stroke: 'white', strokeWidth: 2 }}
                     isAnimationActive={!prefersReducedMotion}
                   />
                 </LineChart>
@@ -390,10 +390,10 @@ export function AdherenceTrendChart({
           )}
 
           {/* Grace band legend */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginTop: 8, fontSize: 11, color: '#7a828c' }}>
-            <span style={{ width: 16, height: 10, background: '#d4edda', opacity: 0.8, borderRadius: 2, display: 'inline-block', flexShrink: 0 }} />
+          <div style={{ display: 'flex', alignItems: 'center', gap: 6, marginTop: 8, fontSize: 11, color: 'var(--text-body-secondary)' }}>
+            <span style={{ width: 16, height: 10, background: 'var(--success-100)', opacity: 0.8, borderRadius: 2, display: 'inline-block', flexShrink: 0 }} />
             <Tooltip content={`Grace period is the tolerance zone (±${gracePeriodMinutes} min per activity) before adherence drops. Configured in FCS by an Admin.`} placement="top">
-              <span style={{ cursor: 'help', borderBottom: '1px dashed #aab0b8' }}>
+              <span style={{ cursor: 'help', borderBottom: '1px dashed var(--neutral-300)' }}>
                 Within grace period — counted as adherent per FCS configuration
               </span>
             </Tooltip>

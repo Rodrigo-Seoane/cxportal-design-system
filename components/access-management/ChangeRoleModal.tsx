@@ -49,8 +49,8 @@ export function ChangeRoleModal({ open, email, currentRoleName, onClose, onSave 
           </div>
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: 8, position: 'relative' }}>
-            <span style={{ fontSize: 12, fontWeight: 600, letterSpacing: '0.24px', color: '#021920' }}>New Role</span>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 8, height: 36, padding: '0 12px', border: `1px solid ${focused ? '#0ea2a7' : '#d9dce0'}`, borderRadius: 8 }}>
+            <span style={{ fontSize: 12, fontWeight: 600, letterSpacing: '0.24px', color: 'var(--text-body-primary)' }}>New Role</span>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 8, height: 36, padding: '0 12px', border: `1px solid ${focused ? 'var(--content-action-primary-600)' : 'var(--neutral-200)'}`, borderRadius: 8 }}>
               <input
                 type="search"
                 value={selectedRoleId ? ROLE_SUMMARIES.find(r => r.id === selectedRoleId)?.name ?? '' : search}
@@ -58,22 +58,22 @@ export function ChangeRoleModal({ open, email, currentRoleName, onClose, onSave 
                 onFocus={() => setFocused(true)}
                 onBlur={() => setTimeout(() => setFocused(false), 120)}
                 placeholder="Search roles"
-                style={{ flex: 1, border: 'none', outline: 'none', fontSize: 14, color: '#021920', fontFamily: 'var(--font-sans)' }}
+                style={{ flex: 1, border: 'none', outline: 'none', fontSize: 14, color: 'var(--text-body-primary)', fontFamily: 'var(--font-sans)' }}
               />
-              <MagnifyingGlassIcon size={16} color="#7a828c" weight="regular" aria-hidden="true" />
+              <MagnifyingGlassIcon size={16} color="var(--text-body-secondary)" weight="regular" aria-hidden="true" />
             </div>
 
             {focused && matches.length > 0 && !selectedRoleId && (
-              <div style={{ position: 'absolute', top: '100%', left: 0, right: 0, marginTop: 4, background: '#ffffff', border: '1px solid #e2e5e8', borderRadius: 8, boxShadow: '0 4px 16px rgba(2,25,32,0.14)', zIndex: 10, overflow: 'hidden' }}>
+              <div style={{ position: 'absolute', top: '100%', left: 0, right: 0, marginTop: 4, background: 'var(--neutral-0)', border: '1px solid var(--neutral-200)', borderRadius: 8, boxShadow: '0 4px 16px rgba(2,25,32,0.14)', zIndex: 10, overflow: 'hidden' }}>
                 {matches.map(role => (
                   <button
                     key={role.id}
                     type="button"
                     onClick={() => { setSelectedRoleId(role.id); setSearch('') }}
-                    style={{ display: 'block', width: '100%', textAlign: 'left', padding: '8px 12px', border: 'none', background: 'transparent', cursor: 'pointer', borderBottom: '1px solid #eff1f3' }}
+                    style={{ display: 'block', width: '100%', textAlign: 'left', padding: '8px 12px', border: 'none', background: 'transparent', cursor: 'pointer', borderBottom: '1px solid var(--neutral-100)' }}
                   >
-                    <div style={{ fontSize: 13, fontWeight: 600, color: '#021920' }}>{role.name}</div>
-                    <div style={{ fontSize: 11, color: '#7a828c' }}>{role.permissionLevel}</div>
+                    <div style={{ fontSize: 13, fontWeight: 600, color: 'var(--text-body-primary)' }}>{role.name}</div>
+                    <div style={{ fontSize: 11, color: 'var(--text-body-secondary)' }}>{role.permissionLevel}</div>
                   </button>
                 ))}
               </div>

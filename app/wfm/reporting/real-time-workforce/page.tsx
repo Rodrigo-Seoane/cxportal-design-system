@@ -96,7 +96,7 @@ function RealTimeWorkforceDashboardInner() {
     const el = document.getElementById(`kpi-${kpiRef}`)
     if (!el) return
     el.scrollIntoView({ behavior: 'smooth', block: 'center' })
-    el.style.outline = '2px solid #4285f4'
+    el.style.outline = '2px solid var(--content-action-primary-600)'
     setTimeout(() => { el.style.outline = '' }, 2000)
   }, [])
 
@@ -159,8 +159,8 @@ function RealTimeWorkforceDashboardInner() {
           gap:             16,
           padding:        '0 24px',
           height:          64,
-          background:     '#ffffff',
-          borderBottom:   '1px solid #e2e5e8',
+          background:     'var(--neutral-0)',
+          borderBottom:   '1px solid var(--neutral-100)',
           flexShrink:      0,
           position:       'sticky',
           top:             0,
@@ -168,10 +168,10 @@ function RealTimeWorkforceDashboardInner() {
         }}>
           {/* Breadcrumb */}
           <nav aria-label="Breadcrumb" style={{ display: 'flex', alignItems: 'center', gap: 4, flex: 1, minWidth: 0 }}>
-            <HouseIcon size={14} color="#7a828c" weight="regular" aria-hidden="true" />
-            <span style={{ fontSize: 12, color: '#7a828c' }}>Reporting</span>
-            <CaretRightIcon size={12} color="#aab0b8" weight="regular" aria-hidden="true" />
-            <span style={{ fontSize: 12, fontWeight: 600, color: '#021920', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+            <HouseIcon size={14} color="var(--text-body-secondary)" weight="regular" aria-hidden="true" />
+            <span style={{ fontSize: 12, color: 'var(--text-body-secondary)' }}>Reporting</span>
+            <CaretRightIcon size={12} color="var(--neutral-300)" weight="regular" aria-hidden="true" />
+            <span style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-body-primary)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
               Real-Time Workforce Dashboard
             </span>
           </nav>
@@ -352,12 +352,12 @@ const headerBtn: React.CSSProperties = {
   gap:          6,
   padding:     '6px 14px',
   borderRadius: 6,
-  border:      '1px solid #d9dce0',
-  background:  '#ffffff',
+  border:      '1px solid var(--neutral-200)',
+  background:  'var(--neutral-0)',
   cursor:      'pointer',
   fontSize:     13,
   fontWeight:   500,
-  color:       '#021920',
+  color:       'var(--text-body-primary)',
   fontFamily:  'var(--font-sans)',
   minHeight:    44,
 }
@@ -369,16 +369,16 @@ const iconBtn: React.CSSProperties = {
   width:        44,
   height:       44,
   borderRadius: 6,
-  border:      '1px solid #d9dce0',
-  background:  '#ffffff',
+  border:      '1px solid var(--neutral-200)',
+  background:  'var(--neutral-0)',
   cursor:      'pointer',
-  color:       '#7a828c',
+  color:       'var(--text-body-secondary)',
 }
 
 const panelCard: React.CSSProperties = {
-  background:   '#ffffff',
+  background:   'var(--neutral-0)',
   borderRadius:  8,
-  border:       '1px solid #e2e5e8',
+  border:       '1px solid var(--neutral-100)',
   padding:      '20px',
 }
 

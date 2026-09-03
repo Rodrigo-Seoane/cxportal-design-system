@@ -15,8 +15,8 @@ export function CompaniesTable({ companies, onDeleteCompany }: CompaniesTablePro
 
   if (companies.length === 0) {
     return (
-      <div style={{ padding: '48px 24px', textAlign: 'center', border: '1px dashed #d9dce0', borderRadius: 8 }}>
-        <p style={{ margin: 0, fontSize: 14, color: '#7a828c' }}>No companies match this search.</p>
+      <div style={{ padding: '48px 24px', textAlign: 'center', border: '1px dashed var(--neutral-200)', borderRadius: 8 }}>
+        <p style={{ margin: 0, fontSize: 14, color: 'var(--text-body-secondary)' }}>No companies match this search.</p>
       </div>
     )
   }
@@ -37,7 +37,7 @@ export function CompaniesTable({ companies, onDeleteCompany }: CompaniesTablePro
             <TableCell
               variant="link"
               onClick={() => router.push(`/access-management/companies/${company.id}`)}
-              style={{ cursor: 'pointer', fontWeight: 600, color: '#0ea2a7' }}
+              style={{ cursor: 'pointer', fontWeight: 600, color: 'var(--content-action-primary-default)' }}
             >
               {company.name}
             </TableCell>

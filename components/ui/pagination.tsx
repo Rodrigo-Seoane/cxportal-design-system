@@ -6,11 +6,11 @@ import { CaretLeft, CaretRight } from '@phosphor-icons/react'
 
 const T = {
   // Shared button
-  border:        '#689df6',              // --border-color/surface-active/primary
-  textColor:     '#3264b8',              // --text/on-action/transparent
+  border:        'var(--border-color-surface-active-primary-default)',              // --border-color/surface-active/primary
+  textColor:     'var(--text-on-action-transparent)',              // --text/on-action/transparent
   idleBg:        'transparent',          // --surface/action/empty
-  activeBg:      '#ffffff',              // --surface/form-field — current page
-  hoverBg:       'rgba(66,133,244,0.06)',
+  activeBg:      'var(--surface-form-field)',              // --surface/form-field — current page
+  hoverBg:       'var(--content-action-primary-100)',
 
   // Border radii
   radiusSm:       4,                     // --border-radius/sm — directional icons
@@ -26,7 +26,7 @@ const T = {
 
   // Counter label ("2 of 4") — Body/Regular
   counterSize:    14,
-  counterColor:  '#021920',              // --text/body/primary
+  counterColor:  'var(--text-body-primary)',              // --text/body/primary
 } as const
 
 // ── Types ─────────────────────────────────────────────────────────────────────
@@ -100,10 +100,10 @@ function IconBtn({ onClick, disabled, 'aria-label': ariaLabel, children }: IconB
         alignItems:     'center',
         justifyContent: 'center',
         padding:         8,
-        border:         `1px solid ${disabled ? '#d1d5db' : T.border}`,
+        border:         `1px solid ${disabled ? 'var(--content-action-disabled-300)' : T.border}`,
         borderRadius:    T.radiusSm,
         background:      disabled ? 'transparent' : hovered ? T.hoverBg : T.idleBg,
-        color:           disabled ? '#aab0b8' : T.textColor,
+        color:           disabled ? 'var(--content-action-disabled-700)' : T.textColor,
         cursor:          disabled ? 'not-allowed' : 'pointer',
         transition:     'background 100ms ease, border-color 100ms ease',
         flexShrink:      0,
@@ -135,10 +135,10 @@ function LabelBtn({ onClick, disabled, children }: LabelBtnProps) {
         alignItems:  'center',
         gap:          8,
         padding:      8,
-        border:      `1px solid ${disabled ? '#d1d5db' : T.border}`,
+        border:      `1px solid ${disabled ? 'var(--content-action-disabled-300)' : T.border}`,
         borderRadius: T.radiusMd,
         background:   disabled ? 'transparent' : hovered ? T.hoverBg : T.idleBg,
-        color:        disabled ? '#aab0b8' : T.textColor,
+        color:        disabled ? 'var(--content-action-disabled-700)' : T.textColor,
         fontSize:     T.fontSize,
         fontWeight:   T.fontWeight,
         lineHeight:   T.lineHeight,

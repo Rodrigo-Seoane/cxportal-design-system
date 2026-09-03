@@ -66,7 +66,7 @@ function LoadingIcon() {
 
   return (
     <span className="cxportal-toast-spin">
-      <CircleNotchIcon size={16} color="#4285f4" weight="regular" />
+      <CircleNotchIcon size={16} color="var(--icon-action)" weight="regular" />
     </span>
   )
 }
@@ -75,10 +75,10 @@ function LoadingIcon() {
 
 function ToastIcon({ type }: { type: ToastType }) {
   switch (type) {
-    case 'success': return <CheckCircleIcon size={16} color="#4b9924" weight="regular" />
-    case 'error':   return <XCircleIcon     size={16} color="#ef2056" weight="regular" />
-    case 'warning': return <WarningIcon     size={16} color="#c97000" weight="regular" />
-    case 'info':    return <InfoIcon        size={16} color="#4285f4" weight="regular" />
+    case 'success': return <CheckCircleIcon size={16} color="var(--icon-success)" weight="regular" />
+    case 'error':   return <XCircleIcon     size={16} color="var(--icon-error)" weight="regular" />
+    case 'warning': return <WarningIcon     size={16} color="var(--icon-warning)" weight="regular" />
+    case 'info':    return <InfoIcon        size={16} color="var(--icon-info)" weight="regular" />
     case 'loading': return <LoadingIcon />
     default:        return null
   }
@@ -110,10 +110,10 @@ export function Toast({
         padding:        8,
         width:          360,
         minHeight:      isMultiLine ? 64 : 48,
-        background:    '#ffffff',
-        border:        '1px solid #eff1f3',
+        background:    'var(--surface-section-bg)',
+        border:        '1px solid var(--neutral-100)',
         borderRadius:   8,
-        boxShadow:     '0px 4px 24px 0px rgba(5,3,38,0.08)',
+        boxShadow:     '0px 4px 24px 0px color-mix(in srgb, var(--surface-vertical-nav) 8%, transparent)',
         boxSizing:     'border-box',
       }}
     >
@@ -148,7 +148,7 @@ export function Toast({
             fontSize:    14,
             fontWeight:  400,
             lineHeight: '20px',
-            color:      '#021920',
+            color:      'var(--text-body-primary)',
           }}
         >
           {title}
@@ -160,7 +160,7 @@ export function Toast({
               fontSize:    12,
               fontWeight:  300,
               lineHeight: '20px',
-              color:      '#021920',
+              color:      'var(--text-body-primary)',
             }}
           >
             {description}
@@ -175,14 +175,14 @@ export function Toast({
           onClick={action.onClick}
           style={{
             flexShrink:    0,
-            background:   '#4285f4',
-            border:       '1px solid #689df6',
+            background:   'var(--content-action-primary-600)',
+            border:       '1px solid var(--content-action-primary-700)',
             borderRadius:  4,
             padding:      '4px 8px',
             fontSize:      10,
             fontWeight:    400,
             lineHeight:   '16px',
-            color:        '#eff1f3',
+            color:        'var(--text-on-action-primary)',
             cursor:       'pointer',
             whiteSpace:   'nowrap',
             alignSelf:    isMultiLine ? 'flex-start' : 'center',
@@ -207,7 +207,7 @@ export function Toast({
             border:       'none',
             padding:       0,
             cursor:       'pointer',
-            color:        '#021920',
+            color:        'var(--text-body-primary)',
             opacity:       0.45,
             transition:   'opacity 120ms ease',
             alignSelf:    isMultiLine ? 'flex-start' : 'center',
@@ -215,7 +215,7 @@ export function Toast({
           onMouseEnter={(e) => { (e.currentTarget as HTMLButtonElement).style.opacity = '0.8' }}
           onMouseLeave={(e) => { (e.currentTarget as HTMLButtonElement).style.opacity = '0.45' }}
         >
-          <XCircleIcon size={16} color="#021920" weight="regular" />
+          <XCircleIcon size={16} color="var(--text-body-primary)" weight="regular" />
         </button>
       )}
     </div>

@@ -6,36 +6,36 @@ import { PlugsConnected, X, ArrowRight } from '@phosphor-icons/react'
 
 const CHIP_COLORS = {
   info: {
-    100: { bg: '#d6e2f5', text: '#021920' }, // --info/100
-    200: { bg: '#a4beea', text: '#021920' }, // --info/200
-    400: { bg: '#2859ab', text: '#021920' }, // --info/default
-    500: { bg: '#1f4584', text: '#eff1f3' }, // --info/500
+    100: { bg: 'var(--info-100)', text: 'var(--text-body-primary)' },
+    200: { bg: 'var(--info-200)', text: 'var(--text-body-primary)' },
+    400: { bg: 'var(--info-default)', text: 'var(--text-body-primary)' },
+    500: { bg: 'var(--info-500)', text: 'var(--neutral-100)' },
   },
   success: {
-    100: { bg: '#ddf4d2', text: '#021920' }, // --success/100
-    200: { bg: '#b5e89c', text: '#021920' }, // --success/200
-    400: { bg: '#67d034', text: '#021920' }, // --success/default
-    500: { bg: '#4b9924', text: '#eff1f3' }, // --success/500
+    100: { bg: 'var(--success-100)', text: 'var(--text-body-primary)' },
+    200: { bg: 'var(--success-200)', text: 'var(--text-body-primary)' },
+    400: { bg: 'var(--success-default)', text: 'var(--text-body-primary)' },
+    500: { bg: 'var(--success-500)', text: 'var(--neutral-100)' },
   },
   warning: {
-    100: { bg: '#fbeed8', text: '#021920' }, // --warning/100
-    200: { bg: '#f7ddb1', text: '#021920' }, // --warning/200
-    400: { bg: '#eaa93c', text: '#021920' }, // --warning/default
-    500: { bg: '#c79033', text: '#eff1f3' }, // --warning/500
+    100: { bg: 'var(--warning-100)', text: 'var(--text-body-primary)' },
+    200: { bg: 'var(--warning-200)', text: 'var(--text-body-primary)' },
+    400: { bg: 'var(--warning-default)', text: 'var(--text-body-primary)' },
+    500: { bg: 'var(--warning-500)', text: 'var(--neutral-100)' },
   },
   error: {
-    100: { bg: '#fbc6d4', text: '#021920' }, // --error/100
-    200: { bg: '#f792ac', text: '#021920' }, // --error/200
-    400: { bg: '#ef2056', text: '#021920' }, // --error/default
-    500: { bg: '#ab0c36', text: '#eff1f3' }, // --error/500
+    100: { bg: 'var(--error-100)', text: 'var(--text-body-primary)' },
+    200: { bg: 'var(--error-200)', text: 'var(--text-body-primary)' },
+    400: { bg: 'var(--error-default)', text: 'var(--text-body-primary)' },
+    500: { bg: 'var(--error-500)', text: 'var(--neutral-100)' },
   },
 } as const
 
 const TAG_COLORS = {
-  default:  { bg: '#d9dce0', text: '#021920' }, // --neutral/200
-  active:   { bg: '#4b535e', text: '#eff1f3' }, // --neutral/500
-  viewed:   { bg: '#7a828c', text: '#021920' }, // --neutral/400
-  disabled: { bg: '#eff1f3', text: '#aab0b8' }, // --surface/disabled
+  default:  { bg: 'var(--neutral-200)', text: 'var(--text-body-primary)' },
+  active:   { bg: 'var(--neutral-700)', text: 'var(--neutral-100)' },
+  viewed:   { bg: 'var(--text-body-secondary)', text: 'var(--text-body-primary)' },
+  disabled: { bg: 'var(--neutral-100)', text: 'var(--content-action-disabled-700)' },
 } as const
 
 // ── Types ─────────────────────────────────────────────────────────────────────

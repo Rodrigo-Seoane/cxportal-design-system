@@ -1,10 +1,10 @@
 export type PillTone = 'success' | 'warning' | 'error' | 'neutral'
 
 const TONE_STYLES: Record<PillTone, { bg: string; text: string }> = {
-  success: { bg: '#ddf4d2', text: '#1a6b1a' },
-  warning: { bg: '#fbeed8', text: '#7a4a00' },
-  error:   { bg: '#fbc6d4', text: '#8b1a2a' },
-  neutral: { bg: '#eff1f3', text: '#4b535e' },
+  success: { bg: 'var(--success-100)', text: 'var(--success-600)' },
+  warning: { bg: 'var(--warning-100)', text: 'var(--warning-600)' },
+  error:   { bg: 'var(--error-100)', text: 'var(--text-destructive)' },
+  neutral: { bg: 'var(--neutral-100)', text: 'var(--text-body-primary)' },
 }
 
 export function StatusPill({ label, tone }: { label: string; tone: PillTone }) {

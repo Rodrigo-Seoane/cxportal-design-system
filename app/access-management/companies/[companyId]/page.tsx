@@ -26,35 +26,35 @@ export default function CompanyDetailPage() {
       {/* ── Breadcrumb ────────────────────────────────────────────────────── */}
       <nav aria-label="Breadcrumb" style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
         <button onClick={() => router.push('/access-management/companies')} aria-label="Home" style={{ display: 'flex', border: 'none', background: 'none', cursor: 'pointer', padding: 0 }}>
-          <HouseIcon size={14} color="#7a828c" weight="regular" />
+          <HouseIcon size={14} color="var(--text-body-secondary)" weight="regular" />
         </button>
-        <CaretRightIcon size={12} color="#aab0b8" weight="regular" aria-hidden="true" />
-        <button onClick={() => router.push('/access-management/companies')} style={{ border: 'none', background: 'none', cursor: 'pointer', padding: 0, fontSize: 12, color: '#7a828c' }}>
+        <CaretRightIcon size={12} color="var(--neutral-300)" weight="regular" aria-hidden="true" />
+        <button onClick={() => router.push('/access-management/companies')} style={{ border: 'none', background: 'none', cursor: 'pointer', padding: 0, fontSize: 12, color: 'var(--text-body-secondary)' }}>
           Companies
         </button>
-        <CaretRightIcon size={12} color="#aab0b8" weight="regular" aria-hidden="true" />
-        <span style={{ fontSize: 12, fontWeight: 600, color: '#021920' }}>{company.name}</span>
+        <CaretRightIcon size={12} color="var(--neutral-300)" weight="regular" aria-hidden="true" />
+        <span style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-body-primary)' }}>{company.name}</span>
       </nav>
 
       {/* ── Company header ───────────────────────────────────────────────── */}
-      <div style={{ padding: 24, background: '#ffffff', borderRadius: 8, display: 'flex', flexDirection: 'column', gap: 12 }}>
+      <div style={{ padding: 24, background: 'var(--neutral-0)', borderRadius: 8, display: 'flex', flexDirection: 'column', gap: 12 }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-          <div style={{ width: 32, height: 32, borderRadius: '50%', background: '#0b8286', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 14, fontWeight: 600, color: '#eff1f3', flexShrink: 0 }}>
+          <div style={{ width: 32, height: 32, borderRadius: '50%', background: 'var(--content-action-primary-600)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 14, fontWeight: 600, color: 'var(--neutral-100)', flexShrink: 0 }}>
             {initials}
           </div>
-          <h1 style={{ margin: 0, fontSize: 24, fontWeight: 400, lineHeight: '30px', color: '#021920' }}>{company.name}</h1>
+          <h1 style={{ margin: 0, fontSize: 24, fontWeight: 400, lineHeight: '30px', color: 'var(--text-body-primary)' }}>{company.name}</h1>
         </div>
 
         <div style={{ display: 'flex', alignItems: 'center', gap: 24, paddingLeft: 40, flexWrap: 'wrap' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-            <IdentificationCardIcon size={16} color="#7a828c" weight="regular" aria-hidden="true" />
-            <span style={{ fontSize: 12, fontWeight: 600, color: '#021920' }}>ID</span>
-            <span style={{ fontSize: 12, color: '#7a828c' }}>{company.companyId}</span>
+            <IdentificationCardIcon size={16} color="var(--text-body-secondary)" weight="regular" aria-hidden="true" />
+            <span style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-body-primary)' }}>ID</span>
+            <span style={{ fontSize: 12, color: 'var(--text-body-secondary)' }}>{company.companyId}</span>
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-            <UserFocusIcon size={16} color="#7a828c" weight="regular" aria-hidden="true" />
-            <span style={{ fontSize: 12, fontWeight: 600, color: '#021920' }}>Liaison</span>
-            <Link href={`/access-management/users/${company.liaisonUserId}`} style={{ fontSize: 12, color: '#0b8286', fontWeight: 600 }}>
+            <UserFocusIcon size={16} color="var(--text-body-secondary)" weight="regular" aria-hidden="true" />
+            <span style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-body-primary)' }}>Liaison</span>
+            <Link href={`/access-management/users/${company.liaisonUserId}`} style={{ fontSize: 12, color: 'var(--content-action-primary-default)', fontWeight: 600 }}>
               {company.liaisonName}
             </Link>
           </div>
@@ -64,7 +64,7 @@ export default function CompanyDetailPage() {
       </div>
 
       {/* ── Tab content ───────────────────────────────────────────────────── */}
-      <div style={{ padding: 16, background: '#ffffff', borderRadius: 8 }}>
+      <div style={{ padding: 16, background: 'var(--neutral-0)', borderRadius: 8 }}>
         {tab === 'instances' && (
           <CompanyInstancesTab companyName={company.name} companyId={company.companyId} initialInstances={company.instances} />
         )}

@@ -106,7 +106,7 @@ A `Skeleton` is a single placeholder shape. You compose multiple `Skeleton` elem
   </TableBody>
 </Table>
 
-**Color:** `#eff1f3` (Neutral-100) in light mode.
+**Color:** `#efefef` (Neutral-100) in light mode.
 
 **Animation:** Opacity pulse — fades between full opacity and 40%, 2 s cycle, `cubic-bezier(0.4, 0, 0.6, 1)`. Powered by Framer Motion. Respects `prefers-reduced-motion` automatically.
 
@@ -228,7 +228,7 @@ import { Skeleton } from '@/components/ui/loading'
 <div
   style={{
     padding: '16px',
-    border: '1px solid #eff1f3',
+    border: '1px solid var(--neutral-100)',
     borderRadius: 8,
     display: 'flex',
     flexDirection: 'column',
@@ -279,7 +279,7 @@ import { Skeleton } from '@/components/ui/loading'
         gap: 12,
         padding: '8px 12px',
         alignItems: 'center',
-        borderTop: '1px solid #eff1f3',
+        borderTop: '1px solid var(--neutral-100)',
       }}
     >
       <Skeleton variant="rect" width={16} height={16} radius={3} />
@@ -377,7 +377,7 @@ import { Spinner } from '@/components/ui/loading'
 
 ```tsx
 // Match the spinner to a white context (e.g., inside a filled primary button)
-<Spinner size="sm" color="#ffffff" label="Saving changes" />
+<Spinner size="sm" color="var(--neutral-0)" label="Saving changes" />
 ```
 
 ### Skeleton — text lines
@@ -436,7 +436,7 @@ const [loading, setLoading] = useState(false)
 >
   {loading ? (
     <>
-      <Spinner size="sm" color="#ffffff" label="Saving" />
+      <Spinner size="sm" color="var(--neutral-0)" label="Saving" />
       Saving…
     </>
   ) : (

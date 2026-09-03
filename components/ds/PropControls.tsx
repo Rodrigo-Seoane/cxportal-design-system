@@ -45,7 +45,7 @@ export function PropControls({ schema, values, onChange }: PropControlsProps) {
                         backgroundColor: active
                           ? 'var(--color-primary)'
                           : 'var(--color-surface-display)',
-                        color: active ? '#ffffff' : 'var(--color-text-primary)',
+                        color: active ? 'var(--surface-section-bg)' : 'var(--color-text-primary)',
                         border: `1px solid ${active ? 'var(--color-primary)' : 'var(--color-border)'}`,
                       }}
                     >

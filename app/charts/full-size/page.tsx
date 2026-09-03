@@ -49,8 +49,8 @@ export default function FullSizeChartPage() {
             gridTemplateColumns: '1fr 1fr 1fr',
             gap: 16,
             padding: '20px 24px',
-            background: '#ffffff',
-            border: '1px solid #eff1f3',
+            background: 'var(--neutral-0)',
+            border: '1px solid var(--neutral-100)',
             borderRadius: 8,
           }}
         >
@@ -60,8 +60,8 @@ export default function FullSizeChartPage() {
             { label: 'X-axis',      desc: 'Date labels at each data point. Y-axis is intentionally hidden for a clean look.' },
           ].map(({ label, desc }) => (
             <div key={label}>
-              <p style={{ margin: '0 0 4px', fontSize: 13, fontWeight: 600, color: '#021920' }}>{label}</p>
-              <p style={{ margin: 0, fontSize: 13, fontWeight: 400, color: '#7a828c', lineHeight: '18px' }}>{desc}</p>
+              <p style={{ margin: '0 0 4px', fontSize: 13, fontWeight: 600, color: 'var(--text-body-primary)' }}>{label}</p>
+              <p style={{ margin: 0, fontSize: 13, fontWeight: 400, color: 'var(--text-body-secondary)', lineHeight: '18px' }}>{desc}</p>
             </div>
           ))}
         </div>
@@ -120,8 +120,8 @@ export default function FullSizeChartPage() {
         <div
           style={{
             padding: '20px 24px',
-            background: '#ffffff',
-            border: '1px solid #eff1f3',
+            background: 'var(--neutral-0)',
+            border: '1px solid var(--neutral-100)',
             borderRadius: 8,
             display: 'grid',
             gridTemplateColumns: '1fr 1fr',
@@ -130,8 +130,8 @@ export default function FullSizeChartPage() {
         >
           {/* Use when */}
           <div>
-            <p style={{ margin: '0 0 10px', fontSize: 13, fontWeight: 600, color: '#1a6b1a' }}>Use when</p>
-            <ul style={{ margin: 0, paddingLeft: 16, fontSize: 13, color: '#021920', lineHeight: '22px' }}>
+            <p style={{ margin: '0 0 10px', fontSize: 13, fontWeight: 600, color: 'var(--text-success)' }}>Use when</p>
+            <ul style={{ margin: 0, paddingLeft: 16, fontSize: 13, color: 'var(--text-body-primary)', lineHeight: '22px' }}>
               <li style={{ marginBottom: 6 }}>
                 The chart is the <strong>primary focal point</strong> of a dashboard or overview screen and
                 needs the full available width to communicate the data clearly.
@@ -153,8 +153,8 @@ export default function FullSizeChartPage() {
 
           {/* Do not use when */}
           <div>
-            <p style={{ margin: '0 0 10px', fontSize: 13, fontWeight: 600, color: '#8b1a2a' }}>Do not use when</p>
-            <ul style={{ margin: 0, paddingLeft: 16, fontSize: 13, color: '#021920', lineHeight: '22px' }}>
+            <p style={{ margin: '0 0 10px', fontSize: 13, fontWeight: 600, color: 'var(--text-error)' }}>Do not use when</p>
+            <ul style={{ margin: 0, paddingLeft: 16, fontSize: 13, color: 'var(--text-body-primary)', lineHeight: '22px' }}>
               <li style={{ marginBottom: 6 }}>
                 The data is <strong>part-to-whole</strong> — proportional breakdowns belong in a Pie or
                 Donut chart, not a time-series panel.
@@ -186,8 +186,8 @@ export default function FullSizeChartPage() {
             gridTemplateColumns: '1fr 1fr 1fr',
             gap: 16,
             padding: '20px 24px',
-            background: '#ffffff',
-            border: '1px solid #eff1f3',
+            background: 'var(--neutral-0)',
+            border: '1px solid var(--neutral-100)',
             borderRadius: 8,
           }}
         >
@@ -206,8 +206,8 @@ export default function FullSizeChartPage() {
             },
           ].map(({ label, desc }) => (
             <div key={label}>
-              <p style={{ margin: '0 0 4px', fontSize: 13, fontWeight: 600, color: '#021920' }}>{label}</p>
-              <p style={{ margin: 0, fontSize: 13, fontWeight: 400, color: '#7a828c', lineHeight: '18px' }}>{desc}</p>
+              <p style={{ margin: '0 0 4px', fontSize: 13, fontWeight: 600, color: 'var(--text-body-primary)' }}>{label}</p>
+              <p style={{ margin: 0, fontSize: 13, fontWeight: 400, color: 'var(--text-body-secondary)', lineHeight: '18px' }}>{desc}</p>
             </div>
           ))}
         </div>

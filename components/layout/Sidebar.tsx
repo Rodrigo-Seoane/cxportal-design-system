@@ -21,14 +21,14 @@ import {
 
 // ── Design tokens ─────────────────────────────────────────────────────────────
 const NAV = {
-  bg:          '#050326',
-  hoverBg:     '#689df6',
-  activeBg:    '#4285f4',
-  activeText:  '#4285f4',
-  textDefault: '#eff1f3',
-  textMuted:     'rgba(239,241,243,0.55)',
-  textSubItem:   'rgba(239,241,243,0.75)',
-  divider:       'rgba(239,241,243,0.08)',
+  bg:          'var(--surface-vertical-nav)',
+  hoverBg:     'var(--content-action-primary-700)',
+  activeBg:    'var(--content-action-primary-600)',
+  activeText:  'var(--text-action)',
+  textDefault: 'var(--neutral-100)',
+  textMuted:     'color-mix(in srgb, var(--neutral-100) 55%, transparent)',
+  textSubItem:   'color-mix(in srgb, var(--neutral-100) 75%, transparent)',
+  divider:       'color-mix(in srgb, var(--neutral-100) 8%, transparent)',
   widthExpanded:  240,
   widthCollapsed: 64,
 } as const
@@ -38,9 +38,9 @@ const LABEL_T = `opacity 0.18s cubic-bezier(${EASE.join(',')}), width 0.18s cubi
 
 // ── Status badges ─────────────────────────────────────────────────────────────
 const STATUS = {
-  stable:     { label: 'Stable', bg: 'var(--color-success-100)', color: '#1a6b1a' },
-  wip:        { label: 'WIP',    bg: 'var(--color-warning-100)', color: '#7a4a00' },
-  deprecated: { label: 'Dep.',   bg: 'var(--color-error-100)',   color: '#8b1a2a' },
+  stable:     { label: 'Stable', bg: 'var(--color-success-100)', color: 'var(--success-600)' },
+  wip:        { label: 'WIP',    bg: 'var(--color-warning-100)', color: 'var(--warning-600)' },
+  deprecated: { label: 'Dep.',   bg: 'var(--color-error-100)',   color: 'var(--error-600)' },
 } as const
 
 type ItemStatus = keyof typeof STATUS
@@ -485,14 +485,15 @@ export function Sidebar() {
         overflow:   'hidden',
       }}>
         {/* Logo mark — always visible */}
+        {/* TODO(caylent-rebrand): swap Pronetx "P" logo mark asset — pending new brand assets from user */}
         <div style={{
           width: 32, height: 32, borderRadius: 6,
-          background: '#4285f4', flexShrink: 0,
+          background: 'var(--content-action-primary-600)', flexShrink: 0,
           display: 'flex', alignItems: 'center', justifyContent: 'center',
         }}>
           <span style={{
             fontFamily: 'Roboto, system-ui, sans-serif',
-            fontSize: 16, fontWeight: 800, color: '#fff', letterSpacing: '-0.5px',
+            fontSize: 16, fontWeight: 800, color: 'var(--neutral-0)', letterSpacing: '-0.5px',
           }}>P</span>
         </div>
 
@@ -533,7 +534,7 @@ function CollapseToggle({ collapsed, onToggle }: { collapsed: boolean; onToggle:
         height:          32,
         borderRadius:     6,
         border:         'none',
-        background:      hovered ? 'rgba(239,241,243,0.12)' : 'transparent',
+        background:      hovered ? 'color-mix(in srgb, var(--neutral-100) 12%, transparent)' : 'transparent',
         cursor:         'pointer',
         flexShrink:      0,
         transition:     'background 100ms ease',

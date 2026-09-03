@@ -72,7 +72,7 @@ export function ComponentPlayground({ slug }: { slug: string }) {
             className="px-4 py-3 text-xs font-mono"
             style={{
               backgroundColor: 'var(--color-error-100)',
-              color: '#8b1a2a',
+              color: 'var(--text-error)',
               borderTop: '1px solid var(--color-error-200)',
             }}
           />

@@ -23,12 +23,12 @@ function fmtDate(iso: string | null): string {
 }
 
 const STATUS_STYLE: Record<string, { bg: string; color: string; label: string }> = {
-  sent:      { bg: 'var(--color-success-100)', color: '#1a6b1a', label: 'Sent'      },
-  sending:   { bg: 'var(--color-info-100)',    color: '#1a4f9e', label: 'Sending'   },
-  scheduled: { bg: 'var(--color-warning-100)', color: '#7a4a00', label: 'Scheduled' },
+  sent:      { bg: 'var(--color-success-100)', color: 'var(--text-success)', label: 'Sent'      },
+  sending:   { bg: 'var(--color-info-100)',    color: 'var(--text-info)', label: 'Sending'   },
+  scheduled: { bg: 'var(--color-warning-100)', color: 'var(--text-warning)', label: 'Scheduled' },
   draft:     { bg: 'var(--color-surface-display)', color: 'var(--color-text-secondary)', label: 'Draft' },
-  paused:    { bg: 'var(--color-error-100)',   color: '#8b1a2a', label: 'Paused'    },
-  cancelled: { bg: 'var(--color-error-100)',   color: '#8b1a2a', label: 'Cancelled' },
+  paused:    { bg: 'var(--color-error-100)',   color: 'var(--text-destructive)', label: 'Paused'    },
+  cancelled: { bg: 'var(--color-error-100)',   color: 'var(--text-destructive)', label: 'Cancelled' },
 }
 
 type PageState = 'data' | 'loading' | 'empty' | 'error'
@@ -62,7 +62,7 @@ export default function CampaignsListPage() {
             display: 'inline-flex', alignItems: 'center', gap: 6,
             fontSize: 13, fontWeight: 600, padding: '8px 16px', borderRadius: 8,
             background: 'var(--color-primary)', border: 'none',
-            color: '#fff', cursor: 'pointer',
+            color: 'var(--neutral-0)', cursor: 'pointer',
           }}>
             <PlusIcon size={14} weight="bold" /> New campaign
           </button>
@@ -82,7 +82,7 @@ export default function CampaignsListPage() {
               fontSize: 11, fontWeight: 600, padding: '3px 10px', borderRadius: 4,
               border: '1px solid',
               background:   pageState === s ? 'var(--color-primary)' : 'transparent',
-              color:        pageState === s ? '#fff' : 'var(--color-text-secondary)',
+              color:        pageState === s ? 'var(--neutral-0)' : 'var(--color-text-secondary)',
               borderColor:  pageState === s ? 'var(--color-primary)' : 'var(--color-border)',
               cursor: 'pointer',
             }}>
@@ -136,7 +136,7 @@ export default function CampaignsListPage() {
             <button style={{
               display: 'inline-flex', alignItems: 'center', gap: 6,
               fontSize: 13, fontWeight: 600, padding: '8px 16px', borderRadius: 8,
-              background: 'var(--color-primary)', border: 'none', color: '#fff', cursor: 'pointer',
+              background: 'var(--color-primary)', border: 'none', color: 'var(--neutral-0)', cursor: 'pointer',
             }}>
               <PlusIcon size={14} weight="bold" /> Create your first campaign
             </button>

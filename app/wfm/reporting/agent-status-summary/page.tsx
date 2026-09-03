@@ -142,14 +142,14 @@ function AgentStatusSummaryInner() {
         <header style={{
           display: 'flex', alignItems: 'center', gap: 16,
           padding: '0 24px', height: 64,
-          background: '#ffffff', borderBottom: '1px solid #e2e5e8',
+          background: 'var(--neutral-0)', borderBottom: '1px solid var(--neutral-100)',
           position: 'sticky', top: 0, zIndex: 20,
         }}>
           <nav aria-label="Breadcrumb" style={{ display: 'flex', alignItems: 'center', gap: 4, flex: 1, minWidth: 0 }}>
-            <HouseIcon size={14} color="#7a828c" weight="regular" aria-hidden="true" />
-            <span style={{ fontSize: 12, color: '#7a828c' }}>Reporting</span>
-            <CaretRightIcon size={12} color="#aab0b8" weight="regular" aria-hidden="true" />
-            <span style={{ fontSize: 12, fontWeight: 600, color: '#021920', whiteSpace: 'nowrap' }}>
+            <HouseIcon size={14} color="var(--text-body-secondary)" weight="regular" aria-hidden="true" />
+            <span style={{ fontSize: 12, color: 'var(--text-body-secondary)' }}>Reporting</span>
+            <CaretRightIcon size={12} color="var(--neutral-300)" weight="regular" aria-hidden="true" />
+            <span style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-body-primary)', whiteSpace: 'nowrap' }}>
               Agent Status Summary
             </span>
           </nav>
@@ -164,7 +164,7 @@ function AgentStatusSummaryInner() {
               {savedViewsOpen && (
                 <div style={{
                   position: 'absolute', top: 'calc(100% + 4px)', right: 0,
-                  background: '#ffffff', border: '1px solid #e2e5e8', borderRadius: 8,
+                  background: 'var(--neutral-0)', border: '1px solid var(--neutral-100)', borderRadius: 8,
                   boxShadow: '0 4px 16px rgba(2,25,32,0.12)', minWidth: 240, zIndex: 9999, overflow: 'hidden',
                 }}>
                   {savedViews.map(v => (
@@ -172,8 +172,8 @@ function AgentStatusSummaryInner() {
                       {v.label}
                     </button>
                   ))}
-                  <div style={{ borderTop: '1px solid #eff1f3', padding: 4 }}>
-                    <button onClick={saveCurrentView} style={{ ...dropdownItem, color: '#4285f4' }}>
+                  <div style={{ borderTop: '1px solid var(--neutral-100)', padding: 4 }}>
+                    <button onClick={saveCurrentView} style={{ ...dropdownItem, color: 'var(--content-action-primary-600)' }}>
                       + Save current view
                     </button>
                   </div>
@@ -194,8 +194,8 @@ function AgentStatusSummaryInner() {
         </Suspense>
 
         {/* ── Status chip row ──────────────────────────────────────────────── */}
-        <div style={{ background: '#ffffff', borderBottom: '1px solid #e2e5e8', padding: '8px 24px', display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
-          <span style={{ fontSize: 11, fontWeight: 600, color: '#7a828c', textTransform: 'uppercase', letterSpacing: '0.4px', marginRight: 4 }}>Status</span>
+        <div style={{ background: 'var(--neutral-0)', borderBottom: '1px solid var(--neutral-100)', padding: '8px 24px', display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'wrap' }}>
+          <span style={{ fontSize: 11, fontWeight: 600, color: 'var(--text-body-secondary)', textTransform: 'uppercase', letterSpacing: '0.4px', marginRight: 4 }}>Status</span>
           {STATUS_CHIPS.map(chip => (
             <button
               key={chip}
@@ -204,12 +204,12 @@ function AgentStatusSummaryInner() {
               style={{
                 padding:     '4px 10px',
                 borderRadius: 64,
-                border:      `1px solid ${statusFilter.includes(chip) ? '#4285f4' : '#d9dce0'}`,
-                background:   statusFilter.includes(chip) ? '#d6e2f5' : '#ffffff',
+                border:      `1px solid ${statusFilter.includes(chip) ? 'var(--content-action-primary-600)' : 'var(--neutral-200)'}`,
+                background:   statusFilter.includes(chip) ? 'var(--info-100)' : 'var(--neutral-0)',
                 cursor:      'pointer',
                 fontSize:     12,
                 fontWeight:   statusFilter.includes(chip) ? 600 : 400,
-                color:        statusFilter.includes(chip) ? '#1a3561' : '#021920',
+                color:        statusFilter.includes(chip) ? 'var(--content-action-primary-700)' : 'var(--text-body-primary)',
                 fontFamily:  'var(--font-sans)',
                 transition:  'all 120ms ease',
               }}
@@ -220,7 +220,7 @@ function AgentStatusSummaryInner() {
           {statusFilter.length > 0 && (
             <button
               onClick={() => { setStatusFilter([]); const p = new URLSearchParams(searchParams); p.delete('status'); router.replace(`${pathname}?${p.toString()}`, { scroll: false }) }}
-              style={{ fontSize: 11, color: '#4285f4', background: 'none', border: 'none', cursor: 'pointer', fontFamily: 'var(--font-sans)' }}
+              style={{ fontSize: 11, color: 'var(--content-action-primary-600)', background: 'none', border: 'none', cursor: 'pointer', fontFamily: 'var(--font-sans)' }}
             >
               Clear
             </button>
@@ -237,7 +237,7 @@ function AgentStatusSummaryInner() {
 
         {/* ── Inactivity design-only banner ────────────────────────────────── */}
         {showInactivityBanner && (
-          <div role="alert" style={{ background: '#fbeed8', borderBottom: '1px solid #f7ddb1', padding: '8px 24px', fontSize: 13, color: '#7a4a00', fontFamily: 'var(--font-sans)' }}>
+          <div role="alert" style={{ background: 'var(--warning-100)', borderBottom: '1px solid var(--border-color-accent-warning-light)', padding: '8px 24px', fontSize: 13, color: 'var(--text-warning)', fontFamily: 'var(--font-sans)' }}>
             ⚡ Inactivity-detected sources are <strong>design-only</strong>. Implementation is scoped to a future SOW per §e.
           </div>
         )}
@@ -254,21 +254,21 @@ function AgentStatusSummaryInner() {
               {/* Sort + search + density toolbar */}
               <div style={{ display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap' }}>
                 {/* Search */}
-                <div style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '5px 10px', border: '1px solid #d9dce0', borderRadius: 6, background: '#ffffff', flex: '0 0 240px' }}>
-                  <MagnifyingGlassIcon size={14} color="#7a828c" weight="regular" aria-hidden="true" />
+                <div style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '5px 10px', border: '1px solid var(--neutral-200)', borderRadius: 6, background: 'var(--neutral-0)', flex: '0 0 240px' }}>
+                  <MagnifyingGlassIcon size={14} color="var(--text-body-secondary)" weight="regular" aria-hidden="true" />
                   <input
                     type="search"
                     placeholder="Search agents…"
                     value={search}
                     onChange={e => setSearch(e.target.value)}
                     aria-label="Search agents by name"
-                    style={{ border: 'none', outline: 'none', fontSize: 13, color: '#021920', background: 'transparent', fontFamily: 'var(--font-sans)', width: '100%' }}
+                    style={{ border: 'none', outline: 'none', fontSize: 13, color: 'var(--text-body-primary)', background: 'transparent', fontFamily: 'var(--font-sans)', width: '100%' }}
                   />
                 </div>
 
                 {/* Sort field */}
                 <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-                  <span style={{ fontSize: 12, color: '#7a828c' }}>Sort:</span>
+                  <span style={{ fontSize: 12, color: 'var(--text-body-secondary)' }}>Sort:</span>
                   {(['adherence', 'name', 'duration'] as SortField[]).map(f => (
                     <button
                       key={f}
@@ -276,12 +276,12 @@ function AgentStatusSummaryInner() {
                       style={{
                         padding:     '4px 10px',
                         borderRadius: 6,
-                        border:      `1px solid ${sortField === f ? '#4285f4' : '#d9dce0'}`,
-                        background:   sortField === f ? '#f0f4fb' : '#ffffff',
+                        border:      `1px solid ${sortField === f ? 'var(--content-action-primary-600)' : 'var(--neutral-200)'}`,
+                        background:   sortField === f ? 'var(--content-action-primary-100)' : 'var(--neutral-0)',
                         cursor:      'pointer',
                         fontSize:     12,
                         fontWeight:   sortField === f ? 600 : 400,
-                        color:        sortField === f ? '#1a3561' : '#021920',
+                        color:        sortField === f ? 'var(--content-action-primary-700)' : 'var(--text-body-primary)',
                         fontFamily:  'var(--font-sans)',
                       }}
                     >
@@ -330,25 +330,25 @@ export default function AgentStatusSummaryPage() {
 
 const headerBtn: React.CSSProperties = {
   display: 'inline-flex', alignItems: 'center', gap: 6,
-  padding: '6px 14px', borderRadius: 6, border: '1px solid #d9dce0',
-  background: '#ffffff', cursor: 'pointer', fontSize: 13, fontWeight: 500,
-  color: '#021920', fontFamily: 'var(--font-sans)', minHeight: 44,
+  padding: '6px 14px', borderRadius: 6, border: '1px solid var(--neutral-200)',
+  background: 'var(--neutral-0)', cursor: 'pointer', fontSize: 13, fontWeight: 500,
+  color: 'var(--text-body-primary)', fontFamily: 'var(--font-sans)', minHeight: 44,
 }
 
 const iconBtn: React.CSSProperties = {
   display: 'flex', alignItems: 'center', justifyContent: 'center',
-  width: 44, height: 44, borderRadius: 6, border: '1px solid #d9dce0',
-  background: '#ffffff', cursor: 'pointer', color: '#7a828c',
+  width: 44, height: 44, borderRadius: 6, border: '1px solid var(--neutral-200)',
+  background: 'var(--neutral-0)', cursor: 'pointer', color: 'var(--text-body-secondary)',
 }
 
 const panelCard: React.CSSProperties = {
-  background: '#ffffff', borderRadius: 8, border: '1px solid #e2e5e8', padding: '20px',
+  background: 'var(--neutral-0)', borderRadius: 8, border: '1px solid var(--neutral-100)', padding: '20px',
 }
 
 const dropdownItem: React.CSSProperties = {
   display: 'block', width: '100%', textAlign: 'left', padding: '10px 14px',
   border: 'none', background: 'transparent', cursor: 'pointer',
-  fontSize: 13, color: '#021920', fontFamily: 'var(--font-sans)',
+  fontSize: 13, color: 'var(--text-body-primary)', fontFamily: 'var(--font-sans)',
 }
 
 export const dynamic = 'force-dynamic'

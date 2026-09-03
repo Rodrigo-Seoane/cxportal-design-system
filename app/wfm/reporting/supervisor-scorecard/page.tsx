@@ -15,7 +15,7 @@ export default function SupervisorScorecardIndex() {
   return (
     <div style={{
       height: '100vh', display: 'flex', alignItems: 'center', justifyContent: 'center',
-      fontFamily: 'var(--font-sans)', fontSize: 14, color: '#7a828c',
+      fontFamily: 'var(--font-sans)', fontSize: 14, color: 'var(--text-body-secondary)',
     }}>
       Loading your scorecard…
     </div>

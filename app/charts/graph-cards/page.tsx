@@ -37,7 +37,7 @@ function GroupHeader({ title }: { title: string }) {
       margin: '24px 0 12px',
       fontSize: 12, fontWeight: 600, letterSpacing: '0.04em',
       textTransform: 'uppercase',
-      color: '#7a828c',
+      color: 'var(--text-body-secondary)',
     }}>
       {title}
     </p>
@@ -93,7 +93,7 @@ export default function GraphCardsPage() {
         <div style={{
           display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)',
           gap: 16, padding: '20px 24px',
-          background: '#ffffff', border: '1px solid #eff1f3', borderRadius: 8,
+          background: 'var(--neutral-0)', border: '1px solid var(--neutral-100)', borderRadius: 8,
         }}>
           {[
             {
@@ -114,8 +114,8 @@ export default function GraphCardsPage() {
             },
           ].map(({ label, desc }) => (
             <div key={label}>
-              <p style={{ margin: '0 0 4px', fontSize: 13, fontWeight: 600, color: '#021920' }}>{label}</p>
-              <p style={{ margin: 0, fontSize: 13, fontWeight: 400, color: '#7a828c', lineHeight: '18px' }}>{desc}</p>
+              <p style={{ margin: '0 0 4px', fontSize: 13, fontWeight: 600, color: 'var(--text-body-primary)' }}>{label}</p>
+              <p style={{ margin: 0, fontSize: 13, fontWeight: 400, color: 'var(--text-body-secondary)', lineHeight: '18px' }}>{desc}</p>
             </div>
           ))}
         </div>
@@ -274,8 +274,8 @@ export default function GraphCardsPage() {
         />
         <CardGrid>
           <div>
-            <p style={{ margin: '0 0 8px', fontSize: 13, fontWeight: 600, color: '#021920' }}>Insight</p>
-            <p style={{ margin: '0 0 12px', fontSize: 13, color: '#7a828c', lineHeight: '18px' }}>
+            <p style={{ margin: '0 0 8px', fontSize: 13, fontWeight: 600, color: 'var(--text-body-primary)' }}>Insight</p>
+            <p style={{ margin: '0 0 12px', fontSize: 13, color: 'var(--text-body-secondary)', lineHeight: '18px' }}>
               Bold trend sentence + directional icon + period. Default for Area, Bar, Line.
             </p>
             <GraphCard chartType="area" footerType="insight"
@@ -287,8 +287,8 @@ export default function GraphCardsPage() {
             />
           </div>
           <div>
-            <p style={{ margin: '0 0 8px', fontSize: 13, fontWeight: 600, color: '#021920' }}>Captions</p>
-            <p style={{ margin: '0 0 12px', fontSize: 13, color: '#7a828c', lineHeight: '18px' }}>
+            <p style={{ margin: '0 0 8px', fontSize: 13, fontWeight: 600, color: 'var(--text-body-primary)' }}>Captions</p>
+            <p style={{ margin: '0 0 12px', fontSize: 13, color: 'var(--text-body-secondary)', lineHeight: '18px' }}>
               Colored legend dots mapping each series to a label. Default for Pie and Radial.
             </p>
             <GraphCard chartType="area" footerType="captions"
@@ -312,16 +312,16 @@ export default function GraphCardsPage() {
         />
         <div style={{
           display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 16,
-          padding: '20px 24px', background: '#ffffff',
-          border: '1px solid #eff1f3', borderRadius: 8,
+          padding: '20px 24px', background: 'var(--neutral-0)',
+          border: '1px solid var(--neutral-100)', borderRadius: 8,
         }}>
           {[
-            { dir: 'up',      label: 'Up',      color: '#3ba55d', insight: 'Trending up by 5.2% this month'   },
-            { dir: 'down',    label: 'Down',    color: '#e53e3e', insight: 'Down 3.1% compared to last month' },
-            { dir: 'neutral', label: 'Neutral', color: '#aab0b8', insight: 'Stable — within 2% of target'     },
+            { dir: 'up',      label: 'Up',      color: 'var(--text-success)', insight: 'Trending up by 5.2% this month'   },
+            { dir: 'down',    label: 'Down',    color: 'var(--text-error)', insight: 'Down 3.1% compared to last month' },
+            { dir: 'neutral', label: 'Neutral', color: 'var(--neutral-300)', insight: 'Stable — within 2% of target'     },
           ].map(({ dir, label, color, insight }) => (
             <div key={dir} style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
-              <p style={{ margin: '0 0 4px', fontSize: 13, fontWeight: 600, color: '#021920' }}>{label}</p>
+              <p style={{ margin: '0 0 4px', fontSize: 13, fontWeight: 600, color: 'var(--text-body-primary)' }}>{label}</p>
               <p style={{ margin: 0, fontSize: 13, color, lineHeight: '18px' }}>{insight}</p>
             </div>
           ))}
@@ -330,13 +330,13 @@ export default function GraphCardsPage() {
         {/* ── When to use ───────────────────────────────────────────────── */}
         <Section title="When to use" />
         <div style={{
-          padding: '20px 24px', background: '#ffffff',
-          border: '1px solid #eff1f3', borderRadius: 8,
+          padding: '20px 24px', background: 'var(--neutral-0)',
+          border: '1px solid var(--neutral-100)', borderRadius: 8,
           display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 32,
         }}>
           <div>
-            <p style={{ margin: '0 0 10px', fontSize: 13, fontWeight: 600, color: '#1a6b1a' }}>Use when</p>
-            <ul style={{ margin: 0, paddingLeft: 16, fontSize: 13, color: '#021920', lineHeight: '22px' }}>
+            <p style={{ margin: '0 0 10px', fontSize: 13, fontWeight: 600, color: 'var(--text-success)' }}>Use when</p>
+            <ul style={{ margin: 0, paddingLeft: 16, fontSize: 13, color: 'var(--text-body-primary)', lineHeight: '22px' }}>
               <li style={{ marginBottom: 6 }}>
                 You need <strong>multiple metrics side-by-side</strong> in a 2- or 3-column grid.
               </li>
@@ -352,8 +352,8 @@ export default function GraphCardsPage() {
             </ul>
           </div>
           <div>
-            <p style={{ margin: '0 0 10px', fontSize: 13, fontWeight: 600, color: '#8b1a2a' }}>Do not use when</p>
-            <ul style={{ margin: 0, paddingLeft: 16, fontSize: 13, color: '#021920', lineHeight: '22px' }}>
+            <p style={{ margin: '0 0 10px', fontSize: 13, fontWeight: 600, color: 'var(--text-error)' }}>Do not use when</p>
+            <ul style={{ margin: 0, paddingLeft: 16, fontSize: 13, color: 'var(--text-body-primary)', lineHeight: '22px' }}>
               <li style={{ marginBottom: 6 }}>
                 The chart is the <strong>focal point of the page</strong> — use the Full Size Chart instead.
               </li>
@@ -376,8 +376,8 @@ export default function GraphCardsPage() {
           description="Graph Cards are designed for fixed-column grids. Avoid mixing card widths in the same row."
         />
         <div style={{
-          padding: '20px 24px', background: '#ffffff',
-          border: '1px solid #eff1f3', borderRadius: 8,
+          padding: '20px 24px', background: 'var(--neutral-0)',
+          border: '1px solid var(--neutral-100)', borderRadius: 8,
           display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 16,
         }}>
           {[
@@ -386,8 +386,8 @@ export default function GraphCardsPage() {
             { cols: 'Mixed',     desc: 'Avoid. Mixing 2-column and 3-column rows creates uneven rhythm. Use consistent columns per section.' },
           ].map(({ cols, desc }) => (
             <div key={cols}>
-              <p style={{ margin: '0 0 4px', fontSize: 13, fontWeight: 600, color: '#021920' }}>{cols}</p>
-              <p style={{ margin: 0, fontSize: 13, color: '#7a828c', lineHeight: '18px' }}>{desc}</p>
+              <p style={{ margin: '0 0 4px', fontSize: 13, fontWeight: 600, color: 'var(--text-body-primary)' }}>{cols}</p>
+              <p style={{ margin: 0, fontSize: 13, color: 'var(--text-body-secondary)', lineHeight: '18px' }}>{desc}</p>
             </div>
           ))}
         </div>

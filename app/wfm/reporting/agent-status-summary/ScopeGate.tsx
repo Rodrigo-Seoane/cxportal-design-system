@@ -39,20 +39,20 @@ export function ScopeGate() {
           width:        64,
           height:       64,
           borderRadius: '50%',
-          background:  '#f0f4fb',
+          background:  'var(--content-action-primary-100)',
           display:     'flex',
           alignItems:  'center',
           justifyContent: 'center',
           marginBottom: 20,
         }}
       >
-        <FunnelIcon size={28} color="#4285f4" weight="regular" />
+        <FunnelIcon size={28} color="var(--content-action-primary-600)" weight="regular" />
       </div>
 
-      <h2 style={{ margin: '0 0 8px', fontSize: 20, fontWeight: 600, color: '#021920' }}>
+      <h2 style={{ margin: '0 0 8px', fontSize: 20, fontWeight: 600, color: 'var(--text-body-primary)' }}>
         Select a scope to see your agents
       </h2>
-      <p style={{ margin: '0 0 28px', fontSize: 14, color: '#7a828c', maxWidth: 420, lineHeight: '20px' }}>
+      <p style={{ margin: '0 0 28px', fontSize: 14, color: 'var(--text-body-secondary)', maxWidth: 420, lineHeight: '20px' }}>
         This view shows agents within a staffing group or forecast group. Select one using the
         filter above, or pick a common scope below to get started.
       </p>
@@ -72,17 +72,17 @@ export function ScopeGate() {
             style={{
               padding:     '8px 16px',
               borderRadius: 64,
-              border:      '1px solid #d6e2f5',
-              background:  '#f0f4fb',
+              border:      '1px solid var(--info-100)',
+              background:  'var(--content-action-primary-100)',
               cursor:      'pointer',
               fontSize:     13,
               fontWeight:   500,
-              color:       '#1a3561',
+              color:       'var(--content-action-primary-700)',
               fontFamily:  'var(--font-sans)',
               transition:  'background 120ms ease',
             }}
-            onMouseOver={e => { (e.currentTarget as HTMLElement).style.background = '#d6e2f5' }}
-            onMouseOut={e  => { (e.currentTarget as HTMLElement).style.background = '#f0f4fb' }}
+            onMouseOver={e => { (e.currentTarget as HTMLElement).style.background = 'var(--info-100)' }}
+            onMouseOut={e  => { (e.currentTarget as HTMLElement).style.background = 'var(--content-action-primary-100)' }}
           >
             {scope.label}
           </button>

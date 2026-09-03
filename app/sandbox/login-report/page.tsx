@@ -133,7 +133,7 @@ export default function LoginReportPage() {
             borderBottom: '1px solid var(--color-border)',
           }}
         >
-          <h1 style={{ color: '#4285f4', fontSize: 28, fontWeight: 400, lineHeight: '34px', margin: 0 }}>
+          <h1 style={{ color: 'var(--content-action-primary-600)', fontSize: 28, fontWeight: 400, lineHeight: '34px', margin: 0 }}>
             Reports
           </h1>
           <p style={{ color: 'var(--color-text-primary)', fontSize: 12, lineHeight: '20px', margin: 0 }}>
@@ -157,7 +157,7 @@ export default function LoginReportPage() {
           >
             {/* Card header */}
             <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-              <h2 style={{ fontSize: 24, fontWeight: 400, lineHeight: '30px', color: '#021920', margin: 0 }}>
+              <h2 style={{ fontSize: 24, fontWeight: 400, lineHeight: '30px', color: 'var(--text-body-primary)', margin: 0 }}>
                 Configure Report
               </h2>
               <div style={{ height: 1, backgroundColor: 'var(--color-border)' }} />
@@ -218,7 +218,7 @@ export default function LoginReportPage() {
 
               {/* Success feedback */}
               {isSuccess && (
-                <p style={{ fontSize: 12, color: '#021920', lineHeight: '20px', margin: 0 }}>
+                <p style={{ fontSize: 12, color: 'var(--text-body-primary)', lineHeight: '20px', margin: 0 }}>
                   Report Successfully generated.
                 </p>
               )}
@@ -226,7 +226,7 @@ export default function LoginReportPage() {
               {/* Error feedback */}
               {isError && (
                 <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                  <p style={{ fontSize: 12, color: '#021920', lineHeight: '20px', margin: 0 }}>
+                  <p style={{ fontSize: 12, color: 'var(--text-body-primary)', lineHeight: '20px', margin: 0 }}>
                     Report generation failed.
                   </p>
                   <Button variant="text" size="xs" onClick={handleRetry}>
@@ -243,21 +243,21 @@ export default function LoginReportPage() {
                 <Spinner size="lg" />
 
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}>
-                  <span style={{ fontSize: 12, fontWeight: 600, color: '#021920', letterSpacing: '0.48px', textTransform: 'uppercase' }}>
+                  <span style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-body-primary)', letterSpacing: '0.48px', textTransform: 'uppercase' }}>
                     Generating data
                   </span>
-                  <span style={{ fontSize: 12, fontWeight: 600, color: '#021920' }}>
+                  <span style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-body-primary)' }}>
                     {progress}%
                   </span>
                 </div>
 
-                <div style={{ width: '100%', height: 12, backgroundColor: '#d9dce0', borderRadius: 9999, overflow: 'hidden' }}>
-                  <div style={{ height: '100%', width: `${progress}%`, backgroundColor: '#4285f4', borderRadius: 9999, transition: 'width 0.15s ease' }} />
+                <div style={{ width: '100%', height: 12, backgroundColor: 'var(--neutral-200)', borderRadius: 9999, overflow: 'hidden' }}>
+                  <div style={{ height: '100%', width: `${progress}%`, backgroundColor: 'var(--content-action-primary-600)', borderRadius: 9999, transition: 'width 0.15s ease' }} />
                 </div>
 
                 <div style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
-                  <ClockIcon size={12} color="#7a828c" />
-                  <span style={{ fontSize: 12, color: '#7a828c', lineHeight: '20px' }}>
+                  <ClockIcon size={12} color="var(--text-body-secondary)" />
+                  <span style={{ fontSize: 12, color: 'var(--text-body-secondary)', lineHeight: '20px' }}>
                     This usually takes a few seconds
                   </span>
                 </div>
@@ -278,7 +278,7 @@ export default function LoginReportPage() {
               border: '1px solid var(--color-border)',
             }}
           >
-            <span style={{ fontSize: 10, fontWeight: 600, color: '#7a828c', letterSpacing: '0.4px', textTransform: 'uppercase', whiteSpace: 'nowrap' }}>
+            <span style={{ fontSize: 10, fontWeight: 600, color: 'var(--text-body-secondary)', letterSpacing: '0.4px', textTransform: 'uppercase', whiteSpace: 'nowrap' }}>
               Simulate
             </span>
             <Button

@@ -22,18 +22,18 @@ import type { CampaignType } from '../../_mock/campaigns'
 // ── Chip configs ──────────────────────────────────────────────────────────────
 
 const CHANNEL_CONFIG: Record<ListChannel, { label: string; bg: string; color: string }> = {
-  email: { label: 'Email',         bg: 'var(--color-info-100)',    color: '#1a4f9e' },
-  phone: { label: 'Phone',         bg: 'var(--color-success-100)', color: '#1a6b1a' },
-  both:  { label: 'Email + Phone', bg: 'var(--color-warning-100)', color: '#7a4a00' },
+  email: { label: 'Email',         bg: 'var(--color-info-100)',    color: 'var(--text-info)' },
+  phone: { label: 'Phone',         bg: 'var(--color-success-100)', color: 'var(--text-success)' },
+  both:  { label: 'Email + Phone', bg: 'var(--color-warning-100)', color: 'var(--text-warning)' },
 }
 
 const STATUS_CONFIG: Record<string, { label: string; bg: string; color: string }> = {
-  running:     { label: 'Running',     bg: 'var(--color-info-100)',        color: '#1a4f9e' },
-  scheduled:   { label: 'Scheduled',   bg: 'var(--color-success-100)',     color: '#1a6b1a' },
+  running:     { label: 'Running',     bg: 'var(--color-info-100)',        color: 'var(--text-info)' },
+  scheduled:   { label: 'Scheduled',   bg: 'var(--color-success-100)',     color: 'var(--text-success)' },
   initialized: { label: 'Initialized', bg: 'var(--color-surface-display)', color: 'var(--color-text-secondary)' },
-  completed:   { label: 'Completed',   bg: 'var(--color-success-100)',     color: '#1a6b1a' },
-  paused:      { label: 'Paused',      bg: 'var(--color-warning-100)',     color: '#7a4a00' },
-  failed:      { label: 'Failed',      bg: 'var(--color-error-100)',       color: '#8b1a2a' },
+  completed:   { label: 'Completed',   bg: 'var(--color-success-100)',     color: 'var(--text-success)' },
+  paused:      { label: 'Paused',      bg: 'var(--color-warning-100)',     color: 'var(--text-warning)' },
+  failed:      { label: 'Failed',      bg: 'var(--color-error-100)',       color: 'var(--text-destructive)' },
 }
 
 const TYPE_LABELS: Partial<Record<CampaignType, string>> = {
@@ -111,7 +111,7 @@ export function LevelGroup({ accountId, groupId }: LevelGroupProps) {
       {/* Header */}
       <div className="flex items-center gap-3 mb-2">
         <h1 className="text-[22px] font-bold text-[var(--color-text-primary)] m-0">{group.name}</h1>
-        <span className="text-[11px] font-semibold px-2 py-0.5 rounded bg-[var(--color-success-100)] text-[#1a6b1a]">
+        <span className="text-[11px] font-semibold px-2 py-0.5 rounded bg-[var(--color-success-100)] text-[var(--text-success)]">
           Active
         </span>
       </div>
@@ -203,7 +203,7 @@ export function LevelGroup({ accountId, groupId }: LevelGroupProps) {
                 <TableCell>
                   <span style={{ fontSize: 11, fontWeight: 600, padding: '2px 7px', borderRadius: 4,
                     background: l.status === 'active' ? 'var(--color-success-100)' : 'var(--color-surface-display)',
-                    color: l.status === 'active' ? '#1a6b1a' : 'var(--color-text-secondary)' }}>
+                    color: l.status === 'active' ? 'var(--text-success)' : 'var(--color-text-secondary)' }}>
                     {l.status.charAt(0).toUpperCase() + l.status.slice(1)}
                   </span>
                 </TableCell>

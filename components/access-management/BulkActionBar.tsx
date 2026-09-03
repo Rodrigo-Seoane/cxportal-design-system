@@ -15,17 +15,17 @@ export function BulkActionBar({ count, onMoveToGroup, onRemoveFromGroup, onDelet
 
   return (
     <div style={{ display: 'flex', alignItems: 'center', gap: 16, flexWrap: 'wrap' }}>
-      <span style={{ fontSize: 12, fontWeight: 600, color: '#021920' }}>Bulk Actions: [{count}]</span>
+      <span style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-body-primary)' }}>Bulk Actions: [{count}]</span>
       <button onClick={onMoveToGroup} style={actionStyle}>
         <StackIcon size={14} weight="regular" aria-hidden="true" /> Move to Group
       </button>
       <button onClick={onRemoveFromGroup} style={actionStyle}>
         <TagIcon size={14} weight="regular" aria-hidden="true" /> Remove from Group
       </button>
-      <button onClick={onDelete} style={{ ...actionStyle, color: '#ab0c36' }}>
+      <button onClick={onDelete} style={{ ...actionStyle, color: 'var(--text-destructive)' }}>
         <TrashIcon size={14} weight="regular" aria-hidden="true" /> Delete
       </button>
-      <button onClick={onClear} style={{ ...actionStyle, color: '#7a828c' }}>
+      <button onClick={onClear} style={{ ...actionStyle, color: 'var(--text-body-secondary)' }}>
         <XCircleIcon size={14} weight="regular" aria-hidden="true" /> Clear
       </button>
     </div>
@@ -34,5 +34,5 @@ export function BulkActionBar({ count, onMoveToGroup, onRemoveFromGroup, onDelet
 
 const actionStyle: React.CSSProperties = {
   display: 'flex', alignItems: 'center', gap: 6, border: 'none', background: 'none',
-  cursor: 'pointer', padding: 0, fontSize: 12, fontWeight: 600, color: '#0b8286',
+  cursor: 'pointer', padding: 0, fontSize: 12, fontWeight: 600, color: 'var(--content-action-primary-default)',
 }

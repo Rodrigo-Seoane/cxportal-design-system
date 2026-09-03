@@ -51,7 +51,7 @@ export function DrillOutLink({ report, params = {}, label = 'View report', requi
         display:     'inline-flex',
         alignItems:  'center',
         gap:          4,
-        color:       '#4285f4',
+        color:       'var(--content-action-primary-600)',
         fontSize:     12,
         fontWeight:   500,
         lineHeight:  '20px',

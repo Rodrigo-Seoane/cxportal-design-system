@@ -11,6 +11,30 @@ import { cn } from '@/lib/utils'
 // States:    default · hover · active · disabled
 // ──────────────────────────────────────────────────────────────────────────
 
+// Disabled triad — identical across every variant (flat neutral/disabled wash).
+const disabledClasses = 'disabled:bg-[var(--content-action-disabled-100)] disabled:border-[var(--content-action-disabled-300)] disabled:text-[var(--content-action-disabled-700)]'
+
+const primaryClasses = [
+  'bg-[var(--content-action-primary-600)] border-[var(--content-action-primary-700)] text-[var(--text-on-action-primary)]',
+  'hover:bg-[var(--content-action-primary-700)] hover:border-[var(--content-action-primary-700)]',
+  'active:bg-[var(--content-action-primary-800)] active:border-[var(--content-action-primary-800)]',
+  disabledClasses,
+].join(' ')
+
+const secondaryClasses = [
+  'bg-transparent border-[var(--content-action-primary-default)] text-[var(--content-action-primary-default)]',
+  'hover:bg-[var(--neutral-300)]/20',
+  'active:bg-[var(--neutral-300)]/30 active:border-[var(--content-action-primary-600)]',
+  disabledClasses,
+].join(' ')
+
+const textClasses = [
+  'bg-transparent border-transparent text-[var(--content-action-primary-default)] font-semibold',
+  'hover:bg-[var(--content-action-primary-100)]',
+  'active:bg-[var(--content-action-primary-200)]',
+  'disabled:bg-transparent disabled:border-transparent disabled:text-[var(--content-action-disabled-700)]',
+].join(' ')
+
 const buttonVariants = cva(
   [
     'inline-flex shrink-0 items-center justify-center',
@@ -18,7 +42,7 @@ const buttonVariants = cva(
     'font-sans whitespace-nowrap select-none',
     'transition-colors duration-150',
     'outline-none',
-    'focus-visible:ring-2 focus-visible:ring-[#4285f4]/50 focus-visible:ring-offset-1',
+    'focus-visible:ring-2 focus-visible:ring-[var(--content-action-primary-600)]/50 focus-visible:ring-offset-1',
     'disabled:pointer-events-none',
     '[&_svg]:pointer-events-none [&_svg]:shrink-0',
   ].join(' '),
@@ -26,88 +50,53 @@ const buttonVariants = cva(
     variants: {
       variant: {
         // ── Primary ─────────────────────────────────────────────────────
-        primary: [
-          'bg-[#4285f4] border-[#689df6] text-[#eff1f3]',
-          'hover:bg-[#689df6] hover:border-[#689df6]',
-          'active:bg-[#3264b8] active:border-[#3264b8]',
-          'disabled:bg-[#eff1f3] disabled:border-[#d9dce0] disabled:text-[#aab0b8]',
-        ].join(' '),
+        primary: primaryClasses,
 
         // ── Secondary ───────────────────────────────────────────────────
-        secondary: [
-          'bg-transparent border-[#689df6] text-[#3264b8]',
-          'hover:bg-[#aab0b8]/20',
-          'active:bg-[#aab0b8]/30 active:border-[#3264b8]',
-          'disabled:bg-[#eff1f3] disabled:border-[#d9dce0] disabled:text-[#aab0b8]',
-        ].join(' '),
+        secondary: secondaryClasses,
 
         // ── Form Controls ────────────────────────────────────────────────
         'form-controls': [
-          'bg-[#eff1f3] border-[#aab0b8] text-[#021920]',
-          'hover:bg-[#e2e5e8] hover:border-[#7a828c]',
-          'active:bg-[#d4d8dc] active:border-[#7a828c]',
-          'focus-visible:border-[#4285f4]',
-          'disabled:bg-[#eff1f3] disabled:border-[#d9dce0] disabled:text-[#aab0b8]',
+          'bg-[var(--neutral-100)] border-[var(--neutral-300)] text-[var(--text-body-primary)]',
+          'hover:bg-[var(--neutral-200)] hover:border-[var(--neutral-400)]',
+          'active:bg-[var(--neutral-300)] active:border-[var(--neutral-400)]',
+          'focus-visible:border-[var(--content-action-primary-600)]',
+          disabledClasses,
         ].join(' '),
 
         // ── Text ────────────────────────────────────────────────────────
-        text: [
-          'bg-transparent border-transparent text-[#3264b8] font-semibold',
-          'hover:bg-[#eef3fd]',
-          'active:bg-[#dce8fb]',
-          'disabled:bg-transparent disabled:border-transparent disabled:text-[#aab0b8]',
-        ].join(' '),
+        text: textClasses,
 
         // ── Destructive ──────────────────────────────────────────────────
-        // Default/Active: Error/500 (#ab0c36) bg · Error/600 (#690821) border · On Action/Primary (#eff1f3) text
-        // Hover: reverses to Error/300 (#f3547d) bg · Error/200 (#f792ac) border · dark (#021920) text for WCAG AA
+        // Default/Active: Error/500 bg · Error/600 border · On Action/Primary text
+        // Hover: reverses to Error/300 bg · Error/200 border · dark text for WCAG AA
         destructive: [
-          'bg-[#ab0c36] border-[#690821] text-[#eff1f3]',
-          'hover:bg-[#f3547d] hover:border-[#f792ac] hover:text-[#021920]',
-          'active:bg-[#ab0c36] active:border-[#690821] active:text-[#eff1f3]',
-          'focus-visible:ring-[#ab0c36]/50',
-          'disabled:bg-[#eff1f3] disabled:border-[#d9dce0] disabled:text-[#aab0b8]',
+          'bg-[var(--error-500)] border-[var(--error-600)] text-[var(--text-on-action-primary)]',
+          'hover:bg-[var(--error-300)] hover:border-[var(--error-200)] hover:text-[var(--text-body-primary)]',
+          'active:bg-[var(--error-500)] active:border-[var(--error-600)] active:text-[var(--text-on-action-primary)]',
+          'focus-visible:ring-[var(--error-500)]/50',
+          disabledClasses,
         ].join(' '),
 
         // ── Colored Background ───────────────────────────────────────────
         // For use on non-white surfaces (hero banners, colored cards). Small only.
-        // Default: Neutral/0 (#ffffff) bg · Primary border (#689df6) · On Action/Transparent text (#3264b8)
-        // Hover: primary fill (#689df6) bg + light text (#eff1f3) · Active: light grey wash (#f8f8f8)
         'colored-bg': [
-          'bg-[#ffffff] border-[#689df6] text-[#3264b8]',
-          'hover:bg-[#689df6] hover:border-[#689df6] hover:text-[#eff1f3]',
-          'active:bg-[#f8f8f8] active:border-[#aab0b8] active:text-[#3264b8]',
-          'focus-visible:ring-[#689df6]/50',
-          'disabled:bg-[#eff1f3] disabled:border-[#d9dce0] disabled:text-[#aab0b8]',
+          'bg-[var(--neutral-0)] border-[var(--content-action-primary-600)] text-[var(--content-action-primary-default)]',
+          'hover:bg-[var(--content-action-primary-600)] hover:border-[var(--content-action-primary-600)] hover:text-[var(--text-on-action-primary)]',
+          'active:bg-[var(--neutral-50)] active:border-[var(--neutral-300)] active:text-[var(--content-action-primary-default)]',
+          'focus-visible:ring-[var(--content-action-primary-600)]/50',
+          disabledClasses,
         ].join(' '),
 
         // ── CxCentral variants ────────────────────────────────────────────
-        // Access Management runs inside CxCentral, which reuses every CxPortal
-        // token except Primary: Figma node 3130-45109 resolves
-        // --surface/action/primary-default to #0b8286 (was #3264b8) and
-        // --border-color/surface-active/primary-default to #0ea2a7 (was
-        // #4285f4/#689df6 — CxPortal's two lighter blue steps collapse to
-        // this one confirmed teal since no separate lighter step was found).
-        'primary-central': [
-          'bg-[#0b8286] border-[#0ea2a7] text-[#eff1f3]',
-          'hover:bg-[#0ea2a7] hover:border-[#0ea2a7]',
-          'active:bg-[#0b8286] active:border-[#0b8286]',
-          'disabled:bg-[#eff1f3] disabled:border-[#d9dce0] disabled:text-[#aab0b8]',
-        ].join(' '),
-
-        'secondary-central': [
-          'bg-transparent border-[#0ea2a7] text-[#0b8286]',
-          'hover:bg-[#aab0b8]/20',
-          'active:bg-[#aab0b8]/30 active:border-[#0b8286]',
-          'disabled:bg-[#eff1f3] disabled:border-[#d9dce0] disabled:text-[#aab0b8]',
-        ].join(' '),
-
-        'text-central': [
-          'bg-transparent border-transparent text-[#0b8286] font-semibold',
-          'hover:bg-[#e5f6f6]',
-          'active:bg-[#cceeee]',
-          'disabled:bg-transparent disabled:border-transparent disabled:text-[#aab0b8]',
-        ].join(' '),
+        // Figma's Semantic collection no longer models a distinct CxCentral
+        // product identity (Context modes were removed in the Caylent
+        // rebrand) — these collapse onto the same Content Action/Primary
+        // tokens as the main variants above. Kept as separate variant keys
+        // for API compatibility with existing Access Management call sites.
+        'primary-central': primaryClasses,
+        'secondary-central': secondaryClasses,
+        'text-central': textClasses,
       },
 
       size: {

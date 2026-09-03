@@ -28,8 +28,8 @@ function Code({ children }: { children: string }) {
       fontSize: 12,
       padding: '1px 5px',
       borderRadius: 4,
-      background: '#eff1f3',
-      color: '#3a4a5a',
+      background: 'var(--neutral-100)',
+      color: 'var(--text-body-primary)',
     }}>
       {children}
     </code>
@@ -41,25 +41,25 @@ function Code({ children }: { children: string }) {
 const LIFECYCLE = [
   {
     label: 'Draft',
-    color: '#7a4a00',
+    color: 'var(--warning-600)',
     bg: 'var(--color-warning-100)',
     description: 'A new experiment lives in the Sandbox. It\'s rough — not all states handled, no MDX doc, design may still be in flux.',
   },
   {
     label: 'In Review',
-    color: '#1a3e6b',
+    color: 'var(--info-500)',
     bg: 'var(--color-info-100)',
     description: 'The experiment is complete enough for stakeholder review. Core flows work, edge cases are handled, the design is confirmed.',
   },
   {
     label: 'Validated',
-    color: '#0e4d0e',
+    color: 'var(--success-600)',
     bg: 'var(--color-success-200)',
     description: 'Stakeholders have signed off. The component is ready to graduate into the documented design system.',
   },
   {
     label: 'Stable',
-    color: '#1a6b1a',
+    color: 'var(--success-600)',
     bg: 'var(--color-success-100)',
     description: 'The component has a MDX doc page, a playground entry in the registry, and a sidebar link. It\'s part of the canonical system.',
   },
@@ -78,7 +78,7 @@ function LifecycleStep({ step, index, total }: { step: typeof LIFECYCLE[0]; inde
           {index + 1}
         </div>
         {index < total - 1 && (
-          <div style={{ width: 2, height: 32, background: '#e2e5e9', marginTop: 4 }} />
+          <div style={{ width: 2, height: 32, background: 'var(--color-border)', marginTop: 4 }} />
         )}
       </div>
       <div style={{ paddingTop: 6, paddingBottom: index < total - 1 ? 28 : 0 }}>
@@ -105,7 +105,7 @@ function CheckList({ items }: { items: React.ReactNode[] }) {
     <ul style={{ listStyle: 'none', padding: 0, margin: '0 0 16px', display: 'flex', flexDirection: 'column', gap: 8 }}>
       {items.map((item, i) => (
         <li key={i} style={{ display: 'flex', gap: 10, fontSize: 14, lineHeight: '22px', color: 'var(--color-text-secondary)', alignItems: 'flex-start' }}>
-          <span style={{ color: '#1a6b1a', fontWeight: 700, flexShrink: 0, marginTop: 1 }}>✓</span>
+          <span style={{ color: 'var(--success-600)', fontWeight: 700, flexShrink: 0, marginTop: 1 }}>✓</span>
           {item}
         </li>
       ))}
@@ -120,7 +120,7 @@ function Callout({ children }: { children: React.ReactNode }) {
     <div style={{
       borderLeft: '3px solid var(--color-primary)',
       paddingLeft: 16, paddingTop: 10, paddingBottom: 10, paddingRight: 16,
-      background: 'var(--color-info-100, #d6e2f5)',
+      background: 'var(--color-info-100, var(--info-100))',
       borderRadius: '0 6px 6px 0',
       marginBottom: 20,
       fontSize: 14, lineHeight: '22px',

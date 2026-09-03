@@ -72,14 +72,14 @@ function ToolBtn({
         height:       26,
         border:       'none',
         borderRadius: 4,
-        background:   active ? '#e8effd' : 'transparent',
-        color:        active ? '#3264b8' : '#4b535e',
+        background:   active ? 'var(--content-action-primary-100)' : 'transparent',
+        color:        active ? 'var(--content-action-primary-default)' : 'var(--neutral-700)',
         cursor:       'pointer',
         fontSize:     12,
         fontWeight:   600,
         flexShrink:   0,
       }}
-      onMouseEnter={e => { if (!active) (e.currentTarget as HTMLButtonElement).style.background = '#f0f2f5' }}
+      onMouseEnter={e => { if (!active) (e.currentTarget as HTMLButtonElement).style.background = 'var(--neutral-100)' }}
       onMouseLeave={e => { if (!active) (e.currentTarget as HTMLButtonElement).style.background = 'transparent' }}
     >
       {children}
@@ -92,7 +92,7 @@ function Divider() {
     <span style={{
       width:      1,
       height:     18,
-      background: '#d9dce0',
+      background: 'var(--neutral-200)',
       flexShrink: 0,
       margin:     '0 2px',
       display:    'inline-block',
@@ -237,23 +237,23 @@ export function MarkdownEditor({ value, onChange }: MarkdownEditorProps) {
   // ── Prose CSS for the preview panel ─────────────────────────────────────────
 
   const proseStyles: Record<string, React.CSSProperties> = {
-    h1:          { fontSize: 28, fontWeight: 700, margin: '0 0 12px', color: '#021920' },
-    h2:          { fontSize: 22, fontWeight: 700, margin: '16px 0 10px', color: '#021920' },
-    h3:          { fontSize: 18, fontWeight: 600, margin: '14px 0 8px', color: '#021920' },
-    p:           { fontSize: 14, fontWeight: 400, color: '#021920', lineHeight: 1.6, margin: '0 0 10px' },
-    code:        { background: '#f0f2f5', borderRadius: 4, padding: '1px 4px', fontSize: 13, fontFamily: 'monospace' },
-    pre:         { background: '#f0f2f5', padding: 12, borderRadius: 6, overflow: 'auto', margin: '0 0 12px' },
-    blockquote:  { borderLeft: '3px solid #4285f4', paddingLeft: 12, color: '#4b535e', margin: '0 0 12px', fontStyle: 'italic' },
+    h1:          { fontSize: 28, fontWeight: 700, margin: '0 0 12px', color: 'var(--text-body-primary)' },
+    h2:          { fontSize: 22, fontWeight: 700, margin: '16px 0 10px', color: 'var(--text-body-primary)' },
+    h3:          { fontSize: 18, fontWeight: 600, margin: '14px 0 8px', color: 'var(--text-body-primary)' },
+    p:           { fontSize: 14, fontWeight: 400, color: 'var(--text-body-primary)', lineHeight: 1.6, margin: '0 0 10px' },
+    code:        { background: 'var(--neutral-100)', borderRadius: 4, padding: '1px 4px', fontSize: 13, fontFamily: 'monospace' },
+    pre:         { background: 'var(--neutral-100)', padding: 12, borderRadius: 6, overflow: 'auto', margin: '0 0 12px' },
+    blockquote:  { borderLeft: '3px solid var(--content-action-primary-600)', paddingLeft: 12, color: 'var(--neutral-700)', margin: '0 0 12px', fontStyle: 'italic' },
     ul:          { paddingLeft: 20, margin: '0 0 10px' },
     ol:          { paddingLeft: 20, margin: '0 0 10px' },
-    li:          { marginBottom: 4, fontSize: 14, color: '#021920', lineHeight: 1.6 },
-    hr:          { borderTop: '1px solid #eff1f3', border: 'none', borderTopColor: '#eff1f3', borderTopStyle: 'solid', borderTopWidth: 1, margin: '12px 0' },
+    li:          { marginBottom: 4, fontSize: 14, color: 'var(--text-body-primary)', lineHeight: 1.6 },
+    hr:          { borderTop: '1px solid var(--neutral-100)', border: 'none', borderTopColor: 'var(--neutral-100)', borderTopStyle: 'solid', borderTopWidth: 1, margin: '12px 0' },
     table:       { width: '100%', borderCollapse: 'collapse', margin: '0 0 12px', fontSize: 13 },
-    th:          { border: '1px solid #eff1f3', padding: '6px 8px', textAlign: 'left', background: '#f5f7fa', fontWeight: 600 },
-    td:          { border: '1px solid #eff1f3', padding: '6px 8px', textAlign: 'left' },
+    th:          { border: '1px solid var(--neutral-100)', padding: '6px 8px', textAlign: 'left', background: 'var(--neutral-50)', fontWeight: 600 },
+    td:          { border: '1px solid var(--neutral-100)', padding: '6px 8px', textAlign: 'left' },
     strong:      { fontWeight: 700 },
     em:          { fontStyle: 'italic' },
-    del:         { textDecoration: 'line-through', color: '#7a828c' },
+    del:         { textDecoration: 'line-through', color: 'var(--text-body-secondary)' },
   }
 
   return (
@@ -265,8 +265,8 @@ export function MarkdownEditor({ value, onChange }: MarkdownEditorProps) {
         alignItems:    'center',
         gap:           2,
         padding:       '4px 12px',
-        borderBottom:  '1px solid #eff1f3',
-        background:    '#fff',
+        borderBottom:  '1px solid var(--neutral-100)',
+        background:    'var(--neutral-0)',
         flexShrink:    0,
         flexWrap:      'wrap',
       }}>
@@ -344,10 +344,10 @@ export function MarkdownEditor({ value, onChange }: MarkdownEditorProps) {
             gap:          4,
             padding:      '2px 8px',
             border:       '1px solid',
-            borderColor:  scrollSync ? '#4285f4' : '#d9dce0',
+            borderColor:  scrollSync ? 'var(--content-action-primary-600)' : 'var(--neutral-200)',
             borderRadius: 12,
-            background:   scrollSync ? '#e8effd' : 'transparent',
-            color:        scrollSync ? '#3264b8' : '#7a828c',
+            background:   scrollSync ? 'var(--content-action-primary-100)' : 'transparent',
+            color:        scrollSync ? 'var(--content-action-primary-default)' : 'var(--text-body-secondary)',
             fontSize:     11,
             fontWeight:   500,
             cursor:       'pointer',
@@ -371,13 +371,13 @@ export function MarkdownEditor({ value, onChange }: MarkdownEditorProps) {
             flex:        1,
             resize:      'none',
             border:      'none',
-            borderRight: splitView ? '1px solid #eff1f3' : 'none',
+            borderRight: splitView ? '1px solid var(--neutral-100)' : 'none',
             padding:     16,
             fontFamily:  'ui-monospace, "Cascadia Code", "Source Code Pro", Menlo, Monaco, Consolas, monospace',
             fontSize:    13,
             lineHeight:  1.6,
-            background:  '#fafbfc',
-            color:       '#021920',
+            background:  'var(--neutral-50)',
+            color:       'var(--text-body-primary)',
             outline:     'none',
             overflowY:   'auto',
           }}
@@ -389,7 +389,7 @@ export function MarkdownEditor({ value, onChange }: MarkdownEditorProps) {
             flex:       1,
             padding:    16,
             overflowY:  'auto',
-            background: '#fff',
+            background: 'var(--neutral-0)',
             minWidth:   0,
           }}>
             <ReactMarkdown
@@ -406,7 +406,7 @@ export function MarkdownEditor({ value, onChange }: MarkdownEditorProps) {
                 ul:         ({ children }) => <ul style={proseStyles.ul}>{children}</ul>,
                 ol:         ({ children }) => <ol style={proseStyles.ol}>{children}</ol>,
                 li:         ({ children }) => <li style={proseStyles.li}>{children}</li>,
-                hr:         () => <hr style={{ border: 'none', borderTop: '1px solid #eff1f3', margin: '12px 0' }} />,
+                hr:         () => <hr style={{ border: 'none', borderTop: '1px solid var(--neutral-100)', margin: '12px 0' }} />,
                 table:      ({ children }) => <table style={proseStyles.table}>{children}</table>,
                 th:         ({ children }) => <th style={proseStyles.th}>{children}</th>,
                 td:         ({ children }) => <td style={proseStyles.td}>{children}</td>,

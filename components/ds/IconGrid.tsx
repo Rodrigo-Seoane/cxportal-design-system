@@ -389,13 +389,13 @@ const CATEGORIES: { name: string; icons: { name: string; Icon: Ph.Icon }[] }[] =
 
 // ── Design tokens (match Tab component) ──────────────────────────────────────
 const FILTER = {
-  groupBg:      '#eff1f3',
-  activeBg:     '#ffffff',
-  activeBorder: '#689df6',
-  activeText:   '#4285f4',
-  defaultText:  '#021920',
+  groupBg:      'var(--neutral-100)',
+  activeBg:     'var(--surface-section-bg)',
+  activeBorder: 'var(--content-action-primary-600)',
+  activeText:   'var(--content-action-primary-600)',
+  defaultText:  'var(--text-body-primary)',
   hoverBg:      'rgba(255,255,255,0.65)',
-  disabledText: '#aab0b8',
+  disabledText: 'var(--content-action-disabled-700)',
 }
 
 // ── Component ─────────────────────────────────────────────────────────────────

@@ -106,12 +106,12 @@ export function AddChannelModal({ open, onClose, onAdd }: AddChannelModalProps) 
               padding: '14px 16px', borderRadius: 8,
               background: 'var(--color-success-100)', border: '1px solid var(--color-success-200)',
             }}>
-              <CheckCircleIcon size={18} color="#1a6b1a" weight="fill" style={{ flexShrink: 0, marginTop: 1 }} />
+              <CheckCircleIcon size={18} color="var(--text-success)" weight="fill" style={{ flexShrink: 0, marginTop: 1 }} />
               <div>
-                <p style={{ margin: 0, fontSize: 14, fontWeight: 600, color: '#1a6b1a' }}>
+                <p style={{ margin: 0, fontSize: 14, fontWeight: 600, color: 'var(--text-success)' }}>
                   Verification link sent
                 </p>
-                <p style={{ margin: '4px 0 0', fontSize: 13, color: '#1a6b1a', lineHeight: '20px' }}>
+                <p style={{ margin: '4px 0 0', fontSize: 13, color: 'var(--text-success)', lineHeight: '20px' }}>
                   An email was sent to <strong>{email}</strong>. The sender identity will
                   become active once the link is clicked.
                 </p>

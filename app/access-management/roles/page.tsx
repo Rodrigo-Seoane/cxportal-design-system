@@ -60,7 +60,7 @@ export default function RolesIndexPage() {
 
       <div style={{ flex: 1, minWidth: 0, padding: 16, display: 'flex', flexDirection: 'column', gap: 16 }}>
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-          <h2 style={{ margin: 0, fontSize: 24, fontWeight: 400, lineHeight: '30px', color: '#021920' }}>
+          <h2 style={{ margin: 0, fontSize: 24, fontWeight: 400, lineHeight: '30px', color: 'var(--text-body-primary)' }}>
             Roles ({filteredRoles.length})
           </h2>
           <Button variant="primary-central" size="xs" onClick={() => setAddOpen(true)}>
@@ -71,17 +71,17 @@ export default function RolesIndexPage() {
 
         <div style={{ display: 'flex', alignItems: 'center', gap: 24, flexWrap: 'wrap' }}>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
-            <span style={{ fontSize: 12, fontWeight: 600, color: '#021920' }}>Search</span>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 6, height: 39, padding: '0 8px', border: '1px solid #d9dce0', borderRadius: 8, background: '#ffffff', width: 214 }}>
+            <span style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-body-primary)' }}>Search</span>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 6, height: 39, padding: '0 8px', border: '1px solid var(--neutral-200)', borderRadius: 8, background: 'var(--neutral-0)', width: 214 }}>
               <input
                 type="search"
                 value={search}
                 onChange={e => setSearch(e.target.value)}
                 placeholder="Search roles"
                 aria-label="Search roles"
-                style={{ flex: 1, border: 'none', outline: 'none', background: 'transparent', fontSize: 13, color: '#021920', fontFamily: 'var(--font-sans)' }}
+                style={{ flex: 1, border: 'none', outline: 'none', background: 'transparent', fontSize: 13, color: 'var(--text-body-primary)', fontFamily: 'var(--font-sans)' }}
               />
-              <MagnifyingGlassIcon size={16} color="#7a828c" weight="regular" aria-hidden="true" />
+              <MagnifyingGlassIcon size={16} color="var(--text-body-secondary)" weight="regular" aria-hidden="true" />
             </div>
           </div>
 

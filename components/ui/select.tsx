@@ -54,22 +54,22 @@ export interface SelectProps {
 // ── Design tokens ─────────────────────────────────────────────────────────────
 
 const T = {
-  borderDefault:   '#d9dce0',
-  borderFocus:     '#4285f4',
-  borderError:     '#f792ac',
-  borderCheckbox:  '#689df6',
-  borderSearch:    '#aab0b8',
-  surfaceField:    'white',
-  surfaceSelected: '#eff1f3',
-  surfaceHover:    '#f5f6f7',
-  surfaceCheckbox: '#4285f4',
-  textLabel:       '#021920',
-  textPlaceholder: '#7a828c',
-  textValue:       '#4b535e',
-  textError:       '#ef2056',
-  disabledBg:      '#eff1f3',
-  disabledText:    '#aab0b8',
-  disabledBorder:  '#d9dce0',
+  borderDefault:   'var(--neutral-200)',
+  borderFocus:     'var(--content-action-primary-600)',
+  borderError:     'var(--surface-action-destructive-disabled)',
+  borderCheckbox:  'var(--content-action-primary-600)',
+  borderSearch:    'var(--neutral-300)',
+  surfaceField:    'var(--neutral-0)',
+  surfaceSelected: 'var(--neutral-100)',
+  surfaceHover:    'var(--neutral-50)',
+  surfaceCheckbox: 'var(--content-action-primary-600)',
+  textLabel:       'var(--text-body-primary)',
+  textPlaceholder: 'var(--text-body-secondary)',
+  textValue:       'var(--text-body-primary)',
+  textError:       'var(--text-error)',
+  disabledBg:      'var(--content-action-disabled-100)',
+  disabledText:    'var(--content-action-disabled-700)',
+  disabledBorder:  'var(--content-action-disabled-300)',
 } as const
 
 // ── Component ──────────────────────────────────────────────────────────────────
@@ -439,10 +439,10 @@ function DropdownRow({
   const [hovered, setHovered] = useState(false)
 
   const bg = selected
-    ? '#eff1f3'
+    ? 'var(--neutral-100)'
     : hovered
-    ? '#f5f6f7'
-    : 'white'
+    ? 'var(--neutral-50)'
+    : 'var(--neutral-0)'
 
   return (
     <div
@@ -469,17 +469,17 @@ function DropdownRow({
               width: 12,
               height: 12,
               flexShrink: 0,
-              background: selected ? '#4285f4' : 'white',
-              border: `1px solid #689df6`,
+              background: selected ? 'var(--content-action-primary-600)' : 'var(--neutral-0)',
+              border: `1px solid var(--content-action-primary-600)`,
               borderRadius: '2px',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
             }}
           >
-            {selected && <CheckIcon size={8} color="white" weight="bold" />}
+            {selected && <CheckIcon size={8} color="var(--neutral-0)" weight="bold" />}
           </div>
-          <span style={{ fontSize: '12px', lineHeight: '20px', color: '#4b535e', whiteSpace: 'nowrap' }}>
+          <span style={{ fontSize: '12px', lineHeight: '20px', color: 'var(--text-body-primary)', whiteSpace: 'nowrap' }}>
             {label}
           </span>
         </div>
@@ -494,10 +494,10 @@ function DropdownRow({
             padding: '0 4px',
           }}
         >
-          <span style={{ flex: 1, fontSize: '12px', lineHeight: '20px', color: '#4b535e', minWidth: 0 }}>
+          <span style={{ flex: 1, fontSize: '12px', lineHeight: '20px', color: 'var(--text-body-primary)', minWidth: 0 }}>
             {label}
           </span>
-          {selected && <CheckIcon size={12} color="#4b535e" />}
+          {selected && <CheckIcon size={12} color="var(--text-body-primary)" />}
         </div>
       )}
     </div>

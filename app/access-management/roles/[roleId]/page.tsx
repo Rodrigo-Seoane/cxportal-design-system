@@ -66,37 +66,37 @@ export default function RoleDetailPage() {
       {/* ── Breadcrumb ────────────────────────────────────────────────────── */}
       <nav aria-label="Breadcrumb" style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
         <button onClick={() => router.push('/access-management/roles')} aria-label="Home" style={{ display: 'flex', border: 'none', background: 'none', cursor: 'pointer', padding: 0 }}>
-          <HouseIcon size={14} color="#7a828c" weight="regular" />
+          <HouseIcon size={14} color="var(--text-body-secondary)" weight="regular" />
         </button>
-        <CaretRightIcon size={12} color="#aab0b8" weight="regular" aria-hidden="true" />
+        <CaretRightIcon size={12} color="var(--neutral-300)" weight="regular" aria-hidden="true" />
         <button
           onClick={() => router.push('/access-management/roles')}
-          style={{ border: 'none', background: 'none', cursor: 'pointer', padding: 0, fontSize: 12, color: '#7a828c' }}
+          style={{ border: 'none', background: 'none', cursor: 'pointer', padding: 0, fontSize: 12, color: 'var(--text-body-secondary)' }}
         >
           Roles
         </button>
-        <CaretRightIcon size={12} color="#aab0b8" weight="regular" aria-hidden="true" />
-        <span style={{ fontSize: 12, fontWeight: 600, color: '#021920' }}>{role.name}</span>
+        <CaretRightIcon size={12} color="var(--neutral-300)" weight="regular" aria-hidden="true" />
+        <span style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-body-primary)' }}>{role.name}</span>
       </nav>
 
       {/* ── Role header ───────────────────────────────────────────────────── */}
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: 24, background: '#ffffff', borderRadius: 8, flexWrap: 'wrap', gap: 16 }}>
-        <h1 style={{ margin: 0, fontSize: 28, fontWeight: 400, lineHeight: '34px', color: '#021920' }}>{role.name}</h1>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: 24, background: 'var(--neutral-0)', borderRadius: 8, flexWrap: 'wrap', gap: 16 }}>
+        <h1 style={{ margin: 0, fontSize: 28, fontWeight: 400, lineHeight: '34px', color: 'var(--text-body-primary)' }}>{role.name}</h1>
         <div style={{ display: 'flex', alignItems: 'center', gap: 24, flexWrap: 'wrap' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-            <span style={{ fontSize: 12, fontWeight: 600, letterSpacing: '0.24px', color: '#021920' }}>Permission Level:</span>
-            <Chip label={role.permissionLevel} type="info" shade={200} iconLeft={false} iconRight={false} style={{ background: '#d9dce0' }} />
+            <span style={{ fontSize: 12, fontWeight: 600, letterSpacing: '0.24px', color: 'var(--text-body-primary)' }}>Permission Level:</span>
+            <Chip label={role.permissionLevel} type="info" shade={200} iconLeft={false} iconRight={false} style={{ background: 'var(--neutral-200)' }} />
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-            <span style={{ fontSize: 12, fontWeight: 600, letterSpacing: '0.24px', color: '#021920' }}>Number of Active Users:</span>
-            <InfoIcon size={12} color="#7a828c" weight="regular" aria-hidden="true" />
-            <span style={{ fontSize: 18, lineHeight: '28px', color: '#021920' }}>{role.activeUsers.toLocaleString()}</span>
+            <span style={{ fontSize: 12, fontWeight: 600, letterSpacing: '0.24px', color: 'var(--text-body-primary)' }}>Number of Active Users:</span>
+            <InfoIcon size={12} color="var(--text-body-secondary)" weight="regular" aria-hidden="true" />
+            <span style={{ fontSize: 18, lineHeight: '28px', color: 'var(--text-body-primary)' }}>{role.activeUsers.toLocaleString()}</span>
           </div>
         </div>
       </div>
 
       {/* ── Instances + Module Permissions ───────────────────────────────── */}
-      <div style={{ display: 'flex', background: '#ffffff', borderRadius: 8 }}>
+      <div style={{ display: 'flex', background: 'var(--neutral-0)', borderRadius: 8 }}>
         <InstancePanel
           groups={role.groups}
           ungrouped={role.ungrouped}

@@ -38,12 +38,12 @@ function fmtCount(n: number) {
 }
 
 const STATUS_STYLE: Record<string, { bg: string; color: string }> = {
-  sent:      { bg: 'var(--color-success-100)', color: '#1a6b1a' },
-  sending:   { bg: 'var(--color-info-100)',    color: '#1a4f9e' },
-  scheduled: { bg: 'var(--color-warning-100)', color: '#7a4a00' },
+  sent:      { bg: 'var(--color-success-100)', color: 'var(--text-success)' },
+  sending:   { bg: 'var(--color-info-100)',    color: 'var(--text-info)' },
+  scheduled: { bg: 'var(--color-warning-100)', color: 'var(--text-warning)' },
   draft:     { bg: 'var(--color-surface-display)', color: 'var(--color-text-secondary)' },
-  paused:    { bg: 'var(--color-error-100)',   color: '#8b1a2a' },
-  cancelled: { bg: 'var(--color-error-100)',   color: '#8b1a2a' },
+  paused:    { bg: 'var(--color-error-100)',   color: 'var(--text-destructive)' },
+  cancelled: { bg: 'var(--color-error-100)',   color: 'var(--text-destructive)' },
 }
 
 // ── Detail row ────────────────────────────────────────────────────────────────
@@ -325,7 +325,7 @@ export default function CampaignDetailPage() {
                         <td style={{ padding: '9px 16px' }}>
                           {grace
                             ? <span style={{ fontSize: 11, fontWeight: 600, padding: '2px 8px',
-                                borderRadius: 4, background: 'var(--color-warning-100)', color: '#7a4a00' }}>
+                                borderRadius: 4, background: 'var(--color-warning-100)', color: 'var(--text-warning)' }}>
                                 In grace — {days}d left
                               </span>
                             : <span style={{ fontSize: 11, fontWeight: 600, padding: '2px 8px',
