@@ -83,6 +83,7 @@ Usage example as a fenced code block.
 **Critical rule:** MDX docs must NEVER embed `<ComponentPreview>` — the playground is always rendered by `app/components/[slug]/page.tsx`, not the MDX. Embedding it in MDX duplicates the playground.
 
 MDX has access to these custom components (registered in `components/mdx/MDXComponents.tsx`):
+
 - `<DosDonts>`, `<Do>`, `<Dont>`
 - `<ComponentPreview slug="…" />` — DO NOT USE in MDX (see above)
 - `<Table>`, `<TableHeader>`, `<TableBody>`, `<TableRow>`, `<TableHead>`, `<TableCell>`
@@ -93,30 +94,32 @@ MDX has access to these custom components (registered in `components/mdx/MDXComp
 
 ## Key files
 
-| File | Purpose |
-|---|---|
-| `lib/tokens.ts` | Single source of truth for all design tokens |
-| `styles/globals.css` | Tailwind v4 `@theme` block + CSS vars |
-| `lib/component-registry.ts` | All component entries: slug → scope + propSchema + generateCode |
-| `lib/sandbox-registry.ts` | Sandbox experiments metadata |
-| `components/ds/ComponentPlayground.tsx` | react-live playground wrapper |
-| `components/ds/PropControls.tsx` | Interactive knobs rendered from propSchema |
-| `components/layout/Sidebar.tsx` | Nav structure — ground truth for what pages exist |
-| `components/mdx/MDXComponents.tsx` | MDX component registry |
-| `content/components/button.mdx` | Reference MDX template |
+| File                                    | Purpose                                                                                         |
+| --------------------------------------- | ----------------------------------------------------------------------------------------------- |
+| `lib/tokens.ts`                         | Single source of truth for all design tokens                                                    |
+| `app/globals.css`                       | Tailwind v4 `@theme` block + CSS vars (raw → semantic → context → legacy-alias → shadcn layers) |
+| `lib/component-registry.ts`             | All component entries: slug → scope + propSchema + generateCode                                 |
+| `lib/sandbox-registry.ts`               | Sandbox experiments metadata                                                                    |
+| `components/ds/ComponentPlayground.tsx` | react-live playground wrapper                                                                   |
+| `components/ds/PropControls.tsx`        | Interactive knobs rendered from propSchema                                                      |
+| `components/layout/Sidebar.tsx`         | Nav structure — ground truth for what pages exist                                               |
+| `components/mdx/MDXComponents.tsx`      | MDX component registry                                                                          |
+| `content/components/button.mdx`         | Reference MDX template                                                                          |
 
 ---
 
 ## Design tokens (quick reference)
 
-- Primary: `#4285f4`
-- Text primary: `#021920` · Secondary: `#7a828c` · On-dark: `#eff1f3`
-- Nav bg: `#050326`
-- Surfaces: section `#ffffff` · display/panel `#eff1f3`
-- Status: success/warning/error/info each have `100` (light bg) and `200` (border/accent) variants
-- Font: Mona Sans variable, weights 300/400/600/800
-- Border radius: xs:2px · sm:4px · md:8px · lg:16px · round:64px
-- Spacing: 4px unit system (Tailwind scale)
+Reference token **names**, not hardcoded hex — hex drifts out of sync with `globals.css`, names don't.
+
+- Primary: `--content-action-primary-{50,100,200,300,default,500,600,700,750,800,900}` (Caylent Green ramp)
+- Text: `--text-body-primary` · `--text-body-secondary` · `--text-body-on-dark-surface`
+- Nav bg: `--navigation-bar`
+- Surfaces: `--surface-section-bg` · `--surface-main-panel` · `--surface-form-field`
+- Status: `--success-*` / `--warning-*` / `--error-*` / `--info-*`, each with `100` (light bg) and `200` (border/accent) variants
+- Font: Roboto variable, weights 300/400/600/700 (`--font-family-body`)
+- Border radius: `--border-radius-{xs,sm,md,lg,round}` — 2px/4px/8px/16px/64px
+- Spacing: `--space-*`, 4px unit system (Tailwind scale)
 
 ---
 
@@ -146,6 +149,7 @@ Sandbox views that display tabular or list data **must use Load More**, not pagi
 ## Sidebar component status
 
 When adding a new component to the sidebar (`components/layout/Sidebar.tsx`), set its `status`:
+
 - `stable` — playground + MDX docs + Do/Don't complete
 - `wip` — page exists, docs incomplete
 - `deprecated` — kept for reference, not recommended
