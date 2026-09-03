@@ -4,8 +4,8 @@ import type { ExperimentStatus } from '@/lib/sandbox-registry'
 
 const STATUS_STYLE: Record<ExperimentStatus, { bg: string; color: string }> = {
   'Draft':     { bg: 'var(--color-surface-display)', color: 'var(--color-text-secondary)' },
-  'In Review': { bg: 'var(--color-warning-100)',      color: '#7a4a00' },
-  'Validated': { bg: 'var(--color-success-100)',      color: '#1a6b1a' },
+  'In Review': { bg: 'var(--color-warning-100)',      color: 'var(--warning-600)' },
+  'Validated': { bg: 'var(--color-success-100)',      color: 'var(--success-600)' },
 }
 
 // ── Props ──────────────────────────────────────────────────────────────────────

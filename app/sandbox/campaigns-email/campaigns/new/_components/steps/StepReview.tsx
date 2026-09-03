@@ -108,7 +108,7 @@ export function StepReview({ draft, onGoTo }: Props) {
             dangerouslySetInnerHTML={{
               __html: draft.bodyHtml
                 ? applyVars(draft.bodyHtml)
-                : '<p style="color:#7a828c;font-size:12px">No template selected.</p>',
+                : '<p style="color:var(--text-body-secondary);font-size:12px">No template selected.</p>',
             }}
           />
         </div>

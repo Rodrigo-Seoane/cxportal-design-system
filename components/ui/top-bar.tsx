@@ -34,32 +34,35 @@ const THEMES: Record<TopBarProduct, {
   border:      string
   badgeBg:     string
 }> = {
+  // 'cx-central' and 'cases' previously used a distinct CxCentral teal accent
+  // tied to a product identity that no longer exists in Figma — collapsed onto
+  // the same Content Action/Primary ramp as 'cx-portal' per rebrand convention.
   'cx-portal': {
-    brandFirst:  '#021920',
-    brandSecond: '#4285f4',
-    accent:      '#4285f4',
-    border:      '#689df6',
-    badgeBg:     '#4285f4',
+    brandFirst:  'var(--text-body-primary)',
+    brandSecond: 'var(--content-action-primary-600)',
+    accent:      'var(--content-action-primary-600)',
+    border:      'var(--content-action-primary-600)',
+    badgeBg:     'var(--content-action-primary-600)',
   },
   'cx-central': {
-    brandFirst:  '#021920',
-    brandSecond: '#0ea2a7',
-    accent:      '#0ea2a7',
-    border:      '#3eb5b9',
-    badgeBg:     '#0ea2a7',
+    brandFirst:  'var(--text-body-primary)',
+    brandSecond: 'var(--content-action-primary-600)',
+    accent:      'var(--content-action-primary-600)',
+    border:      'var(--content-action-primary-600)',
+    badgeBg:     'var(--content-action-primary-600)',
   },
   'cases': {
-    brandFirst:  '#0ea2a7',
-    brandSecond: '#0ea2a7',
-    accent:      '#0ea2a7',
-    border:      '#3eb5b9',
-    badgeBg:     '#0ea2a7',
+    brandFirst:  'var(--content-action-primary-600)',
+    brandSecond: 'var(--content-action-primary-600)',
+    accent:      'var(--content-action-primary-600)',
+    border:      'var(--content-action-primary-600)',
+    badgeBg:     'var(--content-action-primary-600)',
   },
 }
 
-const TEXT_PRIMARY = '#021920'
-const TEXT_MUTED   = '#323840'
-const BORDER_LIGHT = '#eff1f3'
+const TEXT_PRIMARY = 'var(--text-body-primary)'
+const TEXT_MUTED   = 'var(--neutral-700)'
+const BORDER_LIGHT = 'var(--neutral-100)'
 
 // ── Internal: product brand ───────────────────────────────────────────────────
 
@@ -146,7 +149,7 @@ function IconButton({ icon, badge, border, badgeBg, onClick, ariaLabel }: IconBu
           justifyContent: 'center',
           fontSize:     10,
           fontWeight:   600,
-          color:        '#eff1f3',
+          color:        'var(--text-on-action-primary)',
           lineHeight:   '16px',
         }}>
           {badge > 9 ? '9+' : badge}

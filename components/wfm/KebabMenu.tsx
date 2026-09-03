@@ -60,7 +60,7 @@ export function KebabMenu({ actions, agentName }: KebabMenuProps) {
           background:  'transparent',
           cursor:      'pointer',
           borderRadius: 6,
-          color:       '#7a828c',
+          color:       'var(--text-body-secondary)',
         }}
       >
         <DotsThreeVerticalIcon size={18} weight="bold" aria-hidden="true" />
@@ -75,8 +75,8 @@ export function KebabMenu({ actions, agentName }: KebabMenuProps) {
             position:   'absolute',
             top:        '100%',
             right:       0,
-            background: '#ffffff',
-            border:     '1px solid #e2e5e8',
+            background: 'var(--surface-section-bg)',
+            border:     '1px solid var(--neutral-200)',
             borderRadius: 8,
             boxShadow:  '0 4px 16px rgba(2,25,32,0.14)',
             minWidth:    200,
@@ -101,12 +101,12 @@ export function KebabMenu({ actions, agentName }: KebabMenuProps) {
                   cursor:     action.disabled ? 'not-allowed' : 'pointer',
                   fontSize:    13,
                   fontWeight:  400,
-                  color:      action.disabled ? '#aab0b8' : '#021920',
+                  color:      action.disabled ? 'var(--content-action-disabled-700)' : 'var(--text-body-primary)',
                   fontFamily: 'var(--font-sans)',
-                  borderBottom: '1px solid #eff1f3',
+                  borderBottom: '1px solid var(--neutral-100)',
                 }}
                 onMouseOver={e => {
-                  if (!action.disabled) (e.currentTarget as HTMLElement).style.background = '#f0f4fb'
+                  if (!action.disabled) (e.currentTarget as HTMLElement).style.background = 'var(--content-action-primary-100)'
                 }}
                 onMouseOut={e => {
                   (e.currentTarget as HTMLElement).style.background = 'transparent'

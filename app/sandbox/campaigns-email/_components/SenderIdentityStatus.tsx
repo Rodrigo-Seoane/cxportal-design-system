@@ -20,10 +20,10 @@ const CONFIG: Record<SenderStatus, {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   Icon:    React.ComponentType<any>
 }> = {
-  verified: { label: 'Verified', bg: 'var(--color-success-100)', color: '#1a6b1a', Icon: CheckCircleIcon  },
-  pending:  { label: 'Pending',  bg: 'var(--color-warning-100)', color: '#7a4a00', Icon: ClockIcon        },
-  failed:   { label: 'Failed',   bg: 'var(--color-error-100)',   color: '#8b1a2a', Icon: XCircleIcon      },
-  expired:  { label: 'Expired',  bg: 'var(--color-error-100)',   color: '#8b1a2a', Icon: WarningCircleIcon },
+  verified: { label: 'Verified', bg: 'var(--color-success-100)', color: 'var(--text-success)', Icon: CheckCircleIcon  },
+  pending:  { label: 'Pending',  bg: 'var(--color-warning-100)', color: 'var(--text-warning)', Icon: ClockIcon        },
+  failed:   { label: 'Failed',   bg: 'var(--color-error-100)',   color: 'var(--text-destructive)', Icon: XCircleIcon      },
+  expired:  { label: 'Expired',  bg: 'var(--color-error-100)',   color: 'var(--text-destructive)', Icon: WarningCircleIcon },
 }
 
 export function SenderIdentityStatus({ status, showIcon = true }: SenderIdentityStatusProps) {

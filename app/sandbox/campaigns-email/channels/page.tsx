@@ -98,7 +98,7 @@ function RowActions({ sender, onViewDetails, onReVerify, onDelete, editable, del
             </button>
           )}
           {deletable && (
-            <button onClick={() => { onDelete(); setOpen(false) }} style={{ ...menuItemStyle, color: '#8b1a2a' }}>
+            <button onClick={() => { onDelete(); setOpen(false) }} style={{ ...menuItemStyle, color: 'var(--text-destructive)' }}>
               <TrashIcon size={14} /> Remove Sender
             </button>
           )}
@@ -163,7 +163,7 @@ function ConfirmDeleteModal({ sender, onClose, onConfirm }: {
       <ModalFooter style={{ justifyContent: 'flex-end', gap: 8 }}>
         <Button variant="secondary" size="sm" onClick={onClose}>Cancel</Button>
         <Button variant="primary" size="sm" onClick={onConfirm}
-          style={{ background: '#c0152f', borderColor: '#c0152f' }}>
+          style={{ background: 'var(--surface-action-destructive-default)', borderColor: 'var(--surface-action-destructive-default)' }}>
           Remove
         </Button>
       </ModalFooter>
@@ -262,7 +262,7 @@ export default function ChannelsPage() {
             fontSize: 11, fontWeight: 600, padding: '3px 10px', borderRadius: 4,
             border: '1px solid',
             background:  pageState === s ? 'var(--color-primary)' : 'transparent',
-            color:       pageState === s ? '#fff' : 'var(--color-text-secondary)',
+            color:       pageState === s ? 'var(--neutral-0)' : 'var(--color-text-secondary)',
             borderColor: pageState === s ? 'var(--color-primary)' : 'var(--color-border)',
             cursor: 'pointer',
           }}>{s}</button>

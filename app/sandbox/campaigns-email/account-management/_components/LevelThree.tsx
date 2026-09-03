@@ -21,12 +21,12 @@ import { useRole, canEdit } from '../../_context/RoleContext'
 const ACTIVE_STATUSES = new Set(['running', 'scheduled', 'initialized'])
 
 const CAMPAIGN_STATUS_CONFIG: Record<string, { label: string; bg: string; color: string }> = {
-  running:     { label: 'Running',     bg: 'var(--color-info-100)',        color: '#1a4f9e' },
-  scheduled:   { label: 'Scheduled',   bg: 'var(--color-success-100)',     color: '#1a6b1a' },
+  running:     { label: 'Running',     bg: 'var(--color-info-100)',        color: 'var(--text-info)' },
+  scheduled:   { label: 'Scheduled',   bg: 'var(--color-success-100)',     color: 'var(--text-success)' },
   initialized: { label: 'Initialized', bg: 'var(--color-surface-display)', color: 'var(--color-text-secondary)' },
-  completed:   { label: 'Completed',   bg: 'var(--color-success-100)',     color: '#1a6b1a' },
-  paused:      { label: 'Paused',      bg: 'var(--color-warning-100)',     color: '#7a4a00' },
-  failed:      { label: 'Failed',      bg: 'var(--color-error-100)',       color: '#8b1a2a' },
+  completed:   { label: 'Completed',   bg: 'var(--color-success-100)',     color: 'var(--text-success)' },
+  paused:      { label: 'Paused',      bg: 'var(--color-warning-100)',     color: 'var(--text-warning)' },
+  failed:      { label: 'Failed',      bg: 'var(--color-error-100)',       color: 'var(--text-destructive)' },
 }
 
 function fmtDate(iso: string | null): string {
@@ -157,7 +157,7 @@ export function LevelThree({ accountId, groupId, topicId }: LevelThreeProps) {
             ) : (
               <span style={{ fontSize: 11, fontWeight: 600, padding: '2px 7px', borderRadius: 4,
                 background: enabled ? 'var(--color-success-100)' : 'var(--color-surface-display)',
-                color: enabled ? '#1a6b1a' : 'var(--color-text-secondary)', display: 'inline-block' }}>
+                color: enabled ? 'var(--text-success)' : 'var(--color-text-secondary)', display: 'inline-block' }}>
                 {enabled ? 'Enabled' : 'Disabled'}
               </span>
             )}

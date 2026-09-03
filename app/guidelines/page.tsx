@@ -300,7 +300,7 @@ export default function GuidelinesPage() {
                         width: 28,
                         height: 28,
                         backgroundColor: 'var(--color-primary)',
-                        color: '#fff',
+                        color: 'var(--neutral-0)',
                         marginTop: 16,
                       }}
                     >

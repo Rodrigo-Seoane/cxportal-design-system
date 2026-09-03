@@ -15,13 +15,13 @@ import { NavMenuItem, NavSubItem, NavMenuItemCollapsed } from './nav-item'
 // ── Background wrappers ───────────────────────────────────────────────────────
 
 const NavBg = ({ children }: { children: React.ReactNode }) => (
-  <div style={{ background: '#050326', display: 'inline-flex', flexDirection: 'column', borderRadius: 6 }}>
+  <div style={{ background: 'var(--surface-vertical-nav)', display: 'inline-flex', flexDirection: 'column', borderRadius: 6 }}>
     {children}
   </div>
 )
 
 const LightBg = ({ children }: { children: React.ReactNode }) => (
-  <div style={{ background: '#ffffff', display: 'inline-flex', flexDirection: 'column', borderRadius: 6, border: '1px solid #eff1f3' }}>
+  <div style={{ background: 'var(--neutral-0)', display: 'inline-flex', flexDirection: 'column', borderRadius: 6, border: '1px solid var(--neutral-100)' }}>
     {children}
   </div>
 )

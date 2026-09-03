@@ -17,8 +17,8 @@ export function UsersTable({ users, onDeactivateUser, onDeleteUser }: UsersTable
 
   if (users.length === 0) {
     return (
-      <div style={{ padding: '48px 24px', textAlign: 'center', border: '1px dashed #d9dce0', borderRadius: 8 }}>
-        <p style={{ margin: 0, fontSize: 14, color: '#7a828c' }}>No users match this filter.</p>
+      <div style={{ padding: '48px 24px', textAlign: 'center', border: '1px dashed var(--neutral-200)', borderRadius: 8 }}>
+        <p style={{ margin: 0, fontSize: 14, color: 'var(--text-body-secondary)' }}>No users match this filter.</p>
       </div>
     )
   }
@@ -41,14 +41,14 @@ export function UsersTable({ users, onDeactivateUser, onDeleteUser }: UsersTable
             <TableCell
               variant="link"
               onClick={() => router.push(`/access-management/users/${user.id}`)}
-              style={{ cursor: 'pointer', fontWeight: 600, color: '#0ea2a7' }}
+              style={{ cursor: 'pointer', fontWeight: 600, color: 'var(--content-action-primary-default)' }}
             >
               {user.name}
             </TableCell>
             <TableCell>{user.email}</TableCell>
             <TableCell>{LOGIN_METHOD_LABEL[user.loginMethod]}</TableCell>
             <TableCell><LoginStatusPill status={user.loginStatus} /></TableCell>
-            <TableCell variant="link" onClick={() => router.push(`/access-management/roles/${user.roleId}`)} style={{ cursor: 'pointer', color: '#0ea2a7' }}>
+            <TableCell variant="link" onClick={() => router.push(`/access-management/roles/${user.roleId}`)} style={{ cursor: 'pointer', color: 'var(--content-action-primary-default)' }}>
               {getRoleNameForUser(user)}
             </TableCell>
             <TableCell align="center">

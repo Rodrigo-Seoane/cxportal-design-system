@@ -31,8 +31,8 @@ export default function SandboxIndexPage() {
         }}>
           {[
             { label: 'Draft',     bg: 'var(--color-surface-display)', color: 'var(--color-text-secondary)', desc: 'Work in progress, not ready for review' },
-            { label: 'In Review', bg: 'var(--color-warning-100)',      color: '#7a4a00',                    desc: 'Ready for stakeholder feedback' },
-            { label: 'Validated', bg: 'var(--color-success-100)',      color: '#1a6b1a',                    desc: 'Approved and ready to ship' },
+            { label: 'In Review', bg: 'var(--color-warning-100)',      color: 'var(--text-warning)',                    desc: 'Ready for stakeholder feedback' },
+            { label: 'Validated', bg: 'var(--color-success-100)',      color: 'var(--text-success)',                    desc: 'Approved and ready to ship' },
           ].map(({ label, bg, color, desc }) => (
             <div key={label} style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
               <span style={{

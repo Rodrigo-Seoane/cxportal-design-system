@@ -46,12 +46,12 @@ function fmtDate(iso: string) {
 }
 
 const CAMPAIGN_STATUS_STYLE: Record<string, { bg: string; color: string }> = {
-  sent:      { bg: 'var(--color-success-100)',    color: '#1a6b1a'                     },
-  sending:   { bg: 'var(--color-info-100)',       color: '#1a4f9e'                     },
-  scheduled: { bg: 'var(--color-warning-100)',    color: '#7a4a00'                     },
+  sent:      { bg: 'var(--color-success-100)',    color: 'var(--text-success)'                     },
+  sending:   { bg: 'var(--color-info-100)',       color: 'var(--text-info)'                     },
+  scheduled: { bg: 'var(--color-warning-100)',    color: 'var(--text-warning)'                     },
   draft:     { bg: 'var(--color-surface-display)',color: 'var(--color-text-secondary)' },
-  paused:    { bg: 'var(--color-error-100)',      color: '#8b1a2a'                     },
-  cancelled: { bg: 'var(--color-error-100)',      color: '#8b1a2a'                     },
+  paused:    { bg: 'var(--color-error-100)',      color: 'var(--text-error)'                     },
+  cancelled: { bg: 'var(--color-error-100)',      color: 'var(--text-error)'                     },
 }
 
 // ── Page ──────────────────────────────────────────────────────────────────────
@@ -251,7 +251,7 @@ export default function RecipientListDetailPage() {
                 </span>
                 <span style={{ fontSize: 11, fontWeight: 600, padding: '2px 7px', borderRadius: 4,
                   background: allowed ? 'var(--color-success-100)' : 'var(--color-error-100)',
-                  color: allowed ? '#1a6b1a' : '#8b1a2a' }}>
+                  color: allowed ? 'var(--text-success)' : 'var(--text-error)' }}>
                   {allowed ? 'Allowed' : 'Denied'}
                 </span>
               </div>

@@ -36,17 +36,17 @@ function fmtDate(iso: string | null) {
 }
 
 const CAMPAIGN_STATUS_STYLE: Record<string, { bg: string; color: string }> = {
-  sent:      { bg: 'var(--color-success-100)',     color: '#1a6b1a'                     },
-  sending:   { bg: 'var(--color-info-100)',         color: '#1a4f9e'                     },
-  scheduled: { bg: 'var(--color-warning-100)',     color: '#7a4a00'                     },
+  sent:      { bg: 'var(--color-success-100)',     color: 'var(--text-success)'                     },
+  sending:   { bg: 'var(--color-info-100)',         color: 'var(--text-info)'                     },
+  scheduled: { bg: 'var(--color-warning-100)',     color: 'var(--text-warning)'                     },
   draft:     { bg: 'var(--color-surface-display)', color: 'var(--color-text-secondary)' },
-  paused:    { bg: 'var(--color-error-100)',        color: '#8b1a2a'                     },
-  cancelled: { bg: 'var(--color-error-100)',        color: '#8b1a2a'                     },
+  paused:    { bg: 'var(--color-error-100)',        color: 'var(--text-error)'                     },
+  cancelled: { bg: 'var(--color-error-100)',        color: 'var(--text-error)'                     },
 }
 
 const TOPIC_STATUS_STYLE: Record<TopicStatus, { bg: string; color: string }> = {
-  active:   { bg: 'var(--color-success-100)',     color: '#1a6b1a'                     },
-  paused:   { bg: 'var(--color-warning-100)',     color: '#7a4a00'                     },
+  active:   { bg: 'var(--color-success-100)',     color: 'var(--text-success)'                     },
+  paused:   { bg: 'var(--color-warning-100)',     color: 'var(--text-warning)'                     },
   archived: { bg: 'var(--color-surface-display)', color: 'var(--color-text-secondary)' },
 }
 
@@ -369,7 +369,7 @@ export default function TopicDetailPage() {
                           <TableCell>
                             <span style={{ fontSize: 11, fontWeight: 600, padding: '2px 7px', borderRadius: 4,
                               background: l.status === 'active' ? 'var(--color-success-100)' : 'var(--color-surface-display)',
-                              color: l.status === 'active' ? '#1a6b1a' : 'var(--color-text-secondary)' }}>
+                              color: l.status === 'active' ? 'var(--text-success)' : 'var(--color-text-secondary)' }}>
                               {l.status}
                             </span>
                           </TableCell>
@@ -429,7 +429,7 @@ export default function TopicDetailPage() {
                             border: `2px solid ${checked ? 'var(--color-primary)' : 'var(--color-border)'}`,
                             background: checked ? 'var(--color-primary)' : 'transparent',
                             display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                            {checked && <span style={{ width: 8, height: 2, background: '#fff', borderRadius: 1 }} />}
+                            {checked && <span style={{ width: 8, height: 2, background: 'var(--neutral-0)', borderRadius: 1 }} />}
                           </span>
                           <div>
                             <div style={{ fontSize: 13, fontWeight: 500,
@@ -454,7 +454,7 @@ export default function TopicDetailPage() {
                     fontSize: 13, fontWeight: 600, cursor: canDelete(role) ? 'pointer' : 'not-allowed',
                     border: '1px solid var(--color-error-200)',
                     background: canDelete(role) ? 'var(--color-error-100)' : 'var(--color-surface-display)',
-                    color: canDelete(role) ? '#8b1a2a' : 'var(--color-text-secondary)',
+                    color: canDelete(role) ? 'var(--text-error)' : 'var(--color-text-secondary)',
                     opacity: canDelete(role) ? 1 : 0.6,
                   }}
                 >

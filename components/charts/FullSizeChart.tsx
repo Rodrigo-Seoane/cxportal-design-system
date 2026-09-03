@@ -51,9 +51,9 @@ export interface FullSizeChartProps {
 // ── Series config (single source of truth for colors / labels) ─────────────────
 
 const SERIES_CONFIG: Record<DataSeries, { label: string; color: string; gradId: string }> = {
-  desktop: { label: 'Desktop', color: '#4285f4', gradId: 'grad-desktop' },
-  mobile:  { label: 'Mobile',  color: '#689df6', gradId: 'grad-mobile'  },
-  tablet:  { label: 'Tablet',  color: '#3264b8', gradId: 'grad-tablet'  },
+  desktop: { label: 'Desktop', color: 'var(--content-action-primary-600)', gradId: 'grad-desktop' },
+  mobile:  { label: 'Mobile',  color: 'var(--content-action-primary-500)', gradId: 'grad-mobile'  },
+  tablet:  { label: 'Tablet',  color: 'var(--content-action-primary-700)', gradId: 'grad-tablet'  },
 }
 
 const ALL_SERIES: DataSeries[] = ['desktop', 'mobile', 'tablet']
@@ -143,8 +143,8 @@ function ShortcutsSidebar({ selected, onSelect }: { selected: DateRange | undefi
   }
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 2, paddingRight: 16, borderRight: '1px solid #eff1f3', minWidth: 120 }}>
-      <p style={{ margin: '0 0 8px', fontSize: 11, fontWeight: 600, color: '#aab0b8', letterSpacing: '0.04em', textTransform: 'uppercase' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 2, paddingRight: 16, borderRight: '1px solid var(--neutral-100)', minWidth: 120 }}>
+      <p style={{ margin: '0 0 8px', fontSize: 11, fontWeight: 600, color: 'var(--neutral-300)', letterSpacing: '0.04em', textTransform: 'uppercase' }}>
         Shortcuts
       </p>
       {shortcuts.map(s => {
@@ -158,11 +158,11 @@ function ShortcutsSidebar({ selected, onSelect }: { selected: DateRange | undefi
               padding: '6px 10px', border: 'none', borderRadius: 6, cursor: 'pointer',
               fontSize: 13, fontWeight: active ? 600 : 400,
               fontFamily: "'Roboto', system-ui, sans-serif",
-              color: active ? '#4285f4' : '#021920',
-              background: active ? '#eef3fb' : 'transparent',
+              color: active ? 'var(--content-action-primary-600)' : 'var(--text-body-primary)',
+              background: active ? 'var(--content-action-primary-100)' : 'transparent',
               transition: 'background 0.1s, color 0.1s',
             }}
-            onMouseEnter={e => { if (!active) (e.currentTarget as HTMLButtonElement).style.background = '#f7f9ff' }}
+            onMouseEnter={e => { if (!active) (e.currentTarget as HTMLButtonElement).style.background = 'var(--content-action-primary-50)' }}
             onMouseLeave={e => { if (!active) (e.currentTarget as HTMLButtonElement).style.background = 'transparent' }}
           >
             {s.label}
@@ -188,15 +188,15 @@ function SeriesToggles({ activeSeries, onToggle }: { activeSeries: Set<DataSerie
             style={{
               display: 'flex', alignItems: 'center', gap: 5,
               padding: '4px 10px',
-              border: `1px solid ${active ? color : '#eff1f3'}`,
+              border: `1px solid ${active ? color : 'var(--neutral-100)'}`,
               borderRadius: 32,
               background: active ? `${color}14` : 'transparent',
               cursor: 'pointer',
               transition: 'all 0.12s',
             }}
           >
-            <span style={{ width: 7, height: 7, borderRadius: '50%', background: active ? color : '#aab0b8', flexShrink: 0, transition: 'background 0.12s' }} />
-            <span style={{ fontSize: 12, fontWeight: active ? 600 : 400, color: active ? color : '#7a828c', fontFamily: "'Roboto', system-ui, sans-serif", whiteSpace: 'nowrap', transition: 'color 0.12s' }}>
+            <span style={{ width: 7, height: 7, borderRadius: '50%', background: active ? color : 'var(--neutral-300)', flexShrink: 0, transition: 'background 0.12s' }} />
+            <span style={{ fontSize: 12, fontWeight: active ? 600 : 400, color: active ? color : 'var(--text-body-secondary)', fontFamily: "'Roboto', system-ui, sans-serif", whiteSpace: 'nowrap', transition: 'color 0.12s' }}>
               {label}
             </span>
           </button>
@@ -221,7 +221,7 @@ const CHART_TYPE_TABS: { type: ChartGraphType; label: string; Icon: React.Compon
 function XTick({ x, y, payload }: any) {
   return (
     <g transform={`translate(${x},${y})`}>
-      <text x={0} y={0} dy={12} textAnchor="middle" fill="#7a828c" fontSize={11} fontFamily="'Roboto', system-ui, sans-serif">
+      <text x={0} y={0} dy={12} textAnchor="middle" fill="var(--text-body-secondary)" fontSize={11} fontFamily="'Roboto', system-ui, sans-serif">
         {payload.value}
       </text>
     </g>
@@ -232,7 +232,7 @@ function XTick({ x, y, payload }: any) {
 
 function ChartTypeHeader({ active, onChange }: { active: ChartGraphType; onChange: (t: ChartGraphType) => void }) {
   return (
-    <div style={{ display: 'flex', alignItems: 'stretch', borderBottom: '1px solid #eff1f3', paddingLeft: 24 }}>
+    <div style={{ display: 'flex', alignItems: 'stretch', borderBottom: '1px solid var(--neutral-100)', paddingLeft: 24 }}>
       {CHART_TYPE_TABS.map(({ type, label, Icon }) => {
         const isActive = active === type
         return (
@@ -243,10 +243,10 @@ function ChartTypeHeader({ active, onChange }: { active: ChartGraphType; onChang
               display: 'flex', alignItems: 'center', gap: 6,
               padding: '10px 16px 10px 0', marginRight: 20,
               background: 'none', border: 'none',
-              borderBottom: isActive ? '2px solid #4285f4' : '2px solid transparent',
+              borderBottom: isActive ? '2px solid var(--content-action-primary-600)' : '2px solid transparent',
               marginBottom: -1,
               cursor: 'pointer',
-              color: isActive ? '#021920' : '#7a828c',
+              color: isActive ? 'var(--text-body-primary)' : 'var(--text-body-secondary)',
               fontSize: 14, fontWeight: isActive ? 600 : 300,
               fontFamily: "'Roboto', system-ui, sans-serif",
               transition: 'color 0.12s, border-color 0.12s',
@@ -321,11 +321,11 @@ function ChartHeader({
   ]
 
   return (
-    <div style={{ display: 'flex', alignItems: 'center', gap: 8, borderBottom: '1px solid #eff1f3', paddingLeft: 24 }}>
+    <div style={{ display: 'flex', alignItems: 'center', gap: 8, borderBottom: '1px solid var(--neutral-100)', paddingLeft: 24 }}>
       {/* Title + description */}
       <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 4, padding: '24px 0' }}>
-        <p style={{ margin: 0, fontSize: 16, fontWeight: 600, lineHeight: '24px', color: '#021920' }}>{title}</p>
-        <p style={{ margin: 0, fontSize: 14, fontWeight: 400, lineHeight: '20px', color: '#7a828c' }}>{description}</p>
+        <p style={{ margin: 0, fontSize: 16, fontWeight: 600, lineHeight: '24px', color: 'var(--text-body-primary)' }}>{title}</p>
+        <p style={{ margin: 0, fontSize: 14, fontWeight: 400, lineHeight: '20px', color: 'var(--text-body-secondary)' }}>{description}</p>
       </div>
 
       {/* Calendar header: series chips + period button */}
@@ -334,7 +334,7 @@ function ChartHeader({
           <SeriesToggles activeSeries={activeSeries} onToggle={onSeriesToggle} />
 
           {/* Separator */}
-          <div style={{ width: 1, height: 20, background: '#eff1f3' }} />
+          <div style={{ width: 1, height: 20, background: 'var(--neutral-100)' }} />
 
           {/* Period button */}
           <div
@@ -343,17 +343,17 @@ function ChartHeader({
             style={{
               display: 'flex', alignItems: 'center', gap: 8,
               padding: '8px 12px',
-              border: '1px solid #689df6', borderRadius: 8,
+              border: '1px solid var(--content-action-primary-500)', borderRadius: 8,
               cursor: 'pointer', userSelect: 'none',
-              background: calOpen ? '#eef3fb' : 'transparent',
+              background: calOpen ? 'var(--content-action-primary-100)' : 'transparent',
             }}
           >
-            <CalendarBlankIcon size={16} color="#3264b8" weight="thin" />
-            <span style={{ fontSize: 12, fontWeight: 400, lineHeight: '20px', color: '#3264b8', whiteSpace: 'nowrap' }}>
+            <CalendarBlankIcon size={16} color="var(--content-action-primary-700)" weight="thin" />
+            <span style={{ fontSize: 12, fontWeight: 400, lineHeight: '20px', color: 'var(--content-action-primary-700)', whiteSpace: 'nowrap' }}>
               {periodLabel}
             </span>
             <CaretDownIcon
-              size={16} color="#3264b8" weight="thin"
+              size={16} color="var(--content-action-primary-700)" weight="thin"
               style={{ transform: calOpen ? 'rotate(180deg)' : 'none', transition: 'transform 0.15s' }}
             />
           </div>
@@ -364,12 +364,12 @@ function ChartHeader({
               ref={popRef}
               style={{
                 position: 'fixed', top: popPos.top, right: popPos.right,
-                zIndex: 1000, background: '#ffffff',
-                border: '1px solid #eff1f3', borderRadius: 8,
+                zIndex: 1000, background: 'var(--neutral-0)',
+                border: '1px solid var(--neutral-100)', borderRadius: 8,
                 boxShadow: '0 4px 24px rgba(5, 3, 38, 0.10)', padding: 12,
-                '--rdp-accent-color': '#4285f4',
-                '--rdp-accent-color-dark': '#3264b8',
-                '--rdp-background-color': '#eef3fb',
+                '--rdp-accent-color': 'var(--content-action-primary-600)',
+                '--rdp-accent-color-dark': 'var(--content-action-primary-700)',
+                '--rdp-background-color': 'var(--content-action-primary-100)',
               } as React.CSSProperties}
             >
               <div style={{ display: 'flex', gap: 16 }}>
@@ -395,7 +395,7 @@ function ChartHeader({
                 style={{
                   display: 'flex', flexDirection: 'column', gap: 4,
                   padding: '20px 28px',
-                  borderLeft: i === 0 ? '1px solid #aab0b8' : 'none',
+                  borderLeft: i === 0 ? '1px solid var(--neutral-300)' : 'none',
                   background: active ? color : 'transparent',
                   minWidth: 120,
                   cursor: 'pointer',
@@ -403,10 +403,10 @@ function ChartHeader({
                   userSelect: 'none',
                 }}
               >
-                <p style={{ margin: 0, fontSize: 12, fontWeight: 400, lineHeight: '20px', color: active ? 'rgba(255,255,255,0.75)' : '#7a828c' }}>
+                <p style={{ margin: 0, fontSize: 12, fontWeight: 400, lineHeight: '20px', color: active ? 'rgba(255,255,255,0.75)' : 'var(--text-body-secondary)' }}>
                   {data.label}
                 </p>
-                <p style={{ margin: 0, fontSize: 28, fontWeight: 400, lineHeight: '34px', color: active ? '#ffffff' : '#021920' }}>
+                <p style={{ margin: 0, fontSize: 28, fontWeight: 400, lineHeight: '34px', color: active ? 'var(--neutral-0)' : 'var(--text-body-primary)' }}>
                   {data.value}
                 </p>
               </div>
@@ -447,8 +447,8 @@ function ChartBody({
   )
 
   const tooltipStyle = {
-    backgroundColor: '#ffffff', border: '1px solid #eff1f3',
-    borderRadius: 6, fontSize: 12, color: '#021920',
+    backgroundColor: 'var(--neutral-0)', border: '1px solid var(--neutral-100)',
+    borderRadius: 6, fontSize: 12, color: 'var(--text-body-primary)',
   }
 
   // ── Bar ──────────────────────────────────────────────────────────────────────
@@ -513,7 +513,7 @@ function ChartBody({
       <ResponsiveContainer width="100%" height={200}>
         <LineChart data={data}>
           {commonXAxis}
-          <Tooltip contentStyle={tooltipStyle} cursor={{ stroke: '#eff1f3', strokeWidth: 1 }}
+          <Tooltip contentStyle={tooltipStyle} cursor={{ stroke: 'var(--neutral-100)', strokeWidth: 1 }}
             formatter={(v, name) => [(v as number).toLocaleString(), name as string]} />
           {activeSeries_.map(s => (
             <Line
@@ -543,7 +543,7 @@ function ChartLegend({ activeSeries }: { activeSeries: DataSeries[] }) {
       {activeSeries.map(s => (
         <div key={s} style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
           <span style={{ width: 8, height: 8, borderRadius: 2, background: SERIES_CONFIG[s].color, flexShrink: 0 }} />
-          <span style={{ fontSize: 12, fontWeight: 400, color: '#021920' }}>{SERIES_CONFIG[s].label}</span>
+          <span style={{ fontSize: 12, fontWeight: 400, color: 'var(--text-body-primary)' }}>{SERIES_CONFIG[s].label}</span>
         </div>
       ))}
     </div>
@@ -579,7 +579,7 @@ export function FullSizeChart({
   return (
     <div
       className={className}
-      style={{ background: '#ffffff', border: '1px solid #eff1f3', borderRadius: 8, overflow: 'hidden', width: '100%' }}
+      style={{ background: 'var(--neutral-0)', border: '1px solid var(--neutral-100)', borderRadius: 8, overflow: 'hidden', width: '100%' }}
     >
       <ChartHeader
         title={title}

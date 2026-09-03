@@ -30,13 +30,13 @@ export const Default: Story = {
         <Tab value="reports">Reports</Tab>
       </TabList>
       <TabPanel value="overview">
-        <p style={{ padding: '12px 0', fontSize: 14, color: '#021920' }}>Overview content</p>
+        <p style={{ padding: '12px 0', fontSize: 14, color: 'var(--text-body-primary)' }}>Overview content</p>
       </TabPanel>
       <TabPanel value="analytics">
-        <p style={{ padding: '12px 0', fontSize: 14, color: '#021920' }}>Analytics content</p>
+        <p style={{ padding: '12px 0', fontSize: 14, color: 'var(--text-body-primary)' }}>Analytics content</p>
       </TabPanel>
       <TabPanel value="reports">
-        <p style={{ padding: '12px 0', fontSize: 14, color: '#021920' }}>Reports content</p>
+        <p style={{ padding: '12px 0', fontSize: 14, color: 'var(--text-body-primary)' }}>Reports content</p>
       </TabPanel>
     </Tabs>
   ),
@@ -79,13 +79,13 @@ export const MinimalDefault: Story = {
         <Tab value="reports">Reports</Tab>
       </TabList>
       <TabPanel value="overview">
-        <p style={{ padding: '12px 0', fontSize: 14, color: '#021920' }}>Overview content</p>
+        <p style={{ padding: '12px 0', fontSize: 14, color: 'var(--text-body-primary)' }}>Overview content</p>
       </TabPanel>
       <TabPanel value="analytics">
-        <p style={{ padding: '12px 0', fontSize: 14, color: '#021920' }}>Analytics content</p>
+        <p style={{ padding: '12px 0', fontSize: 14, color: 'var(--text-body-primary)' }}>Analytics content</p>
       </TabPanel>
       <TabPanel value="reports">
-        <p style={{ padding: '12px 0', fontSize: 14, color: '#021920' }}>Reports content</p>
+        <p style={{ padding: '12px 0', fontSize: 14, color: 'var(--text-body-primary)' }}>Reports content</p>
       </TabPanel>
     </Tabs>
   ),
@@ -126,7 +126,7 @@ function SectionLabel({ children }: { children: string }) {
       fontWeight:    600,
       letterSpacing: '0.48px',
       textTransform: 'uppercase',
-      color:         '#000',
+      color:         'var(--text-body-primary)',
       margin:        '16px 0 8px 0',
     }}>
       {children}

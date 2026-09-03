@@ -27,7 +27,7 @@ export function UnsavedChangesModal({
         <span id="unsaved-changes-title">Unsaved Changes</span>
       </ModalHeader>
       <ModalBody>
-        <p style={{ margin: 0, fontSize: 14, lineHeight: '20px', color: '#021920' }}>
+        <p style={{ margin: 0, fontSize: 14, lineHeight: '20px', color: 'var(--text-body-primary)' }}>
           You have unsaved changes for {targetInstance ?? 'this instance'}. Save, discard, or stay?
         </p>
       </ModalBody>

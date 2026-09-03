@@ -21,10 +21,10 @@ type Release = {
 // ── Badge config ──────────────────────────────────────────────────────────────
 
 const TYPE_BADGE: Record<ChangeType, { label: string; bg: string; color: string }> = {
-  added:      { label: 'Added',      bg: 'var(--color-success-100)', color: '#1a6b1a' },
-  updated:    { label: 'Updated',    bg: 'var(--color-info-100)',    color: '#1a3e6b' },
-  fixed:      { label: 'Fixed',      bg: 'var(--color-warning-100)', color: '#7a4a00' },
-  deprecated: { label: 'Deprecated', bg: 'var(--color-error-100)',   color: '#8b1a2a' },
+  added:      { label: 'Added',      bg: 'var(--color-success-100)', color: 'var(--success-600)' },
+  updated:    { label: 'Updated',    bg: 'var(--color-info-100)',    color: 'var(--info-500)' },
+  fixed:      { label: 'Fixed',      bg: 'var(--color-warning-100)', color: 'var(--warning-600)' },
+  deprecated: { label: 'Deprecated', bg: 'var(--color-error-100)',   color: 'var(--error-500)' },
 }
 
 // ── Changelog data ────────────────────────────────────────────────────────────
@@ -133,7 +133,7 @@ function ReleaseBlock({ release }: { release: Release }) {
         <h2 style={{ fontSize: 16, fontWeight: 600, color: 'var(--color-text-primary)', margin: 0 }}>
           {release.date}
         </h2>
-        <div style={{ flex: 1, height: 1, background: 'var(--color-border, #e2e5e9)' }} />
+        <div style={{ flex: 1, height: 1, background: 'var(--color-border, var(--border))' }} />
       </div>
 
       {/* Change rows */}

@@ -22,13 +22,13 @@ export function PeerComparisonPanel({ peers, anonymize }: Props) {
   if (peers.length === 0) {
     return (
       <div style={{
-        background: '#ffffff', borderRadius: 8, border: '1px solid #e2e5e8',
+        background: 'var(--neutral-0)', borderRadius: 8, border: '1px solid var(--neutral-100)',
         padding: '32px 24px', textAlign: 'center', fontFamily: 'var(--font-sans)',
       }}>
-        <p style={{ margin: 0, fontSize: 14, fontWeight: 600, color: '#4b535e' }}>
+        <p style={{ margin: 0, fontSize: 14, fontWeight: 600, color: 'var(--neutral-700)' }}>
           No peer groups available
         </p>
-        <p style={{ margin: '6px 0 0', fontSize: 13, color: '#7a828c' }}>
+        <p style={{ margin: '6px 0 0', fontSize: 13, color: 'var(--text-body-secondary)' }}>
           This is the only group in its parent scope — peer comparison requires at least two groups.
         </p>
       </div>
@@ -46,21 +46,21 @@ export function PeerComparisonPanel({ peers, anonymize }: Props) {
   const rank = sorted.findIndex(p => p.isCurrentScope) + 1
 
   return (
-    <div style={{ background: '#ffffff', borderRadius: 8, border: '1px solid #e2e5e8', overflow: 'hidden', fontFamily: 'var(--font-sans)' }}>
+    <div style={{ background: 'var(--neutral-0)', borderRadius: 8, border: '1px solid var(--neutral-100)', overflow: 'hidden', fontFamily: 'var(--font-sans)' }}>
       <div style={{
         display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-        padding: '14px 20px', borderBottom: '1px solid #eff1f3',
+        padding: '14px 20px', borderBottom: '1px solid var(--neutral-100)',
       }}>
         <div>
-          <span style={{ fontSize: 14, fontWeight: 600, color: '#021920' }}>Team Adherence Comparison</span>
+          <span style={{ fontSize: 14, fontWeight: 600, color: 'var(--text-body-primary)' }}>Team Adherence Comparison</span>
           {currentPeer && (
-            <span style={{ fontSize: 12, color: '#7a828c', marginLeft: 10 }}>
+            <span style={{ fontSize: 12, color: 'var(--text-body-secondary)', marginLeft: 10 }}>
               Ranks {rank} of {sorted.length} · {currentPeer.parentLabel}
             </span>
           )}
         </div>
         <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-          <span style={{ fontSize: 11, color: '#7a828c' }}>Sort:</span>
+          <span style={{ fontSize: 11, color: 'var(--text-body-secondary)' }}>Sort:</span>
           {(Object.keys(SORT_LABELS) as SortBy[]).map(s => (
             <button
               key={s}
@@ -68,9 +68,9 @@ export function PeerComparisonPanel({ peers, anonymize }: Props) {
               aria-pressed={sortBy === s}
               style={{
                 padding: '3px 9px', borderRadius: 6, fontSize: 11,
-                border: `1px solid ${sortBy === s ? '#4285f4' : '#d9dce0'}`,
-                background: sortBy === s ? '#f0f4fb' : '#ffffff',
-                color: sortBy === s ? '#1a3561' : '#021920',
+                border: `1px solid ${sortBy === s ? 'var(--content-action-primary-600)' : 'var(--neutral-200)'}`,
+                background: sortBy === s ? 'var(--content-action-primary-100)' : 'var(--neutral-0)',
+                color: sortBy === s ? 'var(--content-action-primary-700)' : 'var(--text-body-primary)',
                 fontWeight: sortBy === s ? 600 : 400,
                 cursor: 'pointer', fontFamily: 'var(--font-sans)',
               }}
@@ -92,46 +92,46 @@ export function PeerComparisonPanel({ peers, anonymize }: Props) {
               style={{
                 display: 'flex', alignItems: 'center', gap: 12,
                 padding: '10px 12px', borderRadius: 6,
-                background: isOwn ? '#f0f4fb' : '#ffffff',
-                border: `1px solid ${isOwn ? '#4285f4' : '#eff1f3'}`,
+                background: isOwn ? 'var(--content-action-primary-100)' : 'var(--neutral-0)',
+                border: `1px solid ${isOwn ? 'var(--content-action-primary-600)' : 'var(--neutral-100)'}`,
               }}
             >
               {/* Rank + indicator */}
-              <span style={{ fontSize: 11, fontWeight: 600, color: '#aab0b8', minWidth: 20 }}>
+              <span style={{ fontSize: 11, fontWeight: 600, color: 'var(--neutral-300)', minWidth: 20 }}>
                 {isOwn ? '▸' : `${idx + 1}`}
               </span>
 
               {/* Name */}
               <span style={{
                 fontSize: 13, fontWeight: isOwn ? 700 : 400,
-                color: isOwn ? '#021920' : '#4b535e', minWidth: 220, flex: '0 0 220px',
+                color: isOwn ? 'var(--text-body-primary)' : 'var(--neutral-700)', minWidth: 220, flex: '0 0 220px',
                 overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap',
               }}>
                 {displayName}
-                {isOwn && <span style={{ fontSize: 10, color: '#4285f4', marginLeft: 6, fontWeight: 600 }}>Your group</span>}
+                {isOwn && <span style={{ fontSize: 10, color: 'var(--content-action-primary-600)', marginLeft: 6, fontWeight: 600 }}>Your group</span>}
               </span>
 
               {/* Bar */}
-              <div style={{ flex: 1, height: 8, background: '#eff1f3', borderRadius: 4, overflow: 'hidden' }}>
+              <div style={{ flex: 1, height: 8, background: 'var(--neutral-100)', borderRadius: 4, overflow: 'hidden' }}>
                 <div style={{
                   width: `${barWidth}%`, height: '100%', borderRadius: 4,
-                  background: isOwn ? '#4285f4' : '#aac4e8',
+                  background: isOwn ? 'var(--content-action-primary-600)' : 'var(--neutral-300)',
                   transition: 'width 300ms ease',
                 }} />
               </div>
 
               {/* Value */}
-              <span style={{ fontSize: 13, fontWeight: 600, color: isOwn ? '#021920' : '#4b535e', minWidth: 52, textAlign: 'right' }}>
+              <span style={{ fontSize: 13, fontWeight: 600, color: isOwn ? 'var(--text-body-primary)' : 'var(--neutral-700)', minWidth: 52, textAlign: 'right' }}>
                 {peer.adherencePct.toFixed(1)}%
               </span>
 
               {/* OOA count */}
-              <span style={{ fontSize: 11, color: '#7a828c', minWidth: 54, textAlign: 'right' }}>
+              <span style={{ fontSize: 11, color: 'var(--text-body-secondary)', minWidth: 54, textAlign: 'right' }}>
                 {peer.outOfAdherenceCount} OOA
               </span>
 
               {/* Size */}
-              <span style={{ fontSize: 11, color: '#aab0b8', minWidth: 50, textAlign: 'right' }}>
+              <span style={{ fontSize: 11, color: 'var(--neutral-300)', minWidth: 50, textAlign: 'right' }}>
                 {peer.agentCount} agents
               </span>
             </div>
@@ -139,7 +139,7 @@ export function PeerComparisonPanel({ peers, anonymize }: Props) {
         })}
       </div>
 
-      <div style={{ padding: '8px 20px 14px', fontSize: 11, color: '#aab0b8' }}>
+      <div style={{ padding: '8px 20px 14px', fontSize: 11, color: 'var(--neutral-300)' }}>
         Adherence % is weighted by scheduled time over the selected period. Peer groups you don't manage are anonymized per your role.
       </div>
     </div>

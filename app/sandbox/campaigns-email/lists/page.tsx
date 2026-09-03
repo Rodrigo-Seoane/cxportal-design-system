@@ -23,15 +23,15 @@ function fmtCount(n: number): string {
 }
 
 const STATUS_CONFIG: Record<ListStatus, { label: string; bg: string; color: string }> = {
-  active:   { label: 'Active',   bg: 'var(--color-success-100)',     color: '#1a6b1a'                       },
-  updating: { label: 'Updating', bg: 'var(--color-warning-100)',     color: '#7a4a00'                       },
+  active:   { label: 'Active',   bg: 'var(--color-success-100)',     color: 'var(--text-success)'                       },
+  updating: { label: 'Updating', bg: 'var(--color-warning-100)',     color: 'var(--text-warning)'                       },
   archived: { label: 'Archived', bg: 'var(--color-surface-display)', color: 'var(--color-text-secondary)'   },
 }
 
 const TYPE_CONFIG: Record<ListChannel, { label: string; bg: string; color: string }> = {
-  email: { label: 'Email',        bg: '#d6e2f5', color: '#2859ab' },
-  phone: { label: 'Phone',        bg: '#ddf4d2', color: '#4b9924' },
-  both:  { label: 'Email + Phone',bg: '#fbeed8', color: '#c79033' },
+  email: { label: 'Email',        bg: 'var(--info-100)', color: 'var(--text-info)' },
+  phone: { label: 'Phone',        bg: 'var(--success-100)', color: 'var(--surface-accent-success-dark)' },
+  both:  { label: 'Email + Phone',bg: 'var(--warning-100)', color: 'var(--surface-accent-warning-dark)' },
 }
 
 function StatusChip({ status }: { status: ListStatus }) {
@@ -135,7 +135,7 @@ export default function ListsPage() {
             fontSize: 11, fontWeight: 600, padding: '3px 10px', borderRadius: 4,
             border: '1px solid',
             background:  pageState === s ? 'var(--color-primary)' : 'transparent',
-            color:       pageState === s ? '#fff' : 'var(--color-text-secondary)',
+            color:       pageState === s ? 'var(--neutral-0)' : 'var(--color-text-secondary)',
             borderColor: pageState === s ? 'var(--color-primary)' : 'var(--color-border)',
             cursor: 'pointer',
           }}>{s}</button>

@@ -42,8 +42,8 @@ const CHANNEL_OPTIONS = [
 ]
 
 const STATUS_STYLE: Record<string, { bg: string; color: string }> = {
-  active:   { bg: 'var(--color-success-100)',    color: '#1a6b1a'                       },
-  updating: { bg: 'var(--color-warning-100)',    color: '#7a4a00'                       },
+  active:   { bg: 'var(--color-success-100)',    color: 'var(--text-success)'                       },
+  updating: { bg: 'var(--color-warning-100)',    color: 'var(--text-warning)'                       },
   archived: { bg: 'var(--color-surface-display)',color: 'var(--color-text-secondary)'   },
 }
 

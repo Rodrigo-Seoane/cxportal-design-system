@@ -23,10 +23,10 @@ const ITEMS = Array.from({ length: 20 }, (_, i) => `Item ${i + 1} — scrollable
 
 export const Vertical: Story = {
   render: () => (
-    <ScrollArea style={{ height: 200, width: 280, border: '1px solid #eff1f3', borderRadius: 8 }}>
+    <ScrollArea style={{ height: 200, width: 280, border: '1px solid var(--neutral-100)', borderRadius: 8 }}>
       <div style={{ padding: 12 }}>
         {ITEMS.map((item) => (
-          <div key={item} style={{ padding: '8px 0', borderBottom: '1px solid #eff1f3', fontSize: 14, color: '#021920' }}>
+          <div key={item} style={{ padding: '8px 0', borderBottom: '1px solid var(--neutral-100)', fontSize: 14, color: 'var(--text-body-primary)' }}>
             {item}
           </div>
         ))}
@@ -37,7 +37,7 @@ export const Vertical: Story = {
 
 export const Horizontal: Story = {
   render: () => (
-    <ScrollArea style={{ width: 280, border: '1px solid #eff1f3', borderRadius: 8 }}>
+    <ScrollArea style={{ width: 280, border: '1px solid var(--neutral-100)', borderRadius: 8 }}>
       <div style={{ display: 'flex', gap: 8, padding: 12, width: 'max-content' }}>
         {Array.from({ length: 12 }, (_, i) => (
           <div
@@ -46,13 +46,13 @@ export const Horizontal: Story = {
               width: 80,
               height: 80,
               borderRadius: 8,
-              background: '#f0f4fb',
-              border: '1px solid #d9dce0',
+              background: '#f0f4fb', // TODO(bucket-c): no clear token owner — generic light-blue demo swatch, not tied to a specific interactive role
+              border: '1px solid var(--neutral-200)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
               fontSize: 12,
-              color: '#7a828c',
+              color: 'var(--text-body-secondary)',
               flexShrink: 0,
             }}
           >

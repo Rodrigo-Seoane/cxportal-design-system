@@ -47,7 +47,7 @@ export function MetricTile({
 }: MetricTileProps) {
   const positive   = delta !== undefined && delta >= 0
   const DeltaArrow = positive ? ArrowFatLineUpIcon : ArrowFatLineDownIcon
-  const deltaColor = delta === undefined ? '' : positive ? '#1a6b1a' : '#8b1a2a'
+  const deltaColor = delta === undefined ? '' : positive ? 'var(--text-success)' : 'var(--text-destructive)'
 
   return (
     <div style={{

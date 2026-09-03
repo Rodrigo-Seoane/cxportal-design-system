@@ -27,9 +27,9 @@ function fmtDate(iso: string | null): string {
 }
 
 function openRateColor(rate: number): string {
-  if (rate >= 0.6) return '#1a6b1a'
+  if (rate >= 0.6) return 'var(--text-success)'
   if (rate >= 0.4) return 'var(--color-text-primary)'
-  return '#8b1a2a'
+  return 'var(--text-destructive)'
 }
 
 // ── Types ─────────────────────────────────────────────────────────────────────
@@ -99,7 +99,7 @@ function ComponentDetail({
             {component.name}
           </h3>
           <span style={{ fontSize: 12, fontWeight: 600, padding: '3px 8px', borderRadius: 4,
-            background: 'var(--color-info-100)', color: '#1a4f9e' }}>
+            background: 'var(--color-info-100)', color: 'var(--text-info)' }}>
             {component.shortCode}
           </span>
         </div>
@@ -184,7 +184,7 @@ function GroupDetail({ groupId, onSelectTopic }: { groupId: string; onSelectTopi
       <div>
         <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 4 }}>
           <span style={{ fontSize: 11, fontWeight: 600, padding: '2px 7px', borderRadius: 4,
-            background: 'var(--color-info-100)', color: '#1a4f9e' }}>
+            background: 'var(--color-info-100)', color: 'var(--text-info)' }}>
             Campaign Group
           </span>
           {component && (
@@ -298,7 +298,7 @@ function GroupDetail({ groupId, onSelectTopic }: { groupId: string; onSelectTopi
                 </span>
                 <span style={{ fontSize: 11, fontWeight: 600, padding: '2px 6px', borderRadius: 4, flexShrink: 0,
                   background: c.status === 'sent' ? 'var(--color-success-100)' : c.status === 'draft' ? 'var(--color-surface-display)' : 'var(--color-warning-100)',
-                  color: c.status === 'sent' ? '#1a6b1a' : c.status === 'draft' ? 'var(--color-text-secondary)' : '#7a4a00',
+                  color: c.status === 'sent' ? 'var(--text-success)' : c.status === 'draft' ? 'var(--color-text-secondary)' : 'var(--text-warning)',
                 }}>
                   {c.status}
                 </span>
@@ -329,8 +329,8 @@ function TopicDetail({ topicId }: { topicId: string }) {
     .slice(0, 4)
 
   const STATUS_COLOR: Record<string, { bg: string; color: string }> = {
-    active:   { bg: 'var(--color-success-100)', color: '#1a6b1a' },
-    paused:   { bg: 'var(--color-warning-100)', color: '#7a4a00' },
+    active:   { bg: 'var(--color-success-100)', color: 'var(--text-success)' },
+    paused:   { bg: 'var(--color-warning-100)', color: 'var(--text-warning)' },
     archived: { bg: 'var(--color-surface-display)', color: 'var(--color-text-secondary)' },
   }
   const st = STATUS_COLOR[topic.status] ?? STATUS_COLOR.archived
@@ -343,7 +343,7 @@ function TopicDetail({ topicId }: { topicId: string }) {
       <div>
         <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 4 }}>
           <span style={{ fontSize: 11, fontWeight: 600, padding: '2px 7px', borderRadius: 4,
-            background: 'var(--color-info-100)', color: '#1a4f9e' }}>Topic</span>
+            background: 'var(--color-info-100)', color: 'var(--text-info)' }}>Topic</span>
           {comp && group && (
             <span style={{ fontSize: 12, color: 'var(--color-text-secondary)' }}>
               {comp.shortCode} · {group.name}
@@ -427,7 +427,7 @@ function TopicDetail({ topicId }: { topicId: string }) {
                 </span>
                 <span style={{ fontSize: 11, fontWeight: 600, padding: '2px 6px', borderRadius: 4, flexShrink: 0,
                   background: c.status === 'sent' ? 'var(--color-success-100)' : c.status === 'draft' ? 'var(--color-surface-display)' : 'var(--color-warning-100)',
-                  color: c.status === 'sent' ? '#1a6b1a' : c.status === 'draft' ? 'var(--color-text-secondary)' : '#7a4a00',
+                  color: c.status === 'sent' ? 'var(--text-success)' : c.status === 'draft' ? 'var(--color-text-secondary)' : 'var(--text-warning)',
                 }}>
                   {c.status}
                 </span>

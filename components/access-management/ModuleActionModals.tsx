@@ -32,7 +32,7 @@ export function EnableModuleModal({ open, moduleName, instanceAlias, onClose, on
           <MessageBox type="info" dismissible={false} message={`Enabling ${moduleName} will deploy it to ${instanceAlias}.`} />
           <Input label="Deployment Notes" size="small" placeholder="Optional notes for this deployment" value={notes} onChange={setNotes} />
           <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
-            <span style={{ fontSize: 10, fontWeight: 600, color: '#021920' }}>Notify Team on Completion</span>
+            <span style={{ fontSize: 10, fontWeight: 600, color: 'var(--text-body-primary)' }}>Notify Team on Completion</span>
             <Switch checked={notify} onChange={setNotify} size="small" showLabel={false} onSurface="light" />
           </div>
         </div>
@@ -58,7 +58,7 @@ export function SetManualDeployModal({ open, moduleName, instanceAlias, onClose,
           <MessageBox type="warning" dismissible={false} message={`Setting manual deployment disables automatic updates for ${moduleName} on ${instanceAlias}.`} />
           <Input label="Deployment Version" size="small" placeholder="e.g. 2026.07.1" value={version} onChange={setVersion} />
           <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
-            <span style={{ fontSize: 10, fontWeight: 600, color: '#021920' }}>Require Approval</span>
+            <span style={{ fontSize: 10, fontWeight: 600, color: 'var(--text-body-primary)' }}>Require Approval</span>
             <Switch checked={requireApproval} onChange={setRequireApproval} size="small" showLabel={false} onSurface="light" />
           </div>
           <Input label="Approver Email" size="small" placeholder="Enter approver email (optional)" value={approver} onChange={setApprover} />
@@ -82,7 +82,7 @@ export function DownloadCfTemplateModal({ open, moduleName, instanceAlias, onClo
         <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
           <MessageBox type="info" dismissible={false} message={`Download the CloudFormation template for ${moduleName} on ${instanceAlias}.`} />
           <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
-            <span style={{ fontSize: 10, fontWeight: 600, color: '#021920' }}>Include Current Parameters</span>
+            <span style={{ fontSize: 10, fontWeight: 600, color: 'var(--text-body-primary)' }}>Include Current Parameters</span>
             <Switch checked={includeParams} onChange={setIncludeParams} size="small" showLabel={false} onSurface="light" />
           </div>
         </div>

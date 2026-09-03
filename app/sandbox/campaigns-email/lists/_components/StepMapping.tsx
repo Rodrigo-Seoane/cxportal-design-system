@@ -42,8 +42,8 @@ export const DEFAULT_MAPPINGS: MappingState = {
 
 function chipStyle(attr: string): React.CSSProperties {
   if (attr === '_ignore') return { background: 'var(--color-surface-display)', color: 'var(--color-text-secondary)' }
-  if (attr === '_custom') return { background: 'var(--color-warning-100)',     color: '#7a4a00'                     }
-  return                         { background: 'var(--color-info-100)',         color: '#1a4f9e'                     }
+  if (attr === '_custom') return { background: 'var(--color-warning-100)',     color: 'var(--text-warning)'                     }
+  return                         { background: 'var(--color-info-100)',         color: 'var(--text-info)'                     }
 }
 
 function chipLabel(attr: string, customName: string): string {
@@ -138,7 +138,7 @@ export function StepMapping({ mappings, onChange, error }: StepMappingProps) {
       </div>
 
       {error && (
-        <p style={{ margin: '10px 0 0', fontSize: 12, color: '#c0152f', fontWeight: 500 }}>
+        <p style={{ margin: '10px 0 0', fontSize: 12, color: 'var(--text-error)', fontWeight: 500 }}>
           {error}
         </p>
       )}

@@ -286,7 +286,7 @@ function DestructiveShowcase() {
             <Button variant="destructive" size="sm">Delete Campaign</Button>
           </div>
           <div className="px-4 py-5">
-            <Button variant="destructive" size="sm" className="bg-[#f3547d] border-[#f792ac] text-[#021920]">Delete Campaign</Button>
+            <Button variant="destructive" size="sm" className="bg-[var(--error-300)] border-[var(--surface-action-destructive-disabled)] text-[var(--text-body-primary)]">Delete Campaign</Button>
           </div>
           <div className="px-4 py-5">
             <Button variant="destructive" size="sm" disabled>Delete Campaign</Button>
@@ -336,13 +336,13 @@ function ColoredBgShowcase() {
             <p className="text-sm font-medium" style={{ color: 'var(--color-text-primary)' }}>Colored BG</p>
             <p className="text-xs mt-0.5" style={{ color: 'var(--color-text-secondary)' }}>Small · non-white surfaces</p>
           </div>
-          <div className="px-4 py-5" style={{ backgroundColor: '#4285f4' }}>
+          <div className="px-4 py-5" style={{ backgroundColor: 'var(--content-action-primary-600)' }}>
             <Button variant="colored-bg" size="sm">Get Started</Button>
           </div>
-          <div className="px-4 py-5" style={{ backgroundColor: '#4285f4' }}>
-            <Button variant="colored-bg" size="sm" className="bg-[#689df6] border-[#689df6] text-[#eff1f3]">Get Started</Button>
+          <div className="px-4 py-5" style={{ backgroundColor: 'var(--content-action-primary-600)' }}>
+            <Button variant="colored-bg" size="sm" className="bg-[var(--content-action-primary-700)] border-[var(--content-action-primary-700)] text-[var(--text-on-action-primary)]">Get Started</Button>
           </div>
-          <div className="px-4 py-5" style={{ backgroundColor: '#4285f4' }}>
+          <div className="px-4 py-5" style={{ backgroundColor: 'var(--content-action-primary-600)' }}>
             <Button variant="colored-bg" size="sm" disabled>Get Started</Button>
           </div>
         </div>
@@ -440,12 +440,12 @@ function InputShowcase() {
 
 // ─── Navigation showcase ─────────────────────────────────────────────────────
 
-const NAV_BG      = '#050326'
-const NAV_HOVER   = '#4285f4'
-const NAV_ACTIVE  = '#3264b8'
-const NAV_TEXT    = '#eff1f3'
-const NAV_MUTED   = 'rgba(239,241,243,0.45)'
-const NAV_SUB     = 'rgba(239,241,243,0.75)'
+const NAV_BG      = 'var(--surface-vertical-nav)'
+const NAV_HOVER   = 'var(--content-action-primary-700)'
+const NAV_ACTIVE  = 'var(--content-action-primary-600)'
+const NAV_TEXT    = 'var(--text-body-on-dark-surface)'
+const NAV_MUTED   = 'color-mix(in srgb, var(--text-body-on-dark-surface) 45%, transparent)'
+const NAV_SUB     = 'color-mix(in srgb, var(--text-body-on-dark-surface) 75%, transparent)'
 
 function NavItemRow({ label, state, type }: { label: string; state: 'Default' | 'Hover' | 'Active' | 'Disabled'; type: 'menu' | 'sub' }) {
   const isMenu   = type === 'menu'
@@ -453,6 +453,8 @@ function NavItemRow({ label, state, type }: { label: string; state: 'Default' | 
   const isHover  = state === 'Hover'
   const isDisabled = state === 'Disabled'
   const bg = isActive ? NAV_ACTIVE : isHover ? NAV_HOVER : 'transparent'
+  // TODO: #808080 (disabled nav-item text) left as-is — no dark-surface disabled-text
+  // token exists in the lookup table; needs a design decision. See hex-sweep report.
   const color = isDisabled ? '#808080' : isActive || isHover ? NAV_TEXT : isMenu ? NAV_MUTED : NAV_SUB
   const fw = isActive && !isMenu ? 600 : 300
 
@@ -471,7 +473,7 @@ function NavItemRow({ label, state, type }: { label: string; state: 'Default' | 
       }}
     >
       {isMenu && (
-        <div style={{ width: 20, height: 20, background: 'rgba(239,241,243,0.2)', borderRadius: 3, flexShrink: 0 }} />
+        <div style={{ width: 20, height: 20, background: 'color-mix(in srgb, var(--text-body-on-dark-surface) 20%, transparent)', borderRadius: 3, flexShrink: 0 }} />
       )}
       <span style={{ flex: 1, fontSize: 14, fontWeight: fw, lineHeight: '20px', color }}>{label}</span>
       {isMenu && (
@@ -560,7 +562,7 @@ function NavigationShowcase() {
       <div className="flex gap-6">
         {/* Collapsed */}
         <div style={{ width: 240, background: NAV_BG, borderRadius: 8, overflow: 'hidden', flexShrink: 0 }}>
-          <div style={{ padding: '12px 14px', borderBottom: '1px solid rgba(239,241,243,0.08)' }}>
+          <div style={{ padding: '12px 14px', borderBottom: '1px solid color-mix(in srgb, var(--text-body-on-dark-surface) 8%, transparent)' }}>
             <p style={{ fontSize: 11, fontWeight: 600, color: NAV_MUTED, margin: 0 }}>ALL COLLAPSED</p>
           </div>
           <NavItemRow label="Foundations" state="Default" type="menu" />
@@ -570,7 +572,7 @@ function NavigationShowcase() {
 
         {/* Open group, no active */}
         <div style={{ width: 240, background: NAV_BG, borderRadius: 8, overflow: 'hidden', flexShrink: 0 }}>
-          <div style={{ padding: '12px 14px', borderBottom: '1px solid rgba(239,241,243,0.08)' }}>
+          <div style={{ padding: '12px 14px', borderBottom: '1px solid color-mix(in srgb, var(--text-body-on-dark-surface) 8%, transparent)' }}>
             <p style={{ fontSize: 11, fontWeight: 600, color: NAV_MUTED, margin: 0 }}>GROUP OPEN</p>
           </div>
           <NavItemRow label="Foundations" state="Default" type="menu" />
@@ -583,7 +585,7 @@ function NavigationShowcase() {
 
         {/* Active sub-item */}
         <div style={{ width: 240, background: NAV_BG, borderRadius: 8, overflow: 'hidden', flexShrink: 0 }}>
-          <div style={{ padding: '12px 14px', borderBottom: '1px solid rgba(239,241,243,0.08)' }}>
+          <div style={{ padding: '12px 14px', borderBottom: '1px solid color-mix(in srgb, var(--text-body-on-dark-surface) 8%, transparent)' }}>
             <p style={{ fontSize: 11, fontWeight: 600, color: NAV_MUTED, margin: 0 }}>ACTIVE PAGE</p>
           </div>
           <NavItemRow label="Foundations" state="Default" type="menu" />
@@ -756,9 +758,9 @@ export default async function ComponentPage(props: PageProps<'/components/[slug]
   const doc = await getComponentDoc(slug)
 
   const statusColors: Record<string, { bg: string; text: string }> = {
-    stable: { bg: 'var(--color-success-100)', text: '#1a6b1a' },
-    wip:    { bg: 'var(--color-warning-100)', text: '#7a4a00' },
-    deprecated: { bg: 'var(--color-error-100)', text: '#8b1a2a' },
+    stable: { bg: 'var(--color-success-100)', text: 'var(--success-600)' },
+    wip:    { bg: 'var(--color-warning-100)', text: 'var(--warning-600)' },
+    deprecated: { bg: 'var(--color-error-100)', text: 'var(--error-500)' },
   }
   const badge = statusColors[meta.status]
 

@@ -8,10 +8,10 @@ const ACTIVITY_META: Record<ActivityCategory | 'Unknown', {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   Icon: React.ComponentType<any>
 }> = {
-  Productive:       { bg: '#d6e2f5', text: '#1a3561', Icon: BriefcaseIcon },
-  'Non-Productive': { bg: '#fbeed8', text: '#7a4a00', Icon: CoffeeIcon },
-  'Time Off':       { bg: '#eff1f3', text: '#4b535e', Icon: CalendarBlankIcon },
-  Unknown:          { bg: '#eff1f3', text: '#aab0b8', Icon: QuestionIcon },
+  Productive:       { bg: 'var(--info-100)', text: 'var(--text-info)', Icon: BriefcaseIcon },
+  'Non-Productive': { bg: 'var(--warning-100)', text: 'var(--text-warning)', Icon: CoffeeIcon },
+  'Time Off':       { bg: 'var(--neutral-100)', text: 'var(--text-body-primary)', Icon: CalendarBlankIcon },
+  Unknown:          { bg: 'var(--neutral-100)', text: 'var(--neutral-300)', Icon: QuestionIcon },
 }
 
 export interface ActivityPillProps {

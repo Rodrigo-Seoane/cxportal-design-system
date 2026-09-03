@@ -48,19 +48,19 @@ export interface InputProps {
 // ─── Design tokens (from CxPortal DS) ────────────────────────────────────────
 
 const T = {
-  borderDefault:  '#d9dce0',
-  borderFocus:    '#4285f4',
-  borderError:    '#f792ac',
-  borderDisabled: '#d9dce0',
-  bgDefault:      '#ffffff',
-  bgDisabled:     '#eff1f3',
-  textFocus:      '#4b535e',
-  textPlaceholder:'#7a828c',
-  textDisabled:   '#aab0b8',
-  textLabel:      '#021920',
-  textHint:       '#323840',
-  textError:      '#ef2056',
-  textRequired:   '#ef2056',
+  borderDefault:  'var(--neutral-200)',
+  borderFocus:    'var(--content-action-primary-600)',
+  borderError:    'var(--error-200)',
+  borderDisabled: 'var(--content-action-disabled-300)',
+  bgDefault:      'var(--neutral-0)',
+  bgDisabled:     'var(--content-action-disabled-100)',
+  textFocus:      'var(--text-body-primary)',
+  textPlaceholder:'var(--text-body-secondary)',
+  textDisabled:   'var(--content-action-disabled-700)',
+  textLabel:      'var(--text-body-primary)',
+  textHint:       'var(--text-body-primary)',
+  textError:      'var(--error-default)',
+  textRequired:   'var(--error-default)',
 } as const
 
 // ─── Size tokens ─────────────────────────────────────────────────────────────

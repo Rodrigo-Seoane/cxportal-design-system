@@ -37,12 +37,12 @@ export function ForceStateTool() {
           gap:          6,
           padding:     '4px 10px',
           borderRadius: 6,
-          border:      '1px solid #d9dce0',
-          background:  '#f8f8f8',
+          border:      '1px solid var(--neutral-200)',
+          background:  'var(--surface-section-group-bg)',
           cursor:      'pointer',
           fontSize:     12,
           fontWeight:   600,
-          color:       '#4b535e',
+          color:       'var(--text-body-primary)',
           fontFamily:  'var(--font-sans)',
         }}
         title="Dev tool — force page state"
@@ -56,8 +56,8 @@ export function ForceStateTool() {
           position:   'absolute',
           top:        'calc(100% + 4px)',
           right:       0,
-          background: '#ffffff',
-          border:     '1px solid #e2e5e8',
+          background: 'var(--surface-section-bg)',
+          border:     '1px solid var(--neutral-200)',
           borderRadius: 8,
           boxShadow:  '0 4px 24px rgba(2,25,32,0.12)',
           minWidth:    240,
@@ -74,16 +74,16 @@ export function ForceStateTool() {
                 textAlign:    'left',
                 padding:      '10px 14px',
                 border:       'none',
-                borderBottom: '1px solid #eff1f3',
-                background:   s.value === forceState ? '#f0f4fb' : 'transparent',
+                borderBottom: '1px solid var(--neutral-100)',
+                background:   s.value === forceState ? 'var(--content-action-primary-100)' : 'transparent',
                 cursor:       'pointer',
                 fontFamily:   'var(--font-sans)',
               }}
             >
-              <div style={{ fontSize: 13, fontWeight: s.value === forceState ? 600 : 400, color: '#021920' }}>
+              <div style={{ fontSize: 13, fontWeight: s.value === forceState ? 600 : 400, color: 'var(--text-body-primary)' }}>
                 {s.label}
               </div>
-              <div style={{ fontSize: 11, color: '#7a828c', marginTop: 1 }}>
+              <div style={{ fontSize: 11, color: 'var(--text-body-secondary)', marginTop: 1 }}>
                 {s.description}
               </div>
             </button>

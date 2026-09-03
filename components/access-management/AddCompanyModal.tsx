@@ -53,17 +53,17 @@ export function AddCompanyModal({ open, onClose, onCreate }: AddCompanyModalProp
           <Input label="Company ID" required placeholder="e.g. Acme-corp" value={companyId} onChange={setCompanyId} />
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-            <span style={{ fontSize: 12, fontWeight: 600, letterSpacing: '0.24px', color: '#021920' }}>Enable Login Report</span>
+            <span style={{ fontSize: 12, fontWeight: 600, letterSpacing: '0.24px', color: 'var(--text-body-primary)' }}>Enable Login Report</span>
             <Switch checked={enableLoginReport} onChange={setEnableLoginReport} showLabel={false} onSurface="light" />
           </div>
 
           <Input label="Description" required placeholder="Enter company description" value={description} onChange={setDescription} />
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-            <span style={{ fontSize: 12, fontWeight: 600, letterSpacing: '0.24px', color: '#021920' }}>Authentication Type *</span>
+            <span style={{ fontSize: 12, fontWeight: 600, letterSpacing: '0.24px', color: 'var(--text-body-primary)' }}>Authentication Type *</span>
             <div style={{ display: 'flex', gap: 24 }}>
-              <Radio label="Password" name="auth-type" value="password" checked={authType === 'password'} onChange={() => setAuthType('password')} size="small" accentColor="#0b8286" />
-              <Radio label="Azure SSO (Entra ID)" name="auth-type" value="azure-sso" checked={authType === 'azure-sso'} onChange={() => setAuthType('azure-sso')} size="small" accentColor="#0b8286" />
+              <Radio label="Password" name="auth-type" value="password" checked={authType === 'password'} onChange={() => setAuthType('password')} size="small" accentColor="var(--content-action-primary-600)" />
+              <Radio label="Azure SSO (Entra ID)" name="auth-type" value="azure-sso" checked={authType === 'azure-sso'} onChange={() => setAuthType('azure-sso')} size="small" accentColor="var(--content-action-primary-600)" />
             </div>
           </div>
         </div>

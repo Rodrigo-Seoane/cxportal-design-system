@@ -38,35 +38,35 @@ export function MoveToGroupModal({ open, entityLabel, selectedCount, existingGro
       </ModalHeader>
       <ModalBody>
         <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-          <p style={{ margin: 0, fontSize: 20, fontWeight: 400, lineHeight: '28px', color: '#021920' }}>
+          <p style={{ margin: 0, fontSize: 20, fontWeight: 400, lineHeight: '28px', color: 'var(--text-body-primary)' }}>
             Move selected {entityLabel} to a group.
           </p>
-          <p style={{ margin: 0, fontSize: 12, color: '#021920' }}>
+          <p style={{ margin: 0, fontSize: 12, color: 'var(--text-body-primary)' }}>
             <strong>{selectedCount} Selected {entityLabel[0].toUpperCase() + entityLabel.slice(1)}</strong> will be moved to the selected group.
           </p>
 
-          <div style={{ background: '#f8f8f8', borderRadius: 8, padding: 16, display: 'flex', flexDirection: 'column', gap: 8 }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 8, height: 36, padding: '0 8px', background: '#ffffff', borderBottom: '1px solid #eff1f3' }}>
+          <div style={{ background: 'var(--neutral-50)', borderRadius: 8, padding: 16, display: 'flex', flexDirection: 'column', gap: 8 }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 8, height: 36, padding: '0 8px', background: 'var(--neutral-0)', borderBottom: '1px solid var(--neutral-100)' }}>
               <input
                 type="search"
                 value={search}
                 onChange={e => { setSearch(e.target.value); setSelected(null) }}
                 placeholder="Search existing groups"
-                style={{ flex: 1, border: 'none', outline: 'none', fontSize: 14, color: '#021920', fontFamily: 'var(--font-sans)' }}
+                style={{ flex: 1, border: 'none', outline: 'none', fontSize: 14, color: 'var(--text-body-primary)', fontFamily: 'var(--font-sans)' }}
               />
-              <MagnifyingGlassIcon size={18} color="#7a828c" weight="regular" aria-hidden="true" />
+              <MagnifyingGlassIcon size={18} color="var(--text-body-secondary)" weight="regular" aria-hidden="true" />
             </div>
 
             {matches.length > 0 ? (
               <div style={{ maxHeight: 200, overflowY: 'auto' }}>
                 {matches.map(group => (
-                  <div key={group} style={{ display: 'flex', alignItems: 'center', height: 32, padding: '0 8px', borderBottom: '1px solid #eff1f3' }}>
+                  <div key={group} style={{ display: 'flex', alignItems: 'center', height: 32, padding: '0 8px', borderBottom: '1px solid var(--neutral-100)' }}>
                     <Checkbox label={group} size="small" checked={selected === group} onChange={() => setSelected(group)} />
                   </div>
                 ))}
               </div>
             ) : (
-              <p style={{ margin: '8px 0 0', fontSize: 12, color: '#7a828c' }}>
+              <p style={{ margin: '8px 0 0', fontSize: 12, color: 'var(--text-body-secondary)' }}>
                 {search.trim()
                   ? `No matching group. Create "${search.trim()}" as a new group.`
                   : 'No groups yet — search to create one.'}

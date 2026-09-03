@@ -50,11 +50,11 @@ export function AddCompanyUserModal({ open, roles, onClose, onCreate }: AddCompa
           <Input label="User ID" size="small" placeholder="Enter user ID (optional)" value={userId} onChange={setUserId} />
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
-            <span style={{ fontSize: 10, fontWeight: 600, color: '#021920' }}>Role</span>
+            <span style={{ fontSize: 10, fontWeight: 600, color: 'var(--text-body-primary)' }}>Role</span>
             <select
               value={roleId}
               onChange={e => setRoleId(e.target.value)}
-              style={{ height: 24, padding: '0 8px', border: '1px solid #d9dce0', borderRadius: 4, fontSize: 12, color: '#021920', fontFamily: 'var(--font-sans)', background: '#ffffff' }}
+              style={{ height: 24, padding: '0 8px', border: '1px solid var(--neutral-200)', borderRadius: 4, fontSize: 12, color: 'var(--text-body-primary)', fontFamily: 'var(--font-sans)', background: 'var(--neutral-0)' }}
             >
               <option value="" disabled>Select a role</option>
               {roles.map(r => <option key={r.id} value={r.id}>{r.name}</option>)}

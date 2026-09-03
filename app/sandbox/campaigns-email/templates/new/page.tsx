@@ -35,13 +35,13 @@ function substituteVars(html: string): string {
 
 function buildPreviewDoc(subject: string, body: string): string {
   return `<!DOCTYPE html><html><head><style>
-    body{font-family:-apple-system,sans-serif;font-size:14px;line-height:1.6;padding:24px;color:#021920;margin:0}
-    a{color:#4285f4} p{margin:0 0 12px} strong{font-weight:600}
+    body{font-family:-apple-system,sans-serif;font-size:14px;line-height:1.6;padding:24px;color:var(--text-body-primary);margin:0}
+    a{color:var(--content-action-primary-600)} p{margin:0 0 12px} strong{font-weight:600}
   </style></head><body>
-    <div style="font-size:11px;color:#7a828c;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid #eff1f3">
-      <strong style="color:#021920">Subject:</strong> ${substituteVars(subject) || '(no subject)'}
+    <div style="font-size:11px;color:var(--text-body-secondary);margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid var(--neutral-100)">
+      <strong style="color:var(--text-body-primary)">Subject:</strong> ${substituteVars(subject) || '(no subject)'}
     </div>
-    ${substituteVars(body) || '<p style="color:#7a828c;">Start typing HTML in the editor to see a preview.</p>'}
+    ${substituteVars(body) || '<p style="color:var(--text-body-secondary);">Start typing HTML in the editor to see a preview.</p>'}
   </body></html>`
 }
 
@@ -180,8 +180,8 @@ export default function NewTemplatePage() {
 
         <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexShrink: 0 }}>
           {flash && (
-            <span style={{ display: 'flex', alignItems: 'center', gap: 4, fontSize: 12, color: '#1a6b1a' }}>
-              <CheckCircleIcon size={13} weight="fill" color="#1a6b1a" /> Draft saved
+            <span style={{ display: 'flex', alignItems: 'center', gap: 4, fontSize: 12, color: 'var(--text-success)' }}>
+              <CheckCircleIcon size={13} weight="fill" color="var(--text-success)" /> Draft saved
             </span>
           )}
           {isViewer ? (
@@ -239,7 +239,7 @@ export default function NewTemplatePage() {
             srcDoc={buildPreviewDoc(subject, body)}
             title="Template preview"
             sandbox="allow-same-origin"
-            style={{ flex: 1, border: 'none', background: '#fff' }}
+            style={{ flex: 1, border: 'none', background: 'var(--neutral-0)' }}
           />
         </div>
       </div>

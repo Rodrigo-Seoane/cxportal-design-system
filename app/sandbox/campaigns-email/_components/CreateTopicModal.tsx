@@ -148,8 +148,8 @@ export function CreateTopicModal({
             padding: '10px 14px', borderRadius: 8,
             background: 'var(--color-error-100)', border: '1px solid var(--color-error-200)',
           }}>
-            <WarningIcon size={14} color="#8b1a2a" />
-            <span style={{ fontSize: 13, color: '#8b1a2a' }}>{error}</span>
+            <WarningIcon size={14} color="var(--text-destructive)" />
+            <span style={{ fontSize: 13, color: 'var(--text-destructive)' }}>{error}</span>
           </div>
         )}
 
@@ -180,7 +180,7 @@ export function CreateTopicModal({
               )}
 
               {verifiedSenders.length === 0 ? (
-                <div style={{ fontSize: 13, color: '#8b1a2a', padding: '10px 14px',
+                <div style={{ fontSize: 13, color: 'var(--text-destructive)', padding: '10px 14px',
                   borderRadius: 8, background: 'var(--color-error-100)' }}>
                   No verified senders for this component — verify a sender first.
                 </div>
@@ -225,7 +225,7 @@ export function CreateTopicModal({
                             border: `2px solid ${checked ? 'var(--color-primary)' : 'var(--color-border)'}`,
                             background: checked ? 'var(--color-primary)' : 'transparent',
                             display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                            {checked && <span style={{ width: 8, height: 2, background: '#fff', borderRadius: 1 }} />}
+                            {checked && <span style={{ width: 8, height: 2, background: 'var(--neutral-0)', borderRadius: 1 }} />}
                           </span>
                           <div style={{ flex: 1, minWidth: 0 }}>
                             <div style={{ fontSize: 13, fontWeight: 600,

@@ -7,8 +7,8 @@ import type { Experiment, ExperimentStatus } from '@/lib/sandbox-registry'
 
 const STATUS_STYLE: Record<ExperimentStatus, { bg: string; color: string }> = {
   'Draft':     { bg: 'var(--color-surface-display)', color: 'var(--color-text-secondary)' },
-  'In Review': { bg: 'var(--color-warning-100)',      color: '#7a4a00' },
-  'Validated': { bg: 'var(--color-success-100)',      color: '#1a6b1a' },
+  'In Review': { bg: 'var(--color-warning-100)',      color: 'var(--warning-600)' },
+  'Validated': { bg: 'var(--color-success-100)',      color: 'var(--success-600)' },
 }
 
 // ── Component ─────────────────────────────────────────────────────────────────
@@ -38,8 +38,8 @@ export function ExperimentCard({ experiment }: { experiment: Experiment }) {
       }}
       onMouseEnter={e => {
         const el = e.currentTarget
-        el.style.borderColor = '#4285f4'
-        el.style.boxShadow   = '0 0 0 3px rgba(66,133,244,0.12)'
+        el.style.borderColor = 'var(--content-action-primary-600)'
+        el.style.boxShadow   = '0 0 0 3px color-mix(in srgb, var(--content-action-primary-600) 12%, transparent)'
       }}
       onMouseLeave={e => {
         const el = e.currentTarget

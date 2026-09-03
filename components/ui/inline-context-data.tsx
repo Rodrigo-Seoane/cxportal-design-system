@@ -46,16 +46,16 @@ export function InlineContextData({
         </span>
       )}
 
-      <span style={{ ...TEXT_STYLE, color: '#7a828c' }}>
+      <span style={{ ...TEXT_STYLE, color: 'var(--text-body-secondary)' }}>
         {label}
       </span>
 
-      <span style={{ ...TEXT_STYLE, color: '#aab0b8' }}>
+      <span style={{ ...TEXT_STYLE, color: 'var(--neutral-300)' }}>
         {value}
       </span>
 
       {value2 && (
-        <span style={{ ...TEXT_STYLE, color: '#aab0b8' }}>
+        <span style={{ ...TEXT_STYLE, color: 'var(--neutral-300)' }}>
           {value2}
         </span>
       )}

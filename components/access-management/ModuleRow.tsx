@@ -13,12 +13,12 @@ export function ModuleRow({ module, onChange }: ModuleRowProps) {
   const isGrid = module.layout === 'grid'
 
   return (
-    <div style={{ display: 'flex', gap: 32, padding: '20px 0', borderBottom: '1px solid #eff1f3' }}>
+    <div style={{ display: 'flex', gap: 32, padding: '20px 0', borderBottom: '1px solid var(--neutral-100)' }}>
       <div style={{ width: 262, flexShrink: 0 }}>
-        <p style={{ margin: '0 0 4px', fontSize: 16, fontWeight: 400, lineHeight: '24px', color: '#021920' }}>
+        <p style={{ margin: '0 0 4px', fontSize: 16, fontWeight: 400, lineHeight: '24px', color: 'var(--text-body-primary)' }}>
           {module.name}
         </p>
-        <p style={{ margin: 0, fontSize: 12, lineHeight: '16px', color: '#7a828c' }}>
+        <p style={{ margin: 0, fontSize: 12, lineHeight: '16px', color: 'var(--text-body-secondary)' }}>
           {module.description}
         </p>
       </div>
@@ -39,16 +39,16 @@ export function ModuleRow({ module, onChange }: ModuleRowProps) {
               value={option}
               checked={module.selected === option}
               onChange={() => onChange(option)}
-              accentColor="#0b8286"
+              accentColor="var(--content-action-primary-default)"
             />
           ))}
         </div>
 
         {module.infoAlert && (
           <MessageBox type="info" dismissible={false}>
-            <p style={{ margin: 0, fontSize: 13, lineHeight: '20px', color: '#021920' }}>
+            <p style={{ margin: 0, fontSize: 13, lineHeight: '20px', color: 'var(--text-body-primary)' }}>
               {module.infoAlert.message}{' '}
-              <a href="#" style={{ color: '#2859ab', fontWeight: 600 }}>{module.infoAlert.linkLabel}</a>
+              <a href="#" style={{ color: 'var(--text-info)', fontWeight: 600 }}>{module.infoAlert.linkLabel}</a>
             </p>
           </MessageBox>
         )}

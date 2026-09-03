@@ -88,7 +88,7 @@ export function CompanyInstancesTab({ companyName, companyId, initialInstances }
   const renderRow = (instance: CompanyInstance) => (
     <TableRow key={instance.id}>
       <TableCheckboxCell checked={selected.has(instance.id)} onChange={() => toggleSelect(instance.id)} ariaLabel={`Select ${instance.alias}`} />
-      <TableCell variant="link" style={{ cursor: 'pointer', color: '#0ea2a7' }}>{instance.alias}</TableCell>
+      <TableCell variant="link" style={{ cursor: 'pointer', color: 'var(--content-action-primary-default)' }}>{instance.alias}</TableCell>
       <TableCell variant="secondary">{instance.instanceId}</TableCell>
       <TableCell>{instance.region}</TableCell>
       <TableCell variant="secondary">{instance.awsAccountId}</TableCell>
@@ -102,7 +102,7 @@ export function CompanyInstancesTab({ companyName, companyId, initialInstances }
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 12 }}>
-        <h3 style={{ margin: 0, fontSize: 20, fontWeight: 400, color: '#021920' }}>Instances ({instances.length})</h3>
+        <h3 style={{ margin: 0, fontSize: 20, fontWeight: 400, color: 'var(--text-body-primary)' }}>Instances ({instances.length})</h3>
       </div>
 
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 16 }}>
@@ -111,13 +111,13 @@ export function CompanyInstancesTab({ companyName, companyId, initialInstances }
             <PlusIcon size={14} weight="bold" aria-hidden="true" /> Add New Instance
           </Button>
           <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-            <span style={{ fontSize: 12, fontWeight: 600, color: '#021920' }}>Search</span>
-            <select value={searchField} onChange={e => setSearchField(e.target.value as SearchField)} style={{ height: 24, padding: '0 6px', border: '1px solid #d9dce0', borderRight: 'none', borderRadius: '4px 0 0 4px', fontSize: 12, background: '#fff', fontFamily: 'var(--font-sans)' }}>
+            <span style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-body-primary)' }}>Search</span>
+            <select value={searchField} onChange={e => setSearchField(e.target.value as SearchField)} style={{ height: 24, padding: '0 6px', border: '1px solid var(--neutral-200)', borderRight: 'none', borderRadius: '4px 0 0 4px', fontSize: 12, background: 'var(--neutral-0)', fontFamily: 'var(--font-sans)' }}>
               {SEARCH_FIELDS.map(f => <option key={f} value={f}>{f}</option>)}
             </select>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 6, width: 240, height: 24, padding: '0 8px', border: '1px solid #d9dce0', borderRadius: '0 4px 4px 0', background: '#fff' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 6, width: 240, height: 24, padding: '0 8px', border: '1px solid var(--neutral-200)', borderRadius: '0 4px 4px 0', background: 'var(--neutral-0)' }}>
               <input type="search" value={search} onChange={e => setSearch(e.target.value)} placeholder={`Search ${searchField.toLowerCase()}`} style={{ flex: 1, border: 'none', outline: 'none', fontSize: 12, fontFamily: 'var(--font-sans)' }} />
-              <MagnifyingGlassIcon size={14} color="#7a828c" weight="regular" aria-hidden="true" />
+              <MagnifyingGlassIcon size={14} color="var(--text-body-secondary)" weight="regular" aria-hidden="true" />
             </div>
           </div>
         </div>
@@ -147,7 +147,7 @@ export function CompanyInstancesTab({ companyName, companyId, initialInstances }
           {Array.from(grouped.byGroup.entries()).map(([groupName, rows]) => (
             <Fragment key={groupName}>
               <tr>
-                <td colSpan={7} style={{ padding: '6px 8px', background: '#eff1f3', fontSize: 11, fontWeight: 700, color: '#7a828c', textTransform: 'uppercase', letterSpacing: '0.4px' }}>
+                <td colSpan={7} style={{ padding: '6px 8px', background: 'var(--neutral-100)', fontSize: 11, fontWeight: 700, color: 'var(--text-body-secondary)', textTransform: 'uppercase', letterSpacing: '0.4px' }}>
                   {groupName}
                 </td>
               </tr>
@@ -157,7 +157,7 @@ export function CompanyInstancesTab({ companyName, companyId, initialInstances }
           {grouped.ungrouped.length > 0 && (
             <Fragment>
               <tr>
-                <td colSpan={7} style={{ padding: '6px 8px', background: '#eff1f3', fontSize: 11, fontWeight: 700, color: '#7a828c', textTransform: 'uppercase', letterSpacing: '0.4px' }}>
+                <td colSpan={7} style={{ padding: '6px 8px', background: 'var(--neutral-100)', fontSize: 11, fontWeight: 700, color: 'var(--text-body-secondary)', textTransform: 'uppercase', letterSpacing: '0.4px' }}>
                   Ungroup
                 </td>
               </tr>

@@ -62,7 +62,7 @@ export function Flyout({ open, onClose, title, width = 480, children }: FlyoutPr
         zIndex:     50,
         display:   'flex',
         justifyContent: 'flex-end',
-        backgroundColor: 'rgba(5, 3, 38, 0.40)',
+        backgroundColor: 'var(--surface-overlay)',
       }}
       onClick={(e) => { if (e.target === e.currentTarget) onClose() }}
     >
@@ -77,7 +77,7 @@ export function Flyout({ open, onClose, title, width = 480, children }: FlyoutPr
           height:   '100vh',
           display:  'flex',
           flexDirection: 'column',
-          background: '#ffffff',
+          background: 'var(--surface-section-bg)',
           boxShadow: '-8px 0 48px rgba(2, 25, 32, 0.18)',
         }}
       >
@@ -87,10 +87,10 @@ export function Flyout({ open, onClose, title, width = 480, children }: FlyoutPr
           alignItems:    'center',
           justifyContent:'space-between',
           padding:       '16px 20px',
-          borderBottom:  '1px solid #eff1f3',
+          borderBottom:  '1px solid var(--neutral-100)',
           flexShrink:     0,
         }}>
-          <span style={{ fontSize: 18, fontWeight: 400, color: '#021920', fontFamily: 'var(--font-sans)' }}>
+          <span style={{ fontSize: 18, fontWeight: 400, color: 'var(--text-body-primary)', fontFamily: 'var(--font-sans)' }}>
             {title}
           </span>
           <button

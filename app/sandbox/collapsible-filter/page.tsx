@@ -91,14 +91,14 @@ const KB_LIST = [
 
 // Dot colors from the Figma DS tokens
 const TAG_ITEMS: { key: string; dotBg: string; dotDashed?: boolean }[] = [
-  { key: 'status:Archived',     dotBg: '#d6e2f5' },   // info/100
-  { key: 'status:Deprecated',   dotBg: '#a4beea' },   // info/200
-  { key: 'priority:High',       dotBg: '#ddf4d2' },   // success/100
-  { key: 'priority:Urgent',     dotBg: '#b5e89c' },   // success/200
-  { key: 'audience:Internal',   dotBg: '#fbeed8' },   // warning/100
-  { key: 'audience:External',   dotBg: '#f1c780' },   // warning/300
-  { key: 'access:Confidential', dotBg: '#fbc6d4' },   // error/100
-  { key: 'access:Public',       dotBg: '#f792ac' },   // error/200
+  { key: 'status:Archived',     dotBg: 'var(--info-100)' },   // info/100
+  { key: 'status:Deprecated',   dotBg: 'var(--border-color-accent-info-light)' },   // info/200
+  { key: 'priority:High',       dotBg: 'var(--success-100)' },   // success/100
+  { key: 'priority:Urgent',     dotBg: 'var(--border-color-accent-success-light)' },   // success/200
+  { key: 'audience:Internal',   dotBg: 'var(--warning-100)' },   // warning/100
+  { key: 'audience:External',   dotBg: 'var(--warning-300)' },   // warning/300
+  { key: 'access:Confidential', dotBg: 'var(--error-100)' },   // error/100
+  { key: 'access:Public',       dotBg: 'var(--surface-action-destructive-disabled)' },   // error/200
   { key: 'dep:Engineering',     dotBg: 'transparent', dotDashed: true },
   { key: 'dep:Product',         dotBg: 'transparent', dotDashed: true },
   { key: 'dep:Marketing',       dotBg: 'transparent', dotDashed: true },
@@ -107,30 +107,30 @@ const TAG_ITEMS: { key: string; dotBg: string; dotDashed?: boolean }[] = [
 ]
 
 const TAG_STYLE: Record<string, { bg: string; text: string }> = {
-  'access:Public':       { bg: '#f792ac', text: '#8b1a2a' },   // error/200
-  'access:Confidential': { bg: '#fbc6d4', text: '#8b1a2a' },   // error/100
-  'dep:Product':         { bg: '#d6e2f5', text: '#1a3d6b' },   // info/100
-  'dep:Marketing':       { bg: '#d6e2f5', text: '#1a3d6b' },
-  'dep:Finance':         { bg: '#d6e2f5', text: '#1a3d6b' },
-  'dep:Engineering':     { bg: '#d6e2f5', text: '#1a3d6b' },
-  'dep:Legal':           { bg: '#d6e2f5', text: '#1a3d6b' },
-  'status:Deprecated':   { bg: '#a4beea', text: '#1a3d6b' },   // info/200
-  'status:Archived':     { bg: '#d6e2f5', text: '#1a3d6b' },   // info/100
-  'priority:High':       { bg: '#ddf4d2', text: '#1a6b1a' },   // success/100
-  'priority:Urgent':     { bg: '#b5e89c', text: '#1a6b1a' },   // success/200
-  'audience:Internal':   { bg: '#fbeed8', text: '#7a4a00' },   // warning/100
-  'audience:External':   { bg: '#f1c780', text: '#7a4a00' },   // warning/300
+  'access:Public':       { bg: 'var(--surface-action-destructive-disabled)', text: 'var(--text-error)' },   // error/200
+  'access:Confidential': { bg: 'var(--error-100)', text: 'var(--text-error)' },   // error/100
+  'dep:Product':         { bg: 'var(--info-100)', text: 'var(--text-info)' },   // info/100
+  'dep:Marketing':       { bg: 'var(--info-100)', text: 'var(--text-info)' },
+  'dep:Finance':         { bg: 'var(--info-100)', text: 'var(--text-info)' },
+  'dep:Engineering':     { bg: 'var(--info-100)', text: 'var(--text-info)' },
+  'dep:Legal':           { bg: 'var(--info-100)', text: 'var(--text-info)' },
+  'status:Deprecated':   { bg: 'var(--border-color-accent-info-light)', text: 'var(--text-info)' },   // info/200
+  'status:Archived':     { bg: 'var(--info-100)', text: 'var(--text-info)' },   // info/100
+  'priority:High':       { bg: 'var(--success-100)', text: 'var(--text-success)' },   // success/100
+  'priority:Urgent':     { bg: 'var(--border-color-accent-success-light)', text: 'var(--text-success)' },   // success/200
+  'audience:Internal':   { bg: 'var(--warning-100)', text: 'var(--text-warning)' },   // warning/100
+  'audience:External':   { bg: 'var(--warning-300)', text: 'var(--text-warning)' },   // warning/300
 }
 
 const TAG_COLORS: { hex: string; dashed?: boolean }[] = [
-  { hex: '#d6e2f5' },
-  { hex: '#a4beea' },
-  { hex: '#ddf4d2' },
-  { hex: '#b5e89c' },
-  { hex: '#fbeed8' },
-  { hex: '#f7ddb1' },
-  { hex: '#fbc6d4' },
-  { hex: '#f792ac' },
+  { hex: 'var(--info-100)' },
+  { hex: 'var(--border-color-accent-info-light)' },
+  { hex: 'var(--success-100)' },
+  { hex: 'var(--border-color-accent-success-light)' },
+  { hex: 'var(--warning-100)' },
+  { hex: 'var(--border-color-accent-warning-light)' },
+  { hex: 'var(--error-100)' },
+  { hex: 'var(--surface-action-destructive-disabled)' },
   { hex: 'dashed', dashed: true },
 ]
 
@@ -200,8 +200,8 @@ function PortalDropdown({
       ref={menuRef}
       style={{
         ...style,
-        background:   '#ffffff',
-        border:       '1px solid #d9dce0',
+        background:   'var(--neutral-0)',
+        border:       '1px solid var(--neutral-200)',
         borderRadius: '8px',
         boxShadow:    '0 4px 24px rgba(5,3,38,0.10)',
         overflow:     'hidden',
@@ -209,7 +209,7 @@ function PortalDropdown({
     >
       {sections.map((section, si) => (
         <div key={si}>
-          {si > 0 && <div style={{ height: 1, background: '#eff1f3', margin: '4px 0' }} />}
+          {si > 0 && <div style={{ height: 1, background: 'var(--neutral-100)', margin: '4px 0' }} />}
           {section.heading && (
             <div style={{
               padding: '6px 12px 2px',
@@ -217,7 +217,7 @@ function PortalDropdown({
               fontWeight: 600,
               letterSpacing: '0.6px',
               textTransform: 'uppercase',
-              color: '#7a828c',
+              color: 'var(--text-body-secondary)',
             }}>
               {section.heading}
             </div>
@@ -237,13 +237,13 @@ function PortalDropdown({
                 cursor:     'pointer',
                 fontSize:   13,
                 fontWeight: 400,
-                color:      item.danger ? '#ef2056' : '#021920',
+                color:      item.danger ? 'var(--text-error)' : 'var(--text-body-primary)',
                 textAlign:  'left',
               }}
-              onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.background = '#f5f7fa' }}
+              onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.background = 'var(--neutral-50)' }}
               onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.background = 'transparent' }}
             >
-              {item.icon && <span style={{ flexShrink: 0, color: item.danger ? '#ef2056' : '#7a828c' }}>{item.icon}</span>}
+              {item.icon && <span style={{ flexShrink: 0, color: item.danger ? 'var(--text-error)' : 'var(--text-body-secondary)' }}>{item.icon}</span>}
               {item.label}
             </button>
           ))}
@@ -329,8 +329,8 @@ function TableFilter({
           width:          '100%',
           padding:        8,
           height:         36,
-          background:     '#ffffff',
-          border:         `1px solid ${open ? '#4285f4' : '#eff1f3'}`,
+          background:     'var(--neutral-0)',
+          border:         `1px solid ${open ? 'var(--content-action-primary-600)' : 'var(--neutral-100)'}`,
           borderRadius:   8,
           cursor:         'pointer',
           textAlign:      'left',
@@ -344,7 +344,7 @@ function TableFilter({
           gap:           6,
           fontSize:      12,
           fontWeight:    600,
-          color:         '#021920',
+          color:         'var(--text-body-primary)',
           letterSpacing: '0.24px',
           lineHeight:    '20px',
         }}>
@@ -356,8 +356,8 @@ function TableFilter({
               lineHeight:   '16px',
               padding:      '0 5px',
               borderRadius: 100,
-              background:   '#4285f4',
-              color:        '#ffffff',
+              background:   'var(--content-action-primary-600)',
+              color:        'var(--neutral-0)',
             }}>
               {activeCount}
             </span>
@@ -365,7 +365,7 @@ function TableFilter({
         </span>
         <FunnelSimpleIcon
           size={16}
-          color={activeCount > 0 ? '#4285f4' : '#7a828c'}
+          color={activeCount > 0 ? 'var(--content-action-primary-600)' : 'var(--text-body-secondary)'}
           style={{ flexShrink: 0 }}
         />
       </button>
@@ -375,8 +375,8 @@ function TableFilter({
           ref={menuRef}
           style={{
             ...dropStyle,
-            background:   '#ffffff',
-            border:       '1px solid #d9dce0',
+            background:   'var(--neutral-0)',
+            border:       '1px solid var(--neutral-200)',
             borderRadius: 8,
             boxShadow:    '0 4px 24px rgba(5,3,38,0.10)',
             overflow:     'hidden',
@@ -391,23 +391,23 @@ function TableFilter({
                 gap:        8,
                 padding:    '7px 12px',
                 cursor:     'pointer',
-                background: active.has(item) ? '#f0f5fe' : 'transparent',
+                background: active.has(item) ? 'var(--content-action-primary-100)' : 'transparent',
               }}
               onMouseEnter={e => {
                 if (!active.has(item))
-                  (e.currentTarget as HTMLLabelElement).style.background = '#f5f7fa'
+                  (e.currentTarget as HTMLLabelElement).style.background = 'var(--neutral-50)'
               }}
               onMouseLeave={e => {
-                (e.currentTarget as HTMLLabelElement).style.background = active.has(item) ? '#f0f5fe' : 'transparent'
+                (e.currentTarget as HTMLLabelElement).style.background = active.has(item) ? 'var(--content-action-primary-100)' : 'transparent'
               }}
             >
               <input
                 type="checkbox"
                 checked={active.has(item)}
                 onChange={() => onToggle(item)}
-                style={{ width: 13, height: 13, accentColor: '#4285f4', cursor: 'pointer', flexShrink: 0 }}
+                style={{ width: 13, height: 13, accentColor: 'var(--content-action-primary-600)', cursor: 'pointer', flexShrink: 0 }}
               />
-              <span style={{ fontSize: 12, color: '#4b535e', userSelect: 'none' }}>{item}</span>
+              <span style={{ fontSize: 12, color: 'var(--neutral-700)', userSelect: 'none' }}>{item}</span>
             </label>
           ))}
         </div>,
@@ -453,8 +453,8 @@ function FilterPanel({
       flexShrink:    0,
       transition:    'width 0.2s ease',
       overflow:      'hidden',
-      borderRight:   '1px solid #eff1f3',
-      background:    '#ffffff',
+      borderRight:   '1px solid var(--neutral-100)',
+      background:    'var(--neutral-0)',
       display:       'flex',
       flexDirection: 'column',
     }}>
@@ -466,7 +466,7 @@ function FilterPanel({
         justifyContent: open ? 'space-between' : 'center',
         padding:        open ? '0 8px 0 12px' : 0,
         flexShrink:     0,
-        borderBottom:   '1px solid #eff1f3',
+        borderBottom:   '1px solid var(--neutral-100)',
         minWidth:       open ? EXPANDED_W : COLLAPSED_W,
       }}>
         {open ? (
@@ -475,7 +475,7 @@ function FilterPanel({
               <Button variant="form-controls" size="icon-xs" onClick={onToggle} title="Collapse filters">
                 <SlidersHorizontalIcon size={16} />
               </Button>
-              <span style={{ fontSize: 18, fontWeight: 400, color: '#021920', lineHeight: '24px' }}>
+              <span style={{ fontSize: 18, fontWeight: 400, color: 'var(--text-body-primary)', lineHeight: '24px' }}>
                 Filters
               </span>
             </div>
@@ -490,7 +490,7 @@ function FilterPanel({
                 cursor:      'pointer',
                 fontSize:    10,
                 fontWeight:  600,
-                color:       '#3264b8',
+                color:       'var(--content-action-primary-default)',
                 padding:     '4px 6px',
                 borderRadius: 4,
                 whiteSpace:  'nowrap',
@@ -516,14 +516,14 @@ function FilterPanel({
                     width:          18,
                     height:         18,
                     borderRadius:   '50%',
-                    background:     '#4285f4',
-                    border:         '1px solid #689df6',
+                    background:     'var(--content-action-primary-600)',
+                    border:         '1px solid var(--content-action-primary-600)',
                     display:        'flex',
                     alignItems:     'center',
                     justifyContent: 'center',
                     fontSize:       10,
                     fontWeight:     600,
-                    color:          '#eff1f3',
+                    color:          'var(--neutral-100)',
                     lineHeight:     1,
                     pointerEvents:  'none',
                   }}>
@@ -564,7 +564,7 @@ function FilterPanel({
               justifyContent: 'space-between',
               marginBottom:   8,
             }}>
-              <span style={{ fontSize: 18, fontWeight: 400, color: '#021920', lineHeight: '24px' }}>
+              <span style={{ fontSize: 18, fontWeight: 400, color: 'var(--text-body-primary)', lineHeight: '24px' }}>
                 Tags
               </span>
               <button
@@ -578,7 +578,7 @@ function FilterPanel({
                   cursor:      'pointer',
                   fontSize:    10,
                   fontWeight:  600,
-                  color:       '#3264b8',
+                  color:       'var(--content-action-primary-default)',
                   padding:     '4px 6px',
                   borderRadius: 4,
                 }}>
@@ -588,7 +588,7 @@ function FilterPanel({
             </div>
 
             {/* Tag selector list */}
-            <div style={{ borderTop: '1px solid #eff1f3' }}>
+            <div style={{ borderTop: '1px solid var(--neutral-100)' }}>
               {tagItems.map(tag => (
                 <FilterTagItem
                   key={tag.key}
@@ -647,7 +647,7 @@ function FilterTagItem({
     setMenuOpen(v => !v)
   }
 
-  const bg = checked ? '#f0f5fe' : hovered ? '#f5f7fa' : '#ffffff'
+  const bg = checked ? 'var(--content-action-primary-100)' : hovered ? 'var(--neutral-50)' : 'var(--neutral-0)'
 
   return (
     <div
@@ -657,24 +657,24 @@ function FilterTagItem({
       style={{
         display: 'flex', alignItems: 'center', height: 32,
         padding: '4px 8px', cursor: 'pointer',
-        background: bg, borderBottom: '1px solid #eff1f3',
+        background: bg, borderBottom: '1px solid var(--neutral-100)',
       }}
     >
       <div style={{ display: 'flex', alignItems: 'center', gap: 8, flex: 1, padding: '0 4px' }}>
         <div style={{
           width: 12, height: 12, borderRadius: 2, flexShrink: 0,
-          background: checked ? '#4285f4' : '#ffffff',
-          border: '1px solid #689df6',
+          background: checked ? 'var(--content-action-primary-600)' : 'var(--neutral-0)',
+          border: '1px solid var(--content-action-primary-600)',
           display: 'flex', alignItems: 'center', justifyContent: 'center',
         }}>
-          {checked && <CheckIcon size={8} color="#ffffff" weight="bold" />}
+          {checked && <CheckIcon size={8} color="var(--neutral-0)" weight="bold" />}
         </div>
         <div style={{
           width: 12, height: 12, borderRadius: '50%', flexShrink: 0,
           background: tag.dotDashed ? 'transparent' : tag.dotBg,
-          border:     tag.dotDashed ? '1px dashed #323840' : 'none',
+          border:     tag.dotDashed ? '1px dashed var(--neutral-700)' : 'none',
         }} />
-        <span style={{ fontSize: 12, fontWeight: 400, color: '#4b535e', lineHeight: '20px', whiteSpace: 'nowrap', userSelect: 'none' }}>
+        <span style={{ fontSize: 12, fontWeight: 400, color: 'var(--neutral-700)', lineHeight: '20px', whiteSpace: 'nowrap', userSelect: 'none' }}>
           {tag.key.replace(':', ': ')}
         </span>
       </div>
@@ -685,9 +685,9 @@ function FilterTagItem({
           onClick={openMenu}
           style={{
             display: 'flex', alignItems: 'center', justifyContent: 'center',
-            background: menuOpen ? '#e8edf3' : 'transparent',
+            background: menuOpen ? 'var(--content-action-primary-100)' : 'transparent',
             border: 'none', borderRadius: 4, padding: '2px 3px',
-            cursor: 'pointer', color: '#7a828c', flexShrink: 0,
+            cursor: 'pointer', color: 'var(--text-body-secondary)', flexShrink: 0,
           }}
         >
           <DotsThreeIcon size={14} weight="bold" />
@@ -697,8 +697,8 @@ function FilterTagItem({
       {mounted && menuOpen && createPortal(
         <div style={{
           position: 'fixed', top: menuPos.top, left: menuPos.left,
-          zIndex: 9999, background: '#ffffff',
-          border: '1px solid #eff1f3', borderRadius: 8,
+          zIndex: 9999, background: 'var(--neutral-0)',
+          border: '1px solid var(--neutral-100)', borderRadius: 8,
           boxShadow: '0px 4px 16px rgba(5,3,38,0.12)',
           minWidth: 128, overflow: 'hidden',
         }}>
@@ -714,9 +714,9 @@ function FilterTagItem({
                 display: 'flex', alignItems: 'center', gap: 8,
                 width: '100%', padding: '9px 12px', background: 'none',
                 border: 'none', cursor: 'pointer', fontSize: 13,
-                color: '#021920', textAlign: 'left',
+                color: 'var(--text-body-primary)', textAlign: 'left',
               }}
-              onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.background = '#f5f7fa' }}
+              onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.background = 'var(--neutral-50)' }}
               onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.background = 'none' }}
             >
               {icon}{label}
@@ -732,7 +732,7 @@ function FilterTagItem({
 // ── Tag chip ───────────────────────────────────────────────────────────────────
 
 function TagChip({ tagKey, styleMap = TAG_STYLE }: { tagKey: string; styleMap?: Record<string, { bg: string; text: string }> }) {
-  const s = styleMap[tagKey] ?? { bg: '#eff1f3', text: '#4b535e' }
+  const s = styleMap[tagKey] ?? { bg: 'var(--neutral-100)', text: 'var(--neutral-700)' }
   return (
     <span style={{
       display:      'inline-flex',
@@ -772,7 +772,7 @@ function Checkbox({
       type="checkbox"
       checked={checked}
       onChange={onChange}
-      style={{ width: 14, height: 14, accentColor: '#4285f4', cursor: 'pointer' }}
+      style={{ width: 14, height: 14, accentColor: 'var(--content-action-primary-600)', cursor: 'pointer' }}
     />
   )
 }
@@ -888,8 +888,8 @@ function TagAssignDropdown({
 
   const PANEL_STYLE: React.CSSProperties = {
     width:        290,
-    background:   '#ffffff',
-    border:       '1px solid #eff1f3',
+    background:   'var(--neutral-0)',
+    border:       '1px solid var(--neutral-100)',
     borderRadius: 8,
     boxShadow:    '0px 4px 24px 0px rgba(5,3,38,0.08)',
     fontFamily:   'Roboto, system-ui, sans-serif',
@@ -898,10 +898,10 @@ function TagAssignDropdown({
 
   const HEADER_STYLE: React.CSSProperties = {
     padding:      '8px 10px',
-    borderBottom: '1px solid #eff1f3',
+    borderBottom: '1px solid var(--neutral-100)',
     fontSize:     10,
     fontWeight:   600,
-    color:        '#021920',
+    color:        'var(--text-body-primary)',
     letterSpacing: '0.4px',
   }
 
@@ -919,16 +919,16 @@ function TagAssignDropdown({
         </div>
 
         {/* Search */}
-        <div style={{ padding: '6px 8px', borderBottom: '1px solid #eff1f3' }}>
+        <div style={{ padding: '6px 8px', borderBottom: '1px solid var(--neutral-100)' }}>
           <div style={{
             display:     'flex',
             alignItems:  'center',
             gap:         6,
-            background:  '#f5f7fa',
+            background:  'var(--neutral-50)',
             borderRadius: 6,
             padding:     '5px 8px',
           }}>
-            <MagnifyingGlassIcon size={13} color="#7a828c" style={{ flexShrink: 0 }} />
+            <MagnifyingGlassIcon size={13} color="var(--text-body-secondary)" style={{ flexShrink: 0 }} />
             <input
               value={search}
               onChange={e => onSearch(e.target.value)}
@@ -938,7 +938,7 @@ function TagAssignDropdown({
                 background: 'transparent',
                 outline:    'none',
                 fontSize:   12,
-                color:      '#4b535e',
+                color:      'var(--neutral-700)',
                 width:      '100%',
               }}
             />
@@ -948,13 +948,13 @@ function TagAssignDropdown({
         {/* Tag list */}
         <div style={{ maxHeight: 220, overflowY: 'auto' }}>
           {filteredTags.length === 0 && (
-            <div style={{ padding: '12px 10px', fontSize: 12, color: '#7a828c', textAlign: 'center' }}>
+            <div style={{ padding: '12px 10px', fontSize: 12, color: 'var(--text-body-secondary)', textAlign: 'center' }}>
               No tags found
             </div>
           )}
           {filteredTags.map(tag => {
             const checked = articleTags.includes(tag.key)
-            const s       = tagStyleMap[tag.key] ?? { bg: '#eff1f3', text: '#4b535e' }
+            const s       = tagStyleMap[tag.key] ?? { bg: 'var(--neutral-100)', text: 'var(--neutral-700)' }
             return (
               <div
                 key={tag.key}
@@ -965,30 +965,30 @@ function TagAssignDropdown({
                   gap:          8,
                   padding:      '7px 10px',
                   cursor:       'pointer',
-                  background:   checked ? '#f0f5fe' : '#ffffff',
-                  borderBottom: '1px solid #f5f7fa',
+                  background:   checked ? 'var(--content-action-primary-100)' : 'var(--neutral-0)',
+                  borderBottom: '1px solid var(--neutral-50)',
                 }}
-                onMouseEnter={e => { if (!checked) (e.currentTarget as HTMLDivElement).style.background = '#f5f7fa' }}
-                onMouseLeave={e => { (e.currentTarget as HTMLDivElement).style.background = checked ? '#f0f5fe' : '#ffffff' }}
+                onMouseEnter={e => { if (!checked) (e.currentTarget as HTMLDivElement).style.background = 'var(--neutral-50)' }}
+                onMouseLeave={e => { (e.currentTarget as HTMLDivElement).style.background = checked ? 'var(--content-action-primary-100)' : 'var(--neutral-0)' }}
               >
                 <input
                   type="checkbox"
                   checked={checked}
                   onChange={() => {}}
-                  style={{ width: 13, height: 13, accentColor: '#4285f4', flexShrink: 0, cursor: 'pointer' }}
+                  style={{ width: 13, height: 13, accentColor: 'var(--content-action-primary-600)', flexShrink: 0, cursor: 'pointer' }}
                 />
                 <div style={{
                   width:        10,
                   height:       10,
                   borderRadius: '50%',
                   background:   tag.dotDashed ? 'transparent' : tag.dotBg,
-                  border:       tag.dotDashed ? '1.5px dashed #323840' : 'none',
+                  border:       tag.dotDashed ? '1.5px dashed var(--neutral-700)' : 'none',
                   flexShrink:   0,
                 }} />
-                <span style={{ fontSize: 12, color: '#4b535e', flex: 1 }}>
+                <span style={{ fontSize: 12, color: 'var(--neutral-700)', flex: 1 }}>
                   {tag.key.replace(':', ': ')}
                 </span>
-                {checked && <CheckIcon size={12} color="#4285f4" />}
+                {checked && <CheckIcon size={12} color="var(--content-action-primary-600)" />}
               </div>
             )
           })}
@@ -998,7 +998,7 @@ function TagAssignDropdown({
         <div style={{
           display:      'flex',
           alignItems:   'center',
-          borderTop:    '1px solid #eff1f3',
+          borderTop:    '1px solid var(--neutral-100)',
         }}>
           <button
             onClick={onClear}
@@ -1010,13 +1010,13 @@ function TagAssignDropdown({
               cursor:      'pointer',
               fontSize:    12,
               fontWeight:  600,
-              color:       '#3264b8',
+              color:       'var(--content-action-primary-default)',
               letterSpacing: '0.24px',
             }}
           >
             Clear
           </button>
-          <span style={{ color: '#aab0b8', fontSize: 14 }}>|</span>
+          <span style={{ color: 'var(--neutral-300)', fontSize: 14 }}>|</span>
           <button
             onClick={onSwitchToAddNew}
             style={{
@@ -1027,7 +1027,7 @@ function TagAssignDropdown({
               cursor:      'pointer',
               fontSize:    12,
               fontWeight:  600,
-              color:       '#3264b8',
+              color:       'var(--content-action-primary-default)',
               letterSpacing: '0.24px',
             }}
           >
@@ -1049,7 +1049,7 @@ function TagAssignDropdown({
 
           {/* Key */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
-            <label style={{ fontSize: 12, fontWeight: 600, color: '#021920', letterSpacing: '0.24px' }}>
+            <label style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-body-primary)', letterSpacing: '0.24px' }}>
               Key
             </label>
             <input
@@ -1058,19 +1058,19 @@ function TagAssignDropdown({
               placeholder="e.g.: audience"
               style={{
                 padding:      8,
-                border:       `1px solid ${newKey.trim() ? '#4285f4' : '#d9dce0'}`,
+                border:       `1px solid ${newKey.trim() ? 'var(--content-action-primary-600)' : 'var(--neutral-200)'}`,
                 borderRadius: 8,
                 fontSize:     14,
-                color:        '#4b535e',
+                color:        'var(--neutral-700)',
                 outline:      'none',
-                background:   '#ffffff',
+                background:   'var(--neutral-0)',
               }}
             />
           </div>
 
           {/* Value */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
-            <label style={{ fontSize: 12, fontWeight: 600, color: '#021920', letterSpacing: '0.24px' }}>
+            <label style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-body-primary)', letterSpacing: '0.24px' }}>
               Value
             </label>
             <input
@@ -1079,19 +1079,19 @@ function TagAssignDropdown({
               placeholder="e.g.: Internal"
               style={{
                 padding:      8,
-                border:       `1px solid ${newValue.trim() ? '#4285f4' : '#d9dce0'}`,
+                border:       `1px solid ${newValue.trim() ? 'var(--content-action-primary-600)' : 'var(--neutral-200)'}`,
                 borderRadius: 8,
                 fontSize:     14,
-                color:        '#4b535e',
+                color:        'var(--neutral-700)',
                 outline:      'none',
-                background:   '#ffffff',
+                background:   'var(--neutral-0)',
               }}
             />
           </div>
 
           {/* Duplicate warning */}
           {isDuplicate && (
-            <p style={{ margin: 0, fontSize: 12, color: '#021920' }}>
+            <p style={{ margin: 0, fontSize: 12, color: 'var(--text-body-primary)' }}>
               This key value pair already exist.
             </p>
           )}
@@ -1100,12 +1100,12 @@ function TagAssignDropdown({
         {/* Color section header */}
         <div style={{
           padding:      '6px 10px',
-          borderTop:    '1px solid #eff1f3',
-          borderBottom: '1px solid #eff1f3',
+          borderTop:    '1px solid var(--neutral-100)',
+          borderBottom: '1px solid var(--neutral-100)',
           fontSize:     10,
           fontWeight:   600,
           letterSpacing: '0.4px',
-          color:        '#021920',
+          color:        'var(--text-body-primary)',
         }}>
           Tag Color
         </div>
@@ -1128,7 +1128,7 @@ function TagAssignDropdown({
                   width:        22,
                   height:       22,
                   borderRadius: '50%',
-                  border:       c.dashed ? '1.5px dashed #323840' : isSelected ? '2px solid #4285f4' : '2px solid transparent',
+                  border:       c.dashed ? '1.5px dashed var(--neutral-700)' : isSelected ? '2px solid var(--content-action-primary-600)' : '2px solid transparent',
                   background:   c.dashed ? 'transparent' : c.hex,
                   cursor:       'pointer',
                   display:      'flex',
@@ -1141,7 +1141,7 @@ function TagAssignDropdown({
                 }}
               >
                 {isSelected && (
-                  <XIcon size={10} color={c.dashed ? '#323840' : '#4b535e'} weight="bold" />
+                  <XIcon size={10} color={c.dashed ? 'var(--neutral-700)' : 'var(--neutral-700)'} weight="bold" />
                 )}
               </button>
             )
@@ -1152,7 +1152,7 @@ function TagAssignDropdown({
         <div style={{
           display:    'flex',
           alignItems: 'center',
-          borderTop:  '1px solid #eff1f3',
+          borderTop:  '1px solid var(--neutral-100)',
         }}>
           <button
             onClick={onCancel}
@@ -1164,13 +1164,13 @@ function TagAssignDropdown({
               cursor:      'pointer',
               fontSize:    12,
               fontWeight:  600,
-              color:       '#3264b8',
+              color:       'var(--content-action-primary-default)',
               letterSpacing: '0.24px',
             }}
           >
             Cancel
           </button>
-          <span style={{ color: '#aab0b8', fontSize: 14 }}>|</span>
+          <span style={{ color: 'var(--neutral-300)', fontSize: 14 }}>|</span>
           <button
             onClick={canAddNew ? onAddNewTag : undefined}
             style={{
@@ -1181,7 +1181,7 @@ function TagAssignDropdown({
               cursor:      canAddNew ? 'pointer' : 'not-allowed',
               fontSize:    12,
               fontWeight:  600,
-              color:       canAddNew ? '#3264b8' : '#aab0b8',
+              color:       canAddNew ? 'var(--content-action-primary-default)' : 'var(--content-action-disabled-700)',
               letterSpacing: '0.24px',
             }}
           >
@@ -1276,7 +1276,7 @@ function BulkTagModal({
         onClick={onClose}
         style={{
           position: 'fixed', inset: 0,
-          background: 'rgba(5,3,38,0.4)',
+          background: 'var(--surface-overlay)',
           zIndex: 10000,
         }}
       />
@@ -1292,7 +1292,7 @@ function BulkTagModal({
           zIndex:        10001,
           width:         492,
           maxWidth:      'calc(100vw - 32px)',
-          background:    '#ffffff',
+          background:    'var(--neutral-0)',
           borderRadius:  12,
           boxShadow:     '0px 8px 40px 0px rgba(5,3,38,0.16)',
           fontFamily:    'Roboto, system-ui, sans-serif',
@@ -1309,10 +1309,10 @@ function BulkTagModal({
           alignItems:     'center',
           justifyContent: 'space-between',
           padding:        '16px 20px',
-          borderBottom:   '1px solid #eff1f3',
+          borderBottom:   '1px solid var(--neutral-100)',
           flexShrink:     0,
         }}>
-          <span style={{ fontSize: 16, fontWeight: 600, color: '#021920', lineHeight: '24px' }}>
+          <span style={{ fontSize: 16, fontWeight: 600, color: 'var(--text-body-primary)', lineHeight: '24px' }}>
             {title}
           </span>
           <button
@@ -1320,9 +1320,9 @@ function BulkTagModal({
             style={{
               display: 'flex', alignItems: 'center', justifyContent: 'center',
               width: 28, height: 28, border: 'none', borderRadius: 6,
-              background: 'transparent', cursor: 'pointer', color: '#7a828c',
+              background: 'transparent', cursor: 'pointer', color: 'var(--text-body-secondary)',
             }}
-            onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.background = '#eff1f3' }}
+            onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.background = 'var(--neutral-100)' }}
             onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.background = 'transparent' }}
           >
             <XIcon size={16} />
@@ -1335,9 +1335,9 @@ function BulkTagModal({
           {/* Subtitle */}
           <div style={{
             padding:      '12px 20px',
-            borderBottom: '1px solid #eff1f3',
+            borderBottom: '1px solid var(--neutral-100)',
             fontSize:     13,
-            color:        '#7a828c',
+            color:        'var(--text-body-secondary)',
             lineHeight:   '20px',
             flexShrink:   0,
           }}>
@@ -1346,16 +1346,16 @@ function BulkTagModal({
 
           {/* Search (add mode only) */}
           {isAdd && (
-            <div style={{ padding: '8px 20px', borderBottom: '1px solid #eff1f3', flexShrink: 0 }}>
+            <div style={{ padding: '8px 20px', borderBottom: '1px solid var(--neutral-100)', flexShrink: 0 }}>
               <div style={{
                 display:    'flex',
                 alignItems: 'center',
                 gap:        6,
-                background: '#f5f7fa',
+                background: 'var(--neutral-50)',
                 borderRadius: 6,
                 padding:    '6px 10px',
               }}>
-                <MagnifyingGlassIcon size={14} color="#7a828c" style={{ flexShrink: 0 }} />
+                <MagnifyingGlassIcon size={14} color="var(--text-body-secondary)" style={{ flexShrink: 0 }} />
                 <input
                   value={search}
                   onChange={e => onSearch(e.target.value)}
@@ -1363,7 +1363,7 @@ function BulkTagModal({
                   autoFocus
                   style={{
                     border: 'none', background: 'transparent', outline: 'none',
-                    fontSize: 13, color: '#4b535e', width: '100%',
+                    fontSize: 13, color: 'var(--neutral-700)', width: '100%',
                   }}
                 />
               </div>
@@ -1373,19 +1373,19 @@ function BulkTagModal({
           {/* Tag list */}
           <div style={{ flex: 1, overflowY: 'auto' }}>
             {filteredTags.length === 0 && !isAdd && (
-              <div style={{ padding: '32px 20px', textAlign: 'center', fontSize: 13, color: '#7a828c' }}>
+              <div style={{ padding: '32px 20px', textAlign: 'center', fontSize: 13, color: 'var(--text-body-secondary)' }}>
                 No common tags across all selected articles.
               </div>
             )}
             {filteredTags.length === 0 && isAdd && (
               <div style={{ padding: '16px 20px', display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: 8 }}>
-                <span style={{ fontSize: 13, color: '#7a828c' }}>No matches.</span>
+                <span style={{ fontSize: 13, color: 'var(--text-body-secondary)' }}>No matches.</span>
                 <button
                   onClick={onSwitchToCreateNew}
                   style={{
                     display: 'flex', alignItems: 'center', gap: 6,
                     border: 'none', background: 'transparent', cursor: 'pointer',
-                    fontSize: 13, fontWeight: 600, color: '#3264b8', padding: 0,
+                    fontSize: 13, fontWeight: 600, color: 'var(--content-action-primary-default)', padding: 0,
                   }}
                 >
                   <PlusCircleIcon size={15} />
@@ -1404,41 +1404,41 @@ function BulkTagModal({
                     gap:          10,
                     padding:      '9px 20px',
                     cursor:       'pointer',
-                    background:   checked ? '#f0f5fe' : '#ffffff',
-                    borderBottom: '1px solid #f5f7fa',
+                    background:   checked ? 'var(--content-action-primary-100)' : 'var(--neutral-0)',
+                    borderBottom: '1px solid var(--neutral-50)',
                   }}
-                  onMouseEnter={e => { if (!checked) (e.currentTarget as HTMLLabelElement).style.background = '#f5f7fa' }}
-                  onMouseLeave={e => { (e.currentTarget as HTMLLabelElement).style.background = checked ? '#f0f5fe' : '#ffffff' }}
+                  onMouseEnter={e => { if (!checked) (e.currentTarget as HTMLLabelElement).style.background = 'var(--neutral-50)' }}
+                  onMouseLeave={e => { (e.currentTarget as HTMLLabelElement).style.background = checked ? 'var(--content-action-primary-100)' : 'var(--neutral-0)' }}
                 >
                   <input
                     type="checkbox"
                     checked={checked}
                     onChange={() => onToggleTag(tag.key)}
-                    style={{ width: 14, height: 14, accentColor: '#4285f4', cursor: 'pointer', flexShrink: 0 }}
+                    style={{ width: 14, height: 14, accentColor: 'var(--content-action-primary-600)', cursor: 'pointer', flexShrink: 0 }}
                   />
                   <div style={{
                     width:        10,
                     height:       10,
                     borderRadius: '50%',
                     background:   tag.dotDashed ? 'transparent' : tag.dotBg,
-                    border:       tag.dotDashed ? '1.5px dashed #323840' : 'none',
+                    border:       tag.dotDashed ? '1.5px dashed var(--neutral-700)' : 'none',
                     flexShrink:   0,
                   }} />
-                  <span style={{ fontSize: 13, color: '#4b535e', flex: 1, userSelect: 'none' }}>
+                  <span style={{ fontSize: 13, color: 'var(--neutral-700)', flex: 1, userSelect: 'none' }}>
                     {tag.key.replace(':', ': ')}
                   </span>
-                  {checked && <CheckIcon size={13} color="#4285f4" />}
+                  {checked && <CheckIcon size={13} color="var(--content-action-primary-600)" />}
                 </label>
               )
             })}
             {filteredTags.length > 0 && isAdd && (
-              <div style={{ padding: '10px 20px', borderTop: '1px solid #eff1f3' }}>
+              <div style={{ padding: '10px 20px', borderTop: '1px solid var(--neutral-100)' }}>
                 <button
                   onClick={onSwitchToCreateNew}
                   style={{
                     display: 'flex', alignItems: 'center', gap: 6,
                     border: 'none', background: 'transparent', cursor: 'pointer',
-                    fontSize: 13, fontWeight: 600, color: '#3264b8', padding: 0,
+                    fontSize: 13, fontWeight: 600, color: 'var(--content-action-primary-default)', padding: 0,
                   }}
                 >
                   <PlusCircleIcon size={15} />
@@ -1453,7 +1453,7 @@ function BulkTagModal({
         {view === 'createNew' && (<>
           <div style={{
             padding:      '12px 20px',
-            borderBottom: '1px solid #eff1f3',
+            borderBottom: '1px solid var(--neutral-100)',
             flexShrink:   0,
           }}>
             <button
@@ -1461,19 +1461,19 @@ function BulkTagModal({
               style={{
                 display: 'flex', alignItems: 'center', gap: 4,
                 border: 'none', background: 'transparent', cursor: 'pointer',
-                fontSize: 12, fontWeight: 600, color: '#3264b8', padding: 0, marginBottom: 8,
+                fontSize: 12, fontWeight: 600, color: 'var(--content-action-primary-default)', padding: 0, marginBottom: 8,
               }}
             >
               ← Back to tags
             </button>
-            <p style={{ margin: 0, fontSize: 13, color: '#7a828c', lineHeight: '20px' }}>
+            <p style={{ margin: 0, fontSize: 13, color: 'var(--text-body-secondary)', lineHeight: '20px' }}>
               Create a new tag and add it to all selected articles.
             </p>
           </div>
 
           <div style={{ padding: '12px 20px', display: 'flex', flexDirection: 'column', gap: 12, flex: 1 }}>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
-              <label style={{ fontSize: 12, fontWeight: 600, color: '#021920', letterSpacing: '0.24px' }}>Key</label>
+              <label style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-body-primary)', letterSpacing: '0.24px' }}>Key</label>
               <input
                 value={createKey}
                 onChange={e => onCreateKeyChange(e.target.value)}
@@ -1481,33 +1481,33 @@ function BulkTagModal({
                 autoFocus
                 style={{
                   padding: 8,
-                  border: `1px solid ${createKey.trim() ? '#4285f4' : '#d9dce0'}`,
-                  borderRadius: 8, fontSize: 14, color: '#4b535e', outline: 'none', background: '#ffffff',
+                  border: `1px solid ${createKey.trim() ? 'var(--content-action-primary-600)' : 'var(--neutral-200)'}`,
+                  borderRadius: 8, fontSize: 14, color: 'var(--neutral-700)', outline: 'none', background: 'var(--neutral-0)',
                 }}
               />
             </div>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
-              <label style={{ fontSize: 12, fontWeight: 600, color: '#021920', letterSpacing: '0.24px' }}>Value</label>
+              <label style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-body-primary)', letterSpacing: '0.24px' }}>Value</label>
               <input
                 value={createValue}
                 onChange={e => onCreateValueChange(e.target.value)}
                 placeholder="e.g.: Internal"
                 style={{
                   padding: 8,
-                  border: `1px solid ${createValue.trim() ? '#4285f4' : '#d9dce0'}`,
-                  borderRadius: 8, fontSize: 14, color: '#4b535e', outline: 'none', background: '#ffffff',
+                  border: `1px solid ${createValue.trim() ? 'var(--content-action-primary-600)' : 'var(--neutral-200)'}`,
+                  borderRadius: 8, fontSize: 14, color: 'var(--neutral-700)', outline: 'none', background: 'var(--neutral-0)',
                 }}
               />
             </div>
             {isDuplicate && (
-              <p style={{ margin: 0, fontSize: 12, color: '#021920' }}>
+              <p style={{ margin: 0, fontSize: 12, color: 'var(--text-body-primary)' }}>
                 This key value pair already exists.
               </p>
             )}
             <div>
               <div style={{
                 fontSize: 10, fontWeight: 600, letterSpacing: '0.4px',
-                color: '#021920', textTransform: 'uppercase', marginBottom: 8,
+                color: 'var(--text-body-primary)', textTransform: 'uppercase', marginBottom: 8,
               }}>
                 Tag Color
               </div>
@@ -1521,13 +1521,13 @@ function BulkTagModal({
                       title={c.hex}
                       style={{
                         width: 24, height: 24, borderRadius: '50%',
-                        border: c.dashed ? '1.5px dashed #323840' : isSelected ? '2px solid #4285f4' : '2px solid transparent',
+                        border: c.dashed ? '1.5px dashed var(--neutral-700)' : isSelected ? '2px solid var(--content-action-primary-600)' : '2px solid transparent',
                         background: c.dashed ? 'transparent' : c.hex,
                         cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center',
                         padding: 0, flexShrink: 0, outline: 'none', boxSizing: 'border-box',
                       }}
                     >
-                      {isSelected && <XIcon size={10} color={c.dashed ? '#323840' : '#4b535e'} weight="bold" />}
+                      {isSelected && <XIcon size={10} color={c.dashed ? 'var(--neutral-700)' : 'var(--neutral-700)'} weight="bold" />}
                     </button>
                   )
                 })}
@@ -1543,17 +1543,17 @@ function BulkTagModal({
           justifyContent: 'flex-end',
           gap:            8,
           padding:        '12px 20px',
-          borderTop:      '1px solid #eff1f3',
+          borderTop:      '1px solid var(--neutral-100)',
           flexShrink:     0,
         }}>
           <button
             onClick={onClose}
             style={{
-              padding: '8px 16px', border: '1px solid #d9dce0', borderRadius: 8,
-              background: '#ffffff', fontSize: 13, fontWeight: 500, color: '#4b535e', cursor: 'pointer',
+              padding: '8px 16px', border: '1px solid var(--neutral-200)', borderRadius: 8,
+              background: 'var(--neutral-0)', fontSize: 13, fontWeight: 500, color: 'var(--neutral-700)', cursor: 'pointer',
             }}
-            onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.background = '#f5f7fa' }}
-            onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.background = '#ffffff' }}
+            onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.background = 'var(--neutral-50)' }}
+            onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.background = 'var(--neutral-0)' }}
           >
             Cancel
           </button>
@@ -1564,10 +1564,10 @@ function BulkTagModal({
                 padding:    '8px 16px',
                 border:     'none',
                 borderRadius: 8,
-                background: checkedTags.size > 0 ? '#4285f4' : '#d9dce0',
+                background: checkedTags.size > 0 ? 'var(--content-action-primary-600)' : 'var(--neutral-200)',
                 fontSize:   13,
                 fontWeight: 600,
-                color:      checkedTags.size > 0 ? '#ffffff' : '#aab0b8',
+                color:      checkedTags.size > 0 ? 'var(--neutral-0)' : 'var(--content-action-disabled-700)',
                 cursor:     checkedTags.size > 0 ? 'pointer' : 'not-allowed',
               }}
             >
@@ -1581,10 +1581,10 @@ function BulkTagModal({
                 padding:    '8px 16px',
                 border:     'none',
                 borderRadius: 8,
-                background: canCreate ? '#4285f4' : '#d9dce0',
+                background: canCreate ? 'var(--content-action-primary-600)' : 'var(--neutral-200)',
                 fontSize:   13,
                 fontWeight: 600,
-                color:      canCreate ? '#ffffff' : '#aab0b8',
+                color:      canCreate ? 'var(--neutral-0)' : 'var(--content-action-disabled-700)',
                 cursor:     canCreate ? 'pointer' : 'not-allowed',
               }}
             >
@@ -1636,7 +1636,7 @@ function RenameArticleModal({
       onClick={onClose}
       style={{
         position: 'fixed', inset: 0,
-        background: 'rgba(0,0,0,0.4)',
+        background: 'var(--surface-overlay)',
         zIndex: 1002,
         display: 'flex', alignItems: 'center', justifyContent: 'center',
       }}
@@ -1644,7 +1644,7 @@ function RenameArticleModal({
       <div
         onClick={e => e.stopPropagation()}
         style={{
-          background: '#ffffff',
+          background: 'var(--neutral-0)',
           borderRadius: 8,
           width: 492,
           maxWidth: 'calc(100vw - 32px)',
@@ -1654,12 +1654,12 @@ function RenameArticleModal({
       >
         <div style={{
           display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-          borderBottom: '1px solid #eff1f3', paddingBottom: 16, marginBottom: 0,
+          borderBottom: '1px solid var(--neutral-100)', paddingBottom: 16, marginBottom: 0,
         }}>
-          <span style={{ fontSize: 24, fontWeight: 400, color: '#021920' }}>Rename Article</span>
+          <span style={{ fontSize: 24, fontWeight: 400, color: 'var(--text-body-primary)' }}>Rename Article</span>
           <button
             onClick={onClose}
-            style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#7a828c', display: 'flex', padding: 0 }}
+            style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text-body-secondary)', display: 'flex', padding: 0 }}
           >
             <XIcon size={18} />
           </button>
@@ -1667,7 +1667,7 @@ function RenameArticleModal({
 
         <div style={{ padding: 16, display: 'flex', flexDirection: 'column', gap: 16 }}>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
-            <label style={{ fontSize: 12, fontWeight: 600, color: '#4b535e', letterSpacing: '0.24px' }}>
+            <label style={{ fontSize: 12, fontWeight: 600, color: 'var(--neutral-700)', letterSpacing: '0.24px' }}>
               Current Name
             </label>
             <input
@@ -1675,14 +1675,14 @@ function RenameArticleModal({
               value={article.title}
               style={{
                 width: '100%', padding: 8,
-                background: '#eff1f3', border: '1px solid #d9dce0',
-                borderRadius: 8, fontSize: 14, color: '#7a828c',
+                background: 'var(--neutral-100)', border: '1px solid var(--neutral-200)',
+                borderRadius: 8, fontSize: 14, color: 'var(--text-body-secondary)',
                 boxSizing: 'border-box', outline: 'none',
               }}
             />
           </div>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
-            <label style={{ fontSize: 12, fontWeight: 600, color: '#4b535e', letterSpacing: '0.24px' }}>
+            <label style={{ fontSize: 12, fontWeight: 600, color: 'var(--neutral-700)', letterSpacing: '0.24px' }}>
               * New Name
             </label>
             <input
@@ -1691,8 +1691,8 @@ function RenameArticleModal({
               onChange={e => setNewName(e.target.value)}
               style={{
                 width: '100%', padding: 8,
-                background: '#fff', border: '1px solid #4285f4',
-                borderRadius: 8, fontSize: 14, color: '#021920',
+                background: 'var(--neutral-0)', border: '1px solid var(--content-action-primary-600)',
+                borderRadius: 8, fontSize: 14, color: 'var(--text-body-primary)',
                 boxSizing: 'border-box', outline: 'none',
               }}
             />
@@ -1700,7 +1700,7 @@ function RenameArticleModal({
         </div>
 
         <div style={{
-          borderTop: '1px solid #eff1f3', paddingTop: 16,
+          borderTop: '1px solid var(--neutral-100)', paddingTop: 16,
           display: 'flex', alignItems: 'center', gap: 16,
         }}>
           <button
@@ -1708,7 +1708,7 @@ function RenameArticleModal({
             style={{
               display: 'flex', alignItems: 'center', gap: 6,
               background: 'transparent', border: 'none', cursor: 'pointer',
-              fontSize: 12, fontWeight: 600, color: '#3264b8',
+              fontSize: 12, fontWeight: 600, color: 'var(--content-action-primary-default)',
             }}
           >
             <XCircleIcon size={16} />Cancel
@@ -1718,8 +1718,8 @@ function RenameArticleModal({
             disabled={!canSave}
             style={{
               display: 'flex', alignItems: 'center', gap: 6,
-              background: '#4285f4', border: '1px solid #689df6',
-              color: '#eff1f3', padding: '8px 12px', borderRadius: 8,
+              background: 'var(--content-action-primary-600)', border: '1px solid var(--content-action-primary-600)',
+              color: 'var(--neutral-100)', padding: '8px 12px', borderRadius: 8,
               fontSize: 12, cursor: canSave ? 'pointer' : 'not-allowed',
               opacity: canSave ? 1 : 0.5,
             }}
@@ -1761,7 +1761,7 @@ function DeleteArticleModal({
       onClick={onClose}
       style={{
         position: 'fixed', inset: 0,
-        background: 'rgba(0,0,0,0.4)',
+        background: 'var(--surface-overlay)',
         zIndex: 1002,
         display: 'flex', alignItems: 'center', justifyContent: 'center',
       }}
@@ -1769,7 +1769,7 @@ function DeleteArticleModal({
       <div
         onClick={e => e.stopPropagation()}
         style={{
-          background: '#ffffff',
+          background: 'var(--neutral-0)',
           borderRadius: 8,
           width: 492,
           maxWidth: 'calc(100vw - 32px)',
@@ -1779,25 +1779,25 @@ function DeleteArticleModal({
       >
         <div style={{
           display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-          borderBottom: '1px solid #eff1f3', paddingBottom: 16, marginBottom: 0,
+          borderBottom: '1px solid var(--neutral-100)', paddingBottom: 16, marginBottom: 0,
         }}>
-          <span style={{ fontSize: 24, fontWeight: 400, color: '#021920' }}>Delete Article</span>
+          <span style={{ fontSize: 24, fontWeight: 400, color: 'var(--text-body-primary)' }}>Delete Article</span>
           <button
             onClick={onClose}
-            style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#7a828c', display: 'flex', padding: 0 }}
+            style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text-body-secondary)', display: 'flex', padding: 0 }}
           >
             <XIcon size={18} />
           </button>
         </div>
 
         <div style={{ padding: 16 }}>
-          <p style={{ margin: 0, fontSize: 14, color: '#4b535e', lineHeight: '20px' }}>
+          <p style={{ margin: 0, fontSize: 14, color: 'var(--neutral-700)', lineHeight: '20px' }}>
             Are you sure you want to delete &ldquo;{article.title}&rdquo;? This action cannot be undone.
           </p>
         </div>
 
         <div style={{
-          borderTop: '1px solid #eff1f3', paddingTop: 16,
+          borderTop: '1px solid var(--neutral-100)', paddingTop: 16,
           display: 'flex', alignItems: 'center', gap: 16,
         }}>
           <button
@@ -1805,7 +1805,7 @@ function DeleteArticleModal({
             style={{
               display: 'flex', alignItems: 'center', gap: 6,
               background: 'transparent', border: 'none', cursor: 'pointer',
-              fontSize: 12, fontWeight: 600, color: '#3264b8',
+              fontSize: 12, fontWeight: 600, color: 'var(--content-action-primary-default)',
             }}
           >
             <XCircleIcon size={16} />Cancel
@@ -1814,8 +1814,8 @@ function DeleteArticleModal({
             onClick={onConfirm}
             style={{
               display: 'flex', alignItems: 'center', gap: 6,
-              background: '#ef2056', border: '1px solid #f45c82',
-              color: '#ffffff', padding: '8px 12px', borderRadius: 8,
+              background: 'var(--text-error)', border: '1px solid var(--error-default)',
+              color: 'var(--neutral-0)', padding: '8px 12px', borderRadius: 8,
               fontSize: 12, cursor: 'pointer',
             }}
           >
@@ -1872,13 +1872,13 @@ function FailedKBsModal({ onClose }: { onClose: () => void }) {
       position:       'fixed',
       inset:          0,
       zIndex:         9999,
-      background:     'rgba(2,25,32,0.4)',
+      background:     'var(--surface-overlay)',
       display:        'flex',
       alignItems:     'center',
       justifyContent: 'center',
     }}>
       <div style={{
-        background:   '#fff',
+        background:   'var(--neutral-0)',
         borderRadius: 8,
         boxShadow:    '0 8px 32px rgba(5,3,38,0.16)',
         width:        701,
@@ -1890,47 +1890,47 @@ function FailedKBsModal({ onClose }: { onClose: () => void }) {
           alignItems:     'flex-start',
           justifyContent: 'space-between',
           padding:        '24px 24px 16px',
-          borderBottom:   '1px solid #eff1f3',
+          borderBottom:   '1px solid var(--neutral-100)',
         }}>
           <div>
-            <h1 style={{ fontSize: 28, fontWeight: 400, color: '#021920', margin: '0 0 4px', lineHeight: '34px' }}>
+            <h1 style={{ fontSize: 28, fontWeight: 400, color: 'var(--text-body-primary)', margin: '0 0 4px', lineHeight: '34px' }}>
               Knowledge Bases Failures
             </h1>
-            <p style={{ fontSize: 20, fontWeight: 400, color: '#4b535e', margin: 0, lineHeight: '28px' }}>
+            <p style={{ fontSize: 20, fontWeight: 400, color: 'var(--neutral-700)', margin: 0, lineHeight: '28px' }}>
               Knowledge Bases fetch completed with errors
             </p>
           </div>
           <button
             onClick={onClose}
-            style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 4, color: '#7a828c', display: 'flex', flexShrink: 0, marginTop: 4 }}
+            style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 4, color: 'var(--text-body-secondary)', display: 'flex', flexShrink: 0, marginTop: 4 }}
           >
             <XIcon size={20} />
           </button>
         </div>
 
         {/* Stats cards */}
-        <div style={{ padding: '16px 24px', background: '#eff1f3', display: 'flex', gap: 12 }}>
+        <div style={{ padding: '16px 24px', background: 'var(--neutral-100)', display: 'flex', gap: 12 }}>
           <div style={{
-            background:   '#fff',
-            border:       '1px solid #d9dce0',
+            background:   'var(--neutral-0)',
+            border:       '1px solid var(--neutral-200)',
             borderRadius: 8,
             padding:      '12px 16px',
             minWidth:     120,
             textAlign:    'center',
           }}>
-            <div style={{ fontSize: 24, fontWeight: 600, color: '#1a7f4b', lineHeight: 1 }}>{succeededCount}</div>
-            <div style={{ fontSize: 12, color: '#4b535e', marginTop: 4 }}>Succeeded</div>
+            <div style={{ fontSize: 24, fontWeight: 600, color: 'var(--text-success)', lineHeight: 1 }}>{succeededCount}</div>
+            <div style={{ fontSize: 12, color: 'var(--neutral-700)', marginTop: 4 }}>Succeeded</div>
           </div>
           <div style={{
-            background:   '#fff',
-            border:       '1px solid #d9dce0',
+            background:   'var(--neutral-0)',
+            border:       '1px solid var(--neutral-200)',
             borderRadius: 8,
             padding:      '12px 16px',
             minWidth:     120,
             textAlign:    'center',
           }}>
-            <div style={{ fontSize: 24, fontWeight: 600, color: '#c0002a', lineHeight: 1 }}>{failedCount}</div>
-            <div style={{ fontSize: 12, color: '#4b535e', marginTop: 4 }}>Failed</div>
+            <div style={{ fontSize: 24, fontWeight: 600, color: 'var(--text-error)', lineHeight: 1 }}>{failedCount}</div>
+            <div style={{ fontSize: 12, color: 'var(--neutral-700)', marginTop: 4 }}>Failed</div>
           </div>
         </div>
 
@@ -1941,19 +1941,19 @@ function FailedKBsModal({ onClose }: { onClose: () => void }) {
             display:         'grid',
             gridTemplateColumns: '1fr 1fr 80px',
             gap:             0,
-            background:      '#eff1f3',
+            background:      'var(--neutral-100)',
             borderRadius:    '4px 4px 0 0',
             padding:         '8px 12px',
             marginTop:       16,
           }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-              <WarningIcon size={14} color="#c0002a" weight="fill" />
-              <span style={{ fontSize: 12, fontWeight: 600, color: '#021920' }}>
+              <WarningIcon size={14} color="var(--text-error)" weight="fill" />
+              <span style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-body-primary)' }}>
                 {failedCount} {failedCount === 1 ? 'file' : 'files'} failed to upload
               </span>
             </div>
-            <div style={{ fontSize: 12, fontWeight: 600, color: '#4b535e' }}>Error</div>
-            <div style={{ fontSize: 12, fontWeight: 600, color: '#4b535e' }}>Action</div>
+            <div style={{ fontSize: 12, fontWeight: 600, color: 'var(--neutral-700)' }}>Error</div>
+            <div style={{ fontSize: 12, fontWeight: 600, color: 'var(--neutral-700)' }}>Action</div>
           </div>
           {/* Table rows */}
           {KB_STATUS.failed.map((kb, idx) => (
@@ -1963,18 +1963,18 @@ function FailedKBsModal({ onClose }: { onClose: () => void }) {
                 display:             'grid',
                 gridTemplateColumns: '1fr 1fr 80px',
                 gap:                 0,
-                background:          idx % 2 === 0 ? '#fff' : '#fafafa',
+                background:          idx % 2 === 0 ? 'var(--neutral-0)' : 'var(--surface-table-zebra-row)',
                 padding:             '10px 12px',
-                borderBottom:        '1px solid #eff1f3',
+                borderBottom:        '1px solid var(--neutral-100)',
                 alignItems:          'center',
               }}
             >
-              <span style={{ fontSize: 13, fontWeight: 600, color: '#021920' }}>{kb.name}</span>
-              <span style={{ fontSize: 13, color: '#4b535e', paddingRight: 8 }}>{kb.error}</span>
+              <span style={{ fontSize: 13, fontWeight: 600, color: 'var(--text-body-primary)' }}>{kb.name}</span>
+              <span style={{ fontSize: 13, color: 'var(--neutral-700)', paddingRight: 8 }}>{kb.error}</span>
               <span>
                 {kb.canRetry
-                  ? <span style={{ fontSize: 13, color: '#3264b8', cursor: 'pointer', textDecoration: 'underline' }}>Retry</span>
-                  : <span style={{ fontSize: 13, color: '#7a828c' }}>—</span>
+                  ? <span style={{ fontSize: 13, color: 'var(--content-action-primary-default)', cursor: 'pointer', textDecoration: 'underline' }}>Retry</span>
+                  : <span style={{ fontSize: 13, color: 'var(--text-body-secondary)' }}>—</span>
                 }
               </span>
             </div>
@@ -1982,7 +1982,7 @@ function FailedKBsModal({ onClose }: { onClose: () => void }) {
         </div>
 
         {/* Footer */}
-        <div style={{ padding: '16px 24px', borderTop: '1px solid #eff1f3', display: 'flex', justifyContent: 'flex-end', gap: 8 }}>
+        <div style={{ padding: '16px 24px', borderTop: '1px solid var(--neutral-100)', display: 'flex', justifyContent: 'flex-end', gap: 8 }}>
           <button
             onClick={onClose}
             style={{
@@ -1993,7 +1993,7 @@ function FailedKBsModal({ onClose }: { onClose: () => void }) {
               border:       'none',
               borderRadius: 8,
               background:   'transparent',
-              color:        '#3264b8',
+              color:        'var(--content-action-primary-default)',
               fontSize:     13,
               fontWeight:   600,
               cursor:       'pointer',
@@ -2011,8 +2011,8 @@ function FailedKBsModal({ onClose }: { onClose: () => void }) {
               padding:      '8px 16px',
               border:       'none',
               borderRadius: 8,
-              background:   '#4285f4',
-              color:        '#fff',
+              background:   'var(--content-action-primary-600)',
+              color:        'var(--neutral-0)',
               fontSize:     13,
               fontWeight:   600,
               cursor:       'pointer',
@@ -2061,13 +2061,13 @@ function BulkUploadModal({
   return createPortal(
     <>
       <style>{`@keyframes bulk-spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}`}</style>
-      <div style={{ position: 'fixed', inset: 0, zIndex: 9999, background: 'rgba(2,25,32,0.4)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-        <div style={{ background: '#fff', borderRadius: 8, boxShadow: '0 8px 32px rgba(5,3,38,0.16)', width: 701, maxHeight: '90vh', overflow: 'auto', padding: 16, display: 'flex', flexDirection: 'column', gap: 16 }}>
+      <div style={{ position: 'fixed', inset: 0, zIndex: 9999, background: 'var(--surface-overlay)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <div style={{ background: 'var(--neutral-0)', borderRadius: 8, boxShadow: '0 8px 32px rgba(5,3,38,0.16)', width: 701, maxHeight: '90vh', overflow: 'auto', padding: 16, display: 'flex', flexDirection: 'column', gap: 16 }}>
 
           {/* Header */}
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: '1px solid #eff1f3', paddingBottom: 16 }}>
-            <h1 style={{ fontSize: 28, fontWeight: 400, color: '#021920', margin: 0, lineHeight: '34px' }}>Upload Multiple Files</h1>
-            <button onClick={onCancel} style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 4, color: '#7a828c', display: 'flex' }}>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', borderBottom: '1px solid var(--neutral-100)', paddingBottom: 16 }}>
+            <h1 style={{ fontSize: 28, fontWeight: 400, color: 'var(--text-body-primary)', margin: 0, lineHeight: '34px' }}>Upload Multiple Files</h1>
+            <button onClick={onCancel} style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 4, color: 'var(--text-body-secondary)', display: 'flex' }}>
               <XIcon size={20} />
             </button>
           </div>
@@ -2077,32 +2077,32 @@ function BulkUploadModal({
             <>
               {/* KB selector */}
               <div>
-                <p style={{ fontSize: 18, fontWeight: 400, color: '#021920', margin: '0 0 8px' }}>Files Destination</p>
-                <label style={{ display: 'block', fontSize: 12, fontWeight: 600, color: '#021920', marginBottom: 6, letterSpacing: '0.02em' }}>Knowledge Base</label>
+                <p style={{ fontSize: 18, fontWeight: 400, color: 'var(--text-body-primary)', margin: '0 0 8px' }}>Files Destination</p>
+                <label style={{ display: 'block', fontSize: 12, fontWeight: 600, color: 'var(--text-body-primary)', marginBottom: 6, letterSpacing: '0.02em' }}>Knowledge Base</label>
                 <div style={{ position: 'relative' }}>
                   <select
                     value={destKB}
                     onChange={e => onDestKBChange(e.target.value)}
-                    style={{ width: '100%', padding: '8px 32px 8px 8px', border: '1px solid #d9dce0', borderRadius: 8, fontSize: 14, color: destKB === '' ? '#7a828c' : '#021920', background: '#fff', appearance: 'none', outline: 'none', cursor: 'pointer' }}
+                    style={{ width: '100%', padding: '8px 32px 8px 8px', border: '1px solid var(--neutral-200)', borderRadius: 8, fontSize: 14, color: destKB === '' ? 'var(--text-body-secondary)' : 'var(--text-body-primary)', background: 'var(--neutral-0)', appearance: 'none', outline: 'none', cursor: 'pointer' }}
                   >
                     <option value="" disabled>Select Knowledge Base</option>
                     {KB_NAMES.map(kb => <option key={kb} value={kb}>{kb}</option>)}
                   </select>
-                  <CaretDownIcon size={16} color="#7a828c" style={{ position: 'absolute', right: 8, top: '50%', transform: 'translateY(-50%)', pointerEvents: 'none' }} />
+                  <CaretDownIcon size={16} color="var(--text-body-secondary)" style={{ position: 'absolute', right: 8, top: '50%', transform: 'translateY(-50%)', pointerEvents: 'none' }} />
                 </div>
               </div>
 
               {/* Drop zone */}
               <div>
-                <p style={{ fontSize: 18, fontWeight: 400, color: '#021920', margin: '0 0 4px' }}>Upload Content</p>
-                <p style={{ fontSize: 14, color: '#021920', margin: '0 0 8px' }}>Supported Format: .docx, .pdf, .txt, .md | Size limit per file: 1 MB bytes.</p>
+                <p style={{ fontSize: 18, fontWeight: 400, color: 'var(--text-body-primary)', margin: '0 0 4px' }}>Upload Content</p>
+                <p style={{ fontSize: 14, color: 'var(--text-body-primary)', margin: '0 0 8px' }}>Supported Format: .docx, .pdf, .txt, .md | Size limit per file: 1 MB bytes.</p>
                 <div
                   onDragOver={e => e.preventDefault()}
                   onDrop={handleDrop}
                   onClick={() => bulkFileInputRef.current?.click()}
                   style={{
-                    background:     '#eff1f3',
-                    border:         '2px dashed #689df6',
+                    background:     'var(--neutral-100)',
+                    border:         '2px dashed var(--content-action-primary-600)',
                     borderRadius:   8,
                     height:         uploadState === 'queued' ? 80 : 260,
                     display:        'flex',
@@ -2114,10 +2114,10 @@ function BulkUploadModal({
                     overflow:       'hidden',
                   }}
                 >
-                  {uploadState === 'idle' && <CloudArrowUpIcon size={48} color="#689df6" />}
-                  <p style={{ fontSize: 18, fontWeight: 600, color: '#3264b8', margin: 0 }}>Drag &amp; Drop your files here</p>
-                  <p style={{ fontSize: 14, color: '#021920', margin: 0 }}>or click to browse</p>
-                  {uploadState === 'idle' && <p style={{ fontSize: 12, fontWeight: 300, color: '#7a828c', margin: 0 }}>Supported Format: .docx, .pdf, .txt</p>}
+                  {uploadState === 'idle' && <CloudArrowUpIcon size={48} color="var(--content-action-primary-600)" />}
+                  <p style={{ fontSize: 18, fontWeight: 600, color: 'var(--content-action-primary-default)', margin: 0 }}>Drag &amp; Drop your files here</p>
+                  <p style={{ fontSize: 14, color: 'var(--text-body-primary)', margin: 0 }}>or click to browse</p>
+                  {uploadState === 'idle' && <p style={{ fontSize: 12, fontWeight: 300, color: 'var(--text-body-secondary)', margin: 0 }}>Supported Format: .docx, .pdf, .txt</p>}
                 </div>
                 <input
                   ref={bulkFileInputRef}
@@ -2134,36 +2134,36 @@ function BulkUploadModal({
                 <>
                   <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between' }}>
                     <div>
-                      <p style={{ fontSize: 18, fontWeight: 400, color: '#021920', margin: '0 0 2px' }}>Upload Queue ({queue.length})</p>
-                      <p style={{ fontSize: 12, color: '#021920', margin: 0 }}>The documents below will be uploaded to your knowledge base.</p>
+                      <p style={{ fontSize: 18, fontWeight: 400, color: 'var(--text-body-primary)', margin: '0 0 2px' }}>Upload Queue ({queue.length})</p>
+                      <p style={{ fontSize: 12, color: 'var(--text-body-primary)', margin: 0 }}>The documents below will be uploaded to your knowledge base.</p>
                     </div>
                     <button
                       onClick={() => bulkFileInputRef.current?.click()}
-                      style={{ display: 'flex', alignItems: 'center', gap: 4, padding: '4px 8px', border: 'none', borderRadius: 4, background: 'transparent', color: '#3264b8', fontSize: 10, fontWeight: 600, cursor: 'pointer' }}
+                      style={{ display: 'flex', alignItems: 'center', gap: 4, padding: '4px 8px', border: 'none', borderRadius: 4, background: 'transparent', color: 'var(--content-action-primary-default)', fontSize: 10, fontWeight: 600, cursor: 'pointer' }}
                     >
-                      <PlusCircleIcon size={14} color="#3264b8" />
+                      <PlusCircleIcon size={14} color="var(--content-action-primary-default)" />
                       Add More Files
                     </button>
                   </div>
-                  <div style={{ border: '1px solid #eff1f3', borderRadius: 8, overflow: 'hidden' }}>
+                  <div style={{ border: '1px solid var(--neutral-100)', borderRadius: 8, overflow: 'hidden' }}>
                     {/* Table header */}
-                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 120px 100px 104px', background: '#eff1f3', padding: '8px', gap: 0 }}>
+                    <div style={{ display: 'grid', gridTemplateColumns: '1fr 120px 100px 104px', background: 'var(--neutral-100)', padding: '8px', gap: 0 }}>
                       {['Article Title', 'File Type', 'Size', ''].map((col, i) => (
-                        <span key={i} style={{ fontSize: 12, fontWeight: 600, color: '#021920', padding: '4px 8px', letterSpacing: '0.02em' }}>{col}</span>
+                        <span key={i} style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-body-primary)', padding: '4px 8px', letterSpacing: '0.02em' }}>{col}</span>
                       ))}
                     </div>
                     {/* Table rows */}
                     {queue.map((f, idx) => (
-                      <div key={f.id} style={{ display: 'grid', gridTemplateColumns: '1fr 120px 100px 104px', background: idx % 2 === 0 ? '#fff' : '#f8f8f8', borderTop: '1px solid #eff1f3', alignItems: 'center' }}>
-                        <span style={{ fontSize: 12, color: '#021920', padding: '10px 8px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{f.name}</span>
-                        <span style={{ fontSize: 12, color: '#021920', padding: '10px 8px', whiteSpace: 'nowrap' }}>{f.fileType}</span>
-                        <span style={{ fontSize: 12, color: '#021920', padding: '10px 8px', whiteSpace: 'nowrap' }}>{f.size}</span>
+                      <div key={f.id} style={{ display: 'grid', gridTemplateColumns: '1fr 120px 100px 104px', background: idx % 2 === 0 ? 'var(--neutral-0)' : 'var(--neutral-50)', borderTop: '1px solid var(--neutral-100)', alignItems: 'center' }}>
+                        <span style={{ fontSize: 12, color: 'var(--text-body-primary)', padding: '10px 8px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{f.name}</span>
+                        <span style={{ fontSize: 12, color: 'var(--text-body-primary)', padding: '10px 8px', whiteSpace: 'nowrap' }}>{f.fileType}</span>
+                        <span style={{ fontSize: 12, color: 'var(--text-body-primary)', padding: '10px 8px', whiteSpace: 'nowrap' }}>{f.size}</span>
                         <div style={{ display: 'flex', justifyContent: 'flex-end', padding: '10px 8px' }}>
                           <button
                             onClick={() => onRemoveFile(f.id)}
-                            style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 4, border: '1px solid #689df6', borderRadius: 4, background: 'transparent', cursor: 'pointer' }}
+                            style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 4, border: '1px solid var(--content-action-primary-600)', borderRadius: 4, background: 'transparent', cursor: 'pointer' }}
                           >
-                            <TrashIcon size={16} color="#3264b8" />
+                            <TrashIcon size={16} color="var(--content-action-primary-default)" />
                           </button>
                         </div>
                       </div>
@@ -2175,31 +2175,31 @@ function BulkUploadModal({
           )}
 
           {uploadState === 'uploading' && (
-            <div style={{ background: '#fff', border: '2px dashed #689df6', borderRadius: 8, padding: 16, display: 'flex', flexDirection: 'column', justifyContent: 'space-between', minHeight: 260 }}>
+            <div style={{ background: 'var(--neutral-0)', border: '2px dashed var(--content-action-primary-600)', borderRadius: 8, padding: 16, display: 'flex', flexDirection: 'column', justifyContent: 'space-between', minHeight: 260 }}>
               <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-                <p style={{ fontSize: 14, fontWeight: 600, color: '#021920', margin: 0 }}>Progress</p>
-                <button onClick={onCancel} style={{ display: 'flex', alignItems: 'center', gap: 4, padding: '4px 8px', border: 'none', borderRadius: 4, background: 'transparent', color: '#3264b8', fontSize: 12, fontWeight: 600, cursor: 'pointer' }}>
-                  Cancel <XIcon size={12} color="#3264b8" />
+                <p style={{ fontSize: 14, fontWeight: 600, color: 'var(--text-body-primary)', margin: 0 }}>Progress</p>
+                <button onClick={onCancel} style={{ display: 'flex', alignItems: 'center', gap: 4, padding: '4px 8px', border: 'none', borderRadius: 4, background: 'transparent', color: 'var(--content-action-primary-default)', fontSize: 12, fontWeight: 600, cursor: 'pointer' }}>
+                  Cancel <XIcon size={12} color="var(--content-action-primary-default)" />
                 </button>
               </div>
               <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8 }}>
-                <SpinnerGapIcon size={64} color="#4285f4" style={{ animation: 'bulk-spin 1s linear infinite' }} />
+                <SpinnerGapIcon size={64} color="var(--content-action-primary-600)" style={{ animation: 'bulk-spin 1s linear infinite' }} />
                 <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%' }}>
-                  <span style={{ fontSize: 12, fontWeight: 600, color: '#021920', textTransform: 'uppercase', letterSpacing: '0.04em' }}>{currentFileName}</span>
-                  <span style={{ fontSize: 12, fontWeight: 600, color: '#021920' }}>{progress}%</span>
+                  <span style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-body-primary)', textTransform: 'uppercase', letterSpacing: '0.04em' }}>{currentFileName}</span>
+                  <span style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-body-primary)' }}>{progress}%</span>
                 </div>
-                <div style={{ width: '100%', height: 12, background: '#d9dce0', borderRadius: 999, overflow: 'hidden' }}>
-                  <div style={{ height: '100%', width: `${progress}%`, background: '#4285f4', borderRadius: 999, transition: 'width 0.15s' }} />
+                <div style={{ width: '100%', height: 12, background: 'var(--neutral-200)', borderRadius: 999, overflow: 'hidden' }}>
+                  <div style={{ height: '100%', width: `${progress}%`, background: 'var(--content-action-primary-600)', borderRadius: 999, transition: 'width 0.15s' }} />
                 </div>
-                <p style={{ fontSize: 12, fontWeight: 300, color: '#7a828c', margin: 0 }}>File {currentFile} of {queue.length}</p>
+                <p style={{ fontSize: 12, fontWeight: 300, color: 'var(--text-body-secondary)', margin: 0 }}>File {currentFile} of {queue.length}</p>
               </div>
               <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
-                <span style={{ display: 'flex', alignItems: 'center', gap: 4, fontSize: 12, color: '#7a828c' }}>
-                  <ClockIcon size={12} color="#7a828c" /> This usually takes a few seconds
+                <span style={{ display: 'flex', alignItems: 'center', gap: 4, fontSize: 12, color: 'var(--text-body-secondary)' }}>
+                  <ClockIcon size={12} color="var(--text-body-secondary)" /> This usually takes a few seconds
                 </span>
-                <span style={{ width: 1, height: 10, background: '#eff1f3' }} />
-                <span style={{ display: 'flex', alignItems: 'center', gap: 4, fontSize: 12, color: '#7a828c' }}>
-                  <ShieldCheckIcon size={12} color="#7a828c" /> Changes are saved as they process
+                <span style={{ width: 1, height: 10, background: 'var(--neutral-100)' }} />
+                <span style={{ display: 'flex', alignItems: 'center', gap: 4, fontSize: 12, color: 'var(--text-body-secondary)' }}>
+                  <ShieldCheckIcon size={12} color="var(--text-body-secondary)" /> Changes are saved as they process
                 </span>
               </div>
             </div>
@@ -2208,31 +2208,31 @@ function BulkUploadModal({
           {uploadState === 'complete' && (
             <>
               <div>
-                <p style={{ fontSize: 20, fontWeight: 400, color: '#021920', margin: '0 0 4px' }}>Bulk upload completed with errors</p>
-                <p style={{ fontSize: 14, color: '#4b535e', margin: 0 }}>{results.succeeded + results.failed.length} files processed — {results.succeeded} succeeded, {results.failed.length} failed</p>
+                <p style={{ fontSize: 20, fontWeight: 400, color: 'var(--text-body-primary)', margin: '0 0 4px' }}>Bulk upload completed with errors</p>
+                <p style={{ fontSize: 14, color: 'var(--neutral-700)', margin: 0 }}>{results.succeeded + results.failed.length} files processed — {results.succeeded} succeeded, {results.failed.length} failed</p>
               </div>
-              <div style={{ background: '#eff1f3', borderRadius: 8, padding: 8, display: 'flex', gap: 8 }}>
+              <div style={{ background: 'var(--neutral-100)', borderRadius: 8, padding: 8, display: 'flex', gap: 8 }}>
                 {[
-                  { label: 'Succeeded', value: results.succeeded, color: '#021920' },
-                  { label: 'Failed',    value: results.failed.length, color: '#021920' },
+                  { label: 'Succeeded', value: results.succeeded, color: 'var(--text-body-primary)' },
+                  { label: 'Failed',    value: results.failed.length, color: 'var(--text-body-primary)' },
                 ].map(card => (
-                  <div key={card.label} style={{ background: '#fff', border: '1px solid #d9dce0', borderRadius: 8, padding: '8px 16px', minWidth: 120 }}>
-                    <p style={{ fontSize: 10, fontWeight: 600, color: '#021920', margin: '0 0 4px' }}>{card.label}</p>
+                  <div key={card.label} style={{ background: 'var(--neutral-0)', border: '1px solid var(--neutral-200)', borderRadius: 8, padding: '8px 16px', minWidth: 120 }}>
+                    <p style={{ fontSize: 10, fontWeight: 600, color: 'var(--text-body-primary)', margin: '0 0 4px' }}>{card.label}</p>
                     <p style={{ fontSize: 24, fontWeight: 400, color: card.color, margin: 0, lineHeight: 1 }}>{card.value}</p>
                   </div>
                 ))}
               </div>
               {results.failed.length > 0 && (
-                <div style={{ border: '1px solid #eff1f3', borderRadius: 8, overflow: 'hidden' }}>
-                  <div style={{ background: '#eff1f3', padding: '8px 12px', display: 'flex', alignItems: 'center', gap: 6 }}>
-                    <WarningIcon size={14} color="#c0002a" weight="fill" />
-                    <span style={{ fontSize: 12, fontWeight: 600, color: '#021920' }}>{results.failed.length} files failed to upload</span>
+                <div style={{ border: '1px solid var(--neutral-100)', borderRadius: 8, overflow: 'hidden' }}>
+                  <div style={{ background: 'var(--neutral-100)', padding: '8px 12px', display: 'flex', alignItems: 'center', gap: 6 }}>
+                    <WarningIcon size={14} color="var(--text-error)" weight="fill" />
+                    <span style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-body-primary)' }}>{results.failed.length} files failed to upload</span>
                   </div>
                   {results.failed.map((f, idx) => (
-                    <div key={f.id} style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 100px', background: idx % 2 === 0 ? '#fff' : '#f8f8f8', borderTop: '1px solid #eff1f3', padding: '10px 12px', alignItems: 'center', gap: 8 }}>
-                      <span style={{ fontSize: 13, fontWeight: 600, color: '#021920' }}>{f.name}</span>
-                      <span style={{ fontSize: 13, color: '#4b535e' }}>{f.error}</span>
-                      <span>{f.canRetry ? <span style={{ fontSize: 13, color: '#4285f4', textDecoration: 'underline', cursor: 'pointer' }}>Retry</span> : <span style={{ fontSize: 13, color: '#7a828c' }}>—</span>}</span>
+                    <div key={f.id} style={{ display: 'grid', gridTemplateColumns: '1fr 1fr 100px', background: idx % 2 === 0 ? 'var(--neutral-0)' : 'var(--neutral-50)', borderTop: '1px solid var(--neutral-100)', padding: '10px 12px', alignItems: 'center', gap: 8 }}>
+                      <span style={{ fontSize: 13, fontWeight: 600, color: 'var(--text-body-primary)' }}>{f.name}</span>
+                      <span style={{ fontSize: 13, color: 'var(--neutral-700)' }}>{f.error}</span>
+                      <span>{f.canRetry ? <span style={{ fontSize: 13, color: 'var(--content-action-primary-600)', textDecoration: 'underline', cursor: 'pointer' }}>Retry</span> : <span style={{ fontSize: 13, color: 'var(--text-body-secondary)' }}>—</span>}</span>
                     </div>
                   ))}
                 </div>
@@ -2241,15 +2241,15 @@ function BulkUploadModal({
           )}
 
           {/* Footer */}
-          <div style={{ borderTop: '1px solid #eff1f3', paddingTop: 16, display: 'flex', gap: 8, alignItems: 'center' }}>
+          <div style={{ borderTop: '1px solid var(--neutral-100)', paddingTop: 16, display: 'flex', gap: 8, alignItems: 'center' }}>
             {uploadState === 'idle' && (
               <>
-                <button onClick={onCancel} style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '12px', border: 'none', borderRadius: 8, background: 'transparent', color: '#3264b8', fontSize: 14, fontWeight: 600, cursor: 'pointer' }}>
+                <button onClick={onCancel} style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '12px', border: 'none', borderRadius: 8, background: 'transparent', color: 'var(--content-action-primary-default)', fontSize: 14, fontWeight: 600, cursor: 'pointer' }}>
                   <XIcon size={16} /> Cancel
                 </button>
                 <button
                   onClick={() => bulkFileInputRef.current?.click()}
-                  style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '12px', border: '1.25px solid #689df6', borderRadius: 8, background: '#4285f4', color: '#eff1f3', fontSize: 14, cursor: 'pointer', opacity: destKB === '' ? 0.5 : 1 }}
+                  style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '12px', border: '1.25px solid var(--content-action-primary-600)', borderRadius: 8, background: 'var(--content-action-primary-600)', color: 'var(--neutral-100)', fontSize: 14, cursor: 'pointer', opacity: destKB === '' ? 0.5 : 1 }}
                   disabled={destKB === ''}
                 >
                   <FloppyDiskIcon size={20} /> Upload Files
@@ -2258,20 +2258,20 @@ function BulkUploadModal({
             )}
             {uploadState === 'queued' && (
               <>
-                <button onClick={onCancel} style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '12px', border: 'none', borderRadius: 8, background: 'transparent', color: '#3264b8', fontSize: 14, fontWeight: 600, cursor: 'pointer' }}>
+                <button onClick={onCancel} style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '12px', border: 'none', borderRadius: 8, background: 'transparent', color: 'var(--content-action-primary-default)', fontSize: 14, fontWeight: 600, cursor: 'pointer' }}>
                   <XIcon size={16} /> Cancel
                 </button>
                 <button
                   onClick={onSave}
                   disabled={queue.length === 0 || destKB === ''}
-                  style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '12px', border: '1.25px solid #689df6', borderRadius: 8, background: '#4285f4', color: '#eff1f3', fontSize: 14, cursor: queue.length === 0 || destKB === '' ? 'not-allowed' : 'pointer', opacity: queue.length === 0 || destKB === '' ? 0.5 : 1 }}
+                  style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '12px', border: '1.25px solid var(--content-action-primary-600)', borderRadius: 8, background: 'var(--content-action-primary-600)', color: 'var(--neutral-100)', fontSize: 14, cursor: queue.length === 0 || destKB === '' ? 'not-allowed' : 'pointer', opacity: queue.length === 0 || destKB === '' ? 0.5 : 1 }}
                 >
                   <FloppyDiskIcon size={20} /> Save to Knowledge Base
                 </button>
               </>
             )}
             {uploadState === 'complete' && (
-              <button onClick={onDone} style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '12px', border: '1.25px solid #689df6', borderRadius: 8, background: '#4285f4', color: '#eff1f3', fontSize: 14, cursor: 'pointer' }}>
+              <button onClick={onDone} style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '12px', border: '1.25px solid var(--content-action-primary-600)', borderRadius: 8, background: 'var(--content-action-primary-600)', color: 'var(--neutral-100)', fontSize: 14, cursor: 'pointer' }}>
                 <CheckCircleIcon size={20} /> Done
               </button>
             )}
@@ -2317,7 +2317,7 @@ export default function CollapsibleFilterPage() {
   const [tagSearch,    setTagSearch]    = useState('')
   const [newTagKey,    setNewTagKey]    = useState('')
   const [newTagValue,  setNewTagValue]  = useState('')
-  const [newTagColor,  setNewTagColor]  = useState('#d6e2f5')
+  const [newTagColor,  setNewTagColor]  = useState('var(--info-100)')
 
   // Bulk tag modal state
   const [bulkTagModal,    setBulkTagModal]    = useState<'add' | 'remove' | null>(null)
@@ -2326,7 +2326,7 @@ export default function CollapsibleFilterPage() {
   const [bulkModalView,   setBulkModalView]   = useState<BulkModalView>('list')
   const [bulkCreateKey,   setBulkCreateKey]   = useState('')
   const [bulkCreateValue, setBulkCreateValue] = useState('')
-  const [bulkCreateColor, setBulkCreateColor] = useState('#d6e2f5')
+  const [bulkCreateColor, setBulkCreateColor] = useState('var(--info-100)')
 
   // Tag add / edit / delete modals
   const [showAddTagModal, setShowAddTagModal] = useState(false)
@@ -2416,7 +2416,7 @@ export default function CollapsibleFilterPage() {
     setTagSearch('')
     setNewTagKey('')
     setNewTagValue('')
-    setNewTagColor('#d6e2f5')
+    setNewTagColor('var(--info-100)')
   }
 
   const closeTagDrop = useCallback(() => setTagDropId(null), [])
@@ -2449,8 +2449,8 @@ export default function CollapsibleFilterPage() {
     if (tagRegistry.some(t => t.key === tagKey)) return
     const isDashed   = newTagColor === 'dashed'
     const dotBg      = isDashed ? 'transparent' : newTagColor
-    const chipBg     = isDashed ? '#eff1f3' : newTagColor
-    const chipText   = '#4b535e'
+    const chipBg     = isDashed ? 'var(--neutral-100)' : newTagColor
+    const chipText   = 'var(--neutral-700)'
     setTagRegistry(prev => [...prev, { key: tagKey, dotBg, dotDashed: isDashed || undefined }])
     setTagStyleMap(prev => ({ ...prev, [tagKey]: { bg: chipBg, text: chipText } }))
     setArticles(prev => prev.map(a =>
@@ -2459,7 +2459,7 @@ export default function CollapsibleFilterPage() {
     setTagDropView('list')
     setNewTagKey('')
     setNewTagValue('')
-    setNewTagColor('#d6e2f5')
+    setNewTagColor('var(--info-100)')
     setTimeout(() => toast.success('New tag created', { description: tagLabel(tagKey) }), 1000)
   }
 
@@ -2472,7 +2472,7 @@ export default function CollapsibleFilterPage() {
     setBulkModalView('list')
     setBulkCreateKey('')
     setBulkCreateValue('')
-    setBulkCreateColor('#d6e2f5')
+    setBulkCreateColor('var(--info-100)')
   }, [])
 
   const openBulkAddTags = useCallback(() => {
@@ -2482,7 +2482,7 @@ export default function CollapsibleFilterPage() {
     setBulkModalView('list')
     setBulkCreateKey('')
     setBulkCreateValue('')
-    setBulkCreateColor('#d6e2f5')
+    setBulkCreateColor('var(--info-100)')
   }, [])
 
   const openBulkRemoveTags = useCallback(() => {
@@ -2508,9 +2508,9 @@ export default function CollapsibleFilterPage() {
     if (tagRegistry.some(t => t.key === tagKey)) return
     const isDashed = bulkCreateColor === 'dashed'
     const dotBg    = isDashed ? 'transparent' : bulkCreateColor
-    const chipBg   = isDashed ? '#eff1f3' : bulkCreateColor
+    const chipBg   = isDashed ? 'var(--neutral-100)' : bulkCreateColor
     setTagRegistry(prev => [...prev, { key: tagKey, dotBg, dotDashed: isDashed || undefined }])
-    setTagStyleMap(prev => ({ ...prev, [tagKey]: { bg: chipBg, text: '#4b535e' } }))
+    setTagStyleMap(prev => ({ ...prev, [tagKey]: { bg: chipBg, text: 'var(--neutral-700)' } }))
     setArticles(prev => prev.map(a =>
       !selectedRows.has(a.id) ? a : { ...a, tags: a.tags.includes(tagKey) ? a.tags : [...a.tags, tagKey] }
     ))
@@ -2546,21 +2546,21 @@ export default function CollapsibleFilterPage() {
   const handleAddNewTag = useCallback((tagKey: string, color: string) => {
     const isDashed = color === 'dashed'
     const dotBg    = isDashed ? 'transparent' : color
-    const chipBg   = isDashed ? '#eff1f3'     : color
+    const chipBg   = isDashed ? 'var(--neutral-100)'     : color
     setTagRegistry(prev => [...prev, { key: tagKey, dotBg, dotDashed: isDashed || undefined }])
-    setTagStyleMap(prev => ({ ...prev, [tagKey]: { bg: chipBg, text: '#4b535e' } }))
+    setTagStyleMap(prev => ({ ...prev, [tagKey]: { bg: chipBg, text: 'var(--neutral-700)' } }))
     setShowAddTagModal(false)
   }, [])
 
   const handleSaveEditTag = useCallback((oldKey: string, newKey: string, newColor: string) => {
     const isDashed = newColor === 'dashed'
     const dotBg    = isDashed ? 'transparent' : newColor
-    const chipBg   = isDashed ? '#eff1f3'     : newColor
+    const chipBg   = isDashed ? 'var(--neutral-100)'     : newColor
     setTagRegistry(prev => prev.map(t =>
       t.key === oldKey ? { key: newKey, dotBg, dotDashed: isDashed || undefined } : t
     ))
     setTagStyleMap(prev => {
-      const next = { ...prev, [newKey]: { bg: chipBg, text: prev[oldKey]?.text ?? '#4b535e' } }
+      const next = { ...prev, [newKey]: { bg: chipBg, text: prev[oldKey]?.text ?? 'var(--neutral-700)' } }
       if (oldKey !== newKey) delete next[oldKey]
       return next
     })
@@ -2676,19 +2676,19 @@ export default function CollapsibleFilterPage() {
       author="Rodrigo S."
       created="2026-04-12"
     >
-    <div style={{ display: 'flex', flexDirection: 'column', flex: 1, minHeight: 0, background: '#f8f9fb' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', flex: 1, minHeight: 0, background: 'var(--neutral-50)' }}>
 
       {/* Page title bar */}
       <div style={{
         padding:      '16px 24px',
-        background:   '#ffffff',
-        borderBottom: '1px solid #eff1f3',
+        background:   'var(--neutral-0)',
+        borderBottom: '1px solid var(--neutral-100)',
         flexShrink:   0,
       }}>
-        <h1 style={{ fontSize: 28, fontWeight: 400, color: '#4285f4', margin: 0, lineHeight: '34px' }}>
+        <h1 style={{ fontSize: 28, fontWeight: 400, color: 'var(--content-action-primary-600)', margin: 0, lineHeight: '34px' }}>
           Articles List
         </h1>
-        <p style={{ fontSize: 12, color: '#021920', margin: '4px 0 0' }}>
+        <p style={{ fontSize: 12, color: 'var(--text-body-primary)', margin: '4px 0 0' }}>
           Manage your documentation and sync with Q in Connect
         </p>
       </div>
@@ -2711,16 +2711,16 @@ export default function CollapsibleFilterPage() {
         />
 
         {/* Table area */}
-        <div style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden', background: '#ffffff' }}>
+        <div style={{ flex: 1, display: 'flex', flexDirection: 'column', overflow: 'hidden', background: 'var(--neutral-0)' }}>
 
           {/* Content header */}
           <div style={{ padding: '16px 16px 0', flexShrink: 0 }}>
             <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: 12 }}>
               <div>
-                <h2 style={{ fontSize: 28, fontWeight: 400, color: '#021920', margin: 0, lineHeight: '34px' }}>
+                <h2 style={{ fontSize: 28, fontWeight: 400, color: 'var(--text-body-primary)', margin: 0, lineHeight: '34px' }}>
                   Articles ({filteredArticles.length})
                 </h2>
-                <p style={{ fontSize: 12, color: '#021920', margin: '4px 0 0' }}>
+                <p style={{ fontSize: 12, color: 'var(--text-body-primary)', margin: '4px 0 0' }}>
                   Manage your documentation and sync with Q in Connect.
                 </p>
               </div>
@@ -2738,11 +2738,11 @@ export default function CollapsibleFilterPage() {
                       borderRadius: 4,
                       background:   'transparent',
                       cursor:       'pointer',
-                      color:        '#3264b8',
+                      color:        'var(--content-action-primary-default)',
                     }}
                   >
-                    <InfoIcon size={16} color="#3264b8" />
-                    <span style={{ fontSize: 10, fontWeight: 600, color: '#3264b8', whiteSpace: 'nowrap' }}>
+                    <InfoIcon size={16} color="var(--content-action-primary-default)" />
+                    <span style={{ fontSize: 10, fontWeight: 600, color: 'var(--content-action-primary-default)', whiteSpace: 'nowrap' }}>
                       {KB_STATUS.loaded}/{KB_STATUS.total} Knowledge Bases loaded.
                     </span>
                   </button>
@@ -2756,12 +2756,12 @@ export default function CollapsibleFilterPage() {
                     alignItems:   'center',
                     gap:          6,
                     padding:      '4px 10px',
-                    border:       '1px solid #689df6',
+                    border:       '1px solid var(--content-action-primary-600)',
                     borderRadius: 4,
-                    background:   actionsOpen ? '#f0f5fe' : 'transparent',
+                    background:   actionsOpen ? 'var(--content-action-primary-100)' : 'transparent',
                     fontSize:     10,
                     fontWeight:   400,
-                    color:        '#3264b8',
+                    color:        'var(--content-action-primary-default)',
                     cursor:       'pointer',
                   }}
                 >
@@ -2789,12 +2789,12 @@ export default function CollapsibleFilterPage() {
                 alignItems:   'center',
                 gap:          6,
                 padding:      '8px 10px',
-                border:       '1px solid #d9dce0',
+                border:       '1px solid var(--neutral-200)',
                 borderRadius: 8,
-                background:   '#ffffff',
+                background:   'var(--neutral-0)',
                 width:        362,
               }}>
-                <MagnifyingGlassIcon size={18} color="#7a828c" style={{ flexShrink: 0 }} />
+                <MagnifyingGlassIcon size={18} color="var(--text-body-secondary)" style={{ flexShrink: 0 }} />
                 <input
                   type="text"
                   placeholder="Search Documents"
@@ -2805,7 +2805,7 @@ export default function CollapsibleFilterPage() {
                     border:     'none',
                     outline:    'none',
                     fontSize:   14,
-                    color:      '#021920',
+                    color:      'var(--text-body-primary)',
                     background: 'transparent',
                   }}
                 />
@@ -2821,14 +2821,14 @@ export default function CollapsibleFilterPage() {
               gap:         8,
               padding:     8,
               margin:      '8px 12px',
-              background:  '#eff1f3',
+              background:  'var(--neutral-100)',
               borderRadius: 8,
               flexShrink:  0,
             }}>
               <span style={{
                 fontSize:   14,
                 fontWeight: 600,
-                color:      '#021920',
+                color:      'var(--text-body-primary)',
                 lineHeight: '20px',
                 whiteSpace: 'nowrap',
                 flexShrink: 0,
@@ -2851,7 +2851,7 @@ export default function CollapsibleFilterPage() {
           <div style={{ flex: 1, overflow: 'auto' }}>
             <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 13, tableLayout: 'auto' }}>
               <thead>
-                <tr style={{ background: '#f8f9fb', borderBottom: '1px solid #eff1f3' }}>
+                <tr style={{ background: 'var(--neutral-50)', borderBottom: '1px solid var(--neutral-100)' }}>
                   <Th style={{ width: 40, paddingLeft: 16 }}>
                     <Checkbox checked={allSelected} indeterminate={someSelected} onChange={toggleAll} />
                   </Th>
@@ -2867,7 +2867,7 @@ export default function CollapsibleFilterPage() {
               <tbody>
                 {filteredArticles.length === 0 && (
                   <tr>
-                    <td colSpan={8} style={{ textAlign: 'center', padding: '32px 0', color: '#7a828c', fontSize: 13 }}>
+                    <td colSpan={8} style={{ textAlign: 'center', padding: '32px 0', color: 'var(--text-body-secondary)', fontSize: 13 }}>
                       No articles match the active filters.
                     </td>
                   </tr>
@@ -2878,8 +2878,8 @@ export default function CollapsibleFilterPage() {
                     <tr
                       key={article.id}
                       style={{
-                        background:   isSelected ? '#f0f5fe' : idx % 2 === 0 ? '#ffffff' : '#fafbfc',
-                        borderBottom: '1px solid #eff1f3',
+                        background:   isSelected ? 'var(--content-action-primary-100)' : idx % 2 === 0 ? 'var(--neutral-0)' : 'var(--neutral-50)',
+                        borderBottom: '1px solid var(--neutral-100)',
                       }}
                     >
                       <Td style={{ width: 40, paddingLeft: 16 }}>
@@ -2893,7 +2893,7 @@ export default function CollapsibleFilterPage() {
                             border:         'none',
                             padding:        0,
                             font:           'inherit',
-                            color:          '#3264b8',
+                            color:          'var(--content-action-primary-default)',
                             fontWeight:     500,
                             cursor:         'pointer',
                             textDecoration: 'none',
@@ -2909,8 +2909,8 @@ export default function CollapsibleFilterPage() {
                           {article.title}
                         </button>
                       </Td>
-                      <Td style={{ color: '#4b535e', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', maxWidth: 220 }}>{article.kb}</Td>
-                      <Td style={{ color: '#4b535e', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', maxWidth: 180 }}>{article.association}</Td>
+                      <Td style={{ color: 'var(--neutral-700)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', maxWidth: 220 }}>{article.kb}</Td>
+                      <Td style={{ color: 'var(--neutral-700)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis', maxWidth: 180 }}>{article.association}</Td>
                       <td
                         ref={el => {
                           if (el) tagCellRefs.current.set(article.id, el)
@@ -2920,22 +2920,22 @@ export default function CollapsibleFilterPage() {
                         style={{
                           padding:    '0 12px',
                           cursor:     'pointer',
-                          background: tagDropId === article.id ? '#f0f5fe' : 'inherit',
+                          background: tagDropId === article.id ? 'var(--content-action-primary-100)' : 'inherit',
                         }}
                       >
                         <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexWrap: 'nowrap' }}>
                           {article.tags.slice(0, 2).map(tag => (
-                            <span key={tag} style={{ fontSize: 12, color: '#4285f4', whiteSpace: 'nowrap' }}>
+                            <span key={tag} style={{ fontSize: 12, color: 'var(--content-action-primary-600)', whiteSpace: 'nowrap' }}>
                               {tagLabel(tag)}
                             </span>
                           ))}
                           {article.tags.length > 2 && (
-                            <span style={{ fontSize: 12, color: '#4285f4', whiteSpace: 'nowrap' }}>
+                            <span style={{ fontSize: 12, color: 'var(--content-action-primary-600)', whiteSpace: 'nowrap' }}>
                               +{article.tags.length - 2} more
                             </span>
                           )}
                           {article.tags.length === 0 && (
-                            <span style={{ fontSize: 12, color: '#aab0b8' }}>Add tag…</span>
+                            <span style={{ fontSize: 12, color: 'var(--neutral-300)' }}>Add tag…</span>
                           )}
                         </div>
 
@@ -2964,8 +2964,8 @@ export default function CollapsibleFilterPage() {
                           />
                         )}
                       </td>
-                      <Td style={{ color: '#7a828c', whiteSpace: 'nowrap' }}>{article.modified}</Td>
-                      <Td style={{ color: '#7a828c', whiteSpace: 'nowrap' }}>{article.modifiedBy}</Td>
+                      <Td style={{ color: 'var(--text-body-secondary)', whiteSpace: 'nowrap' }}>{article.modified}</Td>
+                      <Td style={{ color: 'var(--text-body-secondary)', whiteSpace: 'nowrap' }}>{article.modifiedBy}</Td>
                       <Td style={{ width: 48, paddingRight: 8 }}>
                         <button
                           ref={el => {
@@ -2981,13 +2981,13 @@ export default function CollapsibleFilterPage() {
                             height:         28,
                             border:         'none',
                             borderRadius:   6,
-                            background:     rowActionsId === article.id ? '#eff1f3' : 'transparent',
+                            background:     rowActionsId === article.id ? 'var(--neutral-100)' : 'transparent',
                             cursor:         'pointer',
-                            color:          '#7a828c',
+                            color:          'var(--text-body-secondary)',
                           }}
                           onMouseEnter={e => {
                             if (rowActionsId !== article.id)
-                              (e.currentTarget as HTMLButtonElement).style.background = '#eff1f3'
+                              (e.currentTarget as HTMLButtonElement).style.background = 'var(--neutral-100)'
                           }}
                           onMouseLeave={e => {
                             if (rowActionsId !== article.id)
@@ -3014,7 +3014,7 @@ export default function CollapsibleFilterPage() {
           </div>
 
           {filteredArticles.length > displayCount && (
-            <div style={{ padding: '12px 16px', borderTop: '1px solid #eff1f3', flexShrink: 0 }}>
+            <div style={{ padding: '12px 16px', borderTop: '1px solid var(--neutral-100)', flexShrink: 0 }}>
               <button
                 onClick={() => setDisplayCount(c => c + 10)}
                 style={{
@@ -3022,10 +3022,10 @@ export default function CollapsibleFilterPage() {
                   alignItems:   'center',
                   gap:          6,
                   padding:      '8px 16px',
-                  border:       '1px solid #689df6',
+                  border:       '1px solid var(--content-action-primary-600)',
                   borderRadius: 8,
                   background:   'transparent',
-                  color:        '#3264b8',
+                  color:        'var(--content-action-primary-default)',
                   fontSize:     12,
                   cursor:       'pointer',
                 }}
@@ -3125,7 +3125,7 @@ export default function CollapsibleFilterPage() {
           tagKey={editingTag}
           initialColor={(() => {
             const entry = tagRegistry.find(t => t.key === editingTag)
-            return entry?.dotDashed ? 'dashed' : (entry?.dotBg ?? '#d6e2f5')
+            return entry?.dotDashed ? 'dashed' : (entry?.dotBg ?? 'var(--info-100)')
           })()}
           onSave={(newKey, newColor) => handleSaveEditTag(editingTag, newKey, newColor)}
           onClose={() => setEditingTag(null)}
@@ -3158,7 +3158,7 @@ function AddTagModal({
 }) {
   const [keyInput,   setKeyInput]   = useState('')
   const [valueInput, setValueInput] = useState('')
-  const [color,      setColor]      = useState('#d6e2f5')
+  const [color,      setColor]      = useState('var(--info-100)')
   const [mounted,    setMounted]    = useState(false)
 
   useEffect(() => { setMounted(true) }, [])
@@ -3175,13 +3175,13 @@ function AddTagModal({
 
   const FIELD_STYLE: React.CSSProperties = {
     width: '100%', padding: '10px 12px',
-    border: '1px solid #d9dce0', borderRadius: 8,
-    fontSize: 13, color: '#021920', background: '#fff',
+    border: '1px solid var(--neutral-200)', borderRadius: 8,
+    fontSize: 13, color: 'var(--text-body-primary)', background: 'var(--neutral-0)',
     outline: 'none', boxSizing: 'border-box',
   }
 
   const LABEL_STYLE: React.CSSProperties = {
-    fontSize: 11, fontWeight: 600, color: '#021920',
+    fontSize: 11, fontWeight: 600, color: 'var(--text-body-primary)',
     letterSpacing: '0.4px', textTransform: 'uppercase', marginBottom: 6, display: 'block',
   }
 
@@ -3192,27 +3192,27 @@ function AddTagModal({
       onClick={onClose}
       style={{
         position: 'fixed', inset: 0, zIndex: 9998,
-        background: 'rgba(5,3,38,0.32)',
+        background: 'var(--surface-overlay)',
         display: 'flex', alignItems: 'center', justifyContent: 'center',
       }}
     >
       <div
         onClick={e => e.stopPropagation()}
         style={{
-          background: '#fff', borderRadius: 12, width: 540,
+          background: 'var(--neutral-0)', borderRadius: 12, width: 540,
           boxShadow: '0px 8px 32px rgba(5,3,38,0.16)', overflow: 'hidden',
         }}
       >
         {/* Header */}
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '20px 24px 16px' }}>
-          <span style={{ fontSize: 18, fontWeight: 600, color: '#021920' }}>Create Tag</span>
-          <button onClick={onClose} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#7a828c', display: 'flex' }}>
+          <span style={{ fontSize: 18, fontWeight: 600, color: 'var(--text-body-primary)' }}>Create Tag</span>
+          <button onClick={onClose} style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text-body-secondary)', display: 'flex' }}>
             <XIcon size={18} />
           </button>
         </div>
 
         {/* Form */}
-        <div style={{ margin: '0 24px 20px', background: '#f8f9fb', borderRadius: 8, padding: 16, display: 'flex', flexDirection: 'column', gap: 12 }}>
+        <div style={{ margin: '0 24px 20px', background: 'var(--neutral-50)', borderRadius: 8, padding: 16, display: 'flex', flexDirection: 'column', gap: 12 }}>
           <div>
             <label style={LABEL_STYLE}>* Key</label>
             <input
@@ -3232,7 +3232,7 @@ function AddTagModal({
             />
           </div>
           {isDuplicate && (
-            <p style={{ margin: 0, fontSize: 12, color: '#ef2056' }}>
+            <p style={{ margin: 0, fontSize: 12, color: 'var(--text-error)' }}>
               A tag with this key and value already exists.
             </p>
           )}
@@ -3252,8 +3252,8 @@ function AddTagModal({
                   style={{
                     width: 24, height: 24, borderRadius: '50%', cursor: 'pointer',
                     background: dashed ? 'transparent' : hex,
-                    border: selected ? '2px solid #4285f4' : dashed ? '1px dashed #7a828c' : '2px solid transparent',
-                    outline: selected ? '2px solid #4285f4' : 'none',
+                    border: selected ? '2px solid var(--content-action-primary-600)' : dashed ? '1px dashed var(--text-body-secondary)' : '2px solid transparent',
+                    outline: selected ? '2px solid var(--content-action-primary-600)' : 'none',
                     outlineOffset: 2, boxSizing: 'border-box',
                   }}
                 />
@@ -3263,25 +3263,25 @@ function AddTagModal({
         </div>
 
         {/* Footer */}
-        <div style={{ display: 'flex', gap: 1, borderTop: '1px solid #eff1f3', padding: '12px 24px' }}>
+        <div style={{ display: 'flex', gap: 1, borderTop: '1px solid var(--neutral-100)', padding: '12px 24px' }}>
           <button
             onClick={onClose}
             style={{
               flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6,
               padding: '9px 8px', background: 'none', border: 'none',
-              cursor: 'pointer', fontSize: 13, color: '#4b535e',
+              cursor: 'pointer', fontSize: 13, color: 'var(--neutral-700)',
             }}
           >
             <XCircleIcon size={14} />Cancel
           </button>
-          <span style={{ color: '#d9dce0', fontSize: 14 }}>|</span>
+          <span style={{ color: 'var(--neutral-200)', fontSize: 14 }}>|</span>
           <button
             onClick={canSave ? () => onSave(newKey!, color) : undefined}
             style={{
               flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6,
               padding: '9px 8px', background: 'none', border: 'none',
               cursor: canSave ? 'pointer' : 'not-allowed', fontSize: 13,
-              color: canSave ? '#4285f4' : '#aab0b8', fontWeight: 500,
+              color: canSave ? 'var(--content-action-primary-600)' : 'var(--content-action-disabled-700)', fontWeight: 500,
             }}
           >
             <PlusCircleIcon size={14} />Create Tag
@@ -3332,13 +3332,13 @@ function EditTagModal({
 
   const FIELD_STYLE: React.CSSProperties = {
     width: '100%', padding: '10px 12px',
-    border: '1px solid #d9dce0', borderRadius: 8,
-    fontSize: 13, color: '#021920', background: '#fff',
+    border: '1px solid var(--neutral-200)', borderRadius: 8,
+    fontSize: 13, color: 'var(--text-body-primary)', background: 'var(--neutral-0)',
     outline: 'none', boxSizing: 'border-box',
   }
 
   const LABEL_STYLE: React.CSSProperties = {
-    fontSize: 11, fontWeight: 600, color: '#021920',
+    fontSize: 11, fontWeight: 600, color: 'var(--text-body-primary)',
     letterSpacing: '0.4px', textTransform: 'uppercase', marginBottom: 6, display: 'block',
   }
 
@@ -3349,28 +3349,28 @@ function EditTagModal({
       onClick={onClose}
       style={{
         position: 'fixed', inset: 0, zIndex: 9998,
-        background: 'rgba(5,3,38,0.32)',
+        background: 'var(--surface-overlay)',
         display: 'flex', alignItems: 'center', justifyContent: 'center',
       }}
     >
       <div
         onClick={e => e.stopPropagation()}
         style={{
-          background: '#fff', borderRadius: 12, width: 540,
+          background: 'var(--neutral-0)', borderRadius: 12, width: 540,
           boxShadow: '0px 8px 32px rgba(5,3,38,0.16)',
           overflow: 'hidden',
         }}
       >
         {/* Header */}
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '20px 24px 16px' }}>
-          <span style={{ fontSize: 18, fontWeight: 600, color: '#021920' }}>Edit Tag</span>
-          <button onClick={onClose} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#7a828c', display: 'flex' }}>
+          <span style={{ fontSize: 18, fontWeight: 600, color: 'var(--text-body-primary)' }}>Edit Tag</span>
+          <button onClick={onClose} style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text-body-secondary)', display: 'flex' }}>
             <XIcon size={18} />
           </button>
         </div>
 
         {/* Form */}
-        <div style={{ margin: '0 24px 20px', background: '#f8f9fb', borderRadius: 8, padding: 16, display: 'flex', flexDirection: 'column', gap: 12 }}>
+        <div style={{ margin: '0 24px 20px', background: 'var(--neutral-50)', borderRadius: 8, padding: 16, display: 'flex', flexDirection: 'column', gap: 12 }}>
           <div>
             <label style={LABEL_STYLE}>* Key</label>
             <input
@@ -3406,9 +3406,9 @@ function EditTagModal({
                     width: 24, height: 24, borderRadius: '50%', cursor: 'pointer',
                     background: dashed ? 'transparent' : hex,
                     border: selected
-                      ? '2px solid #4285f4'
-                      : dashed ? '1px dashed #7a828c' : '2px solid transparent',
-                    outline: selected ? '2px solid #4285f4' : 'none',
+                      ? '2px solid var(--content-action-primary-600)'
+                      : dashed ? '1px dashed var(--text-body-secondary)' : '2px solid transparent',
+                    outline: selected ? '2px solid var(--content-action-primary-600)' : 'none',
                     outlineOffset: 2,
                     boxSizing: 'border-box',
                   }}
@@ -3420,7 +3420,7 @@ function EditTagModal({
 
         {/* Footer */}
         <div style={{
-          display: 'flex', gap: 1, borderTop: '1px solid #eff1f3',
+          display: 'flex', gap: 1, borderTop: '1px solid var(--neutral-100)',
           padding: '12px 24px',
         }}>
           <button
@@ -3428,19 +3428,19 @@ function EditTagModal({
             style={{
               flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6,
               padding: '9px 8px', background: 'none', border: 'none',
-              cursor: 'pointer', fontSize: 13, color: '#4b535e',
+              cursor: 'pointer', fontSize: 13, color: 'var(--neutral-700)',
             }}
           >
             <XCircleIcon size={14} />Cancel
           </button>
-          <span style={{ color: '#d9dce0', fontSize: 14 }}>|</span>
+          <span style={{ color: 'var(--neutral-200)', fontSize: 14 }}>|</span>
           <button
             onClick={canSave ? handleSave : undefined}
             style={{
               flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6,
               padding: '9px 8px', background: 'none', border: 'none',
               cursor: canSave ? 'pointer' : 'not-allowed', fontSize: 13,
-              color: canSave ? '#4285f4' : '#aab0b8', fontWeight: 500,
+              color: canSave ? 'var(--content-action-primary-600)' : 'var(--content-action-disabled-700)', fontWeight: 500,
             }}
           >
             <PlusCircleIcon size={14} />Save Changes
@@ -3479,55 +3479,55 @@ function DeleteTagModal({
       onClick={onClose}
       style={{
         position: 'fixed', inset: 0, zIndex: 9998,
-        background: 'rgba(5,3,38,0.32)',
+        background: 'var(--surface-overlay)',
         display: 'flex', alignItems: 'center', justifyContent: 'center',
       }}
     >
       <div
         onClick={e => e.stopPropagation()}
         style={{
-          background: '#fff', borderRadius: 12, width: 540,
+          background: 'var(--neutral-0)', borderRadius: 12, width: 540,
           boxShadow: '0px 8px 32px rgba(5,3,38,0.16)',
           overflow: 'hidden',
         }}
       >
         {/* Header */}
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '20px 24px 16px' }}>
-          <span style={{ fontSize: 18, fontWeight: 600, color: '#021920' }}>Delete Tag</span>
-          <button onClick={onClose} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#7a828c', display: 'flex' }}>
+          <span style={{ fontSize: 18, fontWeight: 600, color: 'var(--text-body-primary)' }}>Delete Tag</span>
+          <button onClick={onClose} style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text-body-secondary)', display: 'flex' }}>
             <XIcon size={18} />
           </button>
         </div>
 
         {/* Body */}
         <div style={{ padding: '0 24px 24px' }}>
-          <p style={{ margin: '0 0 6px', fontSize: 14, fontWeight: 600, color: '#021920' }}>
+          <p style={{ margin: '0 0 6px', fontSize: 14, fontWeight: 600, color: 'var(--text-body-primary)' }}>
             Are you sure you want to delete the tag &ldquo;{tagLabel(tagKey)}&rdquo;?
           </p>
-          <p style={{ margin: 0, fontSize: 13, color: '#7a828c' }}>
+          <p style={{ margin: 0, fontSize: 13, color: 'var(--text-body-secondary)' }}>
             This action cannot be undone.
           </p>
         </div>
 
         {/* Footer */}
-        <div style={{ borderTop: '1px solid #eff1f3', display: 'flex', gap: 1, padding: '12px 24px' }}>
+        <div style={{ borderTop: '1px solid var(--neutral-100)', display: 'flex', gap: 1, padding: '12px 24px' }}>
           <button
             onClick={onClose}
             style={{
               flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6,
               padding: '9px 8px', background: 'none', border: 'none',
-              cursor: 'pointer', fontSize: 13, color: '#4b535e',
+              cursor: 'pointer', fontSize: 13, color: 'var(--neutral-700)',
             }}
           >
             <XCircleIcon size={14} />Cancel
           </button>
-          <span style={{ color: '#d9dce0', fontSize: 14 }}>|</span>
+          <span style={{ color: 'var(--neutral-200)', fontSize: 14 }}>|</span>
           <button
             onClick={onConfirm}
             style={{
               flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6,
               padding: '9px 8px', background: 'none', border: 'none',
-              cursor: 'pointer', fontSize: 13, color: '#4285f4', fontWeight: 500,
+              cursor: 'pointer', fontSize: 13, color: 'var(--content-action-primary-600)', fontWeight: 500,
             }}
           >
             <TrashIcon size={14} />Delete
@@ -3548,7 +3548,7 @@ function Th({ children, style }: { children?: React.ReactNode; style?: React.CSS
       textAlign:     'left',
       fontSize:      11,
       fontWeight:    600,
-      color:         '#7a828c',
+      color:         'var(--text-body-secondary)',
       letterSpacing: '0.4px',
       textTransform: 'uppercase',
       whiteSpace:    'nowrap',
@@ -3577,7 +3577,7 @@ function ThSort({ label, col, sortCol, sortDir, onSort, style }: {
         textAlign:     'left',
         fontSize:      11,
         fontWeight:    600,
-        color:         active ? '#021920' : '#7a828c',
+        color:         active ? 'var(--text-body-primary)' : 'var(--text-body-secondary)',
         letterSpacing: '0.4px',
         textTransform: 'uppercase',
         whiteSpace:    'nowrap',
@@ -3588,7 +3588,7 @@ function ThSort({ label, col, sortCol, sortDir, onSort, style }: {
     >
       <div style={{ display: 'inline-flex', alignItems: 'center', gap: 4 }}>
         {label}
-        <Icon size={11} color={active ? '#4285f4' : '#aab0b8'} />
+        <Icon size={11} color={active ? 'var(--content-action-primary-600)' : 'var(--neutral-300)'} />
       </div>
     </th>
   )
@@ -3599,7 +3599,7 @@ function Td({ children, style }: { children?: React.ReactNode; style?: React.CSS
     <td style={{
       padding:    '10px 12px',
       fontSize:   13,
-      color:      '#4b535e',
+      color:      'var(--neutral-700)',
       lineHeight: '20px',
       ...style,
     }}>
@@ -3631,7 +3631,7 @@ function BulkBtn({
         cursor:        'pointer',
         fontSize:      12,
         fontWeight:    600,
-        color:         '#3264b8',
+        color:         'var(--content-action-primary-default)',
         letterSpacing: '0.24px',
         lineHeight:    '20px',
         whiteSpace:    'nowrap',
@@ -3639,7 +3639,7 @@ function BulkBtn({
       onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.background = 'rgba(50,100,184,0.08)' }}
       onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.background = 'transparent' }}
     >
-      <span style={{ flexShrink: 0, color: '#3264b8', display: 'flex' }}>{icon}</span>
+      <span style={{ flexShrink: 0, color: 'var(--content-action-primary-default)', display: 'flex' }}>{icon}</span>
       {label}
     </button>
   )

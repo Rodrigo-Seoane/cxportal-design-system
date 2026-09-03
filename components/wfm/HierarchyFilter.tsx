@@ -150,14 +150,14 @@ export function HierarchyFilter({ mode = 'top-bar', defaultRange = 'live', onCha
   return (
     <div
       style={{
-        background:   '#ffffff',
-        borderBottom: '1px solid #e2e5e8',
+        background:   'var(--surface-section-bg)',
+        borderBottom: '1px solid var(--neutral-200)',
         fontFamily:   'var(--font-sans)',
       }}
     >
       {/* Filter controls row */}
       <div style={{ display: 'flex', alignItems: 'center', gap: 8, padding: '8px 24px', flexWrap: 'wrap' }}>
-        <FunnelIcon size={16} color="#7a828c" weight="regular" aria-hidden="true" />
+        <FunnelIcon size={16} color="var(--text-body-secondary)" weight="regular" aria-hidden="true" />
 
         {/* Forecast Group */}
         <FilterDropdown
@@ -167,13 +167,13 @@ export function HierarchyFilter({ mode = 'top-bar', defaultRange = 'live', onCha
           onClose={() => setOpenDropdown(null)}
         >
           <div style={{ padding: '8px 8px 4px' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '4px 8px', border: '1px solid #d9dce0', borderRadius: 6 }}>
-              <MagnifyingGlassIcon size={12} color="#7a828c" weight="regular" />
+            <div style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '4px 8px', border: '1px solid var(--neutral-200)', borderRadius: 6 }}>
+              <MagnifyingGlassIcon size={12} color="var(--text-body-secondary)" weight="regular" />
               <input
                 placeholder="Search groups…"
                 value={fgSearch}
                 onChange={e => setFgSearch(e.target.value)}
-                style={{ border: 'none', outline: 'none', fontSize: 12, flex: 1, color: '#021920', background: 'transparent', fontFamily: 'var(--font-sans)' }}
+                style={{ border: 'none', outline: 'none', fontSize: 12, flex: 1, color: 'var(--text-body-primary)', background: 'transparent', fontFamily: 'var(--font-sans)' }}
               />
             </div>
           </div>
@@ -181,8 +181,8 @@ export function HierarchyFilter({ mode = 'top-bar', defaultRange = 'live', onCha
             {visibleFGs.map(fg => (
               <label key={fg.id} style={optionRow(filter.forecastGroupIds.includes(fg.id))}>
                 <input type="checkbox" checked={filter.forecastGroupIds.includes(fg.id)} onChange={() => toggleFG(fg.id)}
-                  style={{ accentColor: '#4285f4' }} />
-                <span style={{ fontSize: 13, color: '#021920' }}>{fg.label}</span>
+                  style={{ accentColor: 'var(--content-action-primary-600)' }} />
+                <span style={{ fontSize: 13, color: 'var(--text-body-primary)' }}>{fg.label}</span>
               </label>
             ))}
           </div>
@@ -199,8 +199,8 @@ export function HierarchyFilter({ mode = 'top-bar', defaultRange = 'live', onCha
             {activeSGs.map(sg => (
               <label key={sg.id} style={optionRow(filter.staffingGroupIds.includes(sg.id))}>
                 <input type="checkbox" checked={filter.staffingGroupIds.includes(sg.id)} onChange={() => toggleSG(sg.id)}
-                  style={{ accentColor: '#4285f4' }} />
-                <span style={{ fontSize: 13, color: '#021920' }}>{sg.label}</span>
+                  style={{ accentColor: 'var(--content-action-primary-600)' }} />
+                <span style={{ fontSize: 13, color: 'var(--text-body-primary)' }}>{sg.label}</span>
               </label>
             ))}
           </div>
@@ -217,8 +217,8 @@ export function HierarchyFilter({ mode = 'top-bar', defaultRange = 'live', onCha
             {QUEUES.map(q => (
               <label key={q.id} style={optionRow(filter.queueIds.includes(q.id))}>
                 <input type="checkbox" checked={filter.queueIds.includes(q.id)} onChange={() => toggleQueue(q.id)}
-                  style={{ accentColor: '#4285f4' }} />
-                <span style={{ fontSize: 13, color: '#021920' }}>{q.label}</span>
+                  style={{ accentColor: 'var(--content-action-primary-600)' }} />
+                <span style={{ fontSize: 13, color: 'var(--text-body-primary)' }}>{q.label}</span>
               </label>
             ))}
           </div>
@@ -239,10 +239,10 @@ export function HierarchyFilter({ mode = 'top-bar', defaultRange = 'live', onCha
                 style={{
                   display:    'block', width: '100%', textAlign: 'left',
                   padding:    '8px 14px', border: 'none',
-                  background: p.value === filter.timeRange ? '#f0f4fb' : 'transparent',
+                  background: p.value === filter.timeRange ? 'var(--content-action-primary-100)' : 'transparent',
                   cursor:     'pointer', fontSize: 13,
                   fontWeight: p.value === filter.timeRange ? 600 : 400,
-                  color:      '#021920', fontFamily: 'var(--font-sans)',
+                  color:      'var(--text-body-primary)', fontFamily: 'var(--font-sans)',
                 }}
               >
                 {p.label}
@@ -263,7 +263,7 @@ export function HierarchyFilter({ mode = 'top-bar', defaultRange = 'live', onCha
               </button>
             </span>
           ))}
-          <button onClick={clearAll} style={{ fontSize: 11, color: '#4285f4', background: 'none', border: 'none', cursor: 'pointer', padding: '2px 4px', fontFamily: 'var(--font-sans)' }}>
+          <button onClick={clearAll} style={{ fontSize: 11, color: 'var(--content-action-primary-600)', background: 'none', border: 'none', cursor: 'pointer', padding: '2px 4px', fontFamily: 'var(--font-sans)' }}>
             Clear all
           </button>
         </div>
@@ -321,8 +321,8 @@ function FilterDropdown({ label, open, onToggle, onClose, children }: FilterDrop
         position:   'fixed',
         top:         rect.bottom + 4,
         left:        rect.left,
-        background: '#ffffff',
-        border:     '1px solid #e2e5e8',
+        background: 'var(--surface-section-bg)',
+        border:     '1px solid var(--neutral-200)',
         borderRadius: 8,
         boxShadow:  '0 4px 16px rgba(2,25,32,0.12)',
         minWidth:    Math.max(200, rect.width),
@@ -346,18 +346,18 @@ function FilterDropdown({ label, open, onToggle, onClose, children }: FilterDrop
           gap:          4,
           padding:     '5px 10px',
           borderRadius: 6,
-          border:      '1px solid #d9dce0',
-          background:   open ? '#f0f4fb' : '#ffffff',
+          border:      '1px solid var(--neutral-200)',
+          background:   open ? 'var(--content-action-primary-100)' : 'var(--surface-section-bg)',
           cursor:      'pointer',
           fontSize:     12,
           fontWeight:   500,
-          color:       '#021920',
+          color:       'var(--text-body-primary)',
           fontFamily:  'var(--font-sans)',
           whiteSpace:  'nowrap',
         }}
       >
         {label}
-        <span style={{ fontSize: 10, color: '#7a828c' }}>{open ? '▲' : '▼'}</span>
+        <span style={{ fontSize: 10, color: 'var(--text-body-secondary)' }}>{open ? '▲' : '▼'}</span>
       </button>
       {panel}
     </div>
@@ -373,7 +373,7 @@ function optionRow(checked: boolean): React.CSSProperties {
     gap:         8,
     padding:    '8px 14px',
     cursor:     'pointer',
-    background:  checked ? '#f0f4fb' : 'transparent',
+    background:  checked ? 'var(--content-action-primary-100)' : 'transparent',
     userSelect: 'none',
   }
 }
@@ -384,10 +384,10 @@ const chipStyle: React.CSSProperties = {
   gap:          4,
   padding:     '2px 8px',
   borderRadius: 64,
-  background:  '#d6e2f5',
+  background:  'var(--info-100)',
   fontSize:     11,
   fontWeight:   500,
-  color:       '#1a3561',
+  color:       'var(--text-info)',
   fontFamily:  'var(--font-sans)',
 }
 
@@ -398,5 +398,5 @@ const chipX: React.CSSProperties = {
   border:      'none',
   cursor:      'pointer',
   padding:      0,
-  color:       '#1a3561',
+  color:       'var(--text-info)',
 }

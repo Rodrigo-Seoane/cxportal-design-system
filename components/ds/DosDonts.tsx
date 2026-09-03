@@ -40,8 +40,8 @@ export function Do({
         className="flex items-center gap-2 px-4 py-2"
         style={{ backgroundColor: 'var(--color-success-100)' }}
       >
-        <Check size={14} strokeWidth={2.5} style={{ color: '#1a6b1a' }} />
-        <span className="text-xs font-semibold" style={{ color: '#1a6b1a' }}>
+        <Check size={14} strokeWidth={2.5} style={{ color: 'var(--icon-success)' }} />
+        <span className="text-xs font-semibold" style={{ color: 'var(--text-success)' }}>
           Do
         </span>
       </div>
@@ -88,8 +88,8 @@ export function Dont({
         className="flex items-center gap-2 px-4 py-2"
         style={{ backgroundColor: 'var(--color-error-100)' }}
       >
-        <X size={14} strokeWidth={2.5} style={{ color: '#8b1a2a' }} />
-        <span className="text-xs font-semibold" style={{ color: '#8b1a2a' }}>
+        <X size={14} strokeWidth={2.5} style={{ color: 'var(--icon-error)' }} />
+        <span className="text-xs font-semibold" style={{ color: 'var(--text-error)' }}>
           Don't
         </span>
       </div>

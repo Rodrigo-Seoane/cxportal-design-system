@@ -19,22 +19,22 @@ const STATUS_CONFIG: Record<ScheduleStatus, {
   published: {
     label: 'Published',
     icon: <CheckCircleIcon size={14} weight="fill" aria-hidden="true" />,
-    bg: '#ddf4d2', border: '#4b9924', text: '#1a6b1a',
+    bg: 'var(--success-100)', border: 'var(--surface-accent-success-dark)', text: 'var(--success-600)',
   },
   reviewed: {
     label: 'Reviewed',
     icon: <ClockIcon size={14} weight="regular" aria-hidden="true" />,
-    bg: '#fbeed8', border: '#c97000', text: '#7a4a00',
+    bg: 'var(--warning-100)', border: 'var(--text-warning)', text: 'var(--text-warning)',
   },
   generated: {
     label: 'Generated',
     icon: <FileIcon size={14} weight="regular" aria-hidden="true" />,
-    bg: '#fbeed8', border: '#c97000', text: '#7a4a00',
+    bg: 'var(--warning-100)', border: 'var(--text-warning)', text: 'var(--text-warning)',
   },
   'not-started': {
     label: 'Not Started',
     icon: <WarningIcon size={14} weight="fill" aria-hidden="true" />,
-    bg: '#fce4e4', border: '#ef2056', text: '#8b1a2a',
+    bg: 'var(--error-50)', border: 'var(--text-error)', text: 'var(--text-destructive)',
   },
 }
 
@@ -49,21 +49,21 @@ export function ScheduleReadinessPanel({ weeks, scopeId }: Props) {
   const notStartedInFirst8 = firstEight.filter(w => w.status === 'not-started').length
 
   return (
-    <div style={{ background: '#ffffff', borderRadius: 8, border: '1px solid #e2e5e8', overflow: 'hidden', fontFamily: 'var(--font-sans)' }}>
+    <div style={{ background: 'var(--neutral-0)', borderRadius: 8, border: '1px solid var(--neutral-100)', overflow: 'hidden', fontFamily: 'var(--font-sans)' }}>
       {/* Header */}
       <div style={{
         display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-        padding: '14px 20px', borderBottom: '1px solid #eff1f3',
+        padding: '14px 20px', borderBottom: '1px solid var(--neutral-100)',
       }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-          <span style={{ fontSize: 14, fontWeight: 600, color: '#021920' }}>
+          <span style={{ fontSize: 14, fontWeight: 600, color: 'var(--text-body-primary)' }}>
             Schedule Publication Readiness
           </span>
           {notStartedInFirst8 > 0 && (
             <span style={{
               display: 'inline-flex', alignItems: 'center', gap: 4,
               padding: '3px 10px', borderRadius: 64, fontSize: 12, fontWeight: 600,
-              background: '#fbeed8', color: '#7a4a00', border: '1px solid #f7ddb1',
+              background: 'var(--warning-100)', color: 'var(--text-warning)', border: '1px solid var(--border-color-accent-warning-light)',
             }}>
               <WarningIcon size={12} weight="fill" aria-hidden="true" />
               {notStartedInFirst8} of next 8 weeks not yet published
@@ -73,14 +73,14 @@ export function ScheduleReadinessPanel({ weeks, scopeId }: Props) {
             <span style={{
               display: 'inline-flex', alignItems: 'center', gap: 4,
               padding: '3px 10px', borderRadius: 64, fontSize: 12, fontWeight: 600,
-              background: '#ddf4d2', color: '#1a6b1a', border: '1px solid #b8ddb8',
+              background: 'var(--success-100)', color: 'var(--success-600)', border: '1px solid var(--success-200)',
             }}>
               <CheckCircleIcon size={12} weight="fill" aria-hidden="true" />
               Next 8 weeks published
             </span>
           )}
         </div>
-        <span style={{ fontSize: 11, color: '#aab0b8' }}>18-week window</span>
+        <span style={{ fontSize: 11, color: 'var(--neutral-300)' }}>18-week window</span>
       </div>
 
       {/* Scrollable week grid */}
@@ -96,16 +96,16 @@ export function ScheduleReadinessPanel({ weeks, scopeId }: Props) {
                 aria-label={`Week of ${week.weekLabel}: ${cfg.label}${week.agentsCoveredPct > 0 ? `, ${week.agentsCoveredPct}% agents covered` : ''}`}
                 style={{
                   width: 116, flexShrink: 0, borderRadius: 8,
-                  border: `1px solid ${urgent ? '#ef2056' : cfg.border + '60'}`,
-                  background: urgent ? '#fff8f8' : cfg.bg + '50',
+                  border: `1px solid ${urgent ? 'var(--text-error)' : cfg.border + '60'}`,
+                  background: urgent ? 'var(--error-50)' : cfg.bg + '50',
                   padding: '10px 12px',
                   outline: 'none',
                 }}
-                onFocus={e => { (e.currentTarget as HTMLElement).style.boxShadow = '0 0 0 2px #4285f4' }}
+                onFocus={e => { (e.currentTarget as HTMLElement).style.boxShadow = '0 0 0 2px var(--content-action-primary-600)' }}
                 onBlur={e  => { (e.currentTarget as HTMLElement).style.boxShadow = 'none' }}
               >
                 {/* Week label */}
-                <div style={{ fontSize: 10, fontWeight: 600, color: '#7a828c', marginBottom: 6, whiteSpace: 'nowrap' }}>
+                <div style={{ fontSize: 10, fontWeight: 600, color: 'var(--text-body-secondary)', marginBottom: 6, whiteSpace: 'nowrap' }}>
                   {week.weekLabel}
                 </div>
 
@@ -113,23 +113,23 @@ export function ScheduleReadinessPanel({ weeks, scopeId }: Props) {
                 <div style={{
                   display: 'flex', alignItems: 'center', gap: 4,
                   padding: '3px 0', borderRadius: 4, marginBottom: 6,
-                  color: urgent ? '#8b1a2a' : cfg.text,
+                  color: urgent ? 'var(--text-destructive)' : cfg.text,
                   fontSize: 11, fontWeight: 600,
                 }}>
-                  {urgent ? <WarningIcon size={14} weight="fill" color="#ef2056" aria-hidden="true" /> : cfg.icon}
+                  {urgent ? <WarningIcon size={14} weight="fill" color="var(--text-error)" aria-hidden="true" /> : cfg.icon}
                   {cfg.label}
                 </div>
 
                 {/* Coverage */}
                 {week.agentsCoveredPct > 0 ? (
-                  <div style={{ fontSize: 11, color: '#7a828c', marginBottom: 6 }}>
+                  <div style={{ fontSize: 11, color: 'var(--text-body-secondary)', marginBottom: 6 }}>
                     {week.agentsCoveredPct}% covered
-                    <div style={{ height: 3, background: '#e2e5e8', borderRadius: 2, marginTop: 3, overflow: 'hidden' }}>
+                    <div style={{ height: 3, background: 'var(--neutral-100)', borderRadius: 2, marginTop: 3, overflow: 'hidden' }}>
                       <div style={{ width: `${week.agentsCoveredPct}%`, height: '100%', background: cfg.border, borderRadius: 2 }} />
                     </div>
                   </div>
                 ) : (
-                  <div style={{ fontSize: 11, color: '#aab0b8', marginBottom: 6 }}>—</div>
+                  <div style={{ fontSize: 11, color: 'var(--neutral-300)', marginBottom: 6 }}>—</div>
                 )}
 
                 {/* Drill-out */}
@@ -150,7 +150,7 @@ export function ScheduleReadinessPanel({ weeks, scopeId }: Props) {
       {/* Legend */}
       <div style={{
         display: 'flex', alignItems: 'center', gap: 16, padding: '8px 20px 14px',
-        borderTop: '1px solid #eff1f3', fontSize: 11, color: '#7a828c',
+        borderTop: '1px solid var(--neutral-100)', fontSize: 11, color: 'var(--text-body-secondary)',
       }}>
         {(Object.entries(STATUS_CONFIG) as [ScheduleStatus, typeof STATUS_CONFIG[ScheduleStatus]][]).map(([key, cfg]) => (
           <span key={key} style={{ display: 'flex', alignItems: 'center', gap: 4 }}>

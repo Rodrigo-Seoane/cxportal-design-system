@@ -107,23 +107,23 @@ const BROWSER_DATA = [
 ]
 
 const PIE_SLICES = [
-  { name: 'Chrome',  value: 275, color: '#4285f4' },
-  { name: 'Safari',  value: 200, color: '#689df6' },
-  { name: 'Firefox', value: 187, color: '#3264b8' },
-  { name: 'Edge',    value: 173, color: '#a0c2f9' },
-  { name: 'Other',   value: 90,  color: '#1a3561' },
+  { name: 'Chrome',  value: 275, color: 'var(--content-action-primary-600)' },
+  { name: 'Safari',  value: 200, color: 'var(--content-action-primary-300)' },
+  { name: 'Firefox', value: 187, color: 'var(--content-action-primary-700)' },
+  { name: 'Edge',    value: 173, color: 'var(--content-action-primary-200)' },
+  { name: 'Other',   value: 90,  color: 'var(--content-action-primary-800)' },
 ]
 
 const RADIAL_5 = [
-  { name: 'Chrome',  value: 85, fill: '#4285f4' },
-  { name: 'Safari',  value: 68, fill: '#689df6' },
-  { name: 'Firefox', value: 56, fill: '#3264b8' },
-  { name: 'Edge',    value: 43, fill: '#a0c2f9' },
-  { name: 'Other',   value: 30, fill: '#1a3561' },
+  { name: 'Chrome',  value: 85, fill: 'var(--content-action-primary-600)' },
+  { name: 'Safari',  value: 68, fill: 'var(--content-action-primary-300)' },
+  { name: 'Firefox', value: 56, fill: 'var(--content-action-primary-700)' },
+  { name: 'Edge',    value: 43, fill: 'var(--content-action-primary-200)' },
+  { name: 'Other',   value: 30, fill: 'var(--content-action-primary-800)' },
 ]
 
 // Primary blue palette steps (200 → 600)
-const PALETTE = ['#a0c2f9', '#689df6', '#4285f4', '#3264b8', '#1a3561']
+const PALETTE = ['var(--content-action-primary-200)', 'var(--content-action-primary-300)', 'var(--content-action-primary-600)', 'var(--content-action-primary-700)', 'var(--content-action-primary-800)']
 
 const DEFAULT_CAPTIONS: GraphCardCaption[] = BROWSER_DATA.map((d, i) => ({
   label: d.name,
@@ -136,7 +136,7 @@ const DEFAULT_CAPTIONS: GraphCardCaption[] = BROWSER_DATA.map((d, i) => ({
 function XTick({ x, y, payload }: any) {
   return (
     <g transform={`translate(${x},${y})`}>
-      <text x={0} y={0} dy={12} textAnchor="middle" fill="#7a828c" fontSize={12}
+      <text x={0} y={0} dy={12} textAnchor="middle" fill="var(--text-body-secondary)" fontSize={12}
         fontFamily="'Roboto', system-ui, sans-serif">
         {payload.value}
       </text>
@@ -148,7 +148,7 @@ function XTick({ x, y, payload }: any) {
 function YCatTick({ x, y, payload }: any) {
   return (
     <g transform={`translate(${x},${y})`}>
-      <text x={-6} y={0} dy={4} textAnchor="end" fill="#7a828c" fontSize={12}
+      <text x={-6} y={0} dy={4} textAnchor="end" fill="var(--text-body-secondary)" fontSize={12}
         fontFamily="'Roboto', system-ui, sans-serif">
         {payload.value}
       </text>
@@ -158,17 +158,17 @@ function YCatTick({ x, y, payload }: any) {
 
 const GRID_PROPS = {
   vertical: false,
-  stroke: '#e0e4e8',
+  stroke: 'var(--neutral-200)',
   strokeOpacity: 0.6,
   strokeWidth: 1,
 } as const
 
 const TIP_STYLE = {
-  backgroundColor: '#ffffff',
-  border:          '1px solid #eff1f3',
+  backgroundColor: 'var(--neutral-0)',
+  border:          '1px solid var(--neutral-100)',
   borderRadius:     6,
   fontSize:         12,
-  color:           '#021920',
+  color:           'var(--text-body-primary)',
 } as const
 
 // ── Area charts ────────────────────────────────────────────────────────────────
@@ -179,15 +179,15 @@ function AreaSingle({ data }: { data: typeof MONTH_DATA }) {
       <AreaChart data={data} margin={{ top: 4, right: 4, left: 4, bottom: 0 }}>
         <defs>
           <linearGradient id="gcA1" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="5%"  stopColor="#4285f4" stopOpacity={0.4} />
-            <stop offset="95%" stopColor="#4285f4" stopOpacity={0.03} />
+            <stop offset="5%"  stopColor="var(--content-action-primary-600)" stopOpacity={0.4} />
+            <stop offset="95%" stopColor="var(--content-action-primary-600)" stopOpacity={0.03} />
           </linearGradient>
         </defs>
         <CartesianGrid {...GRID_PROPS} />
         <XAxis dataKey="month" tick={<XTick />} axisLine={false} tickLine={false} interval={0} />
         <Tooltip contentStyle={TIP_STYLE} formatter={(v) => [(v as number).toLocaleString(), 'Value']} />
-        <Area type="monotone" dataKey="value" stroke="#4285f4" strokeWidth={1.5}
-          fill="url(#gcA1)" dot={false} activeDot={{ r: 3, fill: '#4285f4' }} />
+        <Area type="monotone" dataKey="value" stroke="var(--content-action-primary-600)" strokeWidth={1.5}
+          fill="url(#gcA1)" dot={false} activeDot={{ r: 3, fill: 'var(--content-action-primary-600)' }} />
       </AreaChart>
     </ResponsiveContainer>
   )
@@ -199,21 +199,21 @@ function AreaTwo() {
       <AreaChart data={TWO_SERIES} margin={{ top: 4, right: 4, left: 4, bottom: 0 }}>
         <defs>
           <linearGradient id="gcA2a" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="5%"  stopColor="#4285f4" stopOpacity={0.4} />
-            <stop offset="95%" stopColor="#4285f4" stopOpacity={0.03} />
+            <stop offset="5%"  stopColor="var(--content-action-primary-600)" stopOpacity={0.4} />
+            <stop offset="95%" stopColor="var(--content-action-primary-600)" stopOpacity={0.03} />
           </linearGradient>
           <linearGradient id="gcA2b" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="5%"  stopColor="#a0c2f9" stopOpacity={0.5} />
-            <stop offset="95%" stopColor="#a0c2f9" stopOpacity={0.03} />
+            <stop offset="5%"  stopColor="var(--content-action-primary-200)" stopOpacity={0.5} />
+            <stop offset="95%" stopColor="var(--content-action-primary-200)" stopOpacity={0.03} />
           </linearGradient>
         </defs>
         <CartesianGrid {...GRID_PROPS} />
         <XAxis dataKey="month" tick={<XTick />} axisLine={false} tickLine={false} interval={0} />
         <Tooltip contentStyle={TIP_STYLE} />
-        <Area type="monotone" dataKey="b" stroke="#a0c2f9" strokeWidth={1.5}
+        <Area type="monotone" dataKey="b" stroke="var(--content-action-primary-200)" strokeWidth={1.5}
           fill="url(#gcA2b)" dot={false} activeDot={{ r: 3 }} />
-        <Area type="monotone" dataKey="a" stroke="#4285f4" strokeWidth={1.5}
-          fill="url(#gcA2a)" dot={false} activeDot={{ r: 3, fill: '#4285f4' }} />
+        <Area type="monotone" dataKey="a" stroke="var(--content-action-primary-600)" strokeWidth={1.5}
+          fill="url(#gcA2a)" dot={false} activeDot={{ r: 3, fill: 'var(--content-action-primary-600)' }} />
       </AreaChart>
     </ResponsiveContainer>
   )
@@ -225,16 +225,16 @@ function AreaDuo() {
       <AreaChart data={TWO_SERIES} margin={{ top: 4, right: 4, left: 4, bottom: 0 }}>
         <defs>
           <linearGradient id="gcADa" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%"  stopColor="#4285f4" stopOpacity={0.15} />
-            <stop offset="100%" stopColor="#4285f4" stopOpacity={0.08} />
+            <stop offset="0%"  stopColor="var(--content-action-primary-600)" stopOpacity={0.15} />
+            <stop offset="100%" stopColor="var(--content-action-primary-600)" stopOpacity={0.08} />
           </linearGradient>
           <linearGradient id="gcADb" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="5%"  stopColor="#4285f4" stopOpacity={0.42} />
-            <stop offset="95%" stopColor="#4285f4" stopOpacity={0.04} />
+            <stop offset="5%"  stopColor="var(--content-action-primary-600)" stopOpacity={0.42} />
+            <stop offset="95%" stopColor="var(--content-action-primary-600)" stopOpacity={0.04} />
           </linearGradient>
           <linearGradient id="gcADc" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="5%"  stopColor="#a0c2f9" stopOpacity={0.38} />
-            <stop offset="95%" stopColor="#a0c2f9" stopOpacity={0.03} />
+            <stop offset="5%"  stopColor="var(--content-action-primary-200)" stopOpacity={0.38} />
+            <stop offset="95%" stopColor="var(--content-action-primary-200)" stopOpacity={0.03} />
           </linearGradient>
         </defs>
         <CartesianGrid {...GRID_PROPS} />
@@ -243,11 +243,11 @@ function AreaDuo() {
         {/* Background fill layer */}
         <Area type="monotone" dataKey="a" stroke="none" fill="url(#gcADa)" dot={false} />
         {/* Secondary series */}
-        <Area type="monotone" dataKey="b" stroke="#a0c2f9" strokeWidth={1.5}
+        <Area type="monotone" dataKey="b" stroke="var(--content-action-primary-200)" strokeWidth={1.5}
           fill="url(#gcADc)" dot={false} />
         {/* Primary series */}
-        <Area type="monotone" dataKey="a" stroke="#4285f4" strokeWidth={1.5}
-          fill="url(#gcADb)" dot={false} activeDot={{ r: 3, fill: '#4285f4' }} />
+        <Area type="monotone" dataKey="a" stroke="var(--content-action-primary-600)" strokeWidth={1.5}
+          fill="url(#gcADb)" dot={false} activeDot={{ r: 3, fill: 'var(--content-action-primary-600)' }} />
       </AreaChart>
     </ResponsiveContainer>
   )
@@ -263,10 +263,10 @@ function BarSingle({ data }: { data: typeof MONTH_DATA }) {
         <XAxis dataKey="month" tick={<XTick />} axisLine={false} tickLine={false} interval={0} />
         <Tooltip contentStyle={TIP_STYLE}
           formatter={(v) => [(v as number).toLocaleString(), 'Value']}
-          cursor={{ fill: 'rgba(66,133,244,0.06)' }} />
-        <Bar dataKey="value" fill="#4285f4" radius={[3, 3, 0, 0]}>
+          cursor={{ fill: 'color-mix(in srgb, var(--content-action-primary-600) 6%, transparent)' }} />
+        <Bar dataKey="value" fill="var(--content-action-primary-600)" radius={[3, 3, 0, 0]}>
           <LabelList dataKey="value" position="top"
-            style={{ fontSize: 11, fill: '#021920', fontFamily: "'Roboto', system-ui, sans-serif" }} />
+            style={{ fontSize: 11, fill: 'var(--text-body-primary)', fontFamily: "'Roboto', system-ui, sans-serif" }} />
         </Bar>
       </BarChart>
     </ResponsiveContainer>
@@ -280,9 +280,9 @@ function BarGrouped() {
         margin={{ top: 20, right: 8, left: 8, bottom: 0 }}>
         <CartesianGrid {...GRID_PROPS} />
         <XAxis dataKey="month" tick={<XTick />} axisLine={false} tickLine={false} interval={0} />
-        <Tooltip contentStyle={TIP_STYLE} cursor={{ fill: 'rgba(66,133,244,0.06)' }} />
-        <Bar dataKey="a" fill="#4285f4" radius={[3, 3, 0, 0]} />
-        <Bar dataKey="b" fill="#a0c2f9" radius={[3, 3, 0, 0]} />
+        <Tooltip contentStyle={TIP_STYLE} cursor={{ fill: 'color-mix(in srgb, var(--content-action-primary-600) 6%, transparent)' }} />
+        <Bar dataKey="a" fill="var(--content-action-primary-600)" radius={[3, 3, 0, 0]} />
+        <Bar dataKey="b" fill="var(--content-action-primary-200)" radius={[3, 3, 0, 0]} />
       </BarChart>
     </ResponsiveContainer>
   )
@@ -296,13 +296,13 @@ function BarMultiColor({ data }: { data: typeof MONTH_DATA }) {
         <XAxis dataKey="month" tick={<XTick />} axisLine={false} tickLine={false} interval={0} />
         <Tooltip contentStyle={TIP_STYLE}
           formatter={(v) => [(v as number).toLocaleString(), 'Value']}
-          cursor={{ fill: 'rgba(66,133,244,0.06)' }} />
+          cursor={{ fill: 'color-mix(in srgb, var(--content-action-primary-600) 6%, transparent)' }} />
         <Bar dataKey="value" radius={[3, 3, 0, 0]}>
           {data.map((_, i) => (
             <Cell key={i} fill={PALETTE[i % PALETTE.length]} />
           ))}
           <LabelList dataKey="value" position="top"
-            style={{ fontSize: 11, fill: '#021920', fontFamily: "'Roboto', system-ui, sans-serif" }} />
+            style={{ fontSize: 11, fill: 'var(--text-body-primary)', fontFamily: "'Roboto', system-ui, sans-serif" }} />
         </Bar>
       </BarChart>
     </ResponsiveContainer>
@@ -314,17 +314,17 @@ function BarHorizontal({ multiColor = false }: { multiColor?: boolean }) {
     <ResponsiveContainer width="100%" height={190}>
       <BarChart data={BROWSER_DATA} layout="vertical" barSize={28}
         margin={{ top: 4, right: 40, left: 0, bottom: 4 }}>
-        <CartesianGrid horizontal={false} stroke="#e0e4e8" strokeOpacity={0.6} strokeWidth={1} />
+        <CartesianGrid horizontal={false} stroke="var(--neutral-200)" strokeOpacity={0.6} strokeWidth={1} />
         <XAxis type="number" hide />
         <YAxis type="category" dataKey="name" tick={<YCatTick />} axisLine={false} tickLine={false} width={60} />
         <Tooltip contentStyle={TIP_STYLE}
           formatter={(v) => [(v as number).toLocaleString(), 'Value']} />
         <Bar dataKey="value" radius={[0, 3, 3, 0]}>
           {BROWSER_DATA.map((_, i) => (
-            <Cell key={i} fill={multiColor ? PALETTE[i] : '#4285f4'} />
+            <Cell key={i} fill={multiColor ? PALETTE[i] : 'var(--content-action-primary-600)'} />
           ))}
           <LabelList dataKey="value" position="right"
-            style={{ fontSize: 11, fill: '#021920', fontFamily: "'Roboto', system-ui, sans-serif" }} />
+            style={{ fontSize: 11, fill: 'var(--text-body-primary)', fontFamily: "'Roboto', system-ui, sans-serif" }} />
         </Bar>
       </BarChart>
     </ResponsiveContainer>
@@ -338,13 +338,13 @@ function BarNegative() {
         margin={{ top: 20, right: 8, left: 8, bottom: 0 }}>
         <CartesianGrid {...GRID_PROPS} />
         <XAxis dataKey="month" tick={<XTick />} axisLine={false} tickLine={false} interval={0} />
-        <ReferenceLine y={0} stroke="#c8cdd3" strokeWidth={1} />
+        <ReferenceLine y={0} stroke="var(--neutral-300)" strokeWidth={1} />
         <Tooltip contentStyle={TIP_STYLE}
           formatter={(v) => [(v as number).toLocaleString(), 'Value']}
-          cursor={{ fill: 'rgba(66,133,244,0.06)' }} />
+          cursor={{ fill: 'color-mix(in srgb, var(--content-action-primary-600) 6%, transparent)' }} />
         <Bar dataKey="value" radius={[3, 3, 3, 3]}>
           {NEGATIVE_DATA.map((d, i) => (
-            <Cell key={i} fill={d.value >= 0 ? '#4285f4' : '#a0c2f9'} />
+            <Cell key={i} fill={d.value >= 0 ? 'var(--content-action-primary-600)' : 'var(--content-action-primary-200)'} />
           ))}
         </Bar>
       </BarChart>
@@ -361,8 +361,8 @@ function LineSimple({ data }: { data: typeof MONTH_DATA }) {
         <CartesianGrid {...GRID_PROPS} />
         <XAxis dataKey="month" tick={<XTick />} axisLine={false} tickLine={false} interval={0} />
         <Tooltip contentStyle={TIP_STYLE} formatter={(v) => [(v as number).toLocaleString(), 'Value']} />
-        <Line type="monotone" dataKey="value" stroke="#4285f4" strokeWidth={1.5}
-          dot={false} activeDot={{ r: 3, fill: '#4285f4' }} />
+        <Line type="monotone" dataKey="value" stroke="var(--content-action-primary-600)" strokeWidth={1.5}
+          dot={false} activeDot={{ r: 3, fill: 'var(--content-action-primary-600)' }} />
       </LineChart>
     </ResponsiveContainer>
   )
@@ -375,9 +375,9 @@ function LineDots({ data }: { data: typeof MONTH_DATA }) {
         <CartesianGrid {...GRID_PROPS} />
         <XAxis dataKey="month" tick={<XTick />} axisLine={false} tickLine={false} interval={0} />
         <Tooltip contentStyle={TIP_STYLE} formatter={(v) => [(v as number).toLocaleString(), 'Value']} />
-        <Line type="monotone" dataKey="value" stroke="#4285f4" strokeWidth={1.5}
-          dot={{ r: 3, fill: '#4285f4', strokeWidth: 0 }}
-          activeDot={{ r: 4, fill: '#4285f4' }} />
+        <Line type="monotone" dataKey="value" stroke="var(--content-action-primary-600)" strokeWidth={1.5}
+          dot={{ r: 3, fill: 'var(--content-action-primary-600)', strokeWidth: 0 }}
+          activeDot={{ r: 4, fill: 'var(--content-action-primary-600)' }} />
       </LineChart>
     </ResponsiveContainer>
   )
@@ -390,10 +390,10 @@ function LineTwo() {
         <CartesianGrid {...GRID_PROPS} />
         <XAxis dataKey="month" tick={<XTick />} axisLine={false} tickLine={false} interval={0} />
         <Tooltip contentStyle={TIP_STYLE} />
-        <Line type="monotone" dataKey="a" stroke="#4285f4" strokeWidth={1.5}
-          dot={false} activeDot={{ r: 3, fill: '#4285f4' }} />
-        <Line type="monotone" dataKey="b" stroke="#a0c2f9" strokeWidth={1.5}
-          dot={false} activeDot={{ r: 3, fill: '#a0c2f9' }} />
+        <Line type="monotone" dataKey="a" stroke="var(--content-action-primary-600)" strokeWidth={1.5}
+          dot={false} activeDot={{ r: 3, fill: 'var(--content-action-primary-600)' }} />
+        <Line type="monotone" dataKey="b" stroke="var(--content-action-primary-200)" strokeWidth={1.5}
+          dot={false} activeDot={{ r: 3, fill: 'var(--content-action-primary-200)' }} />
       </LineChart>
     </ResponsiveContainer>
   )
@@ -406,11 +406,11 @@ function LineDotsVal({ data }: { data: typeof MONTH_DATA }) {
         <CartesianGrid {...GRID_PROPS} />
         <XAxis dataKey="month" tick={<XTick />} axisLine={false} tickLine={false} interval={0} />
         <Tooltip contentStyle={TIP_STYLE} formatter={(v) => [(v as number).toLocaleString(), 'Value']} />
-        <Line type="monotone" dataKey="value" stroke="#4285f4" strokeWidth={1.5}
-          dot={{ r: 3, fill: '#4285f4', strokeWidth: 0 }}
-          activeDot={{ r: 4, fill: '#4285f4' }}>
+        <Line type="monotone" dataKey="value" stroke="var(--content-action-primary-600)" strokeWidth={1.5}
+          dot={{ r: 3, fill: 'var(--content-action-primary-600)', strokeWidth: 0 }}
+          activeDot={{ r: 4, fill: 'var(--content-action-primary-600)' }}>
           <LabelList dataKey="value" position="top"
-            style={{ fontSize: 10, fill: '#021920', fontFamily: "'Roboto', system-ui, sans-serif" }} />
+            style={{ fontSize: 10, fill: 'var(--text-body-primary)', fontFamily: "'Roboto', system-ui, sans-serif" }} />
         </Line>
       </LineChart>
     </ResponsiveContainer>
@@ -426,7 +426,7 @@ function PieValueLabel({ cx, cy, midAngle, innerRadius, outerRadius, value }: an
   const x = cx + r * Math.cos(-midAngle * RADIAN)
   const y = cy + r * Math.sin(-midAngle * RADIAN)
   return (
-    <text x={x} y={y} fill="#021920" textAnchor={x > cx ? 'start' : 'end'}
+    <text x={x} y={y} fill="var(--text-body-primary)" textAnchor={x > cx ? 'start' : 'end'}
       dominantBaseline="central" fontSize={11}
       fontFamily="'Roboto', system-ui, sans-serif">
       {value}
@@ -482,11 +482,11 @@ function PieDonut({ showValue = false, showPop = false }: { showValue?: boolean;
           pointerEvents: 'none',
         }}>
           <div style={{ textAlign: 'center' }}>
-            <div style={{ fontSize: 26, fontWeight: 400, color: '#021920', lineHeight: 1.1,
+            <div style={{ fontSize: 26, fontWeight: 400, color: 'var(--text-body-primary)', lineHeight: 1.1,
               fontFamily: "'Roboto', system-ui, sans-serif" }}>
               {total.toLocaleString()}
             </div>
-            <div style={{ fontSize: 12, color: '#7a828c', marginTop: 2,
+            <div style={{ fontSize: 12, color: 'var(--text-body-secondary)', marginTop: 2,
               fontFamily: "'Roboto', system-ui, sans-serif" }}>
               Visitors
             </div>
@@ -505,7 +505,7 @@ function Radial5() {
       <RadialBarChart cx="50%" cy="50%" innerRadius="15%" outerRadius="90%"
         data={RADIAL_5} startAngle={90} endAngle={-270} barSize={10}>
         <PolarAngleAxis type="number" domain={[0, 100]} tick={false} />
-        <RadialBar dataKey="value" background={{ fill: '#f2f4f6' }} cornerRadius={4} />
+        <RadialBar dataKey="value" background={{ fill: 'var(--neutral-100)' }} cornerRadius={4} />
         <Tooltip contentStyle={TIP_STYLE} />
       </RadialBarChart>
     </ResponsiveContainer>
@@ -525,7 +525,7 @@ function RadialSingle({
 }) {
   const ir = semi ? '55%' : thick ? '45%' : '60%'
   const or = semi ? '80%' : thick ? '80%' : '75%'
-  const data = [{ name: label, value, fill: '#4285f4' }]
+  const data = [{ name: label, value, fill: 'var(--content-action-primary-600)' }]
 
   const containerH = semi ? 140 : 200
   const cy         = semi ? '95%' : '50%'
@@ -540,7 +540,7 @@ function RadialSingle({
           endAngle={semi ? 0 : -270}
           barSize={thick ? 20 : 10}>
           <PolarAngleAxis type="number" domain={[0, 100]} tick={false} />
-          <RadialBar dataKey="value" background={{ fill: '#f2f4f6' }} cornerRadius={4} />
+          <RadialBar dataKey="value" background={{ fill: 'var(--neutral-100)' }} cornerRadius={4} />
         </RadialBarChart>
       </ResponsiveContainer>
       <div style={{
@@ -551,11 +551,11 @@ function RadialSingle({
           : { top: '50%', marginTop: -28, textAlign: 'center' }),
         pointerEvents: 'none',
       }}>
-        <div style={{ fontSize: 26, fontWeight: 400, color: '#021920', lineHeight: 1.1,
+        <div style={{ fontSize: 26, fontWeight: 400, color: 'var(--text-body-primary)', lineHeight: 1.1,
           fontFamily: "'Roboto', system-ui, sans-serif", whiteSpace: 'nowrap' }}>
           {value.toLocaleString()}
         </div>
-        <div style={{ fontSize: 12, color: '#7a828c', marginTop: 2,
+        <div style={{ fontSize: 12, color: 'var(--text-body-secondary)', marginTop: 2,
           fontFamily: "'Roboto', system-ui, sans-serif" }}>
           {label}
         </div>
@@ -632,9 +632,9 @@ const TREND_META: Record<TrendDirection, {
   Icon: React.ComponentType<any>
   color: string
 }> = {
-  up:      { Icon: TrendUpIcon,   color: '#3ba55d' },
-  down:    { Icon: TrendDownIcon, color: '#e53e3e' },
-  neutral: { Icon: MinusIcon,     color: '#aab0b8' },
+  up:      { Icon: TrendUpIcon,   color: 'var(--text-success)' },
+  down:    { Icon: TrendDownIcon, color: 'var(--text-error)' },
+  neutral: { Icon: MinusIcon,     color: 'var(--neutral-300)' },
 }
 
 // ── Chart renderer ─────────────────────────────────────────────────────────────
@@ -693,8 +693,8 @@ export function GraphCard({
     <div
       className={className}
       style={{
-        background:    '#ffffff',
-        border:        '1px solid #eff1f3',
+        background:    'var(--neutral-0)',
+        border:        '1px solid var(--neutral-100)',
         borderRadius:   8,
         overflow:      'hidden',
         display:       'flex',
@@ -704,18 +704,18 @@ export function GraphCard({
       {/* ── Chart type header ─────────────────────────────────────────── */}
       <div style={{
         display: 'flex', alignItems: 'center', gap: 8,
-        padding: '10px 12px', borderBottom: '1px solid #eff1f3',
+        padding: '10px 12px', borderBottom: '1px solid var(--neutral-100)',
       }}>
-        <HeaderIcon size={14} weight="regular" color="#7a828c" />
+        <HeaderIcon size={14} weight="regular" color="var(--text-body-secondary)" />
         <span style={{
           fontSize: 14, fontWeight: 300, lineHeight: '20px',
-          color: '#7a828c', fontFamily: "'Roboto', system-ui, sans-serif",
+          color: 'var(--text-body-secondary)', fontFamily: "'Roboto', system-ui, sans-serif",
         }}>
           {group}
         </span>
         <span style={{
           marginLeft: 'auto',
-          fontSize: 11, color: '#aab0b8',
+          fontSize: 11, color: 'var(--neutral-300)',
           fontFamily: "'Roboto', system-ui, sans-serif",
         }}>
           {VARIANT_LABEL[chartType]}
@@ -729,10 +729,10 @@ export function GraphCard({
       }}>
         {/* Title + description */}
         <div style={{ paddingInline: 24, display: 'flex', flexDirection: 'column', gap: 6 }}>
-          <p style={{ margin: 0, fontSize: 16, fontWeight: 600, lineHeight: '24px', color: '#021920' }}>
+          <p style={{ margin: 0, fontSize: 16, fontWeight: 600, lineHeight: '24px', color: 'var(--text-body-primary)' }}>
             {title}
           </p>
-          <p style={{ margin: 0, fontSize: 14, fontWeight: 400, lineHeight: '20px', color: '#7a828c' }}>
+          <p style={{ margin: 0, fontSize: 14, fontWeight: 400, lineHeight: '20px', color: 'var(--text-body-secondary)' }}>
             {description}
           </p>
         </div>
@@ -746,12 +746,12 @@ export function GraphCard({
         {resolvedFooterType === 'insight' && (
           <div style={{ paddingInline: 24, display: 'flex', flexDirection: 'column', gap: 8 }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-              <span style={{ fontSize: 14, fontWeight: 600, lineHeight: '20px', color: '#021920' }}>
+              <span style={{ fontSize: 14, fontWeight: 600, lineHeight: '20px', color: 'var(--text-body-primary)' }}>
                 {insight}
               </span>
               <trend.Icon size={16} color={trend.color} weight="regular" />
             </div>
-            <p style={{ margin: 0, fontSize: 14, fontWeight: 400, lineHeight: '20px', color: '#7a828c' }}>
+            <p style={{ margin: 0, fontSize: 14, fontWeight: 400, lineHeight: '20px', color: 'var(--text-body-secondary)' }}>
               {period}
             </p>
           </div>
@@ -776,7 +776,7 @@ export function GraphCard({
                 }} />
                 <span style={{
                   fontSize: 12, fontWeight: 400, lineHeight: '20px',
-                  color: '#021920', whiteSpace: 'nowrap',
+                  color: 'var(--text-body-primary)', whiteSpace: 'nowrap',
                   fontFamily: "'Roboto', system-ui, sans-serif",
                 }}>
                   {label}

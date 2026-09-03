@@ -30,13 +30,13 @@ function StepIndicator({ status }: { status: StepStatus }) {
     <div
       className={cn(
         'shrink-0 size-6 rounded-full flex items-center justify-center',
-        status === 'completed' && 'bg-[#4285f4]',
-        status === 'active'    && 'border-[3px] border-[#4285f4] bg-white',
-        status === 'default'   && 'border-2 border-[#eff1f3] bg-white',
+        status === 'completed' && 'bg-[var(--content-action-primary-600)]',
+        status === 'active'    && 'border-[3px] border-[var(--content-action-primary-600)] bg-white',
+        status === 'default'   && 'border-2 border-[var(--neutral-100)] bg-white',
       )}
     >
       {status === 'completed' && (
-        <CheckIcon size={12} color="#ffffff" weight="bold" />
+        <CheckIcon size={12} color="var(--neutral-0)" weight="bold" />
       )}
     </div>
   )
@@ -58,8 +58,8 @@ export function Stepper({
           i < currentStep  ? 'completed' :
           i === currentStep ? 'active'    : 'default'
 
-        const connectorColor = i < currentStep ? '#4285f4' : '#eff1f3'
-        const textColor      = status === 'default' ? '#7a828c' : '#3264b8'
+        const connectorColor = i < currentStep ? 'var(--content-action-primary-600)' : 'var(--neutral-100)'
+        const textColor      = status === 'default' ? 'var(--text-body-secondary)' : 'var(--content-action-primary-default)'
 
         return (
           <div key={i} className="flex gap-3 items-start p-2">
@@ -91,9 +91,9 @@ export function Stepper({
                 </p>
               )}
               {status === 'completed' && step.tag && (
-                <div className="flex items-center gap-2 px-3 py-1 rounded-lg bg-[#d6e2f5] self-start mt-1">
+                <div className="flex items-center gap-2 px-3 py-1 rounded-lg bg-[var(--info-100)] self-start mt-1">
                   <span
-                    className="text-[10px] font-semibold text-[#021920]"
+                    className="text-[10px] font-semibold text-[var(--text-body-primary)]"
                     style={{ letterSpacing: '0.4px' }}
                   >
                     {step.tag}
@@ -105,7 +105,7 @@ export function Stepper({
                       className="flex items-center justify-center size-3 opacity-60 hover:opacity-100 transition-opacity"
                       aria-label={`Remove ${step.tag}`}
                     >
-                      <XIcon size={10} color="#021920" weight="bold" />
+                      <XIcon size={10} color="var(--text-body-primary)" weight="bold" />
                     </button>
                   )}
                 </div>

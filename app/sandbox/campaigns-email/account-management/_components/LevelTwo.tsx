@@ -21,8 +21,8 @@ import { AddTopicModal }   from './AddTopicModal'
 const ACTIVE_STATUSES = new Set(['running', 'scheduled', 'initialized'])
 
 const CAMPAIGN_STATUS_CONFIG: Record<string, { label: string; bg: string; color: string }> = {
-  running:     { label: 'Running',     bg: 'var(--color-info-100)',        color: '#1a4f9e' },
-  scheduled:   { label: 'Scheduled',   bg: 'var(--color-success-100)',     color: '#1a6b1a' },
+  running:     { label: 'Running',     bg: 'var(--color-info-100)',        color: 'var(--text-info)' },
+  scheduled:   { label: 'Scheduled',   bg: 'var(--color-success-100)',     color: 'var(--text-success)' },
   initialized: { label: 'Initialized', bg: 'var(--color-surface-display)', color: 'var(--color-text-secondary)' },
 }
 
@@ -142,7 +142,7 @@ export function LevelTwo({ accountId }: LevelTwoProps) {
                     <TableCell>
                       <span style={{ fontSize: 11, fontWeight: 600, padding: '2px 7px', borderRadius: 4,
                         background: enabled ? 'var(--color-success-100)' : 'var(--color-surface-display)',
-                        color: enabled ? '#1a6b1a' : 'var(--color-text-secondary)' }}>
+                        color: enabled ? 'var(--text-success)' : 'var(--color-text-secondary)' }}>
                         {enabled ? 'Enabled' : 'Disabled'}
                       </span>
                     </TableCell>
@@ -176,7 +176,7 @@ export function LevelTwo({ accountId }: LevelTwoProps) {
                   <TableCell>
                     <span style={{ fontSize: 11, fontWeight: 600, padding: '2px 7px', borderRadius: 4,
                       background: l.status === 'active' ? 'var(--color-success-100)' : 'var(--color-surface-display)',
-                      color: l.status === 'active' ? '#1a6b1a' : 'var(--color-text-secondary)' }}>
+                      color: l.status === 'active' ? 'var(--text-success)' : 'var(--color-text-secondary)' }}>
                       {l.status.charAt(0).toUpperCase() + l.status.slice(1)}
                     </span>
                   </TableCell>
@@ -203,7 +203,7 @@ export function LevelTwo({ accountId }: LevelTwoProps) {
                   </TableCell>
                   <TableCell>
                     <span style={{ fontSize: 11, fontWeight: 600, padding: '2px 7px', borderRadius: 4,
-                      background: 'var(--color-info-100)', color: '#1a4f9e' }}>
+                      background: 'var(--color-info-100)', color: 'var(--text-info)' }}>
                       {m.role}
                     </span>
                   </TableCell>

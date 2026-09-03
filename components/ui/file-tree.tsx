@@ -11,13 +11,13 @@ import {
 
 const T = {
   surface:          'var(--color-surface-section, #ffffff)',
-  surfaceSelected:  '#d9e7fd',                           // --content-action/primary/100
-  controllerActive: 'var(--color-primary, #4285f4)',     // --surface/action/primary
-  controllerBorder: '#689df6',                           // --border-color/surface-active/primary
-  connectorLine:    '#eff1f3',                           // --neutral/100
-  borderBottom:     '#eff1f3',
-  text:             '#021920',                           // --text/on-action/secondary
-  iconWhite:        '#ffffff',
+  surfaceSelected:  'var(--content-action-primary-100)',
+  controllerActive: 'var(--color-primary, var(--content-action-primary-600))', // --surface/action/primary
+  controllerBorder: 'var(--content-action-primary-600)', // --border-color/surface-active/primary
+  connectorLine:    'var(--neutral-100)',
+  borderBottom:     'var(--neutral-100)',
+  text:             'var(--text-body-primary)',          // --text/on-action/secondary
+  iconWhite:        'var(--neutral-0)',
 } as const
 
 const INDENT  = 24  // px per depth level

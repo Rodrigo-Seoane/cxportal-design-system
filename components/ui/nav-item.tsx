@@ -5,29 +5,31 @@ import { CaretRightIcon, CaretDownIcon } from '@phosphor-icons/react'
 // ── Design tokens ─────────────────────────────────────────────────────────────
 
 const DARK = {
-  menuHover:      '#4285f4',
-  menuActiveText: '#4285f4',
-  subDefaultText: 'rgba(239,241,243,0.75)',
-  subHover:       '#4285f4',
-  subActive:      '#3264b8',
-  textOn:         '#eff1f3',
-  textDefault:    '#eff1f3',
-  disabled:       '#808080',
-  colHover:       '#689df6',
-  colActive:      '#4285f4',
+  menuHover:      'var(--content-action-primary-600)',
+  menuActiveText: 'var(--content-action-primary-600)',
+  subDefaultText: 'color-mix(in srgb, var(--neutral-100) 75%, transparent)',
+  subHover:       'var(--content-action-primary-600)',
+  subActive:      'var(--content-action-primary-700)',
+  textOn:         'var(--neutral-100)',
+  textDefault:    'var(--neutral-100)',
+  disabled:       'var(--content-action-disabled-700)',
+  colHover:       'var(--content-action-primary-300)',
+  colActive:      'var(--content-action-primary-600)',
 } as const
 
+// Light-background nav variant (formerly a distinct "CxCentral" teal treatment) —
+// collapsed onto the same Content Action/Primary ramp as DARK, tuned for a light surface.
 const LIGHT = {
-  menuHover:      '#3eb5b9',
-  menuActiveText: '#0ea2a7',
-  subDefaultBg:   '#e7f6f6',
-  subHover:       '#3eb5b9',
-  subActive:      '#0ea2a7',
-  textOn:         '#eff1f3',
-  textDefault:    '#021920',
-  disabled:       '#808080',
-  colHover:       '#3eb5b9',
-  colActive:      '#0ea2a7',
+  menuHover:      'var(--content-action-primary-100)',
+  menuActiveText: 'var(--content-action-primary-600)',
+  subDefaultBg:   'var(--content-action-primary-50)',
+  subHover:       'var(--content-action-primary-100)',
+  subActive:      'var(--content-action-primary-600)',
+  textOn:         'var(--neutral-100)',
+  textDefault:    'var(--text-body-primary)',
+  disabled:       'var(--content-action-disabled-700)',
+  colHover:       'var(--content-action-primary-100)',
+  colActive:      'var(--content-action-primary-600)',
 } as const
 
 // ── Types ─────────────────────────────────────────────────────────────────────

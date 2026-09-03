@@ -57,22 +57,22 @@ const KB_LIST = [
 ]
 
 const TAG_STYLE: Record<string, { bg: string; text: string }> = {
-  'access:Public':       { bg: '#f792ac', text: '#8b1a2a' },
-  'access:Confidential': { bg: '#fbc6d4', text: '#8b1a2a' },
-  'dep:Product':         { bg: '#d6e2f5', text: '#1a3d6b' },
-  'dep:Marketing':       { bg: '#d6e2f5', text: '#1a3d6b' },
-  'dep:Finance':         { bg: '#d6e2f5', text: '#1a3d6b' },
-  'dep:Engineering':     { bg: '#d6e2f5', text: '#1a3d6b' },
-  'dep:Legal':           { bg: '#d6e2f5', text: '#1a3d6b' },
-  'status:Deprecated':   { bg: '#a4beea', text: '#1a3d6b' },
-  'status:Archived':     { bg: '#d6e2f5', text: '#1a3d6b' },
-  'priority:High':       { bg: '#ddf4d2', text: '#1a6b1a' },
-  'priority:Urgent':     { bg: '#b5e89c', text: '#1a6b1a' },
-  'audience:Internal':   { bg: '#fbeed8', text: '#7a4a00' },
-  'audience:External':   { bg: '#f1c780', text: '#7a4a00' },
+  'access:Public':       { bg: 'var(--surface-action-destructive-disabled)', text: 'var(--text-error)' },
+  'access:Confidential': { bg: 'var(--error-100)', text: 'var(--text-error)' },
+  'dep:Product':         { bg: 'var(--info-100)', text: 'var(--text-info)' },
+  'dep:Marketing':       { bg: 'var(--info-100)', text: 'var(--text-info)' },
+  'dep:Finance':         { bg: 'var(--info-100)', text: 'var(--text-info)' },
+  'dep:Engineering':     { bg: 'var(--info-100)', text: 'var(--text-info)' },
+  'dep:Legal':           { bg: 'var(--info-100)', text: 'var(--text-info)' },
+  'status:Deprecated':   { bg: 'var(--border-color-accent-info-light)', text: 'var(--text-info)' },
+  'status:Archived':     { bg: 'var(--info-100)', text: 'var(--text-info)' },
+  'priority:High':       { bg: 'var(--success-100)', text: 'var(--text-success)' },
+  'priority:Urgent':     { bg: 'var(--border-color-accent-success-light)', text: 'var(--text-success)' },
+  'audience:Internal':   { bg: 'var(--warning-100)', text: 'var(--text-warning)' },
+  'audience:External':   { bg: 'var(--warning-300)', text: 'var(--text-warning)' },
 }
 
-const DEFAULT_TAG_STYLE = { bg: '#d6e2f5', text: '#1a3d6b' }
+const DEFAULT_TAG_STYLE = { bg: 'var(--info-100)', text: 'var(--text-info)' }
 
 const INITIAL_MARKDOWN = `# DC Net Service Satisfaction Campaign
 
@@ -110,9 +110,9 @@ const VERSIONS = [
 function SideCard({ children }: { children: React.ReactNode }) {
   return (
     <div style={{
-      background:     '#fff',
+      background:     'var(--neutral-0)',
       borderRadius:   8,
-      border:         '1px solid #eff1f3',
+      border:         '1px solid var(--neutral-100)',
       padding:        16,
       display:        'flex',
       flexDirection:  'column',
@@ -130,7 +130,7 @@ function CardHeading({ children }: { children: React.ReactNode }) {
       fontWeight:     600,
       letterSpacing:  '0.48px',
       textTransform:  'uppercase',
-      color:          '#021920',
+      color:          'var(--text-body-primary)',
     }}>
       {children}
     </span>
@@ -225,7 +225,7 @@ export function DocumentView({ article, onBack, isNew = false }: DocumentViewPro
       position:       'fixed',
       inset:          0,
       zIndex:         1000,
-      background:     '#f8f9fb',
+      background:     'var(--neutral-50)',
       display:        'flex',
       flexDirection:  'column',
       overflow:       'hidden',
@@ -233,15 +233,15 @@ export function DocumentView({ article, onBack, isNew = false }: DocumentViewPro
 
       {/* ── A. Page header ── */}
       <div style={{
-        background:   '#fff',
-        borderBottom: '1px solid #eff1f3',
+        background:   'var(--neutral-0)',
+        borderBottom: '1px solid var(--neutral-100)',
         padding:      '16px 24px',
         flexShrink:   0,
         display:      'flex',
         alignItems:   'center',
         justifyContent: 'space-between',
       }}>
-        <h2 style={{ margin: 0, fontSize: 18, fontWeight: 700, color: '#021920' }}>
+        <h2 style={{ margin: 0, fontSize: 18, fontWeight: 700, color: 'var(--text-body-primary)' }}>
           {isNew ? 'Add New Article' : article.title}
         </h2>
         <div style={{ display: 'flex', gap: 8 }}>
@@ -254,7 +254,7 @@ export function DocumentView({ article, onBack, isNew = false }: DocumentViewPro
               border:       'none',
               borderRadius: 8,
               background:   'transparent',
-              color:        '#3264b8',
+              color:        'var(--content-action-primary-default)',
               fontSize:     13,
               fontWeight:   600,
               cursor:       'pointer',
@@ -272,7 +272,7 @@ export function DocumentView({ article, onBack, isNew = false }: DocumentViewPro
               border:       'none',
               borderRadius: 8,
               background:   'transparent',
-              color:        '#3264b8',
+              color:        'var(--content-action-primary-default)',
               fontSize:     13,
               fontWeight:   600,
               cursor:       'pointer',
@@ -300,15 +300,15 @@ export function DocumentView({ article, onBack, isNew = false }: DocumentViewPro
           flexDirection:  'column',
           gap:            0,
           overflow:       'hidden',
-          background:     '#fff',
+          background:     'var(--neutral-0)',
           borderRadius:   8,
-          border:         '1px solid #eff1f3',
+          border:         '1px solid var(--neutral-100)',
         }}>
 
           {/* 1. Breadcrumb */}
           <div style={{
             padding:      '12px 16px',
-            borderBottom: '1px solid #eff1f3',
+            borderBottom: '1px solid var(--neutral-100)',
             flexShrink:   0,
           }}>
             <button
@@ -321,12 +321,12 @@ export function DocumentView({ article, onBack, isNew = false }: DocumentViewPro
                 border:     'none',
                 cursor:     'pointer',
                 padding:    0,
-                color:      '#3264b8',
+                color:      'var(--content-action-primary-default)',
                 fontSize:   12,
                 fontWeight: 600,
               }}
             >
-              <ArrowLeftIcon size={14} color="#3264b8" />
+              <ArrowLeftIcon size={14} color="var(--content-action-primary-default)" />
               Back to Article List
             </button>
           </div>
@@ -334,14 +334,14 @@ export function DocumentView({ article, onBack, isNew = false }: DocumentViewPro
           {/* 2. Form row */}
           <div style={{
             padding:    16,
-            background: '#eff1f3',
+            background: 'var(--neutral-100)',
             flexShrink: 0,
             display:    'flex',
             gap:        16,
           }}>
             <div style={{ flex: 1, minWidth: 0 }}>
-              <label style={{ display: 'block', fontSize: 11, fontWeight: 600, color: '#4b535e', marginBottom: 4 }}>
-                Document Name <span style={{ color: '#ef2056' }}>*</span>
+              <label style={{ display: 'block', fontSize: 11, fontWeight: 600, color: 'var(--neutral-700)', marginBottom: 4 }}>
+                Document Name <span style={{ color: 'var(--text-error)' }}>*</span>
               </label>
               <input
                 value={docName}
@@ -350,20 +350,20 @@ export function DocumentView({ article, onBack, isNew = false }: DocumentViewPro
                 style={{
                   width:        '100%',
                   padding:      '7px 10px',
-                  border:       '1px solid #d9dce0',
+                  border:       '1px solid var(--neutral-200)',
                   borderRadius: 6,
                   fontSize:     13,
-                  color:        '#021920',
-                  background:   '#fff',
+                  color:        'var(--text-body-primary)',
+                  background:   'var(--neutral-0)',
                   outline:      'none',
                   boxSizing:    'border-box',
                 }}
-                onFocus={e => { e.currentTarget.style.borderColor = '#4285f4' }}
-                onBlur={e => { e.currentTarget.style.borderColor = '#d9dce0' }}
+                onFocus={e => { e.currentTarget.style.borderColor = 'var(--content-action-primary-600)' }}
+                onBlur={e => { e.currentTarget.style.borderColor = 'var(--neutral-200)' }}
               />
             </div>
             <div style={{ flex: 1, minWidth: 0 }}>
-              <label style={{ display: 'block', fontSize: 11, fontWeight: 600, color: '#4b535e', marginBottom: 4 }}>
+              <label style={{ display: 'block', fontSize: 11, fontWeight: 600, color: 'var(--neutral-700)', marginBottom: 4 }}>
                 Knowledge Base
               </label>
               <select
@@ -372,11 +372,11 @@ export function DocumentView({ article, onBack, isNew = false }: DocumentViewPro
                 style={{
                   width:        '100%',
                   padding:      '7px 10px',
-                  border:       '1px solid #d9dce0',
+                  border:       '1px solid var(--neutral-200)',
                   borderRadius: 6,
                   fontSize:     13,
-                  color:        docKb === '' ? '#aab0b8' : '#021920',
-                  background:   '#fff',
+                  color:        docKb === '' ? 'var(--neutral-300)' : 'var(--text-body-primary)',
+                  background:   'var(--neutral-0)',
                   outline:      'none',
                 }}
               >
@@ -394,7 +394,7 @@ export function DocumentView({ article, onBack, isNew = false }: DocumentViewPro
             onChange={v => setActiveTab(v as 'markdown' | 'upload')}
             style={{ flex: 1, minHeight: 0, display: 'flex', flexDirection: 'column', overflow: 'hidden' }}
           >
-            <div style={{ padding: '8px 16px', borderBottom: '1px solid #eff1f3', flexShrink: 0 }}>
+            <div style={{ padding: '8px 16px', borderBottom: '1px solid var(--neutral-100)', flexShrink: 0 }}>
               <TabList>
                 <Tab value="markdown" icon={<ArticleIcon size={13} />} disabled={uploadState === 'done'}>Markdown</Tab>
                 <Tab value="upload" icon={<UploadSimpleIcon size={13} />}>Upload File</Tab>
@@ -422,16 +422,16 @@ export function DocumentView({ article, onBack, isNew = false }: DocumentViewPro
 
               {uploadState === 'idle' && (
                 <>
-                  <p style={{ fontSize: 18, fontWeight: 400, color: '#021920', margin: 0 }}>Upload Content</p>
-                  <p style={{ fontSize: 14, color: '#021920', margin: 0 }}>Size limit per file: 1 MB bytes.</p>
+                  <p style={{ fontSize: 18, fontWeight: 400, color: 'var(--text-body-primary)', margin: 0 }}>Upload Content</p>
+                  <p style={{ fontSize: 14, color: 'var(--text-body-primary)', margin: 0 }}>Size limit per file: 1 MB bytes.</p>
                   <div
                     onDragOver={e => e.preventDefault()}
                     onDrop={e => { e.preventDefault(); const f = e.dataTransfer.files[0]; if (f) simulateUpload(f.name) }}
                     onClick={() => fileInputRef.current?.click()}
                     style={{
                       height:         300,
-                      background:     '#eff1f3',
-                      border:         '2px dashed #689df6',
+                      background:     'var(--neutral-100)',
+                      border:         '2px dashed var(--content-action-primary-600)',
                       borderRadius:   8,
                       display:        'flex',
                       flexDirection:  'column',
@@ -442,11 +442,11 @@ export function DocumentView({ article, onBack, isNew = false }: DocumentViewPro
                       flexShrink:     0,
                     }}
                   >
-                    <CloudArrowUpIcon size={48} color="#689df6" />
+                    <CloudArrowUpIcon size={48} color="var(--content-action-primary-600)" />
                     <div style={{ textAlign: 'center' }}>
-                      <p style={{ fontSize: 18, fontWeight: 600, color: '#3264b8', margin: '0 0 4px' }}>Drag &amp; Drop your files here</p>
-                      <p style={{ fontSize: 14, color: '#021920', margin: '0 0 8px' }}>or click to browse</p>
-                      <p style={{ fontSize: 12, fontWeight: 300, color: '#7a828c', margin: 0 }}>Supported Format: .docx, .pdf, .txt</p>
+                      <p style={{ fontSize: 18, fontWeight: 600, color: 'var(--content-action-primary-default)', margin: '0 0 4px' }}>Drag &amp; Drop your files here</p>
+                      <p style={{ fontSize: 14, color: 'var(--text-body-primary)', margin: '0 0 8px' }}>or click to browse</p>
+                      <p style={{ fontSize: 12, fontWeight: 300, color: 'var(--text-body-secondary)', margin: 0 }}>Supported Format: .docx, .pdf, .txt</p>
                     </div>
                   </div>
                   <input
@@ -462,8 +462,8 @@ export function DocumentView({ article, onBack, isNew = false }: DocumentViewPro
               {uploadState === 'processing' && (
                 <div style={{
                   flex:           1,
-                  background:     '#fff',
-                  border:         '2px dashed #689df6',
+                  background:     'var(--neutral-0)',
+                  border:         '2px dashed var(--content-action-primary-600)',
                   borderRadius:   8,
                   padding:        16,
                   display:        'flex',
@@ -471,27 +471,27 @@ export function DocumentView({ article, onBack, isNew = false }: DocumentViewPro
                   justifyContent: 'space-between',
                   minHeight:      200,
                 }}>
-                  <p style={{ fontSize: 14, fontWeight: 600, color: '#021920', margin: 0 }}>Progress</p>
+                  <p style={{ fontSize: 14, fontWeight: 600, color: 'var(--text-body-primary)', margin: 0 }}>Progress</p>
                   <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 8 }}>
-                    <SpinnerGapIcon size={64} color="#4285f4" style={{ animation: 'dv-spin 1s linear infinite' }} />
+                    <SpinnerGapIcon size={64} color="var(--content-action-primary-600)" style={{ animation: 'dv-spin 1s linear infinite' }} />
                     <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%' }}>
-                      <span style={{ fontSize: 12, fontWeight: 600, color: '#021920', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
+                      <span style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-body-primary)', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
                         {uploadedFile?.name ?? ''}
                       </span>
-                      <span style={{ fontSize: 12, fontWeight: 600, color: '#021920' }}>{uploadProgress}%</span>
+                      <span style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-body-primary)' }}>{uploadProgress}%</span>
                     </div>
-                    <div style={{ width: '100%', height: 12, background: '#d9dce0', borderRadius: 999, overflow: 'hidden' }}>
-                      <div style={{ height: '100%', width: `${uploadProgress}%`, background: '#4285f4', borderRadius: 999, transition: 'width 0.15s' }} />
+                    <div style={{ width: '100%', height: 12, background: 'var(--neutral-200)', borderRadius: 999, overflow: 'hidden' }}>
+                      <div style={{ height: '100%', width: `${uploadProgress}%`, background: 'var(--content-action-primary-600)', borderRadius: 999, transition: 'width 0.15s' }} />
                     </div>
-                    <p style={{ fontSize: 12, fontWeight: 300, color: '#7a828c', margin: 0 }}>Page {uploadPage} of {uploadTotal}</p>
+                    <p style={{ fontSize: 12, fontWeight: 300, color: 'var(--text-body-secondary)', margin: 0 }}>Page {uploadPage} of {uploadTotal}</p>
                   </div>
                   <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
-                    <span style={{ display: 'flex', alignItems: 'center', gap: 4, fontSize: 12, color: '#7a828c' }}>
-                      <ClockIcon size={12} color="#7a828c" /> This usually takes a few seconds
+                    <span style={{ display: 'flex', alignItems: 'center', gap: 4, fontSize: 12, color: 'var(--text-body-secondary)' }}>
+                      <ClockIcon size={12} color="var(--text-body-secondary)" /> This usually takes a few seconds
                     </span>
-                    <span style={{ width: 1, height: 10, background: '#eff1f3' }} />
-                    <span style={{ display: 'flex', alignItems: 'center', gap: 4, fontSize: 12, color: '#7a828c' }}>
-                      <ShieldCheckIcon size={12} color="#7a828c" /> Changes are saved as they process
+                    <span style={{ width: 1, height: 10, background: 'var(--neutral-100)' }} />
+                    <span style={{ display: 'flex', alignItems: 'center', gap: 4, fontSize: 12, color: 'var(--text-body-secondary)' }}>
+                      <ShieldCheckIcon size={12} color="var(--text-body-secondary)" /> Changes are saved as they process
                     </span>
                   </div>
                 </div>
@@ -501,18 +501,18 @@ export function DocumentView({ article, onBack, isNew = false }: DocumentViewPro
                 <div style={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 8, minHeight: 0 }}>
                   <button
                     onClick={() => { setUploadState('idle'); setUploadedFile(null) }}
-                    style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '4px 0', border: 'none', background: 'transparent', color: '#3264b8', fontSize: 12, cursor: 'pointer', alignSelf: 'flex-start' }}
+                    style={{ display: 'flex', alignItems: 'center', gap: 6, padding: '4px 0', border: 'none', background: 'transparent', color: 'var(--content-action-primary-default)', fontSize: 12, cursor: 'pointer', alignSelf: 'flex-start' }}
                   >
-                    <UploadSimpleIcon size={14} color="#3264b8" />
+                    <UploadSimpleIcon size={14} color="var(--content-action-primary-default)" />
                     Upload New File
                   </button>
-                  <div style={{ flex: 1, background: '#eff1f3', borderRadius: 8, padding: 16, overflow: 'auto', display: 'flex', justifyContent: 'center' }}>
-                    <div style={{ background: '#fff', borderRadius: 4, padding: '24px 32px', width: '100%', maxWidth: 600, boxShadow: '0 1px 4px rgba(0,0,0,0.08)' }}>
-                      <p style={{ fontSize: 11, fontWeight: 600, color: '#7a828c', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 16 }}>
+                  <div style={{ flex: 1, background: 'var(--neutral-100)', borderRadius: 8, padding: 16, overflow: 'auto', display: 'flex', justifyContent: 'center' }}>
+                    <div style={{ background: 'var(--neutral-0)', borderRadius: 4, padding: '24px 32px', width: '100%', maxWidth: 600, boxShadow: '0 1px 4px rgba(0,0,0,0.08)' }}>
+                      <p style={{ fontSize: 11, fontWeight: 600, color: 'var(--text-body-secondary)', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: 16 }}>
                         {uploadedFile?.name}
                       </p>
                       {[80, 60, 90, 45, 70, 55, 85, 40, 65, 75, 50, 30].map((w, i) => (
-                        <div key={i} style={{ height: 10, background: '#eff1f3', borderRadius: 4, marginBottom: 10, width: `${w}%` }} />
+                        <div key={i} style={{ height: 10, background: 'var(--neutral-100)', borderRadius: 4, marginBottom: 10, width: `${w}%` }} />
                       ))}
                     </div>
                   </div>
@@ -524,7 +524,7 @@ export function DocumentView({ article, onBack, isNew = false }: DocumentViewPro
           {/* 5. Footer */}
           <div style={{
             padding:      '12px 16px',
-            borderTop:    '1px solid #eff1f3',
+            borderTop:    '1px solid var(--neutral-100)',
             flexShrink:   0,
             display:      'flex',
             gap:          8,
@@ -534,10 +534,10 @@ export function DocumentView({ article, onBack, isNew = false }: DocumentViewPro
               onClick={onBack}
               style={{
                 padding:      '8px 16px',
-                border:       '1px solid #d9dce0',
+                border:       '1px solid var(--neutral-200)',
                 borderRadius: 8,
                 background:   'transparent',
-                color:        '#4b535e',
+                color:        'var(--neutral-700)',
                 fontSize:     13,
                 cursor:       'pointer',
               }}
@@ -553,8 +553,8 @@ export function DocumentView({ article, onBack, isNew = false }: DocumentViewPro
                 padding:      '8px 16px',
                 border:       'none',
                 borderRadius: 8,
-                background:   '#4285f4',
-                color:        '#fff',
+                background:   'var(--content-action-primary-600)',
+                color:        'var(--neutral-0)',
                 fontSize:     13,
                 fontWeight:   600,
                 cursor:       'pointer',
@@ -579,20 +579,20 @@ export function DocumentView({ article, onBack, isNew = false }: DocumentViewPro
           {/* Card 1 — Document Details */}
           <SideCard>
             <CardHeading>Document Details</CardHeading>
-            <InlineContextData icon={<UserIcon size={16} color="#7a828c" />} label="Author" value={isNew ? 'rseoane@pronetx.com' : article.modifiedBy} />
-            <InlineContextData icon={<CalendarIcon size={16} color="#7a828c" />} label="Date Created" value={isNew ? currentTime : article.modified} />
+            <InlineContextData icon={<UserIcon size={16} color="var(--text-body-secondary)" />} label="Author" value={isNew ? 'rseoane@pronetx.com' : article.modifiedBy} />
+            <InlineContextData icon={<CalendarIcon size={16} color="var(--text-body-secondary)" />} label="Date Created" value={isNew ? currentTime : article.modified} />
             {!isNew && (
-              <InlineContextData icon={<CalendarIcon size={16} color="#7a828c" />} label="Last Modified" value={article.modified} />
+              <InlineContextData icon={<CalendarIcon size={16} color="var(--text-body-secondary)" />} label="Last Modified" value={article.modified} />
             )}
           </SideCard>
 
           {/* Card 2 — Content Association */}
           <SideCard>
             <CardHeading>Content Association</CardHeading>
-            <p style={{ fontSize: 12, color: '#021920', margin: '0 0 8px' }}>
+            <p style={{ fontSize: 12, color: 'var(--text-body-primary)', margin: '0 0 8px' }}>
               Associate this content with Connect Contact Flows.
             </p>
-            <InlineContextData icon={<ArrowsSplitIcon size={16} color="#7a828c" />} label="Association" value="None" />
+            <InlineContextData icon={<ArrowsSplitIcon size={16} color="var(--text-body-secondary)" />} label="Association" value="None" />
           </SideCard>
 
           {/* Card 3 — Tags */}
@@ -608,7 +608,7 @@ export function DocumentView({ article, onBack, isNew = false }: DocumentViewPro
                   background: 'none',
                   border:     'none',
                   cursor:     'pointer',
-                  color:      '#3264b8',
+                  color:      'var(--content-action-primary-default)',
                   fontSize:   10,
                   padding:    0,
                 }}
@@ -628,18 +628,18 @@ export function DocumentView({ article, onBack, isNew = false }: DocumentViewPro
                 style={{
                   width:        '100%',
                   padding:      '7px 32px 7px 10px',
-                  border:       `1px solid ${tagDropdownOpen ? '#4285f4' : '#d9dce0'}`,
+                  border:       `1px solid ${tagDropdownOpen ? 'var(--content-action-primary-600)' : 'var(--neutral-200)'}`,
                   borderRadius: 8,
                   fontSize:     13,
-                  color:        '#021920',
-                  background:   '#fff',
+                  color:        'var(--text-body-primary)',
+                  background:   'var(--neutral-0)',
                   outline:      'none',
                   boxSizing:    'border-box',
                 }}
               />
               <MagnifyingGlassIcon
                 size={14}
-                color="#aab0b8"
+                color="var(--neutral-300)"
                 style={{ position: 'absolute', right: 10, top: '50%', transform: 'translateY(-50%)' }}
               />
 
@@ -651,8 +651,8 @@ export function DocumentView({ article, onBack, isNew = false }: DocumentViewPro
                   left:         0,
                   right:        0,
                   zIndex:       200,
-                  background:   '#fff',
-                  border:       '1px solid #d9dce0',
+                  background:   'var(--neutral-0)',
+                  border:       '1px solid var(--neutral-200)',
                   borderRadius: 8,
                   boxShadow:    '0 4px 16px rgba(5,3,38,0.10)',
                   padding:      '8px 0 4px',
@@ -725,7 +725,7 @@ export function DocumentView({ article, onBack, isNew = false }: DocumentViewPro
                 )
               })}
               {tags.length === 0 && (
-                <span style={{ fontSize: 12, color: '#aab0b8' }}>No tags</span>
+                <span style={{ fontSize: 12, color: 'var(--neutral-300)' }}>No tags</span>
               )}
             </div>
           </SideCard>
@@ -734,15 +734,15 @@ export function DocumentView({ article, onBack, isNew = false }: DocumentViewPro
           {!isNew && <SideCard>
             <CardHeading>Versions (5)</CardHeading>
 
-            <div style={{ border: '1px solid #eff1f3', borderRadius: 8, overflow: 'hidden' }}>
+            <div style={{ border: '1px solid var(--neutral-100)', borderRadius: 8, overflow: 'hidden' }}>
               {VERSIONS.map((v, idx) => (
                 <div
                   key={v.id}
                   style={{
                     display:      'flex',
                     alignItems:   'center',
-                    background:   v.active ? '#d9e7fd' : '#fff',
-                    borderBottom: idx < VERSIONS.length - 1 ? '1px solid #eff1f3' : 'none',
+                    background:   v.active ? 'var(--content-action-primary-100)' : 'var(--neutral-0)',
+                    borderBottom: idx < VERSIONS.length - 1 ? '1px solid var(--neutral-100)' : 'none',
                     minHeight:    48,
                   }}
                 >
@@ -765,25 +765,25 @@ export function DocumentView({ article, onBack, isNew = false }: DocumentViewPro
                   {/* Info col */}
                   <div style={{ flex: 1, padding: '8px 8px 8px 0' }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-                      <span style={{ fontSize: 12, fontWeight: 700, color: '#021920' }}>{v.label}</span>
+                      <span style={{ fontSize: 12, fontWeight: 700, color: 'var(--text-body-primary)' }}>{v.label}</span>
                       {v.active && (
                         <span style={{
                           fontSize:     10,
                           fontWeight:   600,
                           padding:      '1px 6px',
                           borderRadius: 99,
-                          background:   '#4285f4',
-                          color:        '#fff',
+                          background:   'var(--content-action-primary-600)',
+                          color:        'var(--neutral-0)',
                         }}>
                           active
                         </span>
                       )}
                     </div>
-                    <div style={{ fontSize: 10, color: '#7a828c', marginTop: 2 }}>{v.date}</div>
+                    <div style={{ fontSize: 10, color: 'var(--text-body-secondary)', marginTop: 2 }}>{v.date}</div>
                   </div>
 
                   {/* Action col */}
-                  <div style={{ fontSize: 10, color: '#7a828c', textAlign: 'right', padding: '0 12px 0 8px', flexShrink: 0 }}>
+                  <div style={{ fontSize: 10, color: 'var(--text-body-secondary)', textAlign: 'right', padding: '0 12px 0 8px', flexShrink: 0 }}>
                     {v.action}
                   </div>
                 </div>
@@ -801,7 +801,7 @@ export function DocumentView({ article, onBack, isNew = false }: DocumentViewPro
                   background: 'none',
                   border:     'none',
                   cursor:     'pointer',
-                  color:      '#4b535e',
+                  color:      'var(--neutral-700)',
                   fontSize:   10,
                   padding:    0,
                 }}
@@ -818,7 +818,7 @@ export function DocumentView({ article, onBack, isNew = false }: DocumentViewPro
                   background: 'none',
                   border:     'none',
                   cursor:     selectedVersions.size >= 2 ? 'pointer' : 'not-allowed',
-                  color:      '#3264b8',
+                  color:      'var(--content-action-primary-default)',
                   fontSize:   10,
                   fontWeight: 700,
                   padding:    0,

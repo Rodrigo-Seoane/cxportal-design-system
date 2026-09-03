@@ -13,22 +13,22 @@ export { X as XIcon, FloppyDisk }
 
 const T = {
   // Backdrop
-  overlayBg:    'rgba(5, 3, 38, 0.60)',      // --surface/nav at 60% opacity
+  overlayBg:    'var(--surface-overlay)',
 
   // Panel
-  panelBg:      '#ffffff',                    // --surface/section
+  panelBg:      'var(--surface-section-bg)',
   panelRadius:   8,                           // --border-radius/md
-  panelShadow:  '0 8px 48px rgba(2, 25, 32, 0.22)',
+  panelShadow:  '0 8px 48px color-mix(in srgb, var(--text-body-primary) 22%, transparent)',
 
   // Separators
-  borderColor:  '#eff1f3',                    // --border-color/neutral
+  borderColor:  'var(--neutral-100)',
 
   // Header typography — Large (H1) / Medium (H2)
   titleLgSize:   28,
   titleMdSize:   24,
   titleLgLine:  '34px',
   titleMdLine:  '30px',
-  titleColor:   '#021920',                    // --text/body/primary
+  titleColor:   'var(--text-body-primary)',
 
   // Close icon size per modal size
   closeIconLg:   24,
@@ -136,7 +136,7 @@ export function Modal({
         style={{
           background:    T.panelBg,
           borderRadius:  T.panelRadius,
-          boxShadow:     preview ? '0 2px 12px rgba(2, 25, 32, 0.10)' : T.panelShadow,
+          boxShadow:     preview ? '0 2px 12px color-mix(in srgb, var(--text-body-primary) 10%, transparent)' : T.panelShadow,
           border:        preview ? `1px solid ${T.borderColor}` : 'none',
           width:         '100%',
           maxWidth,

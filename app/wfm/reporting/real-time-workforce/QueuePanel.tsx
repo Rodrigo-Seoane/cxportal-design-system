@@ -10,9 +10,9 @@ import { QUEUES } from '@/mocks/wfm/store'
 import type { ForceState } from '@/mocks/wfm/store'
 
 function slaColor(sla: number): string {
-  if (sla >= 85) return '#1a6b1a'
-  if (sla >= 70) return '#c97000'
-  return '#ef2056'
+  if (sla >= 85) return 'var(--success-600)'
+  if (sla >= 70) return 'var(--text-warning)'
+  return 'var(--text-error)'
 }
 
 interface QueuePanelProps {
@@ -30,14 +30,14 @@ export function QueuePanel({ forceState, lastUpdated, onRetry }: QueuePanelProps
   return (
     <section aria-labelledby="queue-panel-title" style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-        <h2 id="queue-panel-title" style={{ margin: 0, fontSize: 14, fontWeight: 600, color: '#021920', flex: 1, fontFamily: 'var(--font-sans)' }}>
+        <h2 id="queue-panel-title" style={{ margin: 0, fontSize: 14, fontWeight: 600, color: 'var(--text-body-primary)', flex: 1, fontFamily: 'var(--font-sans)' }}>
           Queues
-          <span style={{ fontSize: 12, fontWeight: 400, color: '#7a828c', marginLeft: 8 }}>
+          <span style={{ fontSize: 12, fontWeight: 400, color: 'var(--text-body-secondary)', marginLeft: 8 }}>
             {QUEUES.length} queues
           </span>
         </h2>
         {isStale && (
-          <span style={{ fontSize: 11, color: '#c97000', fontFamily: 'var(--font-sans)' }}>Cached {timeStr}</span>
+          <span style={{ fontSize: 11, color: 'var(--text-warning)', fontFamily: 'var(--font-sans)' }}>Cached {timeStr}</span>
         )}
         <button onClick={onRetry} aria-label="Refresh queues" style={refreshBtn}>
           <ArrowClockwiseIcon size={14} weight="regular" />
@@ -51,9 +51,9 @@ export function QueuePanel({ forceState, lastUpdated, onRetry }: QueuePanelProps
       )}
 
       {isError && (
-        <div style={{ padding: '16px', background: '#fef1f4', border: '1px solid #f792ac', borderRadius: 8, fontSize: 13, color: '#8b1a2a', fontFamily: 'var(--font-sans)' }}>
+        <div style={{ padding: '16px', background: 'var(--surface-accent-error-light)', border: '1px solid var(--surface-action-destructive-disabled)', borderRadius: 8, fontSize: 13, color: 'var(--text-destructive)', fontFamily: 'var(--font-sans)' }}>
           Failed to load queue data.{' '}
-          <button onClick={onRetry} style={{ color: '#4285f4', background: 'none', border: 'none', cursor: 'pointer', fontSize: 13, padding: 0, fontFamily: 'var(--font-sans)' }}>
+          <button onClick={onRetry} style={{ color: 'var(--content-action-primary-600)', background: 'none', border: 'none', cursor: 'pointer', fontSize: 13, padding: 0, fontFamily: 'var(--font-sans)' }}>
             Retry
           </button>
         </div>
@@ -99,9 +99,9 @@ const refreshBtn: React.CSSProperties = {
   justifyContent: 'center',
   width:        28,
   height:       28,
-  border:      '1px solid #e2e5e8',
+  border:      '1px solid var(--neutral-100)',
   borderRadius: 6,
-  background:  '#ffffff',
+  background:  'var(--neutral-0)',
   cursor:      'pointer',
-  color:       '#7a828c',
+  color:       'var(--text-body-secondary)',
 }

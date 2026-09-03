@@ -6,11 +6,11 @@ import { XIcon } from '@phosphor-icons/react'
 // ── Design tokens ─────────────────────────────────────────────────────────────
 
 const T = {
-  titleColor:   '#4285f4',   // --content-action/primary/default
-  subtitleColor:'#021920',   // --text/body/primary
-  chipBg:       '#d6e2f5',   // --info/100
-  chipText:     '#021920',   // --text/on-action/secondary
-  chipIcon:     '#021920',
+  titleColor:   'var(--content-action-primary-default)',   // --content-action/primary/default
+  subtitleColor:'var(--text-body-primary)',   // --text/body/primary
+  chipBg:       'var(--info-100)',   // --info/100
+  chipText:     'var(--text-on-action-secondary)',   // --text/on-action/secondary
+  chipIcon:     'var(--text-on-action-secondary)',
 } as const
 
 // ── Internal: Info Chip ───────────────────────────────────────────────────────

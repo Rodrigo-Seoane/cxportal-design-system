@@ -42,7 +42,7 @@ function StepIndicator({ current }: { current: UploadStep }) {
               width: 22, height: 22, borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center',
               fontSize: 11, fontWeight: 700, flexShrink: 0,
               background: done ? 'var(--color-primary)' : active ? 'var(--color-primary)' : 'var(--color-surface-display)',
-              color:      done ? '#fff'                 : active ? '#fff'                 : 'var(--color-text-secondary)',
+              color:      done ? 'var(--neutral-0)'                 : active ? 'var(--neutral-0)'                 : 'var(--color-text-secondary)',
               border:     done || active ? 'none' : '1px solid var(--color-border)',
             }}>
               {done ? '✓' : s}
@@ -65,9 +65,9 @@ function StepUpload({ dropped, onDrop }: { dropped: boolean; onDrop: () => void 
     return (
       <div style={{ display: 'flex', alignItems: 'center', gap: 12, padding: '14px 16px', borderRadius: 8,
         background: 'var(--color-success-100)', border: '1px solid var(--color-border)' }}>
-        <CheckCircleIcon size={18} color="#1a6b1a" weight="fill" style={{ flexShrink: 0 }} />
+        <CheckCircleIcon size={18} color="var(--text-success)" weight="fill" style={{ flexShrink: 0 }} />
         <div>
-          <p style={{ margin: 0, fontSize: 13, fontWeight: 600, color: '#1a6b1a' }}>subscribers_export.csv</p>
+          <p style={{ margin: 0, fontSize: 13, fontWeight: 600, color: 'var(--text-success)' }}>subscribers_export.csv</p>
           <p style={{ margin: '2px 0 0', fontSize: 12, color: 'var(--color-text-secondary)' }}>42,180 rows detected</p>
         </div>
       </div>

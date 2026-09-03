@@ -20,8 +20,8 @@ function fmtDate(iso: string): string {
 }
 
 const STATUS_CONFIG = {
-  active:   { label: 'Active',   bg: 'var(--color-success-100)',     color: '#1a6b1a'                     },
-  updating: { label: 'Updating', bg: 'var(--color-warning-100)',     color: '#7a4a00'                     },
+  active:   { label: 'Active',   bg: 'var(--color-success-100)',     color: 'var(--text-success)'                     },
+  updating: { label: 'Updating', bg: 'var(--color-warning-100)',     color: 'var(--text-warning)'                     },
   archived: { label: 'Archived', bg: 'var(--color-surface-display)', color: 'var(--color-text-secondary)' },
 }
 

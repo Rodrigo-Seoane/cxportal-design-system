@@ -28,16 +28,16 @@ export function UserFilters({ selectedLevels, onChange }: UserFiltersProps) {
     <div style={{ width: 240, flexShrink: 0, padding: '16px 16px 16px 0', display: 'flex', flexDirection: 'column', gap: 16 }}>
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-          <span style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: 24, height: 24, border: '1px solid #0ea2a7', borderRadius: 4 }}>
-            <SlidersIcon size={16} color="#0ea2a7" weight="regular" />
+          <span style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: 24, height: 24, border: '1px solid var(--content-action-primary-default)', borderRadius: 4 }}>
+            <SlidersIcon size={16} color="var(--content-action-primary-default)" weight="regular" />
           </span>
-          <h3 style={{ margin: 0, fontSize: 18, fontWeight: 400, lineHeight: '24px', color: '#021920' }}>Filters</h3>
+          <h3 style={{ margin: 0, fontSize: 18, fontWeight: 400, lineHeight: '24px', color: 'var(--text-body-primary)' }}>Filters</h3>
         </div>
         {selectedLevels.length > 0 && (
           <button
             type="button"
             onClick={() => onChange([])}
-            style={{ border: 'none', background: 'none', cursor: 'pointer', padding: 0, fontSize: 10, fontWeight: 600, letterSpacing: '0.2px', color: '#0b8286' }}
+            style={{ border: 'none', background: 'none', cursor: 'pointer', padding: 0, fontSize: 10, fontWeight: 600, letterSpacing: '0.2px', color: 'var(--content-action-primary-default)' }}
           >
             Clear Filters
           </button>
@@ -45,9 +45,9 @@ export function UserFilters({ selectedLevels, onChange }: UserFiltersProps) {
       </div>
 
       {/* Login Method — not yet wired to a data model */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: 8, height: 36, padding: 8, border: '1px solid #eff1f3', borderRadius: 8, background: '#ffffff' }}>
-        <span style={{ flex: 1, fontSize: 12, fontWeight: 600, letterSpacing: '0.24px', color: '#021920' }}>Login Method</span>
-        <CaretDownIcon size={16} color="#021920" weight="regular" />
+      <div style={{ display: 'flex', alignItems: 'center', gap: 8, height: 36, padding: 8, border: '1px solid var(--neutral-100)', borderRadius: 8, background: 'var(--neutral-0)' }}>
+        <span style={{ flex: 1, fontSize: 12, fontWeight: 600, letterSpacing: '0.24px', color: 'var(--text-body-primary)' }}>Login Method</span>
+        <CaretDownIcon size={16} color="var(--text-body-primary)" weight="regular" />
       </div>
 
       {/* Role permission level */}
@@ -58,23 +58,23 @@ export function UserFilters({ selectedLevels, onChange }: UserFiltersProps) {
           aria-expanded={permOpen}
           style={{
             display: 'flex', alignItems: 'center', gap: 8, width: '100%', height: 36,
-            padding: 8, border: `1px solid ${selectedLevels.length ? '#0ea2a7' : '#eff1f3'}`,
-            borderRadius: 8, background: '#ffffff', cursor: 'pointer',
+            padding: 8, border: `1px solid ${selectedLevels.length ? 'var(--content-action-primary-600)' : 'var(--neutral-100)'}`,
+            borderRadius: 8, background: 'var(--neutral-0)', cursor: 'pointer',
           }}
         >
           {selectedLevels.length > 0 && (
             <span style={{
               display: 'flex', alignItems: 'center', justifyContent: 'center',
-              width: 18, height: 18, borderRadius: 64, background: '#0b8286',
-              border: '1px solid #0ea2a7', color: '#eff1f3', fontSize: 10, fontWeight: 600,
+              width: 18, height: 18, borderRadius: 64, background: 'var(--content-action-primary-600)',
+              border: '1px solid var(--content-action-primary-600)', color: 'var(--neutral-100)', fontSize: 10, fontWeight: 600,
             }}>
               {selectedLevels.length}
             </span>
           )}
-          <span style={{ flex: 1, textAlign: 'left', fontSize: 12, fontWeight: 600, letterSpacing: '0.24px', color: '#021920' }}>
+          <span style={{ flex: 1, textAlign: 'left', fontSize: 12, fontWeight: 600, letterSpacing: '0.24px', color: 'var(--text-body-primary)' }}>
             Permission Level
           </span>
-          <CaretDownIcon size={16} color="#021920" weight="regular" style={{ transform: permOpen ? 'rotate(180deg)' : undefined }} />
+          <CaretDownIcon size={16} color="var(--text-body-primary)" weight="regular" style={{ transform: permOpen ? 'rotate(180deg)' : undefined }} />
         </button>
 
         {permOpen && (
@@ -95,7 +95,7 @@ export function UserFilters({ selectedLevels, onChange }: UserFiltersProps) {
       {selectedLevels.length > 0 && (
         <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
           {selectedLevels.map(level => (
-            <Chip key={level} label={level} type="info" shade={200} iconLeft={false} onDismiss={() => toggleLevel(level)} style={{ background: '#d9dce0' }} />
+            <Chip key={level} label={level} type="info" shade={200} iconLeft={false} onDismiss={() => toggleLevel(level)} style={{ background: 'var(--neutral-200)' }} />
           ))}
         </div>
       )}
@@ -106,11 +106,11 @@ export function UserFilters({ selectedLevels, onChange }: UserFiltersProps) {
           key={label}
           style={{
             display: 'flex', alignItems: 'center', gap: 8, height: 36, padding: 8,
-            border: '1px solid #eff1f3', borderRadius: 8, background: '#ffffff',
+            border: '1px solid var(--neutral-100)', borderRadius: 8, background: 'var(--neutral-0)',
           }}
         >
-          <span style={{ flex: 1, fontSize: 12, fontWeight: 600, letterSpacing: '0.24px', color: '#021920' }}>{label}</span>
-          <CaretDownIcon size={16} color="#021920" weight="regular" />
+          <span style={{ flex: 1, fontSize: 12, fontWeight: 600, letterSpacing: '0.24px', color: 'var(--text-body-primary)' }}>{label}</span>
+          <CaretDownIcon size={16} color="var(--text-body-primary)" weight="regular" />
         </div>
       ))}
     </div>

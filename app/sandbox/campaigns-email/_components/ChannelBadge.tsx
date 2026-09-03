@@ -8,10 +8,10 @@ export interface ChannelBadgeProps {
 
 // Mirrors the chip.tsx CHIP_COLORS 100-shade tokens
 const CONFIG: Record<Channel, { label: string; bg: string; textColor: string; iconColor: string; comingSoon?: boolean }> = {
-  email:    { label: 'Email',    bg: '#d6e2f5', textColor: '#021920', iconColor: '#2859ab' },
-  sms:      { label: 'SMS',      bg: '#ddf4d2', textColor: '#021920', iconColor: '#4b9924' },
-  voice:    { label: 'Voice',    bg: '#fbeed8', textColor: '#021920', iconColor: '#c79033' },
-  whatsapp: { label: 'WhatsApp', bg: '#d2f4e0', textColor: '#021920', iconColor: '#1a8a42', comingSoon: true },
+  email:    { label: 'Email',    bg: 'var(--info-100)', textColor: 'var(--text-body-primary)', iconColor: 'var(--text-info)' },
+  sms:      { label: 'SMS',      bg: 'var(--success-100)', textColor: 'var(--text-body-primary)', iconColor: 'var(--surface-accent-success-dark)' },
+  voice:    { label: 'Voice',    bg: 'var(--warning-100)', textColor: 'var(--text-body-primary)', iconColor: 'var(--surface-accent-warning-dark)' },
+  whatsapp: { label: 'WhatsApp', bg: '#d2f4e0', textColor: 'var(--text-body-primary)', iconColor: '#1a8a42', comingSoon: true },
 }
 
 const ICONS: Record<Channel, React.ComponentType<{ size: number; color: string; weight: 'fill' }>> = {

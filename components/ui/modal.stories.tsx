@@ -25,7 +25,7 @@ export const LargePreview: Story = {
     <Modal preview size="large">
       <ModalHeader onClose={() => {}}>Modal Title</ModalHeader>
       <ModalBody>
-        <p style={{ fontSize: 14, color: '#021920', margin: 0 }}>
+        <p style={{ fontSize: 14, color: 'var(--text-body-primary)', margin: 0 }}>
           Modal body content goes here. This is the large variant at 701px wide.
         </p>
       </ModalBody>
@@ -42,7 +42,7 @@ export const MediumPreview: Story = {
     <Modal preview size="medium">
       <ModalHeader onClose={() => {}}>Confirm Action</ModalHeader>
       <ModalBody>
-        <p style={{ fontSize: 14, color: '#021920', margin: 0 }}>
+        <p style={{ fontSize: 14, color: 'var(--text-body-primary)', margin: 0 }}>
           Are you sure you want to delete this item? This action cannot be undone.
         </p>
       </ModalBody>
@@ -59,7 +59,7 @@ export const NoCloseButton: Story = {
     <Modal preview size="medium">
       <ModalHeader>Notification</ModalHeader>
       <ModalBody>
-        <p style={{ fontSize: 14, color: '#021920', margin: 0 }}>
+        <p style={{ fontSize: 14, color: 'var(--text-body-primary)', margin: 0 }}>
           This modal has no close button in the header.
         </p>
       </ModalBody>

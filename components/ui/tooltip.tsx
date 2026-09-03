@@ -40,7 +40,7 @@ function getArrowStyle(placement: TooltipPlacement): React.CSSProperties {
     position: 'absolute',
     width: 8,
     height: 8,
-    background: '#eef3fb',
+    background: 'var(--surface-accent-info-light)',
     transform: 'rotate(45deg)',
   }
   switch (placement) {
@@ -51,8 +51,8 @@ function getArrowStyle(placement: TooltipPlacement): React.CSSProperties {
         bottom: -4,
         left: '50%',
         marginLeft: -4,
-        borderRight: '1px solid #a4beea',
-        borderBottom: '1px solid #a4beea',
+        borderRight: '1px solid var(--border-color-accent-info-light)',
+        borderBottom: '1px solid var(--border-color-accent-info-light)',
       }
     // Arrow sits at top of body, pointing up
     case 'bottom':
@@ -61,8 +61,8 @@ function getArrowStyle(placement: TooltipPlacement): React.CSSProperties {
         top: -4,
         left: '50%',
         marginLeft: -4,
-        borderTop: '1px solid #a4beea',
-        borderLeft: '1px solid #a4beea',
+        borderTop: '1px solid var(--border-color-accent-info-light)',
+        borderLeft: '1px solid var(--border-color-accent-info-light)',
       }
     // Arrow sits at right of body, pointing right
     case 'left':
@@ -71,8 +71,8 @@ function getArrowStyle(placement: TooltipPlacement): React.CSSProperties {
         right: -4,
         top: '50%',
         marginTop: -4,
-        borderTop: '1px solid #a4beea',
-        borderRight: '1px solid #a4beea',
+        borderTop: '1px solid var(--border-color-accent-info-light)',
+        borderRight: '1px solid var(--border-color-accent-info-light)',
       }
     // Arrow sits at left of body, pointing left
     case 'right':
@@ -81,8 +81,8 @@ function getArrowStyle(placement: TooltipPlacement): React.CSSProperties {
         left: -4,
         top: '50%',
         marginTop: -4,
-        borderBottom: '1px solid #a4beea',
-        borderLeft: '1px solid #a4beea',
+        borderBottom: '1px solid var(--border-color-accent-info-light)',
+        borderLeft: '1px solid var(--border-color-accent-info-light)',
       }
   }
 }
@@ -118,10 +118,10 @@ export function Tooltip({
               width: 'max-content',
               maxWidth: 200,
               padding: 8,
-              background: '#eef3fb',
-              border: '1px solid #a4beea',
+              background: 'var(--surface-accent-info-light)',
+              border: '1px solid var(--border-color-accent-info-light)',
               borderRadius: 4,
-              boxShadow: '0 4px 24px 0 rgba(5,3,38,0.08)',
+              boxShadow: '0 4px 24px 0 color-mix(in srgb, var(--surface-vertical-nav) 8%, transparent)',
               whiteSpace: 'normal',
             }}
           >
@@ -131,7 +131,7 @@ export function Tooltip({
                 fontSize: 14,
                 fontWeight: 400,
                 lineHeight: '20px',
-                color: '#021920',
+                color: 'var(--text-body-primary)',
               }}
             >
               {content}

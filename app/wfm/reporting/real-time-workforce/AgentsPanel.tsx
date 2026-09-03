@@ -46,16 +46,16 @@ export function AgentsPanel({ forceState, staffingGroupIds, forecastGroupIds, on
   return (
     <section aria-labelledby="agents-panel-title" style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
       <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-        <h2 id="agents-panel-title" style={{ margin: 0, fontSize: 14, fontWeight: 600, color: '#021920', flex: 1, fontFamily: 'var(--font-sans)' }}>
+        <h2 id="agents-panel-title" style={{ margin: 0, fontSize: 14, fontWeight: 600, color: 'var(--text-body-primary)', flex: 1, fontFamily: 'var(--font-sans)' }}>
           Agents
           {!isLoading && !showRefineMessage && (
-            <span style={{ fontSize: 12, fontWeight: 400, color: '#7a828c', marginLeft: 8 }}>
+            <span style={{ fontSize: 12, fontWeight: 400, color: 'var(--text-body-secondary)', marginLeft: 8 }}>
               {visible.length}{filtered.length > MAX_AGENTS ? `+` : ''} shown
             </span>
           )}
         </h2>
         {isStale && (
-          <span style={{ fontSize: 11, color: '#c97000', fontFamily: 'var(--font-sans)' }}>Cached data</span>
+          <span style={{ fontSize: 11, color: 'var(--text-warning)', fontFamily: 'var(--font-sans)' }}>Cached data</span>
         )}
       </div>
 
@@ -66,7 +66,7 @@ export function AgentsPanel({ forceState, staffingGroupIds, forecastGroupIds, on
       )}
 
       {isError && (
-        <div style={{ padding: '16px', background: '#fef1f4', border: '1px solid #f792ac', borderRadius: 8, fontSize: 13, color: '#8b1a2a', fontFamily: 'var(--font-sans)' }}>
+        <div style={{ padding: '16px', background: 'var(--surface-accent-error-light)', border: '1px solid var(--surface-action-destructive-disabled)', borderRadius: 8, fontSize: 13, color: 'var(--text-destructive)', fontFamily: 'var(--font-sans)' }}>
           Failed to load agent data. Cached values shown below may be stale.
         </div>
       )}
@@ -79,17 +79,17 @@ export function AgentsPanel({ forceState, staffingGroupIds, forecastGroupIds, on
           justifyContent: 'center',
           gap:             12,
           padding:        '40px 24px',
-          background:     '#f8f8f8',
+          background:     'var(--neutral-50)',
           borderRadius:    8,
           textAlign:      'center',
           fontFamily:     'var(--font-sans)',
         }}>
-          <FunnelSimpleIcon size={32} color="#aab0b8" weight="thin" />
+          <FunnelSimpleIcon size={32} color="var(--neutral-300)" weight="thin" />
           <div>
-            <p style={{ fontSize: 14, color: '#021920', fontWeight: 600, margin: '0 0 4px' }}>
+            <p style={{ fontSize: 14, color: 'var(--text-body-primary)', fontWeight: 600, margin: '0 0 4px' }}>
               Refine your filter to see agents
             </p>
-            <p style={{ fontSize: 12, color: '#7a828c', margin: 0 }}>
+            <p style={{ fontSize: 12, color: 'var(--text-body-secondary)', margin: 0 }}>
               With all 5,500+ agents, use the Forecast Group or Staffing Group filter to narrow scope.
             </p>
           </div>
@@ -98,8 +98,8 @@ export function AgentsPanel({ forceState, staffingGroupIds, forecastGroupIds, on
 
       {!isLoading && !showRefineMessage && visible.length === 0 && (
         <div style={{ textAlign: 'center', padding: '32px 0', fontFamily: 'var(--font-sans)' }}>
-          <p style={{ fontSize: 13, color: '#7a828c' }}>No agents match your current filter.</p>
-          <button onClick={onClearFilters} style={{ fontSize: 12, color: '#4285f4', background: 'none', border: 'none', cursor: 'pointer', padding: '4px 8px', fontFamily: 'var(--font-sans)' }}>
+          <p style={{ fontSize: 13, color: 'var(--text-body-secondary)' }}>No agents match your current filter.</p>
+          <button onClick={onClearFilters} style={{ fontSize: 12, color: 'var(--content-action-primary-600)', background: 'none', border: 'none', cursor: 'pointer', padding: '4px 8px', fontFamily: 'var(--font-sans)' }}>
             Clear Filters
           </button>
         </div>
@@ -126,7 +126,7 @@ export function AgentsPanel({ forceState, staffingGroupIds, forecastGroupIds, on
                 aria-label={`${agent.name} — click to view agent summary`}
               >
                 <TableCell>
-                  <span style={{ fontSize: 13, fontWeight: 500, color: '#021920' }}>{agent.name}</span>
+                  <span style={{ fontSize: 13, fontWeight: 500, color: 'var(--text-body-primary)' }}>{agent.name}</span>
                 </TableCell>
                 <TableCell>
                   <StatusPill status={agent.status} auxCode={agent.auxCode} size="sm" />
@@ -145,7 +145,7 @@ export function AgentsPanel({ forceState, staffingGroupIds, forecastGroupIds, on
       )}
 
       {!isLoading && !showRefineMessage && filtered.length > MAX_AGENTS && (
-        <p style={{ fontSize: 11, color: '#7a828c', textAlign: 'center', fontFamily: 'var(--font-sans)' }}>
+        <p style={{ fontSize: 11, color: 'var(--text-body-secondary)', textAlign: 'center', fontFamily: 'var(--font-sans)' }}>
           Showing first {MAX_AGENTS} of {filtered.length.toLocaleString()} agents. Refine your filter to narrow scope.
         </p>
       )}

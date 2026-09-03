@@ -26,24 +26,24 @@ export interface DatePickerProps {
 // ── Design tokens ─────────────────────────────────────────────────────────────
 
 const T = {
-  borderDefault:   '#d9dce0',
-  borderFocus:     '#4285f4',
-  borderError:     '#f792ac',
-  surfaceField:    'white',
-  textLabel:       '#021920',
-  textPlaceholder: '#7a828c',
-  textValue:       '#4b535e',
-  textError:       '#ef2056',
-  disabledBg:      '#eff1f3',
-  disabledText:    '#aab0b8',
-  disabledBorder:  '#d9dce0',
+  borderDefault:   'var(--neutral-200)',
+  borderFocus:     'var(--content-action-primary-600)',
+  borderError:     'var(--error-200)',
+  surfaceField:    'var(--neutral-0)',
+  textLabel:       'var(--text-body-primary)',
+  textPlaceholder: 'var(--text-body-secondary)',
+  textValue:       'var(--text-body-primary)',
+  textError:       'var(--error-default)',
+  disabledBg:      'var(--content-action-disabled-100)',
+  disabledText:    'var(--content-action-disabled-700)',
+  disabledBorder:  'var(--content-action-disabled-300)',
 } as const
 
 // ── Custom chevron using Phosphor icons ───────────────────────────────────────
 
 function CalChevron({ orientation }: { orientation?: 'up' | 'down' | 'left' | 'right' }) {
-  if (orientation === 'left')  return <CaretLeftIcon  size={14} color="#4b535e" />
-  if (orientation === 'right') return <CaretRightIcon size={14} color="#4b535e" />
+  if (orientation === 'left')  return <CaretLeftIcon  size={14} color="var(--text-body-primary)" />
+  if (orientation === 'right') return <CaretRightIcon size={14} color="var(--text-body-primary)" />
   return <></>
 }
 
@@ -234,15 +234,15 @@ export function DatePicker({
           ref={popRef}
           style={{
             ...popStyle,
-            background:   '#ffffff',
-            border:       '1px solid #d9dce0',
+            background:   'var(--neutral-0)',
+            border:       '1px solid var(--neutral-200)',
             borderRadius: '8px',
             boxShadow:    '0px 4px 24px 0px rgba(5,3,38,0.08)',
             padding:      '12px',
             fontFamily:   'Roboto, system-ui, sans-serif',
             // DayPicker CSS variable overrides
-            '--rdp-accent-color':            '#4285f4',
-            '--rdp-accent-background-color': '#eef3fb',
+            '--rdp-accent-color':            'var(--content-action-primary-600)',
+            '--rdp-accent-background-color': 'var(--content-action-primary-100)',
             '--rdp-day-height':              '32px',
             '--rdp-day-width':               '32px',
             '--rdp-day_button-height':       '30px',

@@ -55,7 +55,7 @@ function GhostButton({
       <span style={{
         fontSize:      12,
         fontWeight:    600,
-        color:         '#3264b8',
+        color:         'var(--content-action-primary-default)',
         letterSpacing: '0.24px',
         whiteSpace:    'nowrap',
       }}>
@@ -68,11 +68,11 @@ function GhostButton({
 const TwoButtonActions = () => (
   <>
     <GhostButton
-      icon={<PencilSimpleIcon size={16} weight="thin" color="#3264b8" />}
+      icon={<PencilSimpleIcon size={16} weight="thin" color="var(--content-action-primary-default)" />}
       label="Edit List"
     />
     <GhostButton
-      icon={<TrashIcon size={16} weight="thin" color="#3264b8" />}
+      icon={<TrashIcon size={16} weight="thin" color="var(--content-action-primary-default)" />}
       label="Delete List"
     />
   </>
@@ -82,8 +82,8 @@ const OneButtonAction = ({ label = 'Edit List' }: { label?: string }) => (
   <GhostButton
     icon={
       label === 'Delete List'
-        ? <TrashIcon size={16} weight="thin" color="#3264b8" />
-        : <PencilSimpleIcon size={16} weight="thin" color="#3264b8" />
+        ? <TrashIcon size={16} weight="thin" color="var(--content-action-primary-default)" />
+        : <PencilSimpleIcon size={16} weight="thin" color="var(--content-action-primary-default)" />
     }
     label={label}
   />
@@ -99,12 +99,12 @@ const DfcHeaderActions = () => (
       width:        240,
       height:       24,
       padding:      8,
-      border:       '1px solid #d9dce0',
+      border:       '1px solid var(--neutral-200)',
       borderRadius: 4,
-      background:   'white',
+      background:   'var(--neutral-0)',
     }}>
-      <span style={{ fontSize: 12, color: '#7a828c' }}>Search</span>
-      <MagnifyingGlassIcon size={16} color="#7a828c" />
+      <span style={{ fontSize: 12, color: 'var(--text-body-secondary)' }}>Search</span>
+      <MagnifyingGlassIcon size={16} color="var(--text-body-secondary)" />
     </div>
     {/* Path Tester button */}
     <button style={{
@@ -112,9 +112,9 @@ const DfcHeaderActions = () => (
       alignItems:   'center',
       gap:          8,
       padding:      '4px 8px',
-      border:       '1px solid #689df6',
+      border:       '1px solid var(--content-action-primary-600)',
       borderRadius: 4,
-      background:   'white',
+      background:   'var(--neutral-0)',
       cursor:       'pointer',
     }}>
       <SignpostIcon size={16} weight="thin" color="#3d5459" />
@@ -127,24 +127,24 @@ const DfcHeaderActions = () => (
       gap:          4,
       padding:      4,
       borderRadius: 4,
-      background:   '#eff1f3',
+      background:   'var(--neutral-100)',
     }}>
       <span style={{
         padding:      '4px 12px',
         borderRadius: 4,
-        background:   'white',
-        border:       '1px solid #689df6',
+        background:   'var(--neutral-0)',
+        border:       '1px solid var(--content-action-primary-600)',
         fontSize:     10,
         fontWeight:   600,
-        color:        '#4285f4',
+        color:        'var(--content-action-primary-600)',
         letterSpacing:'0.4px',
       }}>
         Admin
       </span>
-      <span style={{ padding: '4px 12px', fontSize: 10, fontWeight: 600, color: '#021920', letterSpacing: '0.4px' }}>
+      <span style={{ padding: '4px 12px', fontSize: 10, fontWeight: 600, color: 'var(--text-body-primary)', letterSpacing: '0.4px' }}>
         Business User
       </span>
-      <span style={{ padding: '4px 12px', fontSize: 10, fontWeight: 600, color: '#021920', letterSpacing: '0.4px' }}>
+      <span style={{ padding: '4px 12px', fontSize: 10, fontWeight: 600, color: 'var(--text-body-primary)', letterSpacing: '0.4px' }}>
         Reader
       </span>
     </div>
@@ -194,7 +194,7 @@ function SectionLabel({ children }: { children: string }) {
       fontWeight:    600,
       letterSpacing: '0.48px',
       textTransform: 'uppercase',
-      color:         '#000',
+      color:         'var(--text-body-primary)',
       margin:        '16px 0 0 0',
       padding:       '0 24px',
     }}>
@@ -205,7 +205,7 @@ function SectionLabel({ children }: { children: string }) {
 
 export const AllVariants: Story = {
   render: () => (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 1, background: '#f8f8f8' }}>
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 1, background: 'var(--neutral-50)' }}>
       {/* ── Button Controls variants ─────────────────────────── */}
 
       <SectionLabel>Title + Subtitle + 2 Button Controls</SectionLabel>

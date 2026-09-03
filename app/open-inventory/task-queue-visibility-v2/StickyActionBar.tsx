@@ -10,8 +10,8 @@ import type { BuilderStateV2, BuilderStepV2 } from './assignment-builder-v2-redu
 // same as v1's AssignmentBuilderHeader — MessageBox itself does not accept
 // inline action buttons, which this bar needs.
 const BANNER = {
-  warning: { bg: '#fdf8ef', border: '#f7ddb1', icon: '#c97000' },
-  success: { bg: '#f3fbee', border: '#b5e89c', icon: '#4b9924' },
+  warning: { bg: 'var(--surface-accent-warning-light)', border: 'var(--border-color-accent-warning-light)', icon: 'var(--warning-600)' },
+  success: { bg: 'var(--surface-accent-success-light)', border: 'var(--border-color-accent-success-light)', icon: 'var(--surface-accent-success-dark)' },
 } as const
 
 function slotVariant(step: BuilderStepV2, state: BuilderStateV2): SlotVariant {
