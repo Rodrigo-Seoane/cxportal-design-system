@@ -19,10 +19,10 @@
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
-   CxPortal Design Tokens — generated from Figma export 2026-08-19
-   Source of truth: _sync-state v11 · CxPortal/Light mode
+   CxPortal Design Tokens — generated from Figma export 2026-09-02
+   Source of truth: _sync-state v13 · Semantic collection · Caylent Green mode
    Naming: Figma variable path with `/` → `-`, spaces → `-`, lowercase.
-   Multi-mode blocks (CxPortal/Dark, CxCentral/*, Cases/*) — Phase 2.
+   Hard cutover to the Caylent Green brand — no runtime mode switching.
    ═══════════════════════════════════════════════════════════════════════════ */
 
 :root {
@@ -57,12 +57,12 @@
   --raw-red-700: #130106;
   --raw-red-default: #ef2056;
   --raw-caylent-green-50: #fbfcf2;
-  --raw-caylent-green-200: #c2ecaa;
-  --raw-caylent-green-300: #97ca6f;
-  --raw-caylent-green-default: #6a9949;
-  --raw-caylent-green-500: #5f7a34;
-  --raw-caylent-green-600: #395718;
-  --raw-caylent-green-700: #1c3f13;
+  --raw-caylent-green-200: #97ca6f;
+  --raw-caylent-green-300: #629944;
+  --raw-caylent-green-default: #3a8015;
+  --raw-caylent-green-500: #366618;
+  --raw-caylent-green-600: #204704;
+  --raw-caylent-green-700: #123200;
   --raw-golden-50: #fdf8ef;
   --raw-golden-200: #f7ddb1;
   --raw-golden-300: #f1c780;
@@ -76,8 +76,8 @@
   --raw-cxportal-purple-default: #b2a3ff;
   --raw-cxportal-purple-500: #917aff;
   --raw-cxportal-purple-600: #8565f2;
-  --raw-cxportal-purple-700: #7950e5;
-  --raw-caylent-green-100: #e8f7da;
+  --raw-cxportal-purple-700: #7950e5; /* unused post-rebrand — Former Pronetx Blue mode not built */
+  --raw-caylent-green-100: #d0ecc1;
   --raw-golden-100: #fbeed8;
   --raw-pronetx-greys-0: #ffffff;
   --raw-cxportal-purple-50: #fcfdff;
@@ -86,8 +86,8 @@
   --raw-red-50: #fef1f4;
   --raw-cxportal-purple-750: #6530b9;
   --raw-cxportal-purple-800: #51078f;
-  --raw-caylent-green-750: #0d3310;
-  --raw-caylent-green-800: #00270e;
+  --raw-caylent-green-750: #0e2800;
+  --raw-caylent-green-800: #081902;
   --raw-pronetx-greys-100: #efefef;
   --raw-pronetx-greys-700: #373737;
   --raw-pronetx-greys-50: #f8f8f8;
@@ -103,7 +103,7 @@
   --raw-teal-750: #010f0f;
   --raw-teal-800: #000303;
   --raw-navigation-blue: #050326;
-  --raw-caylent-green-900: #000f09;
+  --raw-caylent-green-900: #030901;
   --raw-cxportal-purple-900: #1b0028;
   --raw-pronetx-greys-750: #2a2a2a;
   --raw-pronetx-greys-900: #101010;
@@ -178,14 +178,14 @@
   --info-700: #060d19;
   --info-default: #2859ab;
   --neutral-0: #ffffff;
-  --content-action-primary-50: #fcfdff;
-  --content-action-primary-100: #f8f9ff;
-  --content-action-primary-200: #e5e9ff;
-  --content-action-primary-300: #d6d7ff;
-  --content-action-primary-default: #b2a3ff;
-  --content-action-primary-500: #917aff;
-  --content-action-primary-600: #8565f2;
-  --content-action-primary-700: #7950e5;
+  --content-action-primary-50: var(--raw-caylent-green-50);
+  --content-action-primary-100: var(--raw-caylent-green-100);
+  --content-action-primary-200: var(--raw-caylent-green-200);
+  --content-action-primary-300: var(--raw-caylent-green-300);
+  --content-action-primary-default: var(--raw-caylent-green-default);
+  --content-action-primary-500: var(--raw-caylent-green-500);
+  --content-action-primary-600: var(--raw-caylent-green-600);
+  --content-action-primary-700: var(--raw-caylent-green-700);
   --success-50: #f3fbee;
   --error-50: #fef1f4;
   --info-50: #eef3fb;
@@ -195,8 +195,8 @@
   --content-action-secondary-default: #8d8d8d;
   --content-action-secondary-500: #6f6f6f;
   --content-action-secondary-600: #525252;
-  --content-action-primary-750: #6530b9;
-  --content-action-primary-800: #51078f;
+  --content-action-primary-750: var(--raw-caylent-green-750);
+  --content-action-primary-800: var(--raw-caylent-green-800);
   --content-action-secondary-100: #efefef;
   --content-action-secondary-700: #373737;
   --warning-50: #fdf8ef;
@@ -213,10 +213,10 @@
   --neutral-800: #1d1d1d;
   --content-action-secondary-800: #1d1d1d;
   --content-action-secondary-50: #f8f8f8;
-  --navigation-bar: #1b0028;
-  --neutral-900: #101010;
+  --navigation-bar: var(--raw-navigation-blue);
+  --neutral-900: var(--raw-pronetx-greys-800);
   --neutral-750: #2a2a2a;
-  --content-action-primary-900: #1b0028;
+  --content-action-primary-900: var(--raw-caylent-green-900);
   --content-action-secondary-900: #101010;
   --content-action-secondary-750: #2a2a2a;
   --content-action-disabled-50: #f9fbf7;
@@ -445,20 +445,6 @@
   --popover-foreground:    var(--text-body-primary);
   --radius:                var(--border-radius-md);
 }
-
-/* ═══════════════════════════════════════════════════════════════════════════
-   Multi-mode scaffolding (Phase 2 — currently disabled).
-   Uncomment and add [data-product] / [data-theme] attributes on <html>
-   once product/theme switching is ready to ship. Values live in
-   figma-export.json under `.collections.Semantic.variables.colors[].values`.
-   ═══════════════════════════════════════════════════════════════════════════ */
-/*
-[data-theme='dark']                       { … CxPortal/Dark overrides … }
-[data-product='cxcentral'][data-theme='light'] { … CxCentral/Light overrides … }
-[data-product='cxcentral'][data-theme='dark']  { … CxCentral/Dark overrides … }
-[data-product='cases'][data-theme='light']     { … Cases/Light overrides … }
-[data-product='cases'][data-theme='dark']      { … Cases/Dark overrides … }
-*/
 
 /* ─── Tailwind v4 @theme mapping ──────────────────────────────────────────── */
 @theme inline {

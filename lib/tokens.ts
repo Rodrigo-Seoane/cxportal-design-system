@@ -1,6 +1,6 @@
 // CxPortal Design System Tokens
 // Source of truth — Figma file exoHhvasbJSziVGakV8Y0r
-// Regenerated 2026-08-19 from figma-export.json (_sync-state v11).
+// Regenerated 2026-09-02 from figma-export.json (_sync-state v13, Caylent Green mode).
 //
 // Values reference CSS variables defined in app/globals.css.
 // Update globals.css → this file's `var(--…)` refs cascade automatically.
@@ -93,16 +93,16 @@ export const raw = {
   },
   caylentGreen: {
     50:      '#fbfcf2',
-    100:     '#e8f7da',
-    200:     '#c2ecaa',
-    300:     '#97ca6f',
-    default: '#6a9949',
-    500:     '#5f7a34',
-    600:     '#395718',
-    700:     '#1c3f13',
-    750:     '#0d3310',
-    800:     '#00270e',
-    900:     '#000f09',
+    100:     '#d0ecc1',
+    200:     '#97ca6f',
+    300:     '#629944',
+    default: '#3a8015',
+    500:     '#366618',
+    600:     '#204704',
+    700:     '#123200',
+    750:     '#0e2800',
+    800:     '#081902',
+    900:     '#030901',
   },
   disabledGreen: {
     50:      '#f9fbf7',
