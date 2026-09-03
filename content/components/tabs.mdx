@@ -29,7 +29,7 @@ The component supports two visual types. **Button** (default) wraps tabs in a ro
 
 ## Anatomy
 
-- **Tab group (`TabList`)** — The outer container. Button type: `#eff1f3` background, 4px border-radius, 4px padding. Minimal type: transparent, no padding or radius. Both: 4px gap between tabs.
+- **Tab group (`TabList`)** — The outer container. Button type: `#efefef` background, 4px border-radius, 4px padding. Minimal type: transparent, no padding or radius. Both: 4px gap between tabs.
 - **Tab trigger (`Tab`)** — 10px SemiBold label, optional 16px icon on the left, 4px vertical padding. Button type: 12px horizontal padding, 4px border-radius. Minimal type: 4px padding all sides, no radius.
 - **Tab panel (`TabPanel`)** — The content region associated with the active tab. Rendered below the tab strip; hidden when its tab is not active.
 
@@ -49,8 +49,8 @@ The component supports two visual types. **Button** (default) wraps tabs in a ro
   <TableBody>
     <TableRow>
       <TableCell><strong>Button</strong> (default)</TableCell>
-      <TableCell><code>#eff1f3</code> pill, 4px radius + padding</TableCell>
-      <TableCell>White card + <code>1px #689df6</code> border</TableCell>
+      <TableCell><code>#efefef</code> pill, 4px radius + padding</TableCell>
+      <TableCell>White card + <code>1px #3a8015</code> border</TableCell>
       <TableCell>Standalone groups — page filters, view-mode switchers</TableCell>
     </TableRow>
     <TableRow>
@@ -77,30 +77,30 @@ The component supports two visual types. **Button** (default) wraps tabs in a ro
   <TableBody>
     <TableRow>
       <TableCell><strong>Active</strong></TableCell>
-      <TableCell><code>#ffffff</code> + <code>1px #689df6</code></TableCell>
-      <TableCell>Bottom <code>2px #689df6</code></TableCell>
-      <TableCell><code>#4285f4</code></TableCell>
+      <TableCell><code>#ffffff</code> + <code>1px #3a8015</code></TableCell>
+      <TableCell>Bottom <code>2px #3a8015</code></TableCell>
+      <TableCell><code>#204704</code></TableCell>
       <TableCell>Currently selected view</TableCell>
     </TableRow>
     <TableRow>
       <TableCell><strong>Default</strong></TableCell>
       <TableCell>Transparent</TableCell>
       <TableCell>None</TableCell>
-      <TableCell><code>#021920</code></TableCell>
+      <TableCell><code>#373737</code></TableCell>
       <TableCell>Idle, available to select</TableCell>
     </TableRow>
     <TableRow>
       <TableCell><strong>Hover</strong></TableCell>
       <TableCell><code>rgba(255,255,255,0.65)</code></TableCell>
       <TableCell>None</TableCell>
-      <TableCell><code>#021920</code></TableCell>
+      <TableCell><code>#373737</code></TableCell>
       <TableCell>Mouse over an idle tab</TableCell>
     </TableRow>
     <TableRow>
       <TableCell><strong>Disabled</strong></TableCell>
       <TableCell>Transparent</TableCell>
       <TableCell>None</TableCell>
-      <TableCell><code>#aab0b8</code></TableCell>
+      <TableCell><code>#8d8d8d</code></TableCell>
       <TableCell>Feature not yet available</TableCell>
     </TableRow>
   </TableBody>
@@ -274,7 +274,7 @@ const [view, setView] = useState('all')
     </TabList>
   </Tabs>
   <Input variant="text" labelVisible={false} placeholder="Search agents" />
-  <span style={{ marginLeft: 'auto', fontSize: 14, color: '#7c7b8b' }}>
+  <span style={{ marginLeft: 'auto', fontSize: 14, color: '#8d8d8d' }}>
     Showing 9 of 9 agents
   </span>
 </div>
@@ -293,7 +293,7 @@ const [view, setView] = useState('all')
   <TableBody>
     <TableRow>
       <TableCell><code>--surface/main-panel</code></TableCell>
-      <TableCell><code>#eff1f3</code></TableCell>
+      <TableCell><code>#efefef</code></TableCell>
       <TableCell>Tab group container background</TableCell>
     </TableRow>
     <TableRow>
@@ -303,22 +303,22 @@ const [view, setView] = useState('all')
     </TableRow>
     <TableRow>
       <TableCell><code>--border-color/surface-active/primary</code></TableCell>
-      <TableCell><code>#689df6</code></TableCell>
+      <TableCell><code>#3a8015</code></TableCell>
       <TableCell>Active tab border</TableCell>
     </TableRow>
     <TableRow>
       <TableCell><code>--text/action</code></TableCell>
-      <TableCell><code>#4285f4</code></TableCell>
+      <TableCell><code>#204704</code></TableCell>
       <TableCell>Active tab label and icon colour</TableCell>
     </TableRow>
     <TableRow>
       <TableCell><code>--text/on-action/secondary</code></TableCell>
-      <TableCell><code>#021920</code></TableCell>
+      <TableCell><code>#373737</code></TableCell>
       <TableCell>Default tab label colour</TableCell>
     </TableRow>
     <TableRow>
       <TableCell><code>--text/form-field/disabled</code></TableCell>
-      <TableCell><code>#aab0b8</code></TableCell>
+      <TableCell><code>#8d8d8d</code></TableCell>
       <TableCell>Disabled tab label colour</TableCell>
     </TableRow>
     <TableRow>

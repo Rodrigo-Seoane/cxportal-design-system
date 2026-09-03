@@ -116,10 +116,10 @@ The `colored-bg` variant is for buttons placed on non-white surfaces — blue ac
 
 | State | Background | Border | Text |
 |---|---|---|---|
-| Default | Neutral/0 `#ffffff` | Primary `#689df6` | On Action/Transparent `#3264b8` |
-| Hover | Surface/Action/Hover `#689df6` | `#689df6` | On Action/Primary `#eff1f3` |
-| Active | Neutral/50 `#f8f8f8` | Border/Secondary `#aab0b8` | On Action/Transparent `#3264b8` |
-| Disabled | Surface/Disabled `#eff1f3` | Border/Disabled `#d9dce0` | Text/Disabled `#aab0b8` |
+| Default | Neutral/0 `#ffffff` | Primary `#3a8015` | On Action/Transparent `#366618` |
+| Hover | Surface/Action/Hover `#123200` | `#123200` | On Action/Primary `#efefef` |
+| Active | Neutral/50 `#f8f8f8` | Border/Secondary `#adadad` | On Action/Transparent `#366618` |
+| Disabled | Surface/Disabled `#f1f5ed` | Border/Disabled `#cfd7c2` | Text/Disabled `#6a7260` |
 
 <DosDonts>
   <Do description="Use colored-bg buttons on non-white surfaces — blue banners, colored cards, tinted page headers — where default button tokens would blend into the background." />
@@ -139,13 +139,13 @@ The Destructive state signals to users that the action they are about to confirm
 
 | State | Background | Border | Text |
 |---|---|---|---|
-| Default | Error/500 `#ab0c36` | Error/600 `#690821` | On Action/Primary `#eff1f3` |
-| Hover | Error/300 `#f3547d` | Error/200 `#f792ac` | On Action/Secondary `#021920` |
-| Active | Error/500 `#ab0c36` | Error/600 `#690821` | On Action/Primary `#eff1f3` |
-| Disabled | Surface/Disabled `#eff1f3` | Border/Disabled `#d9dce0` | Text/Disabled `#aab0b8` |
+| Default | Error/500 `#ab0c36` | Error/600 `#690821` | On Action/Primary `#efefef` |
+| Hover | Error/300 `#f3547d` | Error/200 `#f792ac` | On Action/Secondary `#373737` |
+| Active | Error/500 `#ab0c36` | Error/600 `#690821` | On Action/Primary `#efefef` |
+| Disabled | Surface/Disabled `#f1f5ed` | Border/Disabled `#cfd7c2` | Text/Disabled `#6a7260` |
 | Focus ring | — | — | Error/500 `#ab0c36` / 50% |
 
-> **Why does hover reverse to light pink?** `#f3547d` (Error/300) with dark `#021920` text meets WCAG AA. The darker Error/500 default with light text also passes. Reversing on hover makes the interaction feel responsive without breaking contrast at either state.
+> **Why does hover reverse to light pink?** `#f3547d` (Error/300) with dark `#373737` text meets WCAG AA. The darker Error/500 default with light text also passes. Reversing on hover makes the interaction feel responsive without breaking contrast at either state.
 
 **Usage rules:**
 - Use exclusively in Modals and Dialogs — never as a standalone page action.
@@ -323,7 +323,7 @@ import { Trash } from 'lucide-react'
 
 ```tsx
 // Always render colored-bg inside a non-white surface
-<div className="bg-[#4285f4] p-6 rounded-lg">
+<div className="bg-[var(--content-action-primary-600)] p-6 rounded-lg">
   <Button variant="colored-bg" size="sm">Get Started</Button>
 </div>
 ```

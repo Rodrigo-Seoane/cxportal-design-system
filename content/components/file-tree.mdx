@@ -30,8 +30,8 @@ Each row is 24 px tall and composed of two cells: a **controller cell** (24×24 
   - **Account / Group (open):** `CaretDownIcon` (12 px)
   - **Group (closed):** `CaretRightIcon` (12 px)
   - **Topic:** `FileTextIcon` (12 px, filled) — topics are leaf nodes, they don't expand
-- **Title cell** — Fills remaining row width. 8 px left padding. 10 px Regular text, `#021920`.
-- **Connector lines** — 1 px vertical lines in `#eff1f3` drawn from the bottom edge of a parent controller to the midpoint of the last visible child.
+- **Title cell** — Fills remaining row width. 8 px left padding. 10 px Regular text, `#373737`.
+- **Connector lines** — 1 px vertical lines in `#efefef` drawn from the bottom edge of a parent controller to the midpoint of the last visible child.
 - **Indent** — Each depth level adds 24 px of left offset to the entire row.
 
 ## States
@@ -40,9 +40,9 @@ Each row is 24 px tall and composed of two cells: a **controller cell** (24×24 
 |---|---|---|---|
 | Group | Default, open | White | White |
 | Group | Default, closed | White | White |
-| Group | Selected, open | `#4285f4` (blue) | `#d9e7fd` (tint) |
+| Group | Selected, open | `#204704` (blue) | `#d0ecc1` (tint) |
 | Topic | Default | White | White |
-| Topic | Selected | `#4285f4` (blue) + right border `#689df6` | `#d9e7fd` (tint) |
+| Topic | Selected | `#204704` (blue) + right border `#3a8015` | `#d0ecc1` (tint) |
 
 ## Depth / indentation
 
@@ -115,7 +115,7 @@ const tree: FileTreeNode[] = [
 ### Inside a FilterPanel
 
 ```tsx
-<div style={{ width: 250, borderRight: '1px solid #eff1f3' }}>
+<div style={{ width: 250, borderRight: '1px solid var(--neutral-100)' }}>
   <FileTree
     nodes={campaignTree}
     selectedId={activeTopicId}
@@ -130,11 +130,11 @@ const tree: FileTreeNode[] = [
 | Token | Value | Usage |
 |---|---|---|
 | `--color-surface-section` | `#ffffff` | Default row background |
-| `--content-action/primary/100` | `#d9e7fd` | Selected title cell background |
-| `--color-primary` / `--surface/action/primary` | `#4285f4` | Selected controller background |
-| `--border-color/surface-active/primary` | `#689df6` | Selected topic controller right border |
-| `--neutral/100` | `#eff1f3` | Connector lines and row bottom border |
-| `--text/on-action/secondary` | `#021920` | Label text color |
+| `--content-action/primary/100` | `#d0ecc1` | Selected title cell background |
+| `--color-primary` / `--surface/action/primary` | `#204704` | Selected controller background |
+| `--border-color/surface-active/primary` | `#3a8015` | Selected topic controller right border |
+| `--neutral/100` | `#efefef` | Connector lines and row bottom border |
+| `--text/on-action/secondary` | `#373737` | Label text color |
 | Row height | 24 px | — |
 | Controller width | 24 px | — |
 | Indent per level | 24 px | — |

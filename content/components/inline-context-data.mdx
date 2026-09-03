@@ -33,8 +33,8 @@ Inline Context Data is a compact, read-only component that displays metadata as 
 A component consists of up to four parts, all on a single line:
 
 - **Icon** (optional) — 16×16px contextual icon, decorative (`aria-hidden`)
-- **Label** — descriptor text in secondary color (`#7a828c`), semibold, 10px
-- **Value 1** — primary value in muted color (`#aab0b8`), semibold, 10px
+- **Label** — descriptor text in secondary color (`#8d8d8d`), semibold, 10px
+- **Value 1** — primary value in muted color (`#adadad`), semibold, 10px
 - **Value 2** (optional) — secondary value for compound data (e.g. date + time)
 
 <Table size="compact" className="mb-6">
@@ -106,7 +106,7 @@ import { InlineContextData } from '@/components/ui/inline-context-data'
 import { CalendarIcon } from '@phosphor-icons/react'
 
 <InlineContextData
-  icon={<CalendarIcon size={16} weight="regular" color="#7a828c" />}
+  icon={<CalendarIcon size={16} weight="regular" color="var(--text-body-secondary)" />}
   label="Created:"
   value="11/05/2025"
 />
@@ -116,7 +116,7 @@ import { CalendarIcon } from '@phosphor-icons/react'
 
 ```tsx
 <InlineContextData
-  icon={<CalendarIcon size={16} weight="regular" color="#7a828c" />}
+  icon={<CalendarIcon size={16} weight="regular" color="var(--text-body-secondary)" />}
   label="Last Modified:"
   value="11/05/2025"
   value2="10:05 PM"
