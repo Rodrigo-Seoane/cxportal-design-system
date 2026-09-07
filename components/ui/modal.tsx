@@ -2,12 +2,12 @@
 
 import { useEffect, useRef, createContext, useContext } from 'react'
 import { createPortal } from 'react-dom'
-import { X, FloppyDisk } from '@phosphor-icons/react'
+import { X, XCircle, FloppyDisk } from '@phosphor-icons/react'
 
 // Re-export icons for use in component-registry scope (must stay behind the
 // 'use client' boundary — do not import @phosphor-icons/react directly in
 // server-side modules like component-registry.ts).
-export { X as XIcon, FloppyDisk }
+export { XCircle as XCircleIcon, FloppyDisk }
 
 // ── Design tokens (Figma: nodes 1688-5529 / 325-7117 / 415-6690 / 325-7133 / 415-6695) ──
 
@@ -21,7 +21,7 @@ const T = {
   panelShadow:  '0 8px 48px color-mix(in srgb, var(--text-body-primary) 22%, transparent)',
 
   // Separators
-  borderColor:  'var(--neutral-100)',
+  borderColor:  'var(--border-color-surface-active-terciary-default)',
 
   // Header typography — Large (H1) / Medium (H2)
   titleLgSize:   28,
@@ -95,6 +95,7 @@ export function Modal({
   // ── Focus trap ────────────────────────────────────────────────────────────
   useEffect(() => {
     if (!open || preview || !panelRef.current) return
+    const triggerElement = document.activeElement as HTMLElement | null
     const focusable = Array.from(
       panelRef.current.querySelectorAll<HTMLElement>(
         'button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])',
@@ -113,7 +114,10 @@ export function Modal({
       }
     }
     document.addEventListener('keydown', trap)
-    return () => document.removeEventListener('keydown', trap)
+    return () => {
+      document.removeEventListener('keydown', trap)
+      triggerElement?.focus()
+    }
   }, [open, preview])
 
   // ── Body scroll lock ──────────────────────────────────────────────────────

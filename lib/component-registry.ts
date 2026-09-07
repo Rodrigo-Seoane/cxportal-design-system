@@ -15,7 +15,7 @@ import {
 import { Chip, Tag } from '@/components/ui/chip'
 import { Counter } from '@/components/ui/counter'
 import { Tabs, TabList, Tab, TabPanel } from '@/components/ui/tabs'
-import { Modal, ModalHeader, ModalBody, ModalFooter, XIcon, FloppyDisk } from '@/components/ui/modal'
+import { Modal, ModalHeader, ModalBody, ModalFooter, XCircleIcon, FloppyDisk } from '@/components/ui/modal'
 import { Switch, BooleanIcon } from '@/components/ui/switch'
 import { MessageBox } from '@/components/ui/message-box'
 import { Pagination } from '@/components/ui/pagination'
@@ -758,7 +758,7 @@ export const registry: Record<string, ComponentEntry> = {
     description:
       'A focused overlay dialog that interrupts the current workflow to request input, confirm an action, or display contextual information.',
     status: 'stable',
-    scope: { Modal, ModalHeader, ModalBody, ModalFooter, Button, XIcon, FloppyDisk },
+    scope: { Modal, ModalHeader, ModalBody, ModalFooter, Button, XCircleIcon, FloppyDisk },
     propSchema: {
       size: {
         type: 'chip-select',
@@ -803,7 +803,7 @@ export const registry: Record<string, ComponentEntry> = {
         `  </ModalBody>`,
         `  <ModalFooter>`,
         `    <Button variant="text" size="${btnSize}">`,
-        `      <XIcon size={${iconSize}} weight="thin" />`,
+        `      <XCircleIcon size={${iconSize}} weight="thin" />`,
         `      Cancel`,
         `    </Button>`,
         `    <Button variant="primary" size="${btnSize}">`,
