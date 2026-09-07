@@ -314,13 +314,13 @@
   --text-warning: var(--warning-default);
   --text-error: var(--error-default);
   --text-destructive: var(--error-500);
-  --text-on-action-primary: var(--neutral-100);
+  --text-on-action-primary: var(--neutral-50);
   --text-on-action-secondary: var(--neutral-700);
-  --text-on-action-transparent: var(--content-action-primary-500);
+  --text-on-action-transparent: var(--content-action-primary-default);
   --text-form-field-placeholder: var(--neutral-400);
   --text-form-field-hover: var(--content-action-primary-500);
   --text-form-field-focus: var(--neutral-700);
-  --text-form-field-disabled: var(--neutral-400);
+  --text-form-field-disabled: var(--neutral-300);
   --icon-action: var(--content-action-primary-600);
   --icon-success: var(--success-300);
   --icon-info: var(--info-default);
@@ -342,7 +342,7 @@
   --surface-section-group-bg: var(--neutral-50);
   --surface-form-field: var(--neutral-0);
   --surface-form-group: var(--neutral-50);
-  --surface-action-primary-default: var(--content-action-primary-600);
+  --surface-action-primary-default: var(--content-action-primary-default);
   --surface-action-primary-hover: var(--content-action-primary-700);
   --surface-action-primary-disabled: var(--content-action-disabled-default);
   --surface-action-secondary-default: var(--neutral-0);
