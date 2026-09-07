@@ -14,34 +14,36 @@ Counter is a small, fully-rounded badge that displays a single numeric value —
 
 **One number, one glance.** Counter exists to answer "how many" without requiring the user to open or expand anything. If the count needs explanation, that belongs in a Tooltip, not a second Counter.
 
-**Colour signals category, not severity alone.** `blue` is the default, neutral count. `gray` mutes a count that is secondary or inactive. `red` flags a count that needs attention — errors, overdue items, unread alerts.
+**Colour signals category, not severity alone.** `default` is the neutral count. `muted` de-emphasises a count that is secondary or inactive. `attention` flags a count that needs action — errors, overdue items, unread alerts.
+
+The prop is named `tone` and its values describe intent rather than colour. Figma names these variants Blue, Gray, and Red, but "Blue" has painted Caylent Green since the rebrand — naming by intent keeps this API stable the next time the palette moves, the same reason the token layer is `--surface-action-*` rather than `--green-*`.
 
 **Width follows the number.** The badge is never truncated or ellipsized — width expands from 18px to 24px to 26px as digit count grows from 1 to 2 to 3. There is no defined behaviour beyond 3 digits; large counts should be abbreviated before they reach the component.
 
 ## When to use
 
 - Showing a count of items inside a tab, section header, or nav item — for example, the number of open tickets in a queue.
-- Flagging an unread or unresolved count that needs the user's attention — use `red`.
-- Showing a secondary or de-emphasised count next to a primary one — use `gray`.
+- Flagging an unread or unresolved count that needs the user's attention — use `attention`.
+- Showing a secondary or de-emphasised count next to a primary one — use `muted`.
 
 ## When not to use
 
 - Don't use Counter for values that aren't counts — percentages, currency, or free text. It is built for whole numbers only.
 - Don't use Counter as a standalone status indicator — pair it with a label or icon that gives the number context.
-- Don't invent a fourth colour. `blue`, `gray`, and `red` cover every current use case; a new colour needs a new token, not an ad-hoc override.
+- Don't invent a fourth tone. `default`, `muted`, and `attention` cover every current use case; a new one needs a new token, not an ad-hoc override.
 
 ## Anatomy
 
 **Badge.** An 18px tall, fully-rounded (`--border-radius/round`) container with a 1px border. Width is 18px for 1-digit values, 24px for 2-digit, 26px for 3-digit.
 
-**Value text.** 10px SemiBold Roboto, centred. Colour is `--text-body-on-dark-surface` on `blue` and `red`, and `--text-body-secondary` on `gray`. Always a plain whole number — no symbols, decimals, or units.
+**Value text.** 10px SemiBold Roboto, centred. Colour is `--text-body-on-dark-surface` on `default` and `attention`, and `--text-body-secondary` on `muted`. Always a plain whole number — no symbols, decimals, or units.
 
 ## Token reference
 
 <Table size="compact" className="mb-6">
   <TableHeader>
     <tr>
-      <TableHead>Variant</TableHead>
+      <TableHead>Tone</TableHead>
       <TableHead>Background</TableHead>
       <TableHead>Border</TableHead>
       <TableHead>Value text</TableHead>
@@ -49,19 +51,19 @@ Counter is a small, fully-rounded badge that displays a single numeric value —
   </TableHeader>
   <TableBody>
     <TableRow>
-      <TableCell><strong>blue</strong></TableCell>
+      <TableCell><strong>default</strong></TableCell>
       <TableCell><code>--surface-action-primary-default</code> #3a8015</TableCell>
       <TableCell><code>--border-color-surface-active-primary-default</code> #629944</TableCell>
       <TableCell><code>--text-body-on-dark-surface</code> #efefef</TableCell>
     </TableRow>
     <TableRow>
-      <TableCell><strong>gray</strong></TableCell>
+      <TableCell><strong>muted</strong></TableCell>
       <TableCell><code>--surface-action-secondary-default</code> #ffffff</TableCell>
       <TableCell><code>--border-color-surface-active-secondary-default</code> #adadad</TableCell>
       <TableCell><code>--text-body-secondary</code> #8d8d8d</TableCell>
     </TableRow>
     <TableRow>
-      <TableCell><strong>red</strong></TableCell>
+      <TableCell><strong>attention</strong></TableCell>
       <TableCell><code>--error-200</code> #f792ac</TableCell>
       <TableCell><code>--border-color-accent-error-light</code> #f792ac</TableCell>
       <TableCell><code>--text-body-on-dark-surface</code> #efefef</TableCell>
@@ -75,7 +77,7 @@ Height is fixed at 18px for every digit count, and the radius is always a full p
 
 **Do** use whole numbers — round or truncate before the value reaches Counter.
 
-**Do** use `red` only when the count represents something needing action or attention, not just a large number.
+**Do** use `attention` only when the count represents something needing action, not just a large number.
 
 **Do** keep Counter directly adjacent to the label or icon it is counting — never floating on its own.
 
@@ -98,19 +100,19 @@ The badge is `aria-hidden`, so the number must be exposed in accessible text on 
 </button>
 ```
 
-Colour is not the only signal when the distinction matters: pair a `red` Counter with a text label change (e.g. "Overdue") when the difference is functionally important, not just visual.
+Colour is not the only signal when the distinction matters: pair an `attention` Counter with a text label change (e.g. "Overdue") when the difference is functionally important, not just visual.
 
 ### Known contrast debt
 
 Two variants fail WCAG AA at 10px as currently specified in Figma, which is why this component is marked `wip`:
 
-- `red` — #efefef on #f792ac is roughly 1.7:1
-- `gray` — #8d8d8d on #ffffff is roughly 3.5:1
+- `attention` — #efefef on #f792ac is roughly 1.7:1
+- `muted` — #8d8d8d on #ffffff is roughly 3.5:1
 
-Both are implemented as designed rather than silently corrected. `blue` passes at roughly 5.9:1.
+Both are implemented as designed rather than silently corrected. `default` passes at roughly 5.9:1.
 
 ## Notes on the Figma source
 
 The component set is `68-2468`. Its Principles (`2988-499`) and Usage (`2988-534`) frames predate the Caylent rebrand and still print stale values — `#3264B8` for the blue background, `#F7929F` for red, `#EFF1F3` for value text, and Mona Sans as the type family. The values above come from the component variants, which are authoritative.
 
-Three further Figma-side items are outstanding: the `Color` property contains both `Red` and `red`, with capital `Red` holding only `Value=01`; the `Blue` variant name predates the rebrand and now renders green; and the Usage token table lists `Surface/Action/Secondary Hover` for the gray background where the component uses `Surface/Action/Secondary Default`.
+Three further Figma-side items are outstanding: the `Color` property contains both `Red` and `red`, with capital `Red` holding only `Value=01`; the `Blue` variant name predates the rebrand and now renders green (code sidesteps this by naming the prop `tone` with intent-based values); and the Usage token table lists `Surface/Action/Secondary Hover` for the gray background where the component uses `Surface/Action/Secondary Default`.

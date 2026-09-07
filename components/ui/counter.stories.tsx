@@ -20,13 +20,13 @@ export default meta
 type Story = StoryObj<typeof Counter>
 
 export const Default: Story = {
-  args: { value: 1, color: 'blue' },
+  args: { value: 1, tone: 'default' },
   argTypes: {
-    color: {
+    tone: {
       control: 'select',
-      options: ['blue', 'gray', 'red'],
+      options: ['default', 'muted', 'attention'],
       description:
-        'Colour category. "blue" is the default neutral count (renders Caylent Green — the Figma variant name predates the rebrand), "gray" mutes a secondary or inactive count, "red" flags a count needing attention.',
+        'Intent of the count. "default" is the neutral count, "muted" de-emphasises a secondary or inactive count, "attention" flags one needing action. Figma names these variants Blue/Gray/Red; the prop is named by intent so it survives palette changes.',
     },
     value: {
       control: 'number',
@@ -35,12 +35,12 @@ export const Default: Story = {
   },
 }
 
-export const Colors: Story = {
+export const Tones: Story = {
   render: () => (
     <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
-      <Counter value={8} color="blue" />
-      <Counter value={8} color="gray" />
-      <Counter value={8} color="red" />
+      <Counter value={8} tone="default" />
+      <Counter value={8} tone="muted" />
+      <Counter value={8} tone="attention" />
     </div>
   ),
 }

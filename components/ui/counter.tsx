@@ -5,20 +5,23 @@
 // (2988-534) frames still print pre-rebrand hexes (#3264B8, #F7929F, #EFF1F3)
 // and name Mona Sans; the component node wins. See the audit notes.
 
-const COUNTER_COLORS = {
-  // Named "Blue" in Figma but renders Caylent Green — pre-rebrand variant name.
-  blue: {
+// Keyed by intent, not colour: Figma's variant names are Blue/Gray/Red, but
+// "Blue" has painted Caylent Green since the rebrand. Naming the prop after the
+// intent keeps this API stable the next time the palette moves — the same reason
+// the token layer is --surface-action-* rather than --green-*.
+const COUNTER_TONES = {
+  default: {
     bg:     'var(--surface-action-primary-default)',              // #3a8015
     border: 'var(--border-color-surface-active-primary-default)', // #629944
     text:   'var(--text-body-on-dark-surface)',                   // #efefef
   },
-  gray: {
+  muted: {
     bg:     'var(--surface-action-secondary-default)',              // #ffffff
     border: 'var(--border-color-surface-active-secondary-default)', // #adadad
     text:   'var(--text-body-secondary)',                           // #8d8d8d
   },
   // Figma calls this Red/200; the code ramp names the same value --error-200.
-  red: {
+  attention: {
     bg:     'var(--error-200)',                        // #f792ac
     border: 'var(--border-color-accent-error-light)',  // #f792ac
     text:   'var(--text-body-on-dark-surface)',        // #efefef
@@ -28,7 +31,7 @@ const COUNTER_COLORS = {
 /** Height is fixed at 18px; width grows with digit count. */
 const WIDTH_BY_DIGITS: Record<number, number> = { 1: 18, 2: 24, 3: 26 }
 
-export type CounterColor = keyof typeof COUNTER_COLORS
+export type CounterTone = keyof typeof COUNTER_TONES
 
 export interface CounterProps {
   /**
@@ -36,8 +39,11 @@ export interface CounterProps {
    * abbreviate large counts upstream before they reach this component.
    */
   value: number
-  /** Colour category. Default: 'blue'. */
-  color?: CounterColor
+  /**
+   * Intent of the count. Default: 'default' (neutral), 'muted' for a
+   * secondary or inactive count, 'attention' for one that needs action.
+   */
+  tone?: CounterTone
   style?: React.CSSProperties
   className?: string
 }
@@ -49,8 +55,8 @@ export interface CounterProps {
  * the parent control's accessible name (e.g. aria-label="Inbox, 8 unread"),
  * which is why the badge itself is hidden from assistive tech.
  */
-export function Counter({ value, color = 'blue', style, className }: CounterProps) {
-  const colors = COUNTER_COLORS[color]
+export function Counter({ value, tone = 'default', style, className }: CounterProps) {
+  const colors = COUNTER_TONES[tone]
   const width = WIDTH_BY_DIGITS[String(value).length] ?? WIDTH_BY_DIGITS[3]
 
   return (

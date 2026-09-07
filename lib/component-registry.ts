@@ -735,18 +735,18 @@ export const registry: Record<string, ComponentEntry> = {
         label: 'Value',
         default: '8',
       },
-      color: {
+      tone: {
         type: 'chip-select',
-        label: 'Color',
-        options: ['blue', 'gray', 'red'],
-        default: 'blue',
+        label: 'Tone',
+        options: ['default', 'muted', 'attention'],
+        default: 'default',
       },
     },
-    generateCode: ({ value, color }) => {
+    generateCode: ({ value, tone }) => {
       const v = Math.max(0, Math.trunc(Number(value) || 0))
-      const c = String(color)
-      const colorAttr = c !== 'blue' ? ` color="${c}"` : ''
-      return `<Counter value={${v}}${colorAttr} />`
+      const t = String(tone)
+      const toneAttr = t !== 'default' ? ` tone="${t}"` : ''
+      return `<Counter value={${v}}${toneAttr} />`
     },
   },
 
