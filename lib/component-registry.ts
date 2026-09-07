@@ -787,7 +787,7 @@ export const registry: Record<string, ComponentEntry> = {
     slug: 'message-box',
     title: 'Message Box',
     description:
-      'Contextual feedback banners for outcomes, guidance, and system state. Four semantic types × two layout sizes.',
+      'Contextual feedback banners for outcomes, guidance, and system state. Four semantic types × two themes × two layout sizes.',
     status: 'stable',
     scope: { MessageBox },
     propSchema: {
@@ -797,11 +797,22 @@ export const registry: Record<string, ComponentEntry> = {
         options: ['info', 'success', 'warning', 'error'],
         default: 'info',
       },
+      theme: {
+        type: 'chip-select',
+        label: 'Theme',
+        options: ['light', 'dark'],
+        default: 'light',
+      },
       size: {
         type: 'chip-select',
         label: 'Size',
         options: ['line', 'block'],
         default: 'line',
+      },
+      rounded: {
+        type: 'boolean',
+        label: 'Rounded',
+        default: false,
       },
       dismissible: {
         type: 'boolean',
@@ -813,12 +824,20 @@ export const registry: Record<string, ComponentEntry> = {
         label: 'Message',
         default: 'This campaign is currently paused. Resume to continue sending.',
       },
+      cta: {
+        type: 'text',
+        label: 'CTA (block only)',
+        default: '',
+      },
     },
-    generateCode: ({ type, size, dismissible, message }) => {
+    generateCode: ({ type, theme, size, rounded, dismissible, message, cta }) => {
       const t   = String(type)
+      const th  = String(theme)
       const s   = String(size)
+      const rnd = rounded === true || rounded === 'true'
       const dis = dismissible === true || dismissible === 'true'
       const msg = String(message)
+      const ctaText = String(cta ?? '')
       const isBlock = s === 'block'
 
       const titleMap: Record<string, string> = {
@@ -836,11 +855,14 @@ export const registry: Record<string, ComponentEntry> = {
 
       const lines: string[] = ['<MessageBox']
       lines.push(`  type="${t}"`)
+      if (th !== 'light') lines.push(`  theme="${th}"`)
       if (s !== 'line') lines.push(`  size="${s}"`)
+      if (rnd) lines.push(`  rounded`)
       if (isBlock) lines.push(`  title="${titleMap[t]}"`)
       if (!dis) lines.push(`  dismissible={false}`)
       if (isBlock) {
         lines.push(`  message="${bodyMap[t]}"`)
+        if (ctaText) lines.push(`  cta="${ctaText}"`)
         lines.push('/>')
       } else {
         lines.push(`  message="${msg}"`)
