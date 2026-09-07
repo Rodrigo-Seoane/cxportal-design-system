@@ -121,14 +121,14 @@ export const registry: Record<string, ComponentEntry> = {
     slug: 'button',
     title: 'Button',
     description:
-      'Triggers an action or navigation. Six visual variants aligned to usage context, three sizes, and icon support.',
+      'Triggers an action or navigation. Eight visual variants aligned to usage context, three sizes, and icon support.',
     status: 'stable',
     scope: { Button, Plus },
     propSchema: {
       variant: {
         type: 'chip-select',
         label: 'Variant',
-        options: ['primary', 'secondary', 'form-controls', 'text', 'destructive', 'colored-bg'],
+        options: ['primary', 'secondary', 'form-controls', 'text', 'destructive', 'secondary-destructive', 'text-destructive', 'colored-bg'],
         default: 'primary',
       },
       size: {
@@ -156,8 +156,7 @@ export const registry: Record<string, ComponentEntry> = {
     },
     generateCode: ({ variant, size, disabled, children, iconPosition }) => {
       const v = String(variant)
-      // Destructive and colored-bg are small-only — force sm
-      const s = (v === 'destructive' || v === 'colored-bg') ? 'sm' : String(size)
+      const s = String(size)
       const pos = String(iconPosition)
       const label = String(children)
       const disabledAttr = disabled ? ' disabled' : ''

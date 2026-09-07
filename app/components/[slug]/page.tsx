@@ -42,7 +42,7 @@ function ShowcaseHeader({ title, description }: { title: string; description: st
 function TextButtonShowcase() {
   const cols = [
     { key: 'regular', label: 'Regular · 48px' },
-    { key: 'sm',      label: 'Small · 36px' },
+    { key: 'sm',      label: 'Small · 32px' },
     { key: 'xs',      label: 'XS · 24px' },
     { key: 'disabled', label: 'Disabled' },
   ] as const

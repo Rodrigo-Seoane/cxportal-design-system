@@ -3,42 +3,60 @@ import { cva, type VariantProps } from 'class-variance-authority'
 import { cn } from '@/lib/utils'
 
 // ─── CxPortal Button Variants ─────────────────────────────────────────────
-// Source: Figma node 7-1306 (text) · 8-1645 / 8-1999 / 420-7038 (icon-only)
+// Source: Figma nodes 8-1643 (Regular) · 8-1934 (Small) · 420-6941 (Extra Small)
+//         8-1645 (icons Regular) · 420-7038 (icons Extra Small)
 //
-// Variants:  primary | secondary | form-controls | text
+// Variants:  primary | secondary | form-controls | text | destructive |
+//            secondary-destructive | text-destructive | colored-bg
 // Sizes:     regular (48px) | sm (36px) | xs (24px)
 //            icon-regular (48×48) | icon-sm (36×36) | icon-xs (24×24)
 // States:    default · hover · active · disabled
 // ──────────────────────────────────────────────────────────────────────────
 
-// Disabled triad — identical across every variant (flat neutral/disabled wash).
-const disabledClasses = 'disabled:bg-[var(--content-action-disabled-100)] disabled:border-[var(--content-action-disabled-300)] disabled:text-[var(--content-action-disabled-700)]'
+// Each variant's disabled state is tinted to match its own color family per
+// Figma — there is no shared neutral disabled wash across variants.
 
 const primaryClasses = [
-  'bg-[var(--content-action-primary-600)] border-[var(--content-action-primary-700)] text-[var(--text-on-action-primary)]',
-  'hover:bg-[var(--content-action-primary-700)] hover:border-[var(--content-action-primary-700)]',
-  'active:bg-[var(--content-action-primary-800)] active:border-[var(--content-action-primary-800)]',
-  disabledClasses,
+  'bg-[var(--content-action-primary-default)] border-[var(--content-action-primary-300)] text-[var(--text-on-action-primary)]',
+  'hover:bg-[var(--content-action-primary-500)] hover:border-[var(--content-action-primary-500)]',
+  'active:bg-[var(--content-action-primary-default)] active:border-[var(--content-action-primary-300)]',
+  'disabled:bg-[var(--surface-action-primary-disabled)] disabled:border-[var(--border-color-surface-active-primary-disabled)] disabled:text-[var(--text-on-action-primary)]',
 ].join(' ')
 
 const secondaryClasses = [
-  'bg-transparent border-[var(--content-action-primary-default)] text-[var(--content-action-primary-default)]',
-  'hover:bg-[var(--neutral-300)]/20',
-  'active:bg-[var(--neutral-300)]/30 active:border-[var(--content-action-primary-600)]',
-  disabledClasses,
+  'bg-[var(--surface-action-secondary-default)] border-[var(--content-action-primary-300)] text-[var(--content-action-primary-default)]',
+  'hover:bg-[var(--surface-action-secondary-hover)] hover:border-[var(--content-action-primary-500)] hover:text-[var(--text-form-field-hover)]',
+  'active:bg-[var(--surface-action-secondary-default)] active:border-[var(--content-action-primary-300)] active:text-[var(--content-action-primary-default)]',
+  'disabled:bg-[var(--surface-action-secondary-disabled)] disabled:border-[var(--border-color-surface-active-secondary-disabled)] disabled:text-[var(--text-on-action-disabled)]',
 ].join(' ')
 
+// Only Text has no background tint on hover/active in Figma — just a text-color shift.
 const textClasses = [
   'bg-transparent border-transparent text-[var(--content-action-primary-default)] font-semibold',
-  'hover:bg-[var(--content-action-primary-100)]',
-  'active:bg-[var(--content-action-primary-200)]',
-  'disabled:bg-transparent disabled:border-transparent disabled:text-[var(--content-action-disabled-700)]',
+  'hover:text-[var(--text-form-field-hover)]',
+  'active:text-[var(--content-action-primary-default)]',
+  'disabled:bg-transparent disabled:border-transparent disabled:text-[var(--text-on-action-disabled)]',
+].join(' ')
+
+const secondaryDestructiveClasses = [
+  'bg-[var(--surface-action-secondary-default)] border-[var(--border-color-accent-error-light)] text-[var(--text-error)]',
+  'hover:bg-[var(--surface-action-secondary-hover)] hover:border-[var(--border-color-accent-error-light)] hover:text-[var(--error-200)]',
+  'active:bg-[var(--surface-action-secondary-default)] active:border-[var(--border-color-accent-error-light)] active:text-[var(--text-error)]',
+  'disabled:bg-[var(--surface-action-secondary-default)] disabled:border-[var(--error-100)] disabled:text-[var(--error-100)]',
+].join(' ')
+
+// Only Text Destructive: no background tint on hover/active, matching Only Text.
+const textDestructiveClasses = [
+  'bg-transparent border-transparent text-[var(--text-error)] font-semibold',
+  'hover:text-[var(--error-600)]',
+  'active:text-[var(--text-error)]',
+  'disabled:bg-transparent disabled:border-transparent disabled:text-[var(--error-100)]',
 ].join(' ')
 
 const buttonVariants = cva(
   [
     'inline-flex shrink-0 items-center justify-center',
-    'rounded-[8px] border',
+    'border',
     'font-sans whitespace-nowrap select-none',
     'transition-colors duration-150',
     'outline-none',
@@ -56,36 +74,42 @@ const buttonVariants = cva(
         secondary: secondaryClasses,
 
         // ── Form Controls ────────────────────────────────────────────────
+        // Active shares Default's bg/border but Hover's text color, per Figma.
         'form-controls': [
-          'bg-[var(--neutral-100)] border-[var(--neutral-300)] text-[var(--text-body-primary)]',
-          'hover:bg-[var(--neutral-200)] hover:border-[var(--neutral-400)]',
-          'active:bg-[var(--neutral-300)] active:border-[var(--neutral-400)]',
-          'focus-visible:border-[var(--content-action-primary-600)]',
-          disabledClasses,
+          'bg-[var(--surface-action-terciary-default)] border-[var(--border-color-surface-active-secondary-default)] text-[var(--neutral-800)]',
+          'hover:bg-[var(--surface-action-terciary-hover)] hover:border-[var(--border-color-surface-active-secondary-hover)] hover:text-[var(--text-on-action-secondary)]',
+          'active:bg-[var(--surface-action-terciary-default)] active:border-[var(--border-color-surface-active-secondary-default)] active:text-[var(--text-on-action-secondary)]',
+          'focus-visible:border-[var(--content-action-primary-default)]',
+          'disabled:bg-[var(--surface-action-terciary-disabled)] disabled:border-[var(--border-color-surface-active-terciary-disabled)] disabled:text-[var(--text-on-action-disabled)]',
         ].join(' '),
 
         // ── Text ────────────────────────────────────────────────────────
         text: textClasses,
 
-        // ── Destructive ──────────────────────────────────────────────────
-        // Default/Active: Error/500 bg · Error/600 border · On Action/Primary text
-        // Hover: reverses to Error/300 bg · Error/200 border · dark text for WCAG AA
+        // ── Destructive (Primary Destructive) ────────────────────────────
+        // Default/Active share the same solid-red look; Hover darkens further.
         destructive: [
-          'bg-[var(--error-500)] border-[var(--error-600)] text-[var(--text-on-action-primary)]',
-          'hover:bg-[var(--error-300)] hover:border-[var(--error-200)] hover:text-[var(--text-body-primary)]',
-          'active:bg-[var(--error-500)] active:border-[var(--error-600)] active:text-[var(--text-on-action-primary)]',
+          'bg-[var(--surface-action-destructive-default)] border-[var(--border-color-accent-error-dark)] text-[var(--text-on-action-primary)]',
+          'hover:bg-[var(--surface-action-destructive-hover)] hover:border-[var(--border-color-accent-error-dark-hover)]',
+          'active:bg-[var(--surface-action-destructive-default)] active:border-[var(--border-color-accent-error-dark)]',
           'focus-visible:ring-[var(--error-500)]/50',
-          disabledClasses,
+          'disabled:bg-[var(--error-200)] disabled:border-[var(--error-300)] disabled:text-[var(--text-on-action-primary)]',
         ].join(' '),
 
+        // ── Secondary Destructive ─────────────────────────────────────────
+        'secondary-destructive': secondaryDestructiveClasses,
+
+        // ── Only Text Destructive ─────────────────────────────────────────
+        'text-destructive': textDestructiveClasses,
+
         // ── Colored Background ───────────────────────────────────────────
-        // For use on non-white surfaces (hero banners, colored cards). Small only.
+        // For use on non-white surfaces (hero banners, colored cards). No border.
         'colored-bg': [
-          'bg-[var(--neutral-0)] border-[var(--content-action-primary-600)] text-[var(--content-action-primary-default)]',
-          'hover:bg-[var(--content-action-primary-600)] hover:border-[var(--content-action-primary-600)] hover:text-[var(--text-on-action-primary)]',
-          'active:bg-[var(--neutral-50)] active:border-[var(--neutral-300)] active:text-[var(--content-action-primary-default)]',
+          'bg-[var(--surface-action-secondary-default)] border-transparent text-[var(--content-action-primary-default)]',
+          'hover:bg-[var(--surface-action-secondary-hover)] hover:border-transparent hover:text-[var(--text-form-field-hover)]',
+          'active:bg-[var(--surface-action-secondary-default)] active:border-transparent active:text-[var(--content-action-primary-default)]',
           'focus-visible:ring-[var(--content-action-primary-600)]/50',
-          disabledClasses,
+          'disabled:bg-[var(--surface-disabled)] disabled:border-transparent disabled:text-[var(--text-on-action-disabled)]',
         ].join(' '),
 
         // ── CxCentral variants ────────────────────────────────────────────
@@ -102,25 +126,25 @@ const buttonVariants = cva(
       size: {
         // ── Text + label sizes ───────────────────────────────────────────
 
-        // Regular — 48px · Body MD (14px/20px) · 8px icon gap
+        // Regular — 48px · Body MD (14px/20px) · 12px padding · 8px icon gap
         regular: [
-          'h-12 px-5 gap-2',
+          'h-12 p-3 gap-2 rounded-[8px]',
           'text-sm leading-5',
-          "[&_svg:not([class*='size-'])]:size-5",
+          "[&_svg:not([class*='size-'])]:size-6",
         ].join(' '),
 
-        // Small — 36px · Body SM (12px/20px) · 6px icon gap
+        // Small — 32px · Body SM (12px/20px) · 8px padding · 8px icon gap
         sm: [
-          'h-9 px-4 gap-1.5',
+          'h-8 p-2 gap-2 rounded-[8px]',
           'text-xs leading-5',
           "[&_svg:not([class*='size-'])]:size-4",
         ].join(' '),
 
-        // Extra Small — 24px · Body XS (10px/16px) · 4px icon gap
+        // Extra Small — 24px · Body XS (10px/16px) · 8px/4px padding · 8px icon gap
         xs: [
-          'h-6 px-3 gap-1',
+          'h-6 px-2 py-1 gap-2 rounded-[4px]',
           'text-[10px] leading-4',
-          "[&_svg:not([class*='size-'])]:size-3.5",
+          "[&_svg:not([class*='size-'])]:size-4",
         ].join(' '),
 
         // ── Icon-only sizes (square, no label) ───────────────────────────
@@ -152,7 +176,7 @@ const buttonVariants = cva(
   }
 )
 
-export type ButtonVariant = 'primary' | 'secondary' | 'form-controls' | 'text' | 'destructive' | 'colored-bg' | 'primary-central' | 'secondary-central' | 'text-central'
+export type ButtonVariant = 'primary' | 'secondary' | 'form-controls' | 'text' | 'destructive' | 'secondary-destructive' | 'text-destructive' | 'colored-bg' | 'primary-central' | 'secondary-central' | 'text-central'
 export type ButtonSize = 'regular' | 'sm' | 'xs' | 'icon-regular' | 'icon-sm' | 'icon-xs'
 
 function Button({
