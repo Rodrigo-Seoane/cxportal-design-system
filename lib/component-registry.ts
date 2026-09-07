@@ -13,6 +13,7 @@ import {
   TableCheckboxCell,
 } from '@/components/ui/table'
 import { Chip, Tag } from '@/components/ui/chip'
+import { Counter } from '@/components/ui/counter'
 import { Tabs, TabList, Tab, TabPanel } from '@/components/ui/tabs'
 import { Modal, ModalHeader, ModalBody, ModalFooter, XIcon, FloppyDisk } from '@/components/ui/modal'
 import { Switch, BooleanIcon } from '@/components/ui/switch'
@@ -719,6 +720,33 @@ export const registry: Record<string, ComponentEntry> = {
         indent(tagLines),
         `</div>`,
       ].join('\n')
+    },
+  },
+  counter: {
+    slug: 'counter',
+    title: 'Counter',
+    description:
+      'A fully-rounded count badge shown inline beside the label it counts. Height is fixed at 18px; width grows with digit count.',
+    status: 'wip',
+    scope: { Counter },
+    propSchema: {
+      value: {
+        type: 'text',
+        label: 'Value',
+        default: '8',
+      },
+      color: {
+        type: 'chip-select',
+        label: 'Color',
+        options: ['blue', 'gray', 'red'],
+        default: 'blue',
+      },
+    },
+    generateCode: ({ value, color }) => {
+      const v = Math.max(0, Math.trunc(Number(value) || 0))
+      const c = String(color)
+      const colorAttr = c !== 'blue' ? ` color="${c}"` : ''
+      return `<Counter value={${v}}${colorAttr} />`
     },
   },
 

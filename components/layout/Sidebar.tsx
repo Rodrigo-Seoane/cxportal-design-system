@@ -94,6 +94,7 @@ const NAV_GROUPS: NavGroup[] = [
       { label: 'Top Bar',               href: '/components/top-bar',               status: 'stable' },
       { label: 'Table',                 href: '/components/table',                 status: 'stable' },
       { label: 'Chips & Tags',          href: '/components/chips',                 status: 'stable' },
+      { label: 'Counter',               href: '/components/counter',               status: 'wip'    },
       { label: 'Tabs',                  href: '/components/tabs',                  status: 'stable' },
       { label: 'Vertical Tabs',         href: '/components/vertical-tabs',         status: 'stable' },
       { label: 'Modal',                 href: '/components/modal',                 status: 'stable' },
