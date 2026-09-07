@@ -60,7 +60,6 @@ const T = {
   textLabel:      'var(--text-body-primary)',
   textHint:       'var(--text-body-primary)',
   textError:      'var(--error-default)',
-  textRequired:   'var(--error-default)',
 } as const
 
 // ─── Size tokens ─────────────────────────────────────────────────────────────
@@ -194,7 +193,7 @@ export function Input({
             {label}
           </label>
           {required && (
-            <span aria-hidden style={{ fontSize: sz.labelFontSize, lineHeight: sz.labelLineHeight, color: T.textRequired }}>
+            <span aria-hidden style={{ fontSize: sz.labelFontSize, lineHeight: sz.labelLineHeight, color: T.textLabel }}>
               *
             </span>
           )}

@@ -610,7 +610,7 @@ function CheckboxShowcase() {
   ] as const
 
   const sizes = [
-    { key: 'regular' as const, label: 'Regular · 18px' },
+    { key: 'regular' as const, label: 'Regular · 16px' },
     { key: 'small'   as const, label: 'Small · 12px' },
   ]
 
