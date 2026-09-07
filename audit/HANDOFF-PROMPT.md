@@ -112,7 +112,7 @@ Still open inside G1:
 | Button | major | P0 | complete |
 | Alert Messages | major | P0 | complete |
 | Counter | missing → built | P1 | complete |
-| Tooltip | — | — | not started |
+| Tooltip | major | P0 | complete |
 | Modal | — | — | not started |
 | Toast | — | — | not started |
 
@@ -198,7 +198,8 @@ Needs a decision on which surface colour the demo should use.
 2. Get a designer call on the two Figma-internal contradictions above (old
    variant model on Usage 742-11289; multi-line Alert vs its own docs).
 3. Audit Combobox (2255-8066) to actually close G1 — still the one hole in that batch.
-4. Continue G2: Tooltip (694-13794) → Modal → Toast. Counter was built 2026-09-07.
+4. Continue G2: Modal → Toast. Counter and Tooltip were done 2026-09-07; the Tooltip row also
+   covered Dismissible Tip (3210-1866), which was missing and is now built.
 5. Produce the full G2 paste block when the batch closes.
 6. Decide whether to commit `audit/` and whether to open a PR for the branch.
 

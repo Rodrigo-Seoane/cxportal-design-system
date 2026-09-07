@@ -25,6 +25,7 @@ import { Plus, Grid } from 'lucide-react'
 import { DistributionControls } from '@/components/ui/distribution-controls'
 import { Toast } from '@/components/ui/toast'
 import { Tooltip } from '@/components/ui/tooltip'
+import { DismissibleTip } from '@/components/ui/dismissible-tip'
 import { StatCard } from '@/components/ui/stats-cards'
 import { ClickableCard, ClickableHorizontalCard } from '@/components/ui/clickable-card'
 import { InlineContextData } from '@/components/ui/inline-context-data'
@@ -1514,9 +1515,9 @@ export const registry: Record<string, ComponentEntry> = {
     slug: 'tooltip',
     title: 'Tooltip',
     description:
-      'A simple text popup that appears on hover to provide supplementary information about an element. Supports four placement directions.',
+      'Two anchored context components. Tooltip carries short text on hover or focus and closes itself; Dismissible Tip carries a title and longer body until the user closes it.',
     status: 'stable',
-    scope: { Tooltip },
+    scope: { Tooltip, DismissibleTip, Button },
     propSchema: {
       placement: {
         type: 'chip-select',
@@ -1524,31 +1525,59 @@ export const registry: Record<string, ComponentEntry> = {
         options: ['top', 'right', 'bottom', 'left'],
         default: 'top',
       },
+      theme: {
+        type: 'chip-select',
+        label: 'Theme',
+        options: ['light', 'dark'],
+        default: 'light',
+      },
       content: {
         type: 'text',
-        label: 'Content',
+        label: 'Tooltip content',
         default: 'Tooltip content',
       },
+      tipType: {
+        type: 'chip-select',
+        label: 'Tip type',
+        options: ['primary', 'secondary'],
+        default: 'primary',
+      },
+      showClose: {
+        type: 'boolean',
+        label: 'Tip close control',
+        default: true,
+      },
     },
-    generateCode: ({ placement, content }) => {
+    generateCode: ({ placement, theme, content, tipType, showClose }) => {
       const p = String(placement)
+      const th = String(theme)
       const c = String(content)
-      const placementAttr = p !== 'top' ? `\n  placement="${p}"` : ''
+      const tt = String(tipType)
+      const close = showClose === true || showClose === 'true'
+
+      const tooltipAttrs = [
+        `content="${c}"`,
+        p !== 'top' ? `placement="${p}"` : null,
+        th !== 'light' ? `theme="${th}"` : null,
+      ].filter(Boolean).join(' ')
+
+      const tipAttrs = [
+        `title="Permission Roles"`,
+        tt !== 'primary' ? `type="${tt}"` : null,
+        !close ? `showClose={false}` : null,
+      ].filter(Boolean).join(' ')
+
+      // Both components render in one preview, so they need a single root —
+      // the playground evaluates the snippet as one expression.
       return [
-        `<div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 48 }}>`,
-        `  <Tooltip content="${c}"${placementAttr}>`,
-        `    <button style={{`,
-        `      padding: '8px 16px',`,
-        `      background: '#4285f4',`,
-        `      color: '#eff1f3',`,
-        `      border: 'none',`,
-        `      borderRadius: 4,`,
-        `      cursor: 'pointer',`,
-        `      fontSize: 14,`,
-        `    }}>`,
-        `      Hover me`,
-        `    </button>`,
+        `<div style={{ display: 'flex', flexDirection: 'column', gap: 32, alignItems: 'flex-start', padding: 48 }}>`,
+        `  <Tooltip ${tooltipAttrs}>`,
+        `    <Button variant="secondary">Hover me</Button>`,
         `  </Tooltip>`,
+        `  <DismissibleTip`,
+        `    ${tipAttrs}`,
+        `    content="This Entity contains Items that reference this field so it cannot be deleted."`,
+        `  />`,
         `</div>`,
       ].join('\n')
     },

@@ -1,119 +1,148 @@
 ---
 title: Tooltip
-description: A simple text popup that appears on hover to provide supplementary information about an element.
+description: Two anchored context components. Tooltip carries short text on hover or focus; Dismissible Tip carries a title and longer body until closed.
 figmaNodeId: 694-13794
-figmaUpdated: Apr 13, 2026
+figmaUpdated: Sep 07, 2026
 status: stable
 ---
 
 ## Overview
 
-A Tooltip is a transient, non-interactive overlay that reveals short supplementary text when the user hovers over or focuses a trigger element. It communicates context without cluttering the UI with permanent labels.
+This page ships two related components. Both surface secondary context anchored to a trigger element.
+
+**Tooltip** carries short explanatory text shown on hover or focus, and dismisses automatically when the pointer or focus moves away.
+
+**Dismissible Tip** carries longer content with a title, body, and explicit close control — used for complex explanations or first-time-user onboarding hints.
+
+## Design principles
+
+**Tooltip is transient, Dismissible Tip is persistent.** Tooltip appears on hover or focus and disappears as soon as the trigger loses attention. Dismissible Tip stays until the user closes it, so it can carry content that requires reading time.
+
+**User-triggered, not system-triggered.** Both appear because the user pointed at, focused on, or opened something. Neither is used to broadcast events — that is what Toast Notifications and Message Box are for.
+
+**Content length dictates the choice.** Tooltip is capped at roughly 80 characters, a single short sentence with no title. Dismissible Tip carries a title plus a body up to roughly 500 characters. Beyond that, the interaction belongs in a Modal or Side Panel.
+
+**Anchor before position.** Both attach to a specific element with an 8px gap. Tooltip supports four placements so the position adapts to viewport edges. Dismissible Tip is always positioned above its trigger, flipping below only when there is no space above.
 
 ## When to use
 
-- To explain the purpose of an icon-only button or control that has no visible text label
-- To surface secondary information (keyboard shortcut, data source, field definition) that would add noise if always visible
-- As an accessible alternative to the HTML `title` attribute
+- **Tooltip** — to explain an icon button or unlabeled control whose action is not obvious from the glyph alone.
+- **Tooltip** — to give short format examples or constraints on form inputs.
+- **Tooltip** — to disambiguate truncated text on tight rows without expanding row height.
+- **Dismissible Tip** — to introduce a new feature on first use.
+- **Dismissible Tip** — to explain a complex or destructive action before the user commits.
+- **Dismissible Tip** — to surface content needing 5–20 seconds of reading time.
 
-**Do not use when:**
-- The content is critical — use a Message Box or inline helper text instead so it is always visible
-- The content is long, complex, or interactive (links, buttons) — Tooltips only support plain text
-- On mobile, where hover is unavailable
+## When not to use
+
+- Don't put essential information in either component. Both are supplementary — required information must be visible without user action.
+- Don't use Tooltip for content longer than 80 characters. Use Dismissible Tip or an inline description.
+- Don't use either for system events, errors, or notifications. Use Toast Notifications or Message Box.
+- Don't nest a Tooltip inside a Dismissible Tip or vice versa — nested transient UI creates unresolvable focus and dismiss ambiguity.
+- Don't stack multiple tooltips or tips in the same view. If several are needed at once, the design has an information density problem.
+- Don't use either to replace form field or button labels. Labels must always be visible.
+- Don't use Tooltip on touch-only surfaces without a tap-to-toggle alternative — there is no hover on touch.
 
 ## Anatomy
 
-A Tooltip consists of:
+**Tooltip container.** 8px padding, 4px radius, 1px border, single content row, no title. Max-width 320px; content wraps at that width. Anchored to its trigger with an 8px gap on the placement side.
 
-- **Trigger** — any focusable or hoverable element wrapped in `<Tooltip>`
-- **Body** — the floating content container (info-tinted background, 1px border, 8px radius, 16px padding, max-width 320px)
-- **Arrow** — a small diamond shape connecting the body to the trigger, rendered at the center of the aligned edge
-- **Shadow** — `0 4px 24px rgba(5,3,38,0.08)` for depth
+**Beak.** Only Tooltip has one — an 8×8 square rotated 45°, with the two outer-facing border edges visible so it reads as a triangle pointing at the trigger. The placement controls which edge it sits on.
 
-## Placement
+**Dismissible Tip container.** 16px top and side padding, 24px bottom, 8px radius, 0.5px border, 16px gap between the header row and the body. Two stacked text nodes plus a 12×12 close control aligned right in the header row. No beak — vertical alignment communicates the anchor.
 
-The `placement` prop controls which side of the trigger the tooltip appears on. The arrow always points toward the trigger.
+**Content text.** Tooltip: 12px Regular at 20px line-height. Dismissible Tip: 10px SemiBold title and 10px Regular body, both at 16px line-height.
+
+## Token reference
 
 <Table size="compact" className="mb-6">
   <TableHeader>
     <tr>
-      <TableHead>Value</TableHead>
-      <TableHead>Tooltip position</TableHead>
-      <TableHead>Arrow direction</TableHead>
+      <TableHead>Component</TableHead>
+      <TableHead>Surface</TableHead>
+      <TableHead>Border</TableHead>
+      <TableHead>Text</TableHead>
     </tr>
   </TableHeader>
   <TableBody>
     <TableRow>
-      <TableCell><code>top</code> (default)</TableCell>
-      <TableCell>Above the trigger</TableCell>
-      <TableCell>Points down ↓</TableCell>
+      <TableCell><strong>Tooltip · light</strong></TableCell>
+      <TableCell><code>--surface-action-secondary-default</code> #ffffff</TableCell>
+      <TableCell><code>--border-color-surface-active-secondary-default</code> #adadad</TableCell>
+      <TableCell><code>--text-body-primary</code> #1d1d1d</TableCell>
     </TableRow>
     <TableRow>
-      <TableCell><code>bottom</code></TableCell>
-      <TableCell>Below the trigger</TableCell>
-      <TableCell>Points up ↑</TableCell>
+      <TableCell><strong>Tooltip · dark</strong></TableCell>
+      <TableCell><code>--neutral-700</code> #373737</TableCell>
+      <TableCell><code>--neutral-400</code> #8d8d8d</TableCell>
+      <TableCell><code>--text-body-on-dark-surface</code> #efefef</TableCell>
     </TableRow>
     <TableRow>
-      <TableCell><code>left</code></TableCell>
-      <TableCell>Left of the trigger</TableCell>
-      <TableCell>Points right →</TableCell>
+      <TableCell><strong>Tip · primary</strong></TableCell>
+      <TableCell><code>--surface-action-primary-default</code> #3a8015</TableCell>
+      <TableCell><code>--border-color-surface-active-primary-default</code> #629944</TableCell>
+      <TableCell><code>--text-body-on-dark-surface</code> #efefef</TableCell>
     </TableRow>
     <TableRow>
-      <TableCell><code>right</code></TableCell>
-      <TableCell>Right of the trigger</TableCell>
-      <TableCell>Points left ←</TableCell>
+      <TableCell><strong>Tip · secondary</strong></TableCell>
+      <TableCell><code>--surface-action-secondary-default</code> #ffffff</TableCell>
+      <TableCell><code>--border-color-surface-active-secondary-default</code> #adadad</TableCell>
+      <TableCell><code>--text-body-primary</code> #1d1d1d</TableCell>
     </TableRow>
   </TableBody>
 </Table>
 
-Choose placement based on available viewport space. Prefer `top` when the trigger is near the bottom of the screen, `bottom` when near the top.
+Both components carry the same shadow — `0 4px 12px rgba(5, 3, 38, 0.08)`, from the Figma "Tooltip Shadow" effect. The trigger gap is 8px in every direction. Tooltip opens after 300ms and closes after 150ms.
+
+## Placement
+
+Tooltip supports `top`, `right`, `bottom`, and `left`. Pick the placement that fits the available space: if the trigger is near the viewport top, use `bottom`; near the right edge, use `left`.
 
 ## Accessibility
 
-- The tooltip body is rendered with `role="tooltip"` so screen readers can announce it
-- The component listens for both `onMouseEnter`/`onMouseLeave` and `onFocus`/`onBlur`, making it reachable for keyboard users
-- Never place interactive elements (links, buttons) inside the tooltip body — use a popover or modal instead
-- Keep content short enough to be read without scrolling
+The tooltip carries `role="tooltip"` and a generated id, and the trigger element receives `aria-describedby` pointing at it, so screen readers announce the trigger's name plus the tooltip content when focus lands.
 
-<DosDonts>
-  <Do description="Use tooltips to clarify icon-only controls. Always pair icon buttons with a tooltip or aria-label." />
-  <Dont description="Put essential information only in a tooltip. Users on touch devices and screen readers may miss hover-only content." />
-</DosDonts>
+Tooltip opens on **both hover and keyboard focus** — hover-only would fail WCAG 2.1.1. The open delay applies equally to focus.
 
-<DosDonts>
-  <Do description="Keep tooltip text brief — one sentence maximum. Tooltips are supplementary, not instructional." />
-  <Dont description="Use tooltips for error messages or required field hints. Use inline validation or a Message Box instead." />
-</DosDonts>
+It is **hoverable, dismissable, and persistent** per WCAG 1.4.13: the pointer can move onto the tooltip surface without closing it, `Escape` dismisses it while focus stays on the trigger, and it otherwise stays open until hover or focus leaves.
+
+Dismissible Tip carries `role="dialog"` labelled by its title, and the close control is a real `<button>` with an accessible name.
+
+On the dark theme, verify text contrast meets WCAG 1.4.3 AA — 4.5:1 for normal text against the dark surface.
 
 ## Code
 
 ### Basic usage
 
 ```tsx
-import { Tooltip } from '@/components/ui/tooltip'
-
-<Tooltip content="Delete this record">
-  <button aria-label="Delete">
-    <TrashIcon />
-  </button>
+<Tooltip content="Duplicate this campaign">
+  <Button variant="secondary" size="icon-sm" aria-label="Duplicate">
+    <Copy />
+  </Button>
 </Tooltip>
 ```
 
-### Placement
+### Placement and theme
 
 ```tsx
-<Tooltip content="Opens in a new tab" placement="right">
-  <a href="/docs" target="_blank">Documentation</a>
+<Tooltip content="Appears below the trigger" placement="bottom" theme="dark">
+  <Button variant="secondary">Hover me</Button>
 </Tooltip>
 ```
 
-### Props
+### Dismissible Tip
 
 ```tsx
-interface TooltipProps {
-  content: string           // Text to display in the tooltip
-  placement?: 'top' | 'right' | 'bottom' | 'left'  // Default: 'top'
-  children: React.ReactNode // The trigger element
-  className?: string
-}
+<DismissibleTip
+  title="Permission Roles"
+  content="This Entity contains Items that reference this field so it cannot be deleted."
+  type="secondary"
+  onDismiss={() => setTipSeen(true)}
+/>
 ```
+
+## Notes on the Figma source
+
+Tooltip is `694-13794`; Dismissible Tip is `3210-1866`. Values above come from the component variants rather than the Principles (`3215-514`) or Usage (`3215-515`) frames, which diverge in three places: the Usage token table caps Tooltip at 300px where the component uses 320px, describes the close control as 16×16 where the component draws 12×12, and lists `Icon/Body/Primary #021920` for tooltip text where the component uses `Text/Body/Primary #1d1d1d` — a token name and value that both predate the rebrand.
+
+Three Figma-side defects are outstanding. The Dismissible Tip `theme` property has no visual effect on either type — container, title, and body are all keyed on `type` alone, so Dark and Light render identically; the code omits the prop rather than expose a no-op. The Secondary + Dark variant's body text is a hardcoded literal instead of being bound to the `cardContent` property. And the same component uses four different container widths: 300px and 281px in the component set, 274px and 257px in the Usage frame's own demo instances.
