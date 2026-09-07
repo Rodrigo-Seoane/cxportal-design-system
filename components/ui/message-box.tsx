@@ -71,7 +71,7 @@ export interface MessageBoxProps {
   /** Block only. Type-coloured action link shown below the body. */
   cta?: string
   onCtaClick?: () => void
-  /** Render a dismiss button on the trailing edge. Not present in the Figma spec — kept as an app-level affordance. */
+  /** Render a dismiss button on the trailing edge. Opt-in: Figma hides it by default. */
   dismissible?: boolean
   /** Called when the user clicks dismiss. If omitted, the box manages its own visibility. */
   onDismiss?: () => void
@@ -88,7 +88,7 @@ export function MessageBox({
   children,
   cta,
   onCtaClick,
-  dismissible = true,
+  dismissible = false,
   onDismiss,
   className,
 }: MessageBoxProps) {
@@ -110,7 +110,7 @@ export function MessageBox({
 
   return (
     <div
-      role="alert"
+      role={type === 'error' ? 'alert' : 'status'}
       className={className}
       style={{
         display: 'flex',
@@ -203,7 +203,7 @@ export function MessageBox({
       {dismissible && (
         <button
           type="button"
-          aria-label="Dismiss"
+          aria-label="Dismiss message"
           onClick={handleDismiss}
           style={{
             flexShrink: 0,
@@ -221,7 +221,7 @@ export function MessageBox({
           onMouseEnter={(e) => ((e.currentTarget as HTMLButtonElement).style.opacity = '1')}
           onMouseLeave={(e) => ((e.currentTarget as HTMLButtonElement).style.opacity = '0.7')}
         >
-          <XCircleIcon size={16} color={config.icon} weight="regular" />
+          <XCircleIcon size={24} color={config.icon} weight="regular" />
         </button>
       )}
     </div>

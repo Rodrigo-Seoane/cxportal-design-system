@@ -140,8 +140,13 @@ export const registry: Record<string, ComponentEntry> = {
       iconPosition: {
         type: 'chip-select',
         label: 'Icon',
-        options: ['none', 'left', 'right', 'only'],
+        options: ['none', 'left', 'only'],
         default: 'none',
+      },
+      noPadding: {
+        type: 'boolean',
+        label: 'No padding (text variants)',
+        default: false,
       },
       disabled: {
         type: 'boolean',
@@ -154,23 +159,23 @@ export const registry: Record<string, ComponentEntry> = {
         default: 'Button label',
       },
     },
-    generateCode: ({ variant, size, disabled, children, iconPosition }) => {
+    generateCode: ({ variant, size, disabled, children, iconPosition, noPadding }) => {
       const v = String(variant)
       const s = String(size)
       const pos = String(iconPosition)
       const label = String(children)
       const disabledAttr = disabled ? ' disabled' : ''
+      const isText = v === 'text' || v === 'text-destructive'
+      const padAttr = isText && (noPadding === true || noPadding === 'true') ? ' noPadding' : ''
 
       // Build button snippet first, then wrap for colored-bg
       let btn: string
       if (pos === 'only') {
-        btn = `<Button variant="${v}" size="${ICON_SIZE_MAP[s] ?? 'icon-regular'}"${disabledAttr} aria-label="Action">\n  <Plus />\n</Button>`
+        btn = `<Button variant="${v}" size="${ICON_SIZE_MAP[s] ?? 'icon-regular'}"${padAttr}${disabledAttr} aria-label="Action">\n  <Plus />\n</Button>`
       } else if (pos === 'left') {
-        btn = `<Button variant="${v}" size="${s}"${disabledAttr}>\n  <Plus />\n  ${label}\n</Button>`
-      } else if (pos === 'right') {
-        btn = `<Button variant="${v}" size="${s}"${disabledAttr}>\n  ${label}\n  <Plus />\n</Button>`
+        btn = `<Button variant="${v}" size="${s}"${padAttr}${disabledAttr}>\n  <Plus />\n  ${label}\n</Button>`
       } else {
-        btn = `<Button variant="${v}" size="${s}"${disabledAttr}>\n  ${label}\n</Button>`
+        btn = `<Button variant="${v}" size="${s}"${padAttr}${disabledAttr}>\n  ${label}\n</Button>`
       }
 
       // colored-bg must be shown inside a surface div to render correctly
@@ -817,7 +822,7 @@ export const registry: Record<string, ComponentEntry> = {
       dismissible: {
         type: 'boolean',
         label: 'Dismissible',
-        default: true,
+        default: false,
       },
       message: {
         type: 'text',
@@ -859,7 +864,7 @@ export const registry: Record<string, ComponentEntry> = {
       if (s !== 'line') lines.push(`  size="${s}"`)
       if (rnd) lines.push(`  rounded`)
       if (isBlock) lines.push(`  title="${titleMap[t]}"`)
-      if (!dis) lines.push(`  dismissible={false}`)
+      if (dis) lines.push(`  dismissible`)
       if (isBlock) {
         lines.push(`  message="${bodyMap[t]}"`)
         if (ctaText) lines.push(`  cta="${ctaText}"`)

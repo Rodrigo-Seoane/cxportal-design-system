@@ -8,8 +8,8 @@ import { cn } from '@/lib/utils'
 //
 // Variants:  primary | secondary | form-controls | text | destructive |
 //            secondary-destructive | text-destructive | colored-bg
-// Sizes:     regular (48px) | sm (36px) | xs (24px)
-//            icon-regular (48×48) | icon-sm (36×36) | icon-xs (24×24)
+// Sizes:     regular (48px) | sm (32px) | xs (24px)
+//            icon-regular (48×48) | icon-sm (32×32) | icon-xs (24×24)
 // States:    default · hover · active · disabled
 // ──────────────────────────────────────────────────────────────────────────
 
@@ -156,10 +156,10 @@ const buttonVariants = cva(
           "[&_svg:not([class*='size-'])]:size-6",
         ].join(' '),
 
-        // Icon Small — 36×36 · icon 18px · radius 4px
+        // Icon Small — 32×32 · icon 16px · radius 4px
         'icon-sm': [
-          'size-9 p-0 rounded-[4px]',
-          "[&_svg:not([class*='size-'])]:size-[18px]",
+          'size-8 p-0 rounded-[4px]',
+          "[&_svg:not([class*='size-'])]:size-4",
         ].join(' '),
 
         // Icon XSmall — 24×24 · icon 16px · radius 4px
@@ -168,10 +168,25 @@ const buttonVariants = cva(
           "[&_svg:not([class*='size-'])]:size-4",
         ].join(' '),
       },
+
+      // Figma exposes Padding=True/False on Only Text Destructive — the
+      // compact, text-link-like treatment for inline use.
+      noPadding: {
+        true: '',
+        false: '',
+      },
     },
+    compoundVariants: [
+      {
+        variant: ['text', 'text-destructive'],
+        noPadding: true,
+        class: 'p-0 h-auto',
+      },
+    ],
     defaultVariants: {
       variant: 'primary',
       size: 'regular',
+      noPadding: false,
     },
   }
 )
@@ -183,12 +198,13 @@ function Button({
   className,
   variant = 'primary',
   size = 'regular',
+  noPadding = false,
   ...props
 }: ButtonPrimitive.Props & VariantProps<typeof buttonVariants>) {
   return (
     <ButtonPrimitive
       data-slot="button"
-      className={cn(buttonVariants({ variant, size, className }))}
+      className={cn(buttonVariants({ variant, size, noPadding, className }))}
       {...props}
     />
   )
