@@ -12,7 +12,7 @@ import {
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 
-export type TopBarProduct = 'cx-portal' | 'cx-central' | 'cases'
+export type TopBarProduct = 'cx-portal' | 'cx-central' | 'cases' | 'new-ui'
 
 export interface TopBarProps {
   product?:         TopBarProduct
@@ -27,46 +27,37 @@ export interface TopBarProps {
 
 // ── Design tokens per product ─────────────────────────────────────────────────
 
-const THEMES: Record<TopBarProduct, {
-  brandFirst:  string
-  brandSecond: string
-  accent:      string
-  border:      string
-  badgeBg:     string
-}> = {
-  // 'cx-central' and 'cases' previously used a distinct CxCentral teal accent
-  // tied to a product identity that no longer exists in Figma — collapsed onto
-  // the same Content Action/Primary ramp as 'cx-portal' per rebrand convention.
-  'cx-portal': {
-    brandFirst:  'var(--text-body-primary)',
-    brandSecond: 'var(--content-action-primary-600)',
-    accent:      'var(--content-action-primary-600)',
-    border:      'var(--content-action-primary-600)',
-    badgeBg:     'var(--content-action-primary-600)',
-  },
-  'cx-central': {
-    brandFirst:  'var(--text-body-primary)',
-    brandSecond: 'var(--content-action-primary-600)',
-    accent:      'var(--content-action-primary-600)',
-    border:      'var(--content-action-primary-600)',
-    badgeBg:     'var(--content-action-primary-600)',
-  },
-  'cases': {
-    brandFirst:  'var(--content-action-primary-600)',
-    brandSecond: 'var(--content-action-primary-600)',
-    accent:      'var(--content-action-primary-600)',
-    border:      'var(--content-action-primary-600)',
-    badgeBg:     'var(--content-action-primary-600)',
-  },
-}
+// 'cx-central' and 'cases' previously used a distinct CxCentral teal accent
+// tied to a product identity that no longer exists in Figma — collapsed onto
+// the same Content Action/Primary ramp as 'cx-portal' per rebrand convention.
+//
+// Figma's current CxPortal variant (8-5042) still renders a lavender/purple
+// accent (#b2a3ff / #d6d7ff) instead of green — that's the pre-Caylent-rebrand
+// "Pronetx purple" identity this whole design system migrated away from
+// (see the Caylent rebrand project notes), not a deliberate distinct brand.
+// Neither Principles nor Usage mention a per-product accent colour at all, and
+// this component's own CxCentral and "New UI" variants already use the
+// unified green. Treated as a Figma-side rebrand leftover — not replicated.
+const THEME = {
+  accent:  'var(--content-action-primary-default)', // #3a8015
+  border:  'var(--border-color-surface-active-primary-default)', // #629944
+  badgeBg: 'var(--surface-action-primary-default)', // #3a8015
+} as const
 
-const TEXT_PRIMARY = 'var(--text-body-primary)'
-const TEXT_MUTED   = 'var(--neutral-700)'
-const BORDER_LIGHT = 'var(--neutral-100)'
+// Figma's Top Bar component doesn't show an Instance label at all for the
+// three main product variants (cx-portal/cx-central/cases) — Principles'
+// own Anatomy section lists only "Product area" and "Utility icons". It only
+// appears on the "New UI" variant, styled as plain neutral text (not the
+// product accent colour the old code used). Kept for the main variants since
+// it's a real multi-tenancy need, styled to match New UI's only reference.
+const TEXT_PRIMARY  = 'var(--neutral-800)'
+const TEXT_MUTED    = 'var(--text-body-secondary)'
+const BORDER_LIGHT  = 'var(--border-color-surface-active-terciary-default)'
+const BADGE_TEXT    = 'var(--text-body-on-dark-surface)'
 
 // ── Internal: product brand ───────────────────────────────────────────────────
 
-function Brand({ product, theme }: { product: TopBarProduct; theme: typeof THEMES['cx-portal'] }) {
+function Brand({ product }: { product: TopBarProduct }) {
   const brandStyle = {
     fontSize:   24,
     fontWeight: 500,
@@ -79,10 +70,10 @@ function Brand({ product, theme }: { product: TopBarProduct; theme: typeof THEME
     return (
       <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
         <span style={brandStyle}>
-          <span style={{ color: theme.brandFirst }}>Cx</span>
-          <span style={{ color: theme.brandSecond }}>Portal</span>
+          <span style={{ color: TEXT_PRIMARY }}>Cx</span>
+          <span style={{ color: THEME.accent }}>Portal</span>
         </span>
-        <PlugsConnectedIcon size={20} weight="regular" color={theme.accent} />
+        <PlugsConnectedIcon size={20} weight="regular" color={THEME.accent} />
       </div>
     )
   }
@@ -90,8 +81,8 @@ function Brand({ product, theme }: { product: TopBarProduct; theme: typeof THEME
   if (product === 'cx-central') {
     return (
       <span style={brandStyle}>
-        <span style={{ color: theme.brandFirst }}>Cx</span>
-        <span style={{ color: theme.brandSecond }}>Central</span>
+        <span style={{ color: TEXT_PRIMARY }}>Cx</span>
+        <span style={{ color: THEME.accent }}>Central</span>
       </span>
     )
   }
@@ -99,8 +90,8 @@ function Brand({ product, theme }: { product: TopBarProduct; theme: typeof THEME
   // cases
   return (
     <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-      <span style={{ ...brandStyle, color: theme.brandFirst }}>Cases</span>
-      <BriefcaseIcon size={20} weight="regular" color={theme.accent} />
+      <span style={{ ...brandStyle, color: TEXT_PRIMARY }}>Cases</span>
+      <BriefcaseIcon size={20} weight="regular" color={THEME.accent} />
     </div>
   )
 }
@@ -149,7 +140,7 @@ function IconButton({ icon, badge, border, badgeBg, onClick, ariaLabel }: IconBu
           justifyContent: 'center',
           fontSize:     10,
           fontWeight:   600,
-          color:        'var(--text-on-action-primary)',
+          color:        BADGE_TEXT,
           lineHeight:   '16px',
         }}>
           {badge > 9 ? '9+' : badge}
@@ -165,7 +156,7 @@ function Divider() {
   return (
     <div style={{
       width:      1,
-      height:     36,
+      height:     32,
       background:  BORDER_LIGHT,
       flexShrink:  0,
     }} />
@@ -184,7 +175,78 @@ export function TopBar({
   onHeadset,
   onSignOut,
 }: TopBarProps) {
-  const theme = THEMES[product]
+  // Usage mandates each utility icon's aria-label carry its live count, and
+  // that badge-count changes be announced to screen readers via a live region.
+  const notifLabel = notifCount > 0
+    ? `Notifications, ${notifCount} unread`
+    : 'Notifications'
+
+  const instanceBlock = (
+    <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+      <span style={{ fontSize: 12, fontWeight: 600, color: TEXT_PRIMARY, letterSpacing: '0.24px', whiteSpace: 'nowrap' }}>
+        Instance:
+      </span>
+      <span style={{ fontSize: 12, fontWeight: 400, color: TEXT_MUTED, whiteSpace: 'nowrap' }}>
+        {instance}
+      </span>
+    </div>
+  )
+
+  const liveRegion = (
+    <span aria-live="polite" style={{ position: 'absolute', width: 1, height: 1, overflow: 'hidden', clip: 'rect(0,0,0,0)' }}>
+      {notifCount > 0 ? `${notifCount} unread notifications` : 'No unread notifications'}
+    </span>
+  )
+
+  // "New UI" has no Principles/Usage backing yet — Figma models it as a
+  // stripped-down variant of this same component (Instance + utility icons
+  // only, no brand block, no user email, no sign out, no dividers) rather
+  // than as a separate component family.
+  if (product === 'new-ui') {
+    return (
+      <header style={{
+        display:         'flex',
+        alignItems:      'center',
+        justifyContent:  'space-between',
+        height:           52,
+        padding:         '2px 16px',
+        backgroundColor: 'var(--color-surface-section)',
+        borderBottom:    `1px solid ${BORDER_LIGHT}`,
+        width:           '100%',
+      }}>
+        {instanceBlock}
+
+        <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+          {liveRegion}
+
+          <IconButton
+            ariaLabel={notifLabel}
+            icon={<BellRingingIcon size={18} weight="regular" color={TEXT_PRIMARY} />}
+            badge={notifCount}
+            border={THEME.border}
+            badgeBg={THEME.badgeBg}
+            onClick={onNotifications}
+          />
+
+          <IconButton
+            ariaLabel="Documents"
+            icon={<FileTextIcon size={18} weight="regular" color={TEXT_PRIMARY} />}
+            border={THEME.border}
+            badgeBg={THEME.badgeBg}
+            onClick={onDocuments}
+          />
+
+          <IconButton
+            ariaLabel="Support"
+            icon={<HeadsetIcon size={18} weight="regular" color={TEXT_PRIMARY} />}
+            border={THEME.border}
+            badgeBg={THEME.badgeBg}
+            onClick={onHeadset}
+          />
+        </div>
+      </header>
+    )
+  }
 
   return (
     <header style={{
@@ -198,30 +260,24 @@ export function TopBar({
       width:           '100%',
     }}>
       {/* Left — product brand */}
-      <Brand product={product} theme={theme} />
+      <Brand product={product} />
 
       {/* Right — instance info + actions */}
       <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+        {liveRegion}
 
         {/* Instance */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-          <span style={{ fontSize: 12, fontWeight: 600, color: theme.accent, letterSpacing: '0.24px', whiteSpace: 'nowrap' }}>
-            Instance:
-          </span>
-          <span style={{ fontSize: 12, fontWeight: 400, color: TEXT_MUTED, whiteSpace: 'nowrap' }}>
-            {instance}
-          </span>
-        </div>
+        {instanceBlock}
 
         <Divider />
 
         {/* Notification bell */}
         <IconButton
-          ariaLabel="Notifications"
+          ariaLabel={notifLabel}
           icon={<BellRingingIcon size={18} weight="regular" color={TEXT_PRIMARY} />}
           badge={notifCount}
-          border={theme.border}
-          badgeBg={theme.badgeBg}
+          border={THEME.border}
+          badgeBg={THEME.badgeBg}
           onClick={onNotifications}
         />
 
@@ -229,8 +285,8 @@ export function TopBar({
         <IconButton
           ariaLabel="Documents"
           icon={<FileTextIcon size={18} weight="regular" color={TEXT_PRIMARY} />}
-          border={theme.border}
-          badgeBg={theme.badgeBg}
+          border={THEME.border}
+          badgeBg={THEME.badgeBg}
           onClick={onDocuments}
         />
 
@@ -238,8 +294,8 @@ export function TopBar({
         <IconButton
           ariaLabel="Support"
           icon={<HeadsetIcon size={18} weight="regular" color={TEXT_PRIMARY} />}
-          border={theme.border}
-          badgeBg={theme.badgeBg}
+          border={THEME.border}
+          badgeBg={THEME.badgeBg}
           onClick={onHeadset}
         />
 
@@ -269,8 +325,8 @@ export function TopBar({
         <IconButton
           ariaLabel="Sign out"
           icon={<SignOutIcon size={18} weight="regular" color={TEXT_PRIMARY} />}
-          border={theme.border}
-          badgeBg={theme.badgeBg}
+          border={THEME.border}
+          badgeBg={THEME.badgeBg}
           onClick={onSignOut}
         />
       </div>

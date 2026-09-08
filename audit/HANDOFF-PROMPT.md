@@ -1,11 +1,11 @@
 # CxPortal DS — Component Audit Handoff
 
-_Last refreshed: 2026-09-08 (seventh pass — Left/Vertical Nav closed, NT Menu
-redesign build started). Supersedes the earlier 2026-09-08 version.
+_Last refreshed: 2026-09-08 (eighth pass — Top Bar closed). Supersedes the
+earlier 2026-09-08 version.
 **Also fixed this pass:** several turns' worth of `audit/` edits (Modal
 through Vertical Tabs) had been sitting uncommitted on tracked files because
 of a wrong assumption that `audit/` was untracked — it was committed back in
-`e2272da`. Caught and committed properly this pass; see Git state below._
+`e2272da`. Caught and committed properly in the prior pass; see Git state below._
 
 ## Context
 
@@ -41,7 +41,7 @@ Batching: Foundations → Global (G1–G5) → Knowledge Management → Campaign
 - `component-audit-seed.csv` — full component list (Section/Batch/Component), already in the sheet
 - `component-audit-fill.csv` — same rows with Figma node IDs and code paths filled
 - `component-audit-fill-2cols.csv` — Figma node + Code path only, for pasting
-- `component-audit-results.csv` — **the live findings log** (22 rows as of 2026-09-08)
+- `component-audit-results.csv` — **the live findings log** (23 rows as of 2026-09-08)
 - `component-audit-results-paste-g1.csv` — Status→Notes block for G1
 - `component-audit-results-paste-g2.csv` — same, full G2 (Button, Alert Messages, Counter, Tooltip, Modal, Toast)
 - `component-audit-results-paste.csv` — same, Foundations batch
@@ -165,7 +165,7 @@ the shared token.
 | Horizontal Tabs | major | P0 | complete |
 | Vertical Tabs | major | P0 | complete |
 | Left/Vertical Nav | major | P0 | complete |
-| Top Bar | — | — | not started |
+| Top Bar | major | P0 | complete |
 | Page Title | — | — | not started |
 
 Breadcrumb — no prior implementation existed (14+ inline JSX call sites,
@@ -247,11 +247,43 @@ Questions for what's approximated (the tree-connector line height is a
 formula, not Figma's five-magic-number lookup table) and what's simply
 undocumented (no Principles/Usage exists for it yet).
 
+Top Bar — Figma's component node has a fourth `product` variant, "New UI",
+with zero Principles/Usage backing — same open-question shape as NT Menu,
+but simpler to build for real since Figma modeled it as a variant of the
+*same* component rather than a separate family (Instance + 3 utility icons
+only, no brand/user-email/sign-out/dividers). Built as `product="new-ui"`.
+**Deliberate exception to the standing component-wins-over-docs rule:**
+Figma's live CxPortal component still renders a lavender/purple accent
+(`#b2a3ff`/`#d6d7ff`) distinct from CxCentral/Cases' green — reasoned as a
+stale pre-Caylent-rebrand ("Pronetx purple") leftover rather than a real
+distinct brand (per the project's own rebrand history, the code's own
+pre-existing rationale comment, Principles/Usage's total silence on a
+per-product accent, and CxCentral/New UI's own unified green) — not
+replicated, flagged in the MDX for a designer to confirm and fix in Figma
+itself. Same wrong-ramp-step pattern as the rest of the audit hit a
+seventh time: user-email/icon/instance-label text routed through
+`--text-body-primary` (bypassed to `--neutral-800` locally, same as
+every other row). The per-product `THEMES` record was collapsed into one
+flat `THEME` object since all three green variants share one accent/border
+pair — Figma actually names *two* distinct green steps here (accent
+`#3a8015` vs. button-border `#629944`), which the old per-product object
+was obscuring by giving every variant identical values anyway. Divider
+length corrected 36px → 32px. Two **new accessibility requirements** found
+in Usage that didn't exist in code at all: utility-icon `aria-label`s must
+include the live unread count (e.g. "Notifications, 4 unread"), and a
+visually-hidden `aria-live="polite"` region must announce count changes —
+both implemented. One token choice confirmed **correct** in this
+component specifically, worth not conflating with the "always wrong"
+conclusion elsewhere: the badge count text uses
+`--text-body-on-dark-surface`, which Figma explicitly names here and which
+resolves correctly (`#efefef`) for this context — contrast with Left/Vertical
+Nav, where that exact same alias was the *wrong* token choice.
+
 ## Git state
 
 Branch: **`fix/ds-audit-g1-g2-figma-alignment`** (cut from
 `claude/assign-worker-flow-prototype-rb4ms4`, which is where this work was
-sitting uncommitted by mistake). 18 commits ahead of `main` (2026-09-07 to
+sitting uncommitted by mistake). 20 commits ahead of `main` (2026-09-07 to
 2026-09-08):
 
 1. `fix(tokens): correct action and form-field semantic aliases` — the 4 shared globals.css aliases, landed first because of blast radius
@@ -272,6 +304,8 @@ sitting uncommitted by mistake). 18 commits ahead of `main` (2026-09-07 to
 16. `fix(tabs): align states, minimal-type sizing, and tab-count cap to Figma`
 17. `fix(vertical-tabs): correct active colour, remove row gap, add keyboard nav`
 18. `fix(nav): align Left/Vertical Nav to Figma; build the NT Menu redesign`
+19. `docs(audit): catch up audit/ commits through Left/Vertical Nav + NT Menu`
+20. `fix(top-bar): align product theme, instance styling, and a11y to Figma` — about to be committed
 
 Not merged to main, no PR opened yet. Note the branch's ancestry still carries
 22 commits of Assign-to-Worker v2 prototype + Caylent rebrand work that were
@@ -327,18 +361,20 @@ All six docs frames supplied on 2026-09-07 have been read, and Button Icon Small
 
 **Cross-cutting wrong-ramp-step tokens — needs a decision, bigger than one component**
 - `--text-body-primary` (`--neutral-700`, `#373737`) is very likely the wrong
-  ramp step site-wide. Three independent hits now: the G1 Checkbox & Radio
-  row already found and locally worked around it (switched to `--neutral-800`
-  directly); Modal's Header node read `Text/Body/Primary = #1d1d1d`; Toast's
-  component node read the same. `--neutral-800` (`#1d1d1d`) already exists as
-  the correct value. NOT fixed globally — `--text-body-primary` also backs
-  `--color-text-primary`, `--foreground`, `--secondary-foreground`,
-  `--accent-foreground`, `--card-foreground`, and `--popover-foreground`, so
-  repointing it changes text colour app-wide across dozens of components
-  already marked aligned/complete. Toast follows the same local workaround as
-  Checkbox & Radio (points at `--neutral-800` directly) rather than touching
-  the shared alias. Needs an explicit go/no-go on the global sweep, not
-  another silent per-component workaround.
+  ramp step site-wide. Now confirmed on **seven** rows: G1 Checkbox & Radio
+  (first local workaround, switched to `--neutral-800` directly); Modal's
+  Header node (`Text/Body/Primary = #1d1d1d`); Toast's component node (same);
+  Horizontal/Vertical Tabs; Left/Vertical Nav (via `nav-item.tsx`'s own
+  `text-on-action-secondary` comment noting the same underlying split); and
+  now Top Bar's user-email/icon/instance-label text. `--neutral-800`
+  (`#1d1d1d`) already exists as the correct value. NOT fixed globally —
+  `--text-body-primary` also backs `--color-text-primary`, `--foreground`,
+  `--secondary-foreground`, `--accent-foreground`, `--card-foreground`, and
+  `--popover-foreground`, so repointing it changes text colour app-wide
+  across dozens of components already marked aligned/complete. Every row
+  above follows the same local workaround (points at `--neutral-800`
+  directly) rather than touching the shared alias. Needs an explicit go/no-go
+  on the global sweep, not another silent per-component workaround.
 - `components/foundations/colors.stories.tsx` (the Colors foundation, marked
   **aligned** before the audit walk even started) hardcodes `#204704` for
   `--color-text-action`, `--color-icon-action`, and `--color-surface-action-primary`
@@ -382,7 +418,13 @@ All six docs frames supplied on 2026-09-07 have been read, and Button Icon Small
   semantic token entirely* for its text colour (this one resolves to
   `--neutral-100` #efefef; Figma's actual token for that spot is
   `text/on-action/primary`, i.e. `--neutral-50` #f8f8f8). Swapped locally
-  to the correct alias rather than touching the shared one.
+  to the correct alias rather than touching the shared one. **Important
+  nuance confirmed on Top Bar:** this is a wrong-token-*choice* bug, not a
+  wrong-*value* bug — Top Bar's own notification badge explicitly wants
+  `text/body/on-dark-surface` in Figma, and the alias resolves correctly
+  there (`#efefef` matches exactly). Don't generalize "this alias is wrong"
+  from the Left Nav case; it's context-dependent on which spot in Figma is
+  actually being read.
 
 **Unverified from the fix passes**
 - `--text-form-field-disabled` (now `neutral-300`) was a placeholder.
@@ -419,6 +461,14 @@ All six docs frames supplied on 2026-09-07 have been read, and Button Icon Small
   1-5 sub-items) — visually close, not pixel-identical. No Principles or
   Usage doc exists for this component yet, so the whole build is read
   directly off component nodes with nothing to cross-check against.
+- Top Bar: icon asset weight difference between CxCentral's bell icon and
+  CxPortal/Cases' — Figma appears to use a bolder/duotone asset with an
+  extra loop mark for the latter two, but it's a flattened SVG export with
+  no readable exact Phosphor weight. Flagged, not guessed at; code uses one
+  consistent `weight="regular"` everywhere.
+- Top Bar: the "New UI" variant has zero Principles/Usage backing, same
+  situation as NT Menu — built directly off the component node with
+  nothing to cross-check against.
 
 **Horizontal Tabs — Figma-internal contradiction, needs a designer call**
 - Principles (`2544-75780`) explicitly caps tab count at "2, 3, or 4 — do not
@@ -462,23 +512,36 @@ All six docs frames supplied on 2026-09-07 have been read, and Button Icon Small
 in `bg-[#4285f4]` — a hardcoded Google blue the Caylent rebrand sweep missed.
 Needs a decision on which surface colour the demo should use.
 
+**Top Bar — CxPortal purple, needs a designer call**
+- Figma's live `cx-portal` variant of the component renders a lavender/purple
+  accent (`#b2a3ff` fill / `#d6d7ff` on brand text) instead of the green every
+  other variant (CxCentral, Cases, New UI) uses. Neither Principles nor Usage
+  mention a per-product accent colour at all. Reasoned as a stale
+  pre-Caylent-rebrand ("Pronetx purple") leftover in Figma rather than a
+  deliberate distinct identity — not replicated in code, a deliberate
+  exception to the standing "component wins over docs" rule (justified from
+  project history, not from doc-vs-component precedence). Worth a designer
+  confirming and updating the Figma component itself, since as-is it
+  contradicts the rest of the family.
+
 ## Immediate next actions
 
 1. Paste `component-audit-results-paste-g2.csv` into the sheet — the full G2
    batch (Button, Alert Messages, Counter, Tooltip, Modal, Toast). Breadcrumb,
-   Horizontal Tabs, Vertical Tabs, and Left/Vertical Nav (G3) still need
-   their own paste block produced.
+   Horizontal Tabs, Vertical Tabs, Left/Vertical Nav, and Top Bar (G3) still
+   need their own paste block produced.
 2. Get a designer call on the Figma-internal/docs contradictions logged above:
    old variant model on Usage 742-11289; multi-line Alert vs its own docs;
    Modal's `role="alertdialog"` conflict; Modal's missing `xlarge` Figma frame;
-   Breadcrumb's three-way colour conflict; Horizontal Tabs' 4-vs-5-tab cap.
+   Breadcrumb's three-way colour conflict; Horizontal Tabs' 4-vs-5-tab cap;
+   Top Bar's CxPortal-purple-vs-green accent.
 3. Decide on the cross-cutting wrong-ramp-step token sweep (see Cross-cutting
-   thread above) — six confirmed tokens across seven component rows now.
-   Worth asking whether this is one systemic rebrand-migration bug rather
-   than isolated ones.
+   thread above) — six confirmed tokens, `--text-body-primary` alone now
+   hit on seven component rows. Worth asking whether this is one systemic
+   rebrand-migration bug rather than isolated ones.
 4. Audit Combobox (2255-8066) to actually close G1 — still the one hole in that batch.
-5. Continue G3: Breadcrumb, Horizontal Tabs, Vertical Tabs, and Left/Vertical
-   Nav are done. Next — Top Bar, Page Title.
+5. Continue G3: Breadcrumb, Horizontal Tabs, Vertical Tabs, Left/Vertical Nav,
+   and Top Bar are done. Next — Page Title (last one in the batch).
 6. Decide whether to migrate the 14+ existing inline breadcrumb call sites to
    the new shared component — not done this pass, flagged only.
 7. Decide whether to consolidate `nav-item.tsx` and `Sidebar.tsx`'s duplicated

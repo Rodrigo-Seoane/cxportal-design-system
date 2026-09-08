@@ -1904,14 +1904,14 @@ export const registry: Record<string, ComponentEntry> = {
     slug: 'top-bar',
     title: 'Top Bar',
     description:
-      'Application-level top bar with product branding, instance label, and action icon buttons. Supports three product themes: CxPortal, CxCentral, and Cases.',
+      'Application-level top bar with product branding, instance label, and action icon buttons. CxPortal, CxCentral, and Cases share one unified accent — only the wordmark differs. "New UI" is a stripped-down variant tracking the org\'s active redesign direction.',
     status: 'stable',
     scope: { TopBar },
     propSchema: {
       product: {
         type: 'chip-select',
         label: 'Product',
-        options: ['cx-portal', 'cx-central', 'cases'] as const,
+        options: ['cx-portal', 'cx-central', 'cases', 'new-ui'] as const,
         default: 'cx-portal',
       },
       instance: {

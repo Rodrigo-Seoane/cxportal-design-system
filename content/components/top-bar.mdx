@@ -1,6 +1,6 @@
 ---
 title: Top Bar
-description: Application-level top bar with product branding, instance context, and utility action buttons. Adapts colors per product theme — CxPortal, CxCentral, and Cases.
+description: Application-level top bar with product branding, instance context, and utility action buttons. CxPortal, CxCentral, and Cases share one unified accent — only the wordmark differs. "New UI" is a stripped-down variant tracking the org's active redesign direction.
 figmaNodeId: 8-5042
 figmaUpdated: Apr 09, 2026
 status: stable
@@ -10,7 +10,7 @@ status: stable
 
 The Top Bar is the persistent global navigation bar that runs across the full width at the top of the application. It anchors the user with product identity on the left and surfaces contextual utility actions on the right — notifications, documents, support, user info, and sign out.
 
-It appears once per layout, above all page content, and is not scrollable. Its color accents adapt automatically based on the active product variant.
+It appears once per layout, above all page content, and is not scrollable.
 
 ## When to use
 
@@ -22,8 +22,10 @@ It appears once per layout, above all page content, and is not scrollable. Its c
 
 ## Anatomy
 
-- **Product brand** *(left)* — Product name rendered with the product's color treatment. CxPortal and Cases include a product icon alongside the name.
-- **Instance label** *(right — first group)* — Semibold "Instance:" label in the product accent color followed by the instance slug in muted text.
+Figma's own Principles Anatomy lists only two pieces — **Product area** and **Utility icons** — for the CxPortal/CxCentral/Cases variants; the Instance label doesn't appear on those variants in Figma at all. It's kept in code as a real multi-tenancy need, but only has visual precedent from the "New UI" variant (see below), so it's styled to match that reference rather than the old accent-colored treatment.
+
+- **Product brand** *(left)* — Product name. CxPortal and Cases include a product icon alongside the name.
+- **Instance label** *(right — first group)* — Semibold "Instance:" label in plain dark text followed by the instance slug in muted secondary text.
 - **Notification bell** — Icon button with a numeric badge showing unread count. Badge hidden when count is 0.
 - **Documents** — Icon button for accessing documents and reports.
 - **Headset** — Icon button for support / contact center.
@@ -31,9 +33,15 @@ It appears once per layout, above all page content, and is not scrollable. Its c
 - **Sign out** — Icon button to end the session.
 - **Vertical dividers** — Separate the instance group from the icon cluster and the icon cluster from the user group.
 
+### New UI variant
+
+Figma's component node also includes a fourth variant, "New UI," with no backing in Principles or Usage — same situation as the NT Menu sidebar redesign. It strips the anatomy down to just the Instance label and the three utility icon buttons: no brand block, no user-email button, no sign-out button, and no dividers. Built here as a real `product="new-ui"` value (not just flagged) since it tracks the same active org redesign direction as NT Menu.
+
 ## Variants
 
 ### Product themes
+
+All three main variants share the same unified green accent — only the wordmark and icon differ. Figma's live CxPortal component still renders a lavender/purple accent (`#b2a3ff`/`#d6d7ff`); that's treated as a stale pre-Caylent-rebrand ("Pronetx purple") leftover, not a deliberate distinct brand, and is not replicated here — see Open questions.
 
 <Table size="compact" className="mb-6">
   <TableHeader>
@@ -47,21 +55,27 @@ It appears once per layout, above all page content, and is not scrollable. Its c
   <TableBody>
     <TableRow>
       <TableCell><strong>cx-portal</strong></TableCell>
-      <TableCell>"Cx" dark + "Portal" blue, plug icon</TableCell>
+      <TableCell>"Cx" dark + "Portal" green, plug icon</TableCell>
       <TableCell><code>#3a8015</code></TableCell>
-      <TableCell><code>#3a8015</code></TableCell>
+      <TableCell><code>#629944</code></TableCell>
     </TableRow>
     <TableRow>
       <TableCell><strong>cx-central</strong></TableCell>
-      <TableCell>"Cx" dark + "Central" teal, no icon</TableCell>
+      <TableCell>"Cx" dark + "Central" green, no icon</TableCell>
       <TableCell><code>#3a8015</code></TableCell>
-      <TableCell><code>#3a8015</code></TableCell>
+      <TableCell><code>#629944</code></TableCell>
     </TableRow>
     <TableRow>
       <TableCell><strong>cases</strong></TableCell>
-      <TableCell>"Cases" teal, briefcase icon</TableCell>
+      <TableCell>"Cases" green (whole word), briefcase icon</TableCell>
       <TableCell><code>#3a8015</code></TableCell>
+      <TableCell><code>#629944</code></TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><strong>new-ui</strong></TableCell>
+      <TableCell>No brand block — Instance + utility icons only</TableCell>
       <TableCell><code>#3a8015</code></TableCell>
+      <TableCell><code>#629944</code></TableCell>
     </TableRow>
   </TableBody>
 </Table>
@@ -149,6 +163,16 @@ import { TopBar } from '@/components/ui/top-bar'
 />
 ```
 
+### New UI (stripped-down variant)
+
+```tsx
+<TopBar
+  product="new-ui"
+  instance="pronetxcrawler"
+  notifCount={4}
+/>
+```
+
 ## Token reference
 
 <Table size="compact" className="mb-6">
@@ -166,29 +190,34 @@ import { TopBar } from '@/components/ui/top-bar'
       <TableCell>TopBar background</TableCell>
     </TableRow>
     <TableRow>
-      <TableCell><code>--border-color/neutral</code></TableCell>
+      <TableCell><code>--border-color-surface-active-terciary-default</code></TableCell>
       <TableCell><code>#efefef</code></TableCell>
-      <TableCell>Bottom border and dividers</TableCell>
+      <TableCell>Bottom border and dividers. Same hex as the old <code>--border-color/neutral</code> alias, corrected to Figma's actual semantic name.</TableCell>
     </TableRow>
     <TableRow>
-      <TableCell><code>--content-action/primary/default</code></TableCell>
+      <TableCell><code>--content-action-primary-default</code></TableCell>
       <TableCell><code>#3a8015</code></TableCell>
-      <TableCell>CxPortal accent — instance label, button borders, badge</TableCell>
+      <TableCell>Unified accent — brand suffix text, button borders*, badge bg. One token for all three main variants, not a separate CxPortal-vs-teal split.</TableCell>
     </TableRow>
     <TableRow>
-      <TableCell><code>--content-action/teal/default</code></TableCell>
-      <TableCell><code>#3a8015</code></TableCell>
-      <TableCell>CxCentral / Cases accent</TableCell>
+      <TableCell><code>--border-color-surface-active-primary-default</code></TableCell>
+      <TableCell><code>#629944</code></TableCell>
+      <TableCell>*Icon button border — a lighter step of the same green ramp than the badge/accent fill.</TableCell>
     </TableRow>
     <TableRow>
-      <TableCell><code>--text/body/primary</code></TableCell>
-      <TableCell><code>#373737</code></TableCell>
-      <TableCell>Icon fill, user email text, brand "Cx" first part</TableCell>
+      <TableCell><code>--neutral-800</code></TableCell>
+      <TableCell><code>#1d1d1d</code></TableCell>
+      <TableCell>Icon fill, user email text, "Instance:" label, brand "Cx" first part. Figma names this <code>text/body/primary</code>, but that shared alias resolves to the wrong value (<code>#373737</code>) in this codebase — bypassed directly, per the recurring wrong-ramp-step bug tracked across this audit.</TableCell>
     </TableRow>
     <TableRow>
-      <TableCell><code>--text/breadcrumb</code></TableCell>
-      <TableCell><code>#373737</code></TableCell>
-      <TableCell>Instance value text</TableCell>
+      <TableCell><code>--text-body-secondary</code></TableCell>
+      <TableCell><code>#8d8d8d</code></TableCell>
+      <TableCell>Instance value text — styled to match the "New UI" variant, the only current Figma reference for this text.</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><code>--text-body-on-dark-surface</code></TableCell>
+      <TableCell><code>#efefef</code></TableCell>
+      <TableCell>Notification badge count text. Figma names this token explicitly here and it's the correct choice for this context — contrast with Left/Vertical Nav, where the same alias was the wrong token choice.</TableCell>
     </TableRow>
     <TableRow>
       <TableCell>Height</TableCell>
@@ -200,13 +229,25 @@ import { TopBar } from '@/components/ui/top-bar'
       <TableCell>2px 16px</TableCell>
       <TableCell>Vertical + horizontal inset</TableCell>
     </TableRow>
+    <TableRow>
+      <TableCell>Divider height</TableCell>
+      <TableCell>32px</TableCell>
+      <TableCell>Vertical divider length (corrected from a previous 36px)</TableCell>
+    </TableRow>
   </TableBody>
 </Table>
 
 ## Accessibility
 
 - The `<header>` landmark element wraps the TopBar so screen readers can identify it as the page banner.
-- All icon buttons include `aria-label` attributes describing their action (e.g., "Notifications", "Sign out").
-- The notification badge count is part of the button's rendered subtree and will be announced by screen readers alongside the button label.
+- All icon buttons include `aria-label` attributes describing their action. Per Usage, the notification bell's label includes the live unread count (e.g. "Notifications, 4 unread") rather than a static "Notifications" — screen reader users get the count without needing to parse the visual badge.
+- A visually-hidden `aria-live="polite"` region announces unread-count changes as they happen, since the visual badge alone wouldn't otherwise reach assistive tech proactively.
 - The user email button is a native `<button>` element, keyboard-focusable and activatable with Enter or Space.
 - Color is not the sole differentiator between product themes — the brand name text and product icon also change per variant.
+
+## Open questions
+
+- **CxPortal purple vs. green** — Figma's live component still renders a lavender/purple accent for the `cx-portal` variant, distinct from CxCentral/Cases' green. Treated as a stale rebrand leftover (see the Caylent rebrand history) rather than a deliberate distinct identity, given Principles/Usage's total silence on a per-product accent and CxCentral/New UI's own unified green. Flagging for a designer call rather than silently assuming — worth confirming Figma itself gets updated.
+- **Missing Instance anatomy on the 3 main variants** — Figma's current component and Principles' own Anatomy list don't show an Instance label for CxPortal/CxCentral/Cases at all; it only appears on the New UI variant. Kept in code (real multi-tenancy need) but restyled to match the one available reference.
+- **New UI has no Principles/Usage backing** — same open-question pattern as the NT Menu sidebar redesign discovered earlier in this audit.
+- **Icon asset weight (unverified)** — Figma appears to use a visually different, bolder/duotone bell icon for CxCentral vs. CxPortal/Cases. The exact Phosphor weight can't be read reliably off a flattened SVG export, so this is flagged rather than guessed at — current code uses one consistent `weight="regular"` across all variants.
