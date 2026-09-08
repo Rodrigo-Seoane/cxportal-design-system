@@ -1807,7 +1807,7 @@ export const registry: Record<string, ComponentEntry> = {
     slug: 'page-title',
     title: 'Page Title',
     description:
-      'Page-level header with a large blue title, optional subtitle, optional chip, and a composable right-side actions slot.',
+      'Page-level header with a large title, optional subtitle, optional chip, and a composable right-side actions slot.',
     status: 'stable',
     scope: { PageTitle },
     propSchema: {

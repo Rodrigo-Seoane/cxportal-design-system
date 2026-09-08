@@ -1,7 +1,7 @@
 # CxPortal DS — Component Audit Handoff
 
-_Last refreshed: 2026-09-08 (eighth pass — Top Bar closed). Supersedes the
-earlier 2026-09-08 version.
+_Last refreshed: 2026-09-08 (ninth pass — Page Title closed, G3 complete).
+Supersedes the earlier 2026-09-08 version.
 **Also fixed this pass:** several turns' worth of `audit/` edits (Modal
 through Vertical Tabs) had been sitting uncommitted on tracked files because
 of a wrong assumption that `audit/` was untracked — it was committed back in
@@ -41,7 +41,7 @@ Batching: Foundations → Global (G1–G5) → Knowledge Management → Campaign
 - `component-audit-seed.csv` — full component list (Section/Batch/Component), already in the sheet
 - `component-audit-fill.csv` — same rows with Figma node IDs and code paths filled
 - `component-audit-fill-2cols.csv` — Figma node + Code path only, for pasting
-- `component-audit-results.csv` — **the live findings log** (23 rows as of 2026-09-08)
+- `component-audit-results.csv` — **the live findings log** (24 rows as of 2026-09-08)
 - `component-audit-results-paste-g1.csv` — Status→Notes block for G1
 - `component-audit-results-paste-g2.csv` — same, full G2 (Button, Alert Messages, Counter, Tooltip, Modal, Toast)
 - `component-audit-results-paste.csv` — same, Foundations batch
@@ -157,7 +157,7 @@ the same alias and wasn't re-checked against Figma this pass, so Toast's
 success icon now points directly at `--success-500` instead of repointing
 the shared token.
 
-## Progress — G3 (IN PROGRESS)
+## Progress — G3 (DONE)
 
 | Component | Status | Priority | Docs |
 |---|---|---|---|
@@ -166,7 +166,7 @@ the shared token.
 | Vertical Tabs | major | P0 | complete |
 | Left/Vertical Nav | major | P0 | complete |
 | Top Bar | major | P0 | complete |
-| Page Title | — | — | not started |
+| Page Title | major | P0 | complete |
 
 Breadcrumb — no prior implementation existed (14+ inline JSX call sites,
 plus an MDX doc describing a component that was never built). Figma's
@@ -279,11 +279,44 @@ conclusion elsewhere: the badge count text uses
 resolves correctly (`#efefef`) for this context — contrast with Left/Vertical
 Nav, where that exact same alias was the *wrong* token choice.
 
+Page Title — closes out G3. **The "Component" Figma link pasted this round
+turned out to be a copy-paste carryover of the Top Bar node from the
+previous message**, not a real Page Title component link — caught and
+not used; built entirely from "Open Page Title" (`3700-1594`) and "Title
+Controls" (`2542-4924`) instead, both of which cleanly matched the
+requested component. Two real color bugs: Title was wired to the green
+`--content-action-primary-default`, but Figma's live component renders
+it in plain dark neutral (`text/body/primary`, `#1d1d1d`) — not a brand
+color at all; bypassed to `--neutral-800` directly per the usual
+wrong-ramp-step workaround. Subtitle was wired to `--text-body-primary`
+— wrong semantic token entirely (not just wrong ramp step) — Figma wants
+`text/body/secondary`, and that alias already resolves correctly
+(`#8d8d8d`) in this codebase, so it was a straightforward token swap, no
+bypass needed. Chip text hit the same `--text-on-action-secondary`
+wrong-ramp-step bug already confirmed on Horizontal/Vertical Tabs.
+Chip was also missing its leading icon entirely (Figma's chip anatomy
+always pairs a 12px icon with the label) — added. Title-to-subtitle gap
+corrected from 4px to 12px (both the old code AND Usage's own
+Specifications table had 4px — component wins). Container padding
+corrected from 24px horizontal to a uniform 16px. Actions row alignment
+was hardcoded to always vertically center; Figma bottom-aligns it with
+the title block whenever actions are present — fixed to be conditional.
+**Story-file fix:** `page-title.stories.tsx`'s `DfcHeaderActions` example
+(surfaced in the doc's own "DFC Header Controls" code samples) had
+fabricated a "Path Tester" button and an Admin/Business User/Reader
+segmented-tab control with zero Figma backing, including a one-off
+hardcoded teal (`#3d5459`) that doesn't exist anywhere in this design
+system — rebuilt to match Figma's real "Title Controls" `User Roles`
+variant (Search field + 4 icon-only utility buttons + Role dropdown),
+verified live in a temporarily-started Storybook instance since this
+repo has no Storybook server running by default and the docs-site
+registry playground doesn't exercise the `actions` slot.
+
 ## Git state
 
 Branch: **`fix/ds-audit-g1-g2-figma-alignment`** (cut from
 `claude/assign-worker-flow-prototype-rb4ms4`, which is where this work was
-sitting uncommitted by mistake). 20 commits ahead of `main` (2026-09-07 to
+sitting uncommitted by mistake). 21 commits ahead of `main` (2026-09-07 to
 2026-09-08):
 
 1. `fix(tokens): correct action and form-field semantic aliases` — the 4 shared globals.css aliases, landed first because of blast radius
@@ -305,7 +338,8 @@ sitting uncommitted by mistake). 20 commits ahead of `main` (2026-09-07 to
 17. `fix(vertical-tabs): correct active colour, remove row gap, add keyboard nav`
 18. `fix(nav): align Left/Vertical Nav to Figma; build the NT Menu redesign`
 19. `docs(audit): catch up audit/ commits through Left/Vertical Nav + NT Menu`
-20. `fix(top-bar): align product theme, instance styling, and a11y to Figma` — about to be committed
+20. `fix(top-bar): align product theme, instance styling, and a11y to Figma`
+21. `fix(page-title): correct colors, spacing, and DFC controls story to Figma` — about to be committed
 
 Not merged to main, no PR opened yet. Note the branch's ancestry still carries
 22 commits of Assign-to-Worker v2 prototype + Caylent rebrand work that were
@@ -361,12 +395,15 @@ All six docs frames supplied on 2026-09-07 have been read, and Button Icon Small
 
 **Cross-cutting wrong-ramp-step tokens — needs a decision, bigger than one component**
 - `--text-body-primary` (`--neutral-700`, `#373737`) is very likely the wrong
-  ramp step site-wide. Now confirmed on **seven** rows: G1 Checkbox & Radio
+  ramp step site-wide. Now confirmed on **eight** rows: G1 Checkbox & Radio
   (first local workaround, switched to `--neutral-800` directly); Modal's
   Header node (`Text/Body/Primary = #1d1d1d`); Toast's component node (same);
   Horizontal/Vertical Tabs; Left/Vertical Nav (via `nav-item.tsx`'s own
-  `text-on-action-secondary` comment noting the same underlying split); and
-  now Top Bar's user-email/icon/instance-label text. `--neutral-800`
+  `text-on-action-secondary` comment noting the same underlying split); Top
+  Bar's user-email/icon/instance-label text; and now Page Title's title
+  text (previously wired to the green accent token instead, masking the
+  same underlying alias bug until the component was actually compared
+  against Figma). `--neutral-800`
   (`#1d1d1d`) already exists as the correct value. NOT fixed globally —
   `--text-body-primary` also backs `--color-text-primary`, `--foreground`,
   `--secondary-foreground`, `--accent-foreground`, `--card-foreground`, and
@@ -398,11 +435,11 @@ All six docs frames supplied on 2026-09-07 have been read, and Button Icon Small
   `open-inventory` components. Tabs bypasses both locally, same pattern as
   above. `--text-on-action-secondary` was confirmed wrong a **second** time
   on Vertical Tabs the same session — its Default-state text token reads
-  the identical `#373737`-instead-of-`#1d1d1d` split. This is now five
-  confirmed tokens in the same wrong-ramp-step family
-  (`--text-body-primary`, `--icon-action`, `--icon-success`,
-  `--text-action`, `--text-on-action-secondary`), hit across six component
-  rows total — worth asking whether there's a systemic cause (e.g. a bulk
+  the identical `#373737`-instead-of-`#1d1d1d` split — and a **third** time
+  on Page Title's chip text. This is now five confirmed tokens in the
+  same wrong-ramp-step family (`--text-body-primary`, `--icon-action`,
+  `--icon-success`, `--text-action`, `--text-on-action-secondary`), hit
+  across eight component rows total — worth asking whether there's a systemic cause (e.g. a bulk
   find-replace during the rebrand that landed one ramp step short) rather
   than treating each as an isolated bug.
 - `--surface-action-primary-hover` joins the list too, but with a twist:
@@ -469,6 +506,10 @@ All six docs frames supplied on 2026-09-07 have been read, and Button Icon Small
 - Top Bar: the "New UI" variant has zero Principles/Usage backing, same
   situation as NT Menu — built directly off the component node with
   nothing to cross-check against.
+- Page Title: the "Metadata Section" / "Title w KB Details" anatomy piece
+  (version, dates, associations) is documented as a live, non-deprecated
+  Figma variant, but no concrete component node showing it was supplied
+  this pass — not built, flagged rather than guessed at.
 
 **Horizontal Tabs — Figma-internal contradiction, needs a designer call**
 - Principles (`2544-75780`) explicitly caps tab count at "2, 3, or 4 — do not
@@ -524,24 +565,35 @@ Needs a decision on which surface colour the demo should use.
   confirming and updating the Figma component itself, since as-is it
   contradicts the rest of the family.
 
+**Page Title — `<h2>` vs `<h1>`, needs a decision**
+- Figma's Usage doc says the page title "should be the first heading
+  element on the page for screen reader navigation," which argues for
+  `<h1>`. Not changed — at least three routes
+  (`access-management/roles|users|companies/[id]`) already render their
+  own literal `<h1>` for a record name via a shared layout that also
+  renders this component, so switching to `<h1>` would create duplicate
+  top-level headings on those specific pages. Left as `<h2>`, flagged
+  for whoever owns the app's heading hierarchy rather than resolved here.
+
 ## Immediate next actions
 
 1. Paste `component-audit-results-paste-g2.csv` into the sheet — the full G2
-   batch (Button, Alert Messages, Counter, Tooltip, Modal, Toast). Breadcrumb,
-   Horizontal Tabs, Vertical Tabs, Left/Vertical Nav, and Top Bar (G3) still
-   need their own paste block produced.
+   batch (Button, Alert Messages, Counter, Tooltip, Modal, Toast). The whole
+   of G3 (Breadcrumb, Horizontal Tabs, Vertical Tabs, Left/Vertical Nav, Top
+   Bar, Page Title) still needs its own paste block produced.
 2. Get a designer call on the Figma-internal/docs contradictions logged above:
    old variant model on Usage 742-11289; multi-line Alert vs its own docs;
    Modal's `role="alertdialog"` conflict; Modal's missing `xlarge` Figma frame;
    Breadcrumb's three-way colour conflict; Horizontal Tabs' 4-vs-5-tab cap;
-   Top Bar's CxPortal-purple-vs-green accent.
+   Top Bar's CxPortal-purple-vs-green accent; Page Title's `<h2>`-vs-`<h1>`
+   heading-hierarchy tension.
 3. Decide on the cross-cutting wrong-ramp-step token sweep (see Cross-cutting
    thread above) — six confirmed tokens, `--text-body-primary` alone now
-   hit on seven component rows. Worth asking whether this is one systemic
+   hit on eight component rows. Worth asking whether this is one systemic
    rebrand-migration bug rather than isolated ones.
 4. Audit Combobox (2255-8066) to actually close G1 — still the one hole in that batch.
-5. Continue G3: Breadcrumb, Horizontal Tabs, Vertical Tabs, Left/Vertical Nav,
-   and Top Bar are done. Next — Page Title (last one in the batch).
+5. **G3 is done.** Move on to G4 (Data display): Table, Pagination, Metric
+   Tiles, Inline Stats Cards, Inline Context Data, Chips & Tags.
 6. Decide whether to migrate the 14+ existing inline breadcrumb call sites to
    the new shared component — not done this pass, flagged only.
 7. Decide whether to consolidate `nav-item.tsx` and `Sidebar.tsx`'s duplicated

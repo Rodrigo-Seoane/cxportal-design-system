@@ -1,16 +1,20 @@
 'use client'
 
 import type { ReactNode } from 'react'
-import { XIcon } from '@phosphor-icons/react'
+import { PlugsConnectedIcon, XIcon } from '@phosphor-icons/react'
 
 // ── Design tokens ─────────────────────────────────────────────────────────────
 
+// Figma's title text is a plain dark neutral (text/body/primary, #1d1d1d), not
+// the green brand accent -- bypassed to --neutral-800 directly since
+// --text-body-primary itself resolves to the wrong ramp step (#373737) in
+// this codebase, the same recurring bug found throughout this audit.
 const T = {
-  titleColor:   'var(--content-action-primary-default)',   // --content-action/primary/default
-  subtitleColor:'var(--text-body-primary)',   // --text/body/primary
+  titleColor:   'var(--neutral-800)',
+  subtitleColor:'var(--text-body-secondary)',   // --text/body/secondary
   chipBg:       'var(--info-100)',   // --info/100
-  chipText:     'var(--text-on-action-secondary)',   // --text/on-action/secondary
-  chipIcon:     'var(--text-on-action-secondary)',
+  chipText:     'var(--neutral-800)',   // --text/on-action/secondary, bypassed -- see above
+  chipIcon:     'var(--neutral-800)',
 } as const
 
 // ── Internal: Info Chip ───────────────────────────────────────────────────────
@@ -37,6 +41,7 @@ function InfoChip({
       color:         T.chipText,
       whiteSpace:    'nowrap',
     }}>
+      <PlugsConnectedIcon size={12} weight="regular" color={T.chipIcon} />
       {label}
       {onDismiss && (
         <button
@@ -90,15 +95,18 @@ export function PageTitle({
       className={className}
       style={{
         display:         'flex',
-        alignItems:      'center',
+        // Figma bottom-aligns the actions row with the title block when
+        // actions are present (items-end); with no actions it centers
+        // vertically (items-center) since there's nothing to align against.
+        alignItems:      actions ? 'flex-end' : 'center',
         justifyContent:  'space-between',
-        padding:         '16px 24px',
+        padding:         '16px',
         width:           '100%',
         backgroundColor: 'var(--color-surface-section, white)',
       }}
     >
       {/* Left — title + optional chip + optional subtitle */}
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
           <h2 style={{
             margin:     0,

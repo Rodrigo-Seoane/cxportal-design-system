@@ -1,16 +1,16 @@
 ---
 title: Page Title
-description: Page-level header with a large blue title, optional subtitle, optional chip, and a composable right-side actions slot.
-figmaNodeId: 187-8471
-figmaUpdated: Jun 10, 2026
+description: Page-level header with a large title, optional subtitle, optional chip, and a composable right-side actions slot.
+figmaNodeId: 3700-1594
+figmaUpdated: Apr 09, 2026
 status: stable
 ---
 
 ## Overview
 
-Page Title is the primary visual anchor for any content page. It displays the page name in a large blue heading alongside an optional subtitle and status chip. The right side is a composable slot where consumers can pass buttons, search bars, tabs, or any other page-level controls.
+Page Title is the primary visual anchor for any content page. It displays the page name in a large heading (plain dark neutral, not a brand color) alongside an optional subtitle and status chip. The right side is a composable slot where consumers can pass buttons, search bars, tabs, or any other page-level controls.
 
-The component was simplified from three rigid variants to a single composable pattern. The previous `with-kb-details` variant is deprecated — KB metadata should be handled by a separate component if needed.
+The component was simplified from three rigid variants to a single composable pattern. Figma's own Usage doc marks the **Instance Switcher** anatomy piece `[Deprecated]` — that's the only deprecated piece. The **Metadata Section** (KB-details variant: version, dates, associations) is a separate, still-live anatomy option in Figma's docs that this component doesn't implement — see Open questions below, not the same thing as the deprecated Instance Switcher.
 
 ## When to use
 
@@ -25,16 +25,16 @@ The component was simplified from three rigid variants to a single composable pa
 
 ## Anatomy
 
-- **Title** — H2, 28px, weight 400, `#3a8015` (primary brand color). Always present.
-- **Subtitle** *(optional)* — 12px, weight 400, `#373737`. Descriptive one-liner below the title.
-- **Chip** *(optional)* — Info pill label. `#d6e2f5` background, 10px semibold text, border-radius 8px. Controlled by `showChip` prop.
-- **Actions slot** *(optional)* — Right-aligned composable area. Consumers pass any ReactNode (ghost buttons, search inputs, tab groups, etc.).
+- **Title** — 28px, weight 400, `#1d1d1d` (plain dark neutral, not a brand color). Always present.
+- **Subtitle** *(optional)* — 12px, weight 400, `#8d8d8d` (muted secondary text). Descriptive one-liner below the title.
+- **Chip** *(optional)* — Info pill with a leading icon, `#d6e2f5` background, 10px semibold text, border-radius 8px. Controlled by `showChip` prop.
+- **Actions slot** *(optional)* — Right-aligned composable area, bottom-aligned with the title block. Consumers pass any ReactNode (ghost buttons, search inputs, tab groups, etc.).
 
 ## Do's & Don'ts
 
 <DosDonts>
   <Do description="Keep the title to the page or record name — one to four words. Users scan it to confirm they're in the right place." />
-  <Dont description="Put navigational cues (breadcrumbs, back arrows) inside the PageTitle component. Those belong above it in the layout hierarchy." />
+  <Dont description="Put navigational cues (breadcrumbs, back arrows) inside the PageTitle component. Those belong above it in the layout hierarchy — confirmed by Figma's own Usage Anatomy list, which never mentions a breadcrumb piece even though the pulled 'Open Page Title' example frame shows one stacked above the title for illustration." />
 </DosDonts>
 
 <DosDonts>
@@ -249,24 +249,24 @@ import { PencilSimpleIcon, TrashIcon } from '@phosphor-icons/react'
   </TableHeader>
   <TableBody>
     <TableRow>
-      <TableCell><code>--content-action/primary/default</code></TableCell>
-      <TableCell><code>#3a8015</code></TableCell>
-      <TableCell>Title color</TableCell>
+      <TableCell><code>--neutral-800</code></TableCell>
+      <TableCell><code>#1d1d1d</code></TableCell>
+      <TableCell>Title color. Figma names this <code>text/body/primary</code>, but that shared alias resolves to the wrong ramp step (<code>#373737</code>) in this codebase — bypassed directly, same recurring bug found throughout this audit. Previously wired to the green <code>--content-action-primary-default</code>, which Figma's live component doesn't use at all.</TableCell>
     </TableRow>
     <TableRow>
-      <TableCell><code>--text/body/primary</code></TableCell>
-      <TableCell><code>#373737</code></TableCell>
-      <TableCell>Subtitle text color</TableCell>
+      <TableCell><code>--text-body-secondary</code></TableCell>
+      <TableCell><code>#8d8d8d</code></TableCell>
+      <TableCell>Subtitle text color. Previously wired to <code>--text-body-primary</code> — wrong semantic token entirely, not just a wrong ramp step; this alias already resolves correctly.</TableCell>
     </TableRow>
     <TableRow>
-      <TableCell><code>--info/100</code></TableCell>
+      <TableCell><code>--info-100</code></TableCell>
       <TableCell><code>#d6e2f5</code></TableCell>
       <TableCell>Chip background</TableCell>
     </TableRow>
     <TableRow>
-      <TableCell>Heading/H2 size</TableCell>
+      <TableCell>Title size</TableCell>
       <TableCell>28px / 400</TableCell>
-      <TableCell>Title</TableCell>
+      <TableCell>Title. Figma's own prose (Principles + Usage) calls this "H2 typography," but the actual text style variable applied is named <code>Heading/H1</code> internally — a Figma-side naming inconsistency, not a code bug (the pixel values agree either way).</TableCell>
     </TableRow>
     <TableRow>
       <TableCell>Body/Small size</TableCell>
@@ -280,8 +280,8 @@ import { PencilSimpleIcon, TrashIcon } from '@phosphor-icons/react'
     </TableRow>
     <TableRow>
       <TableCell>Container padding</TableCell>
-      <TableCell>16px 24px</TableCell>
-      <TableCell>Horizontal and vertical</TableCell>
+      <TableCell>16px</TableCell>
+      <TableCell>Horizontal and vertical, uniform. Corrected from 24px horizontal — Figma's actual container only pads <code>--scale/4</code> (16px) on each side.</TableCell>
     </TableRow>
     <TableRow>
       <TableCell>Title → Chip gap</TableCell>
@@ -289,21 +289,35 @@ import { PencilSimpleIcon, TrashIcon } from '@phosphor-icons/react'
       <TableCell>Horizontal</TableCell>
     </TableRow>
     <TableRow>
-      <TableCell>Title → Subtitle gap</TableCell>
-      <TableCell>4px</TableCell>
-      <TableCell>Vertical</TableCell>
+      <TableCell>Title block → Subtitle gap</TableCell>
+      <TableCell>12px</TableCell>
+      <TableCell>Vertical. Corrected from 4px — measured directly off Figma's "Title" node gap, which both the old code and Usage's own Specifications table had wrong.</TableCell>
     </TableRow>
     <TableRow>
       <TableCell>Actions gap</TableCell>
       <TableCell>12px</TableCell>
       <TableCell>Between action items</TableCell>
     </TableRow>
+    <TableRow>
+      <TableCell>Actions row alignment</TableCell>
+      <TableCell><code>flex-end</code> with actions, <code>center</code> without</TableCell>
+      <TableCell>Figma bottom-aligns the actions row with the title block when actions are present; with no actions there's nothing to align against, so it centers. Previously hardcoded to always center.</TableCell>
+    </TableRow>
   </TableBody>
 </Table>
 
 ## Accessibility
 
-- The title renders as an `<h2>` — there should be only one PageTitle per page.
+- The title renders as an `<h2>` — there should be only one PageTitle per page. **Open question:** Figma's own Usage doc says the page title "should be the first heading element on the page for screen reader navigation," which argues for `<h1>`. Not changed here — at least three routes (`access-management/roles/[roleId]`, `users/[userId]`, `companies/[companyId]`) already render their own literal `<h1>` for a record name *alongside* this component's title (via a shared layout), so switching to `<h1>` would create duplicate top-level headings on those pages. Needs a decision on the app's heading hierarchy, not a silent tag change here.
 - The chip is decorative text inside a `<span>`; if dismissible, the dismiss button has an `aria-label`.
 - Actions passed via the `actions` slot should be accessible buttons or links with visible labels.
 - Use chips to indicate content type or status only when the categorization aids understanding — they should not be the only method of conveying critical information.
+
+## Open questions
+
+- **Mismatched "Component" Figma link this pass** — the node pasted as this component's own "Component" link (`8-5042`) is actually the Top Bar component node audited in the previous row, not a Page Title node. Treated as a copy-paste carryover and not used; this doc and the code fixes above are built entirely from the "Open Page Title" (`3700-1594`) and "Title Controls" (`2542-4924`) nodes instead, which do match.
+- **Title vs. Heading/H1 naming** — see the Title size row above; Figma's prose says "H2," the underlying text style variable is named "H1." Cosmetic Figma-side inconsistency, not acted on.
+- **`<h2>` vs. `<h1>`** — see Accessibility above. Figma's guidance and this app's existing detail-page headings are in tension; flagged for a decision rather than resolved silently.
+- **Metadata Section / "Title w KB Details" variant** — Figma's Usage doc lists this as a live (non-deprecated) variant with its own anatomy (version, dates, associations), distinct from the deprecated Instance Switcher. No concrete component node showing this variant was supplied this pass, so it's not built — flagged rather than guessed at.
+- **Stale pre-rebrand colors in Figma's own Specifications table** — Usage's table claims Title `#4285F4`, Subtitle/Body Primary `#08111F`, Chip Text `#182138`, Metadata Label `#7C7B8B` — none of these match the actual live component (which uses `#1d1d1d` and `#8d8d8d`, confirmed via `get_variable_defs`) or any current token. Same stale-doc-color pattern found on Alert Messages, Dropdown, Switch, Counter, Top Bar, etc. throughout this whole audit — not corrected in Figma, worth a designer pass.
+- **DFC Header Controls story corrected** — the `DfcHeaderActions` example in `page-title.stories.tsx` previously showed a fabricated "Path Tester" button and a 3-way Admin/Business User/Reader segmented tab control with no Figma backing at all (including a one-off hardcoded teal, `#3d5459`, that doesn't exist anywhere in this design system). Rebuilt to match Figma's real "Title Controls" component, `type="User Roles"`: a Search field, four icon-only utility buttons (Download/Upload/Megaphone/Signpost), and a Role label + dropdown field.
