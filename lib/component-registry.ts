@@ -14,14 +14,14 @@ import {
 } from '@/components/ui/table'
 import { Chip, Tag } from '@/components/ui/chip'
 import { Counter } from '@/components/ui/counter'
-import { Tabs, TabList, Tab, TabPanel } from '@/components/ui/tabs'
+import { Tabs, TabList, Tab, TabPanel, TableIcon } from '@/components/ui/tabs'
 import { Modal, ModalHeader, ModalBody, ModalFooter, XCircleIcon, FloppyDisk } from '@/components/ui/modal'
 import { Switch, BooleanIcon } from '@/components/ui/switch'
 import { MessageBox } from '@/components/ui/message-box'
 import { Pagination } from '@/components/ui/pagination'
 import { VerticalTab, VerticalTabGroup, VerticalTabIcon } from '@/components/ui/vertical-tabs'
 import { Skeleton, Spinner } from '@/components/ui/loading'
-import { Plus, Grid } from 'lucide-react'
+import { Plus } from 'lucide-react'
 import { DistributionControls } from '@/components/ui/distribution-controls'
 import { Toast } from '@/components/ui/toast'
 import { Tooltip } from '@/components/ui/tooltip'
@@ -577,9 +577,9 @@ export const registry: Record<string, ComponentEntry> = {
     slug: 'tabs',
     title: 'Tabs',
     description:
-      'Compact tab strip for switching between sibling views. Supports 2–4 tabs, optional icons, disabled states, and full keyboard navigation.',
+      'Compact tab strip for switching between sibling views. Supports 2–5 tabs, optional icons, disabled states, and full keyboard navigation.',
     status: 'stable',
-    scope: { Tabs, TabList, Tab, TabPanel, Grid },
+    scope: { Tabs, TabList, Tab, TabPanel, TableIcon },
     propSchema: {
       type: {
         type: 'chip-select',
@@ -590,7 +590,7 @@ export const registry: Record<string, ComponentEntry> = {
       count: {
         type: 'chip-select',
         label: 'Tab count',
-        options: ['2', '3', '4'],
+        options: ['2', '3', '4', '5'],
         default: '3',
       },
       showIcons: {
@@ -606,7 +606,7 @@ export const registry: Record<string, ComponentEntry> = {
     },
     generateCode: ({ type, count, showIcons, disabled }) => {
       const tabType = type === 'minimal' ? 'minimal' : 'button'
-      const n     = Math.min(4, Math.max(2, parseInt(String(count)) || 3))
+      const n     = Math.min(5, Math.max(2, parseInt(String(count)) || 3))
       const icons = showIcons === true || showIcons === 'true'
       const dis   = disabled  === true || disabled  === 'true'
 
@@ -615,10 +615,13 @@ export const registry: Record<string, ComponentEntry> = {
         { value: 'active',   label: 'Active'    },
         { value: 'inactive', label: 'Inactive'  },
         { value: 'archived', label: 'Archived'  },
+        { value: 'deleted',  label: 'Deleted'   },
       ].slice(0, n)
 
+      // Figma sizes the icon per type: 12px (Button) / 9px (Minimal).
+      const iconSize = tabType === 'minimal' ? 9 : 12
       const iconProp = icons
-        ? ` icon={<Grid size={16} strokeWidth={1.5} />}`
+        ? ` icon={<TableIcon size={${iconSize}} weight="regular" />}`
         : ''
 
       const typeProp = tabType === 'minimal' ? ' type="minimal"' : ''
