@@ -33,11 +33,11 @@ The component ships as two primitives:
 
 ## Anatomy
 
-- **Group container** — white background (`#ffffff`), 8 px padding, 4 px gap between items, 8 px border radius. Renders as `role="tablist"` with `aria-orientation="vertical"`.
+- **Group container** — white background (`#ffffff`), 8 px padding, 8 px border radius. **No gap between rows** — Figma's own Anatomy text is explicit: "the filled Active state is what separates one tab from the next, not spacing." Renders as `role="tablist"` with `aria-orientation="vertical"`.
 - **Tab button** — 14 px label, 16 px horizontal padding, 12 px vertical padding, 8 px border radius. Full-width within its container.
 - **Icon** — optional 16 × 16 px leading element. Matches the current text colour for each state.
 - **Right slot** — optional trailing region for count chips or status badges. Sits flush to the right edge.
-- **Active indicator** — solid blue fill (`#204704`) replaces the transparent background; label colour inverts to `#efefef` and weight increases to SemiBold (600).
+- **Active indicator** — solid green fill (`#3a8015`) replaces the transparent background; label colour inverts to `#f8f8f8` and weight increases to SemiBold (600).
 
 ---
 
@@ -56,25 +56,25 @@ The component ships as two primitives:
     <TableRow>
       <TableCell><strong>Default</strong></TableCell>
       <TableCell>Transparent</TableCell>
-      <TableCell><code>#373737</code></TableCell>
+      <TableCell><code>#1d1d1d</code></TableCell>
       <TableCell>400 (Regular)</TableCell>
     </TableRow>
     <TableRow>
       <TableCell><strong>Hover</strong></TableCell>
-      <TableCell><code>rgba(32, 71, 4, 0.08)</code></TableCell>
-      <TableCell><code>#373737</code></TableCell>
+      <TableCell><code>rgba(58, 128, 21, 0.08)</code> — no Figma spec, see <strong>Open questions</strong></TableCell>
+      <TableCell><code>#1d1d1d</code></TableCell>
       <TableCell>400 (Regular)</TableCell>
     </TableRow>
     <TableRow>
       <TableCell><strong>Active</strong></TableCell>
-      <TableCell><code>#204704</code></TableCell>
-      <TableCell><code>#efefef</code></TableCell>
+      <TableCell><code>#3a8015</code></TableCell>
+      <TableCell><code>#f8f8f8</code></TableCell>
       <TableCell>600 (SemiBold)</TableCell>
     </TableRow>
     <TableRow>
       <TableCell><strong>Disabled</strong></TableCell>
       <TableCell>Transparent</TableCell>
-      <TableCell><code>#6a7260</code></TableCell>
+      <TableCell><code>#adadad</code></TableCell>
       <TableCell>400 (Regular)</TableCell>
     </TableRow>
   </TableBody>
@@ -132,18 +132,18 @@ const [active, setActive] = useState('production')
 ### With icons
 
 ```tsx
-import { ShieldIcon } from '@phosphor-icons/react'
+import { GlobeIcon } from '@phosphor-icons/react'
 
 <VerticalTabGroup>
   <VerticalTab
     label="Global Permissions"
-    icon={<ShieldIcon size={16} />}
+    icon={<GlobeIcon size={16} />}
     active
     onClick={() => {}}
   />
   <VerticalTab
     label="Instances"
-    icon={<ShieldIcon size={16} />}
+    icon={<GlobeIcon size={16} />}
     onClick={() => {}}
   />
 </VerticalTabGroup>
@@ -213,33 +213,33 @@ const [active, setActive] = useState<Section>('Production')
   </TableHeader>
   <TableBody>
     <TableRow>
-      <TableCell><code>--surface/section</code></TableCell>
+      <TableCell><code>--surface-section-bg</code></TableCell>
       <TableCell><code>#ffffff</code></TableCell>
       <TableCell>Group container background</TableCell>
     </TableRow>
     <TableRow>
-      <TableCell><code>--surface/action/primary</code></TableCell>
-      <TableCell><code>#204704</code></TableCell>
+      <TableCell><code>--surface-action-primary-default</code></TableCell>
+      <TableCell><code>#3a8015</code></TableCell>
       <TableCell>Active tab background</TableCell>
     </TableRow>
     <TableRow>
-      <TableCell><code>--surface/action/hover</code></TableCell>
-      <TableCell><code>rgba(32, 71, 4, 0.08)</code></TableCell>
-      <TableCell>Hover state background</TableCell>
+      <TableCell><code>--content-action-primary-default</code></TableCell>
+      <TableCell><code>rgba(58, 128, 21, 0.08)</code></TableCell>
+      <TableCell>Hover state background — no Figma spec, see <strong>Open questions</strong></TableCell>
     </TableRow>
     <TableRow>
-      <TableCell><code>--text/body/primary</code></TableCell>
-      <TableCell><code>#373737</code></TableCell>
-      <TableCell>Default tab label</TableCell>
+      <TableCell><code>--neutral-800</code></TableCell>
+      <TableCell><code>#1d1d1d</code></TableCell>
+      <TableCell>Default tab label. Figma names this <code>--text/on-action/secondary</code>, but that shared alias resolves to the wrong value (<code>#373737</code>) in this codebase — see <strong>Open questions</strong>.</TableCell>
     </TableRow>
     <TableRow>
-      <TableCell><code>--text/on-action/filled</code></TableCell>
-      <TableCell><code>#efefef</code></TableCell>
-      <TableCell>Active tab label (inverted)</TableCell>
+      <TableCell><code>--text-on-action-primary</code></TableCell>
+      <TableCell><code>#f8f8f8</code></TableCell>
+      <TableCell>Active tab label (inverted) — this alias is already correct, fixed during the Button audit</TableCell>
     </TableRow>
     <TableRow>
-      <TableCell><code>--text/disabled</code></TableCell>
-      <TableCell><code>#6a7260</code></TableCell>
+      <TableCell><code>--text-form-field-disabled</code></TableCell>
+      <TableCell><code>#adadad</code></TableCell>
       <TableCell>Disabled tab label and icon</TableCell>
     </TableRow>
     <TableRow>
@@ -259,8 +259,8 @@ const [active, setActive] = useState<Section>('Production')
     </TableRow>
     <TableRow>
       <TableCell>Item gap</TableCell>
-      <TableCell>4 px</TableCell>
-      <TableCell>Space between tabs in a group</TableCell>
+      <TableCell>0 px</TableCell>
+      <TableCell>Rows stack flush — the filled Active state is what separates one tab from the next, not spacing</TableCell>
     </TableRow>
     <TableRow>
       <TableCell>Font — label</TableCell>
@@ -275,6 +275,11 @@ const [active, setActive] = useState<Section>('Production')
   </TableBody>
 </Table>
 
+### Open questions — not resolved
+
+- **No Hover state exists in Figma at all.** The Tab Trigger component only defines Default / Active / Disabled — no Hover variant. The hover tint kept in code is inferred, not spec'd; it's now at least tinted from the corrected active green (`#3a8015`) rather than the old wrong one (`#204704`).
+- **`--text-on-action-secondary`** (Figma: `text/on-action/secondary`, the token name Figma uses for the Default state's label) **resolves to the wrong value in this codebase** (`#373737` instead of `#1d1d1d`) — same recurring bug found on Modal, Toast, and Horizontal Tabs this audit. Bypassed locally (`--neutral-800` directly) rather than repointing the shared alias.
+
 ---
 
 ## Accessibility
@@ -284,4 +289,4 @@ const [active, setActive] = useState<Section>('Production')
 - Disabled tabs receive both the native `disabled` attribute and `aria-disabled="true"` so their state is conveyed to all assistive technologies.
 - The active tab should be paired with a corresponding `<div role="tabpanel">` in the main content area. Connect them with matching `id` and `aria-labelledby` attributes so screen readers can announce which panel is visible.
 - Tab panels that are not selected should be hidden with `hidden` or `display: none` — do not render all panels simultaneously.
-- Keyboard navigation follows the ARIA Tabs pattern: Tab moves focus into and out of the tab list; Arrow Up / Arrow Down move between tabs; Enter or Space activates the focused tab.
+- Keyboard navigation follows the ARIA Tabs pattern: Tab moves focus into and out of the tab list; Arrow Up / Arrow Down move between tabs; Enter or Space activates the focused tab (native `<button>` behaviour). A roving `tabIndex` is used — only the active tab has `tabIndex={0}`, all others have `tabIndex={-1}` — and disabled tabs are skipped by the arrow-key sequence, matching Figma's Usage doc exactly.

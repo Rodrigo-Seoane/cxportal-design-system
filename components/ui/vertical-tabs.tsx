@@ -1,10 +1,10 @@
 'use client'
 
-import React, { useState } from 'react'
-import { Shield } from '@phosphor-icons/react'
+import React, { useState, useRef } from 'react'
+import { Globe } from '@phosphor-icons/react'
 
 // Re-export a default icon for use in component-registry scope
-export { Shield as VerticalTabIcon }
+export { Globe as VerticalTabIcon }
 
 // ── Design tokens (Figma: nodes 325-6411 / 328-10854) ────────────────────────
 
@@ -17,19 +17,26 @@ const T = {
   fontSize:    14,
   lineHeight: '20px',
 
-  // States
+  // States — active/default/disabled text bypass the shared
+  // --text-action / --text-body-primary aliases directly, because those
+  // aliases are themselves wrong-ramp-stepped in this codebase (see
+  // HANDOFF-PROMPT.md). --text-on-action-primary is fine as-is (already
+  // fixed during the Button audit).
   activeText:   'var(--text-on-action-primary)',
-  activeBg:     'var(--content-action-primary-600)',
-  defaultText:  'var(--text-body-primary)',
+  activeBg:     'var(--surface-action-primary-default)',
+  defaultText:  'var(--neutral-800)',
   defaultBg:    'transparent',
-  disabledText: 'var(--content-action-disabled-700)',
+  disabledText: 'var(--text-form-field-disabled)',
   disabledBg:   'transparent',
-  hoverBg:      'color-mix(in srgb, var(--content-action-primary-600) 8%, transparent)',
+  // Hover has no Figma spec at all (no Hover state exists on this
+  // component) — inferred, tinted from the corrected active green.
+  hoverBg:      'color-mix(in srgb, var(--content-action-primary-default) 8%, transparent)',
 
-  // Group container
+  // Group container — Figma: "no gap between rows, the filled Active
+  // state is what separates one tab from the next, not spacing."
   groupBg:     'var(--surface-section-bg)',
   groupPad:     8,
-  groupGap:     4,
+  groupGap:     0,
   groupRadius:  8,
 } as const
 
@@ -87,6 +94,7 @@ export function VerticalTab({
       aria-selected={active}
       aria-disabled={disabled}
       disabled={disabled}
+      tabIndex={active ? 0 : -1}
       onClick={disabled ? undefined : onClick}
       onMouseEnter={() => !disabled && setHovered(true)}
       onMouseLeave={() => setHovered(false)}
@@ -151,10 +159,39 @@ export interface VerticalTabGroupProps {
 }
 
 export function VerticalTabGroup({ children, style, className }: VerticalTabGroupProps) {
+  const ref = useRef<HTMLDivElement>(null)
+
+  // Roving-tabindex keyboard navigation — Arrow Up/Down move between tabs,
+  // Home/End jump to the ends; Tab itself only enters/exits the group.
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (!ref.current) return
+    const tabs = Array.from(
+      ref.current.querySelectorAll<HTMLButtonElement>('[role="tab"]:not([disabled])'),
+    )
+    const idx = tabs.findIndex((t) => t === document.activeElement)
+    if (idx === -1) return
+
+    if (e.key === 'ArrowDown') {
+      e.preventDefault()
+      tabs[(idx + 1) % tabs.length].focus()
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault()
+      tabs[(idx - 1 + tabs.length) % tabs.length].focus()
+    } else if (e.key === 'Home') {
+      e.preventDefault()
+      tabs[0].focus()
+    } else if (e.key === 'End') {
+      e.preventDefault()
+      tabs[tabs.length - 1].focus()
+    }
+  }
+
   return (
     <div
+      ref={ref}
       role="tablist"
       aria-orientation="vertical"
+      onKeyDown={handleKeyDown}
       style={{
         display:         'flex',
         flexDirection:   'column',

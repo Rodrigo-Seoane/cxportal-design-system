@@ -1323,13 +1323,13 @@ export const registry: Record<string, ComponentEntry> = {
       activeIndex: {
         type: 'chip-select',
         label: 'Active tab',
-        options: ['0', '1', '2', '3', '4'],
+        options: ['0', '1', '2', '3', '4', '5', '6'],
         default: '2',
       },
       count: {
         type: 'chip-select',
         label: 'Tab count',
-        options: ['3', '4', '5'],
+        options: ['2', '3', '4', '5', '6', '7'],
         default: '5',
       },
     },
@@ -1344,6 +1344,8 @@ export const registry: Record<string, ComponentEntry> = {
         'Production',
         'Development',
         'Q&A',
+        'Reporting',
+        'Audit Log',
       ].slice(0, total)
 
       const iconAttr = icons ? `\n    icon={<VerticalTabIcon size={16} />}` : ''
