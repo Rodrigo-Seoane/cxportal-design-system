@@ -18,7 +18,7 @@ const meta: Meta<typeof Toast> = {
     type: {
       control: 'select',
       options: ['default', 'success', 'error', 'warning', 'info', 'loading'],
-      description: 'Semantic type — sets the icon and border accent colour of the toast.',
+      description: 'Semantic type — sets the icon of the toast (the panel itself has no border or type-tinted accent).',
     },
     title: {
       control: 'text',

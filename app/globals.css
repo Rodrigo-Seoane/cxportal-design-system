@@ -321,7 +321,7 @@
   --text-form-field-hover: var(--content-action-primary-500);
   --text-form-field-focus: var(--neutral-700);
   --text-form-field-disabled: var(--neutral-300);
-  --icon-action: var(--content-action-primary-600);
+  --icon-action: var(--content-action-primary-default);
   --icon-success: var(--success-300);
   --icon-info: var(--info-default);
   --icon-warning: var(--warning-default);
