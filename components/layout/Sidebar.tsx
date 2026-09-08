@@ -91,6 +91,7 @@ const NAV_GROUPS: NavGroup[] = [
       { label: 'Checkbox & Radio',      href: '/components/checkbox',              status: 'stable' },
       { label: 'Navigation',            href: '/components/navigation',            status: 'stable' },
       { label: 'Nav Item',              href: '/components/nav-item',              status: 'stable' },
+      { label: 'Breadcrumb',            href: '/components/breadcrumb',            status: 'stable' },
       { label: 'Top Bar',               href: '/components/top-bar',               status: 'stable' },
       { label: 'Table',                 href: '/components/table',                 status: 'stable' },
       { label: 'Chips & Tags',          href: '/components/chips',                 status: 'stable' },

@@ -34,6 +34,7 @@ import { Stepper } from '@/components/ui/stepper'
 import { DatePicker } from '@/components/ui/date-picker'
 import { NavMenuItem, NavSubItem } from '@/components/ui/nav-item'
 import { PageTitle } from '@/components/ui/page-title'
+import { Breadcrumb } from '@/components/ui/breadcrumbs'
 import { TopBar } from '@/components/ui/top-bar'
 import { FileTree } from '@/components/ui/file-tree'
 import type { FileTreeNode } from '@/components/ui/file-tree'
@@ -1693,6 +1694,37 @@ export const registry: Record<string, ComponentEntry> = {
       if (s !== 'default') lines.push(`  state="${s}"`)
       if (open) lines.push(`  isOpen`)
       lines.push('/>')
+      return lines.join('\n')
+    },
+  },
+
+  // ─── Breadcrumb ───────────────────────────────────────────────────────────────
+  breadcrumb: {
+    slug: 'breadcrumb',
+    title: 'Breadcrumb',
+    description:
+      'A horizontal navigation trail showing the current position within the page hierarchy. Always starts with a Home icon; the last item is the current page. Depth is 1-4 items.',
+    status: 'stable',
+    scope: { Breadcrumb },
+    propSchema: {
+      depth: {
+        type: 'chip-select',
+        label: 'Depth',
+        options: ['1', '2', '3', '4'],
+        default: '2',
+      },
+    },
+    generateCode: ({ depth }) => {
+      const labels = ['Social Security Admin', 'Benefit Status Updates', 'Retirement Planning Reminders', 'Send Schedule']
+      const hrefs  = ['/accounts/ssa', '/accounts/ssa/campaign-groups/benefit-status', '/accounts/ssa/campaign-groups/benefit-status/reminders']
+      const n = Math.min(4, Math.max(1, Number(depth) || 2))
+
+      const lines = ['<Breadcrumb', `  homeHref="/"`, '  items={[']
+      for (let i = 0; i < n; i++) {
+        const isCurrent = i === n - 1
+        lines.push(isCurrent ? `    { label: '${labels[i]}' },` : `    { label: '${labels[i]}', href: '${hrefs[i]}' },`)
+      }
+      lines.push('  ]}', '/>')
       return lines.join('\n')
     },
   },
