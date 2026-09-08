@@ -343,8 +343,11 @@
   --surface-form-field: var(--neutral-0);
   --surface-form-group: var(--neutral-50);
   --surface-action-primary-default: var(--content-action-primary-default);
-  --surface-action-primary-hover: var(--content-action-primary-700);
+  --surface-action-primary-hover: var(--content-action-primary-500);
   --surface-action-primary-disabled: var(--content-action-disabled-default);
+  /* NT Menu (module tree nav redesign, Figma: surface/action/highlight-(active)) */
+  --surface-action-highlight-active: var(--raw-caylent-green-100);
+  --surface-action-highlight-active-hover: var(--raw-caylent-green-200);
   --surface-action-secondary-default: var(--neutral-0);
   --surface-action-secondary-hover: var(--neutral-50);
   --surface-action-terciary-default: var(--neutral-100);
@@ -374,6 +377,9 @@
   --border-color-surface-active-secondary-hover: var(--neutral-400);
   --border-color-surface-active-terciary-default: var(--neutral-100);
   --border-color-surface-active-terciary-hover: var(--neutral-200);
+  /* NT Menu (module tree nav redesign) */
+  --border-color-surface-active-highlight-active: var(--raw-caylent-green-200);
+  --border-color-surface-active-highlight-active-hover: var(--raw-caylent-green-200);
   --border-color-accent-success-light: var(--success-200);
   --border-color-accent-success-dark: var(--success-600);
   --border-color-accent-success-hover: var(--success-default);

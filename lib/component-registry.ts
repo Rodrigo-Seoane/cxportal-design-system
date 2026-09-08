@@ -32,7 +32,14 @@ import { InlineContextData } from '@/components/ui/inline-context-data'
 import { AddressBookIcon, CalendarIcon, TagIcon, UserListIcon, SquaresFourIcon } from '@/components/ui/playground-icons'
 import { Stepper } from '@/components/ui/stepper'
 import { DatePicker } from '@/components/ui/date-picker'
-import { NavMenuItem, NavSubItem } from '@/components/ui/nav-item'
+import { NavMenuItem, NavSubItem, NavMenuItemCollapsed } from '@/components/ui/nav-item'
+import {
+  NTMenuHomeItem,
+  NTMenuModuleItem,
+  NTMenuSubItem,
+  NTMenuGroup,
+  NTMenuItemCollapsed,
+} from '@/components/ui/nt-menu'
 import { PageTitle } from '@/components/ui/page-title'
 import { Breadcrumb } from '@/components/ui/breadcrumbs'
 import { TopBar } from '@/components/ui/top-bar'
@@ -348,61 +355,61 @@ export const registry: Record<string, ComponentEntry> = {
     slug: 'navigation',
     title: 'Navigation',
     description:
-      'Vertical side navigation with collapsible groups, icon-labelled headers, and two-level hierarchy. Dark-mode-first with Light/SemiBold typography and blue interactive states.',
+      'Vertical side navigation with collapsible groups, icon-labelled headers, and two-level hierarchy. Dark-mode-first with Light/SemiBold typography and green interactive states.',
     status: 'stable',
-    scope: {},
+    scope: { NavMenuItem, NavSubItem, NavMenuItemCollapsed, SquaresFourIcon },
     propSchema: {
       type: {
         type: 'chip-select',
         label: 'Type',
-        options: ['Menu Item', 'Sub Menu Item'],
+        options: ['Menu Item', 'Sub Menu Item', 'Collapsed'],
         default: 'Menu Item',
       },
       state: {
         type: 'chip-select',
         label: 'State',
-        options: ['Default', 'Hover', 'Active', 'Disabled'],
-        default: 'Default',
+        options: ['default', 'hover', 'active', 'disabled'],
+        default: 'default',
+      },
+      darkMode: {
+        type: 'boolean',
+        label: 'Dark (CxPortal)',
+        default: true,
       },
     },
-    generateCode: ({ type, state }) => {
-      const t = String(type)
-      const s = String(state)
+    generateCode: ({ type, state, darkMode }) => {
+      const t    = String(type)
+      const s    = String(state)
+      const dark = darkMode === true || darkMode === 'true'
+      const darkAttr = dark ? '' : `\n  darkMode={false}`
+
       if (t === 'Sub Menu Item') {
-        const bg = s === 'Active' ? '#3264b8' : s === 'Hover' ? '#4285f4' : 'transparent'
-        const fw = s === 'Active' ? 600 : 300
         return [
-          `<div style={{`,
-          `  display: 'flex',`,
-          `  alignItems: 'center',`,
-          `  height: 40,`,
-          `  paddingLeft: 48,`,
-          `  paddingRight: 24,`,
-          `  background: '${bg}',`,
-          `}}>`,
-          `  <span style={{ fontSize: 14, fontWeight: ${fw}, color: '#eff1f3' }}>`,
-          `    Sub Menu Label`,
-          `  </span>`,
-          `</div>`,
-        ].join('\n')
+          `<NavSubItem`,
+          `  label="Sub Menu Label"`,
+          s !== 'default' ? `  state="${s}"` : null,
+          darkAttr || null,
+          `/>`,
+        ].filter(Boolean).join('\n')
       }
-      const bg = s === 'Active' ? '#3264b8' : s === 'Hover' ? '#4285f4' : 'transparent'
+      if (t === 'Collapsed') {
+        return [
+          `<NavMenuItemCollapsed`,
+          `  icon={<SquaresFourIcon size={18} weight="thin" />}`,
+          s !== 'default' ? `  state="${s}"` : null,
+          darkAttr || null,
+          `/>`,
+        ].filter(Boolean).join('\n')
+      }
       return [
-        `<div style={{`,
-        `  display: 'flex',`,
-        `  alignItems: 'center',`,
-        `  height: 48,`,
-        `  padding: '0 12px',`,
-        `  gap: 8,`,
-        `  background: '${bg}',`,
-        `}}>`,
-        `  {/* icon */}`,
-        `  <span style={{ fontSize: 14, fontWeight: 300, color: '${s === 'Disabled' ? '#808080' : '#eff1f3'}', flex: 1 }}>`,
-        `    Menu Label`,
-        `  </span>`,
-        `  {/* caret */}`,
-        `</div>`,
-      ].join('\n')
+        `<NavMenuItem`,
+        `  label="Menu Label"`,
+        `  icon={<SquaresFourIcon size={18} weight="thin" />}`,
+        s !== 'default' ? `  state="${s}"` : null,
+        s === 'active' ? `  isOpen` : null,
+        darkAttr || null,
+        `/>`,
+      ].filter(Boolean).join('\n')
     },
   },
 
@@ -1652,7 +1659,7 @@ export const registry: Record<string, ComponentEntry> = {
     slug: 'nav-item',
     title: 'Nav Item',
     description:
-      'Atomic navigation item for vertical sidebars. Two types: Menu Item (48px, icon + caret) and Sub Menu Item (40px, indented). Four interaction states.',
+      'Atomic navigation item for vertical sidebars. Two types: Menu Item (48px, icon + caret) and Sub Menu Item (48px, indented). Four interaction states.',
     status: 'stable',
     scope: { NavMenuItem, NavSubItem, SquaresFourIcon },
     propSchema: {
@@ -1695,11 +1702,72 @@ export const registry: Record<string, ComponentEntry> = {
 
       const lines = ['<NavMenuItem']
       lines.push(`  label="${lbl}"`)
-      lines.push(`  icon={<SquaresFourIcon size={20} weight="thin" />}`)
+      lines.push(`  icon={<SquaresFourIcon size={18} weight="thin" />}`)
       if (s !== 'default') lines.push(`  state="${s}"`)
       if (open) lines.push(`  isOpen`)
       lines.push('/>')
       return lines.join('\n')
+    },
+  },
+
+  // ─── NT Menu ──────────────────────────────────────────────────────────────────
+  'nt-menu': {
+    slug: 'nt-menu',
+    title: 'NT Menu',
+    description:
+      'In-progress redesign of the left/vertical nav — light theme, rounded pill rows, drop shadows, tree connector lines. Not yet wired in as the live sidebar.',
+    status: 'wip',
+    scope: { NTMenuHomeItem, NTMenuModuleItem, NTMenuSubItem, NTMenuGroup, NTMenuItemCollapsed },
+    propSchema: {
+      type: {
+        type: 'chip-select',
+        label: 'Type',
+        options: ['Home', 'Module', 'Sub Item', 'Group', 'Collapsed'],
+        default: 'Group',
+      },
+      state: {
+        type: 'chip-select',
+        label: 'State',
+        options: ['default', 'hover', 'active'],
+        default: 'default',
+      },
+      open: {
+        type: 'boolean',
+        label: 'Open (Module/Group only)',
+        default: true,
+      },
+    },
+    generateCode: ({ type, state, open }) => {
+      const t    = String(type)
+      const s    = String(state)
+      const isOpen = open === true || open === 'true'
+
+      if (t === 'Home') {
+        return `<NTMenuHomeItem${s !== 'default' ? ` state="${s}"` : ''} />`
+      }
+      if (t === 'Sub Item') {
+        return `<NTMenuSubItem\n  label="Module Sub Item"${s !== 'default' ? `\n  state="${s}"` : ''}\n/>`
+      }
+      if (t === 'Collapsed') {
+        return `<NTMenuItemCollapsed${s !== 'default' ? ` state="${s}"` : ''} />`
+      }
+      if (t === 'Group') {
+        return [
+          `<NTMenuGroup label="Module Name"${isOpen ? ' open' : ''}>`,
+          `  <NTMenuSubItem label="Module Sub Item" state="active" />`,
+          `  <NTMenuSubItem label="Module Sub Item" />`,
+          `  <NTMenuSubItem label="Module Sub Item" />`,
+          `</NTMenuGroup>`,
+        ].join('\n')
+      }
+      // Module
+      return [
+        `<NTMenuModuleItem`,
+        `  label="Module Name"`,
+        s !== 'default' ? `  state="${s}"` : null,
+        isOpen ? `  isOpen` : null,
+        `/>`,
+      ].filter(Boolean).join('\n')
     },
   },
 
