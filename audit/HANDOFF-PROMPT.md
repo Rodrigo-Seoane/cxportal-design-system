@@ -1,7 +1,7 @@
 # CxPortal DS — Component Audit Handoff
 
-_Last refreshed: 2026-09-09 (tenth pass — Table closed, G4 started; Table
-Filter built as a new extra component). Supersedes the earlier 2026-09-08 version.
+_Last refreshed: 2026-09-09 (eleventh pass — Pagination closed). Supersedes
+the earlier 2026-09-09 version.
 **Also fixed this pass:** several turns' worth of `audit/` edits (Modal
 through Vertical Tabs) had been sitting uncommitted on tracked files because
 of a wrong assumption that `audit/` was untracked — it was committed back in
@@ -41,7 +41,7 @@ Batching: Foundations → Global (G1–G5) → Knowledge Management → Campaign
 - `component-audit-seed.csv` — full component list (Section/Batch/Component), already in the sheet
 - `component-audit-fill.csv` — same rows with Figma node IDs and code paths filled
 - `component-audit-fill-2cols.csv` — Figma node + Code path only, for pasting
-- `component-audit-results.csv` — **the live findings log** (26 rows as of 2026-09-09)
+- `component-audit-results.csv` — **the live findings log** (27 rows as of 2026-09-09)
 - `component-audit-results-paste-g1.csv` — Status→Notes block for G1
 - `component-audit-results-paste-g2.csv` — same, full G2 (Button, Alert Messages, Counter, Tooltip, Modal, Toast)
 - `component-audit-results-paste.csv` — same, Foundations batch
@@ -318,7 +318,7 @@ registry playground doesn't exercise the `actions` slot.
 |---|---|---|---|
 | Table | major | P0 | complete (Principles 795-2128 + Usage 795-2129) |
 | Table Filter | missing → built | P1 | complete (shared P&U with Table) |
-| Pagination | — | — | not started |
+| Pagination | major | P0 | complete (Principles 797-4236 + Usage 797-4251) |
 | Metric Tiles | — | — | not started |
 | Inline Stats Cards | — | — | not started |
 | Inline Context Data | — | — | not started |
@@ -365,11 +365,44 @@ existing `Chip`/`Tag`/`Switch` components; rewired to import and use the
 real components (Chip/Tag/Switch's own internal correctness wasn't
 re-verified — Chips & Tags gets its own row later in this batch).
 
+Pagination — the code's 4 variants (`directional`, `directional-counter`,
+`back-next`, `numbered`) already mapped cleanly onto Figma's 5 `type`
+values, and the gaps (8px / 24px for the counter variant) already
+matched exactly — structurally this component was in good shape. The
+real bug: **every button in every one of the 5 pulled variants renders
+on a white background** — the code had idle (and disabled) background
+hardcoded to `transparent` everywhere. Fixing that surfaced a second
+problem: the pre-existing "current page" background (white,
+`--surface-form-field`) would have become indistinguishable from the
+now-corrected white idle background, erasing the current-page indicator
+Usage's own docs require — recoloured to a solid green fill, an
+*inferred* choice since Figma's own component exposes no per-page
+"active" state at all (only a single `type` prop controls which UI form
+to show) — a real component-vs-its-own-docs contradiction, not a stale-
+doc mismatch. Page-number buttons/Ellipsis had no explicit height
+(content-driven, ~36px) where Figma measures a fixed 25px; Back/Next
+buttons were always sized like the standalone 32px variant even when
+paired with page numbers, where Figma shrinks them to match the page
+buttons' 25px/36px-min-width sizing — both fixed. The "X of Y" counter
+text routed through the classic wrong-ramp-step `--text-body-primary`,
+but Figma's own component actually fills that text literal pure black
+(`#000000`, no token) — a likely one-off Figma-authoring slip since no
+other text anywhere in this DS uses raw black — bypassed to
+`--neutral-800` for consistency instead of matching the raw value
+literally. **Doc bug found independent of any code change:** the MDX's
+own token table claimed `--text-on-action-transparent` resolves to
+`#366618` (that's actually the hover green); it resolves to `#3a8015` —
+corrected. **Accessibility contradiction flagged, not resolved:**
+Usage's own Don'ts require a 44×44px minimum touch target, but the real,
+confirmed component renders every button smaller than that in at least
+one dimension — component wins per the standing rule since these are
+directly-measured live values, but it's worth a designer call.
+
 ## Git state
 
 Branch: **`fix/ds-audit-g1-g2-figma-alignment`** (cut from
 `claude/assign-worker-flow-prototype-rb4ms4`, which is where this work was
-sitting uncommitted by mistake). 22 commits ahead of `main` (2026-09-07 to
+sitting uncommitted by mistake). 23 commits ahead of `main` (2026-09-07 to
 2026-09-09):
 
 1. `fix(tokens): correct action and form-field semantic aliases` — the 4 shared globals.css aliases, landed first because of blast radius
@@ -393,7 +426,8 @@ sitting uncommitted by mistake). 22 commits ahead of `main` (2026-09-07 to
 19. `docs(audit): catch up audit/ commits through Left/Vertical Nav + NT Menu`
 20. `fix(top-bar): align product theme, instance styling, and a11y to Figma`
 21. `fix(page-title): correct colors, spacing, and DFC controls story to Figma`
-22. `fix(table): correct checkbox/link/header tokens, add row-hover recolor; build Table Filter` — about to be committed
+22. `fix(table): correct checkbox/link/header tokens, add row-hover recolor; build Table Filter`
+23. `fix(pagination): correct idle/active button backgrounds and sizing to Figma` — about to be committed
 
 Not merged to main, no PR opened yet. Note the branch's ancestry still carries
 22 commits of Assign-to-Worker v2 prototype + Caylent rebrand work that were
@@ -583,6 +617,25 @@ All six docs frames supplied on 2026-09-07 have been read, and Button Icon Small
   component — no dedicated component node justifies duplicating the
   DS's existing full-featured `Select` for this narrower, chrome-less
   case.
+- Pagination: no per-page "active/current" state, Hover, or Disabled
+  variant exists anywhere in Figma's pull (the component's whole API
+  surface is a single `type` prop). The current-page green fill, hover
+  tint, and disabled colors are all inferred/pre-existing choices, not
+  Figma-confirmed.
+- Pagination: the "X of Y" counter text is literal pure black (`#000000`,
+  no token) in Figma's own component — no other text anywhere in this DS
+  uses raw black. Treated as a Figma-authoring slip, bypassed to
+  `--neutral-800` instead of matched literally.
+
+**Pagination — 44×44px touch-target requirement, needs a designer call**
+- Usage's own Don'ts explicitly say "Don't make pagination buttons too
+  small for touch targets (min 44×44px)." The real, directly-measured
+  component renders every button smaller than that in at least one
+  dimension (32px/25px tall, 36px page-button width). Component wins per
+  the standing rule — these aren't stale-doc guesses, they're the live
+  component's own confirmed pixel values — but this is a genuine
+  component-vs-its-own-docs contradiction, not the usual stale-prose
+  mismatch pattern seen elsewhere in this audit.
 
 **Horizontal Tabs — Figma-internal contradiction, needs a designer call**
 - Principles (`2544-75780`) explicitly caps tab count at "2, 3, or 4 — do not
@@ -653,21 +706,22 @@ Needs a decision on which surface colour the demo should use.
 1. Paste `component-audit-results-paste-g2.csv` into the sheet — the full G2
    batch (Button, Alert Messages, Counter, Tooltip, Modal, Toast). The whole
    of G3 (Breadcrumb, Horizontal Tabs, Vertical Tabs, Left/Vertical Nav, Top
-   Bar, Page Title) and Table + Table Filter (G4 so far) still need their own
-   paste blocks produced.
+   Bar, Page Title) and Table + Table Filter + Pagination (G4 so far) still
+   need their own paste blocks produced.
 2. Get a designer call on the Figma-internal/docs contradictions logged above:
    old variant model on Usage 742-11289; multi-line Alert vs its own docs;
    Modal's `role="alertdialog"` conflict; Modal's missing `xlarge` Figma frame;
    Breadcrumb's three-way colour conflict; Horizontal Tabs' 4-vs-5-tab cap;
    Top Bar's CxPortal-purple-vs-green accent; Page Title's `<h2>`-vs-`<h1>`
    heading-hierarchy tension; Table's keyboard-focus row state (documented,
-   unbuilt).
+   unbuilt); Pagination's 44×44px touch-target contradiction and its
+   missing current-page/hover/disabled Figma variants.
 3. Decide on the cross-cutting wrong-ramp-step token sweep (see Cross-cutting
    thread above) — six confirmed tokens, `--text-body-primary` alone now
    hit on nine component rows. Worth asking whether this is one systemic
    rebrand-migration bug rather than isolated ones.
 4. Audit Combobox (2255-8066) to actually close G1 — still the one hole in that batch.
-5. Continue G4: Table and Table Filter are done. Next — Pagination, Metric
+5. Continue G4: Table, Table Filter, and Pagination are done. Next — Metric
    Tiles, Inline Stats Cards, Inline Context Data, Chips & Tags.
 6. Add a `select` cellType demo to the Table registry playground for parity
    with chip/tag/switch/filter — skipped this pass (polish, not a Figma
