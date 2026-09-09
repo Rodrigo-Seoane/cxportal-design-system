@@ -28,6 +28,7 @@ import { Toast } from '@/components/ui/toast'
 import { Tooltip } from '@/components/ui/tooltip'
 import { DismissibleTip } from '@/components/ui/dismissible-tip'
 import { StatCard, MetricTileAcgr } from '@/components/ui/stats-cards'
+import { InlineStatTile, InlineStatsRow } from '@/components/ui/inline-stats'
 import { ClickableCard, ClickableHorizontalCard } from '@/components/ui/clickable-card'
 import { InlineContextData } from '@/components/ui/inline-context-data'
 import { AddressBookIcon, CalendarIcon, TagIcon, UserListIcon, SquaresFourIcon } from '@/components/ui/playground-icons'
@@ -1529,6 +1530,47 @@ export const registry: Record<string, ComponentEntry> = {
       if (t === 'action') lines.push(`  onAssign={() => {}}`)
       lines.push('/>')
       return lines.join('\n')
+    },
+  },
+
+  // ─── Inline Stats Cards ──────────────────────────────────────────────────────
+  'inline-stats-cards': {
+    slug: 'inline-stats-cards',
+    title: 'Inline Stats Cards',
+    description:
+      'Compact metric tiles for inline placement within detail pages — a row of 3-5 equal-width tiles, no icon, no trend indicator. Distinct from the dashboard-oriented Stats Cards / Metric Tiles.',
+    status: 'stable',
+    scope: { InlineStatTile, InlineStatsRow },
+    propSchema: {
+      count: {
+        type: 'chip-select',
+        label: 'Tile count',
+        options: ['3', '4', '5'],
+        default: '4',
+      },
+      unit: {
+        type: 'select',
+        label: 'Unit',
+        options: ['none', 'percent', 'euro', 'dollar', 'kilo', 'mega', 'kilobyte', 'millisecond', 'second'],
+        default: 'none',
+      },
+    },
+    generateCode: ({ count, unit }) => {
+      const n = parseInt(String(count)) || 4
+      const u = String(unit)
+      const unitAttr = u !== 'none' ? ` unit="${u}"` : ''
+      const labels = ['Campaign Groups', 'Topics', 'Lists', 'Templates', 'Campaigns']
+
+      const tiles = labels
+        .slice(0, n)
+        .map(label => `      <InlineStatTile label="${label}" value="48,5"${unitAttr} />`)
+        .join('\n')
+
+      return [
+        `<InlineStatsRow>`,
+        tiles,
+        `    </InlineStatsRow>`,
+      ].join('\n')
     },
   },
 

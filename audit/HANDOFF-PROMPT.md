@@ -1,7 +1,8 @@
 # CxPortal DS — Component Audit Handoff
 
-_Last refreshed: 2026-09-09 (twelfth pass — Metric Tiles closed; Metric Tile
-ACGR built as a new extra component). Supersedes the earlier 2026-09-09 version.
+_Last refreshed: 2026-09-09 (thirteenth pass — Inline Stats Cards closed;
+built from scratch, and its own doc page previously described an unrelated
+fictional component). Supersedes the earlier 2026-09-09 version.
 **Also fixed this pass:** several turns' worth of `audit/` edits (Modal
 through Vertical Tabs) had been sitting uncommitted on tracked files because
 of a wrong assumption that `audit/` was untracked — it was committed back in
@@ -41,7 +42,7 @@ Batching: Foundations → Global (G1–G5) → Knowledge Management → Campaign
 - `component-audit-seed.csv` — full component list (Section/Batch/Component), already in the sheet
 - `component-audit-fill.csv` — same rows with Figma node IDs and code paths filled
 - `component-audit-fill-2cols.csv` — Figma node + Code path only, for pasting
-- `component-audit-results.csv` — **the live findings log** (29 rows as of 2026-09-09)
+- `component-audit-results.csv` — **the live findings log** (30 rows as of 2026-09-09)
 - `component-audit-results-paste-g1.csv` — Status→Notes block for G1
 - `component-audit-results-paste-g2.csv` — same, full G2 (Button, Alert Messages, Counter, Tooltip, Modal, Toast)
 - `component-audit-results-paste.csv` — same, Foundations batch
@@ -321,7 +322,7 @@ registry playground doesn't exercise the `actions` slot.
 | Pagination | major | P0 | complete (Principles 797-4236 + Usage 797-4251) |
 | Metric Tiles | major | P0 | complete (Principles 966-33127 + Usage 966-33149) |
 | Metric Tile ACGR | missing → built | P1 | complete (shared P&U with Metric Tiles) |
-| Inline Stats Cards | — | — | not started — different Figma node (2216-8007) from Metric Tiles, same code file (stats-cards.tsx) |
+| Inline Stats Cards | missing → built | P0 | complete (Principles 2297-4845 + Usage 2297-4741) — both severely stale, see notes |
 | Inline Context Data | — | — | not started |
 | Chips & Tags | — | — | not started |
 
@@ -437,11 +438,44 @@ own `metric-tile-acgr` slug with its own MDX doc, following the same
 "build genuinely-different missing pieces as their own thing" precedent
 as Table Filter in the previous G4 row.
 
+**Inline Stats Cards — new component, and the worst doc/component drift
+found in this entire audit.** Confirmed via direct Figma reads (Inline
+Cards `2216-8007`, Stats Units `3100-5021`, Stats Value Unit `3100-5030`,
+Inline Stats Row `2216-8056`) that the real component is a dead-simple
+label + value + optional-unit-glyph tile — no icon, no sparkline, no
+trend/delta indicator, no number-format-conversion logic at all (the
+value is a plain pre-formatted string prop, exactly as Figma models it).
+Despite this row's own seed mapping pointing at `stats-cards.tsx`,
+nothing for this pattern existed anywhere in the codebase — built as a
+new file, `components/ui/inline-stats.tsx` (`InlineStatTile` +
+`InlineStatsRow`). **The pre-existing `inline-stats-cards.mdx` doc page
+did not describe this Figma component at all** — it fully documented a
+completely different, fictional `MetricTile` API (sparklines, signed
+deltas, `format="currency"|"percent"|"number"` smart K/M-abbreviation
+formatting) with zero backing in the real component, and its own Code
+samples imported from `@/app/sandbox/campaigns-email/_components/
+MetricTile` — a real, separate sandbox prototype elsewhere in this
+codebase (not touched; a feature-specific prototype, not a DS
+component) — rather than the actual design-system slot the page is
+supposed to document. Figma's own Usage doc (`2297-4741`) independently
+describes that *same* fictional richer API (down to a pre-rebrand-blue
+`--color-primary #4285f4` "sparkline stroke color" token that doesn't
+exist), while Figma's own Principles doc (`2297-4845`) is more self-
+aware, explicitly stating "MetricTile has no icon, no sparkline in the
+current implementation." Rebuilt the doc entirely to match the real,
+live components — the previous fictional content was fully replaced,
+not merged. Also found: Figma's 5-tile Inline Stats Row instance fixes
+its first tile's width instead of giving it `flex-1` like every other
+tile and like the 3-tile/4-tile instances' own consistent behavior,
+directly contradicting Principles' explicit "equal distribution" rule —
+treated as a one-off Figma authoring slip, built with equal
+distribution for all tile counts instead.
+
 ## Git state
 
 Branch: **`fix/ds-audit-g1-g2-figma-alignment`** (cut from
 `claude/assign-worker-flow-prototype-rb4ms4`, which is where this work was
-sitting uncommitted by mistake). 24 commits ahead of `main` (2026-09-07 to
+sitting uncommitted by mistake). 25 commits ahead of `main` (2026-09-07 to
 2026-09-09):
 
 1. `fix(tokens): correct action and form-field semantic aliases` — the 4 shared globals.css aliases, landed first because of blast radius
@@ -467,7 +501,8 @@ sitting uncommitted by mistake). 24 commits ahead of `main` (2026-09-07 to
 21. `fix(page-title): correct colors, spacing, and DFC controls story to Figma`
 22. `fix(table): correct checkbox/link/header tokens, add row-hover recolor; build Table Filter`
 23. `fix(pagination): correct idle/active button backgrounds and sizing to Figma`
-24. `fix(stats-cards): correct 7 wrong category icons, sizing, and tokens; build Metric Tile ACGR` — about to be committed
+24. `fix(stats-cards): correct 7 wrong category icons, sizing, and tokens; build Metric Tile ACGR`
+25. `feat(inline-stats): build Inline Stats Cards from scratch, replace fictional doc content` — about to be committed
 
 Not merged to main, no PR opened yet. Note the branch's ancestry still carries
 22 commits of Assign-to-Worker v2 prototype + Caylent rebrand work that were
@@ -523,7 +558,7 @@ All six docs frames supplied on 2026-09-07 have been read, and Button Icon Small
 
 **Cross-cutting wrong-ramp-step tokens — needs a decision, bigger than one component**
 - `--text-body-primary` (`--neutral-700`, `#373737`) is very likely the wrong
-  ramp step site-wide. Now confirmed on **ten** rows: G1 Checkbox & Radio
+  ramp step site-wide. Now confirmed on **eleven** rows: G1 Checkbox & Radio
   (first local workaround, switched to `--neutral-800` directly); Modal's
   Header node (`Text/Body/Primary = #1d1d1d`); Toast's component node (same);
   Horizontal/Vertical Tabs; Left/Vertical Nav (via `nav-item.tsx`'s own
@@ -531,8 +566,10 @@ All six docs frames supplied on 2026-09-07 have been read, and Button Icon Small
   Bar's user-email/icon/instance-label text; Page Title's title text
   (previously wired to the green accent token instead, masking the same
   underlying alias bug until the component was actually compared against
-  Figma); Table's header label + default cell text; and now Metric Tiles'
-  card label + value text. `--neutral-800`
+  Figma); Table's header label + default cell text; Metric Tiles' card
+  label + value text; and now Inline Stats Cards' label + value text
+  (bypassed from the start, since this was a brand-new component built
+  with the bug already known). `--neutral-800`
   (`#1d1d1d`) already exists as the correct value. NOT fixed globally —
   `--text-body-primary` also backs `--color-text-primary`, `--foreground`,
   `--secondary-foreground`, `--accent-foreground`, `--card-foreground`, and
@@ -771,7 +808,8 @@ Needs a decision on which surface colour the demo should use.
    batch (Button, Alert Messages, Counter, Tooltip, Modal, Toast). The whole
    of G3 (Breadcrumb, Horizontal Tabs, Vertical Tabs, Left/Vertical Nav, Top
    Bar, Page Title) and Table + Table Filter + Pagination + Metric Tiles +
-   Metric Tile ACGR (G4 so far) still need their own paste blocks produced.
+   Metric Tile ACGR + Inline Stats Cards (G4 so far) still need their own
+   paste blocks produced.
 2. Get a designer call on the Figma-internal/docs contradictions logged above:
    old variant model on Usage 742-11289; multi-line Alert vs its own docs;
    Modal's `role="alertdialog"` conflict; Modal's missing `xlarge` Figma frame;
@@ -780,16 +818,18 @@ Needs a decision on which surface colour the demo should use.
    heading-hierarchy tension; Table's keyboard-focus row state (documented,
    unbuilt); Pagination's 44×44px touch-target contradiction and its
    missing current-page/hover/disabled Figma variants; Metric Tiles' "Blue"
-   surface rendering gray instead of blue.
+   surface rendering gray instead of blue; Inline Stats Cards' 5-tile
+   instance breaking its own equal-distribution rule, and — bigger than a
+   token fix — Figma's own Usage/Principles docs for Inline Stats Cards
+   disagreeing with each other about whether sparklines/deltas exist at all.
 3. Decide on the cross-cutting wrong-ramp-step token sweep (see Cross-cutting
    thread above) — six confirmed tokens, `--text-body-primary` alone now
-   hit on ten component rows. Worth asking whether this is one systemic
+   hit on eleven component rows. Worth asking whether this is one systemic
    rebrand-migration bug rather than isolated ones.
 4. Audit Combobox (2255-8066) to actually close G1 — still the one hole in that batch.
-5. Continue G4: Table, Table Filter, Pagination, Metric Tiles, and Metric
-   Tile ACGR are done. Next — Inline Stats Cards (a *different* Figma node,
-   2216-8007, sharing the same `stats-cards.tsx` code file — not the same
-   row as Metric Tiles), Inline Context Data, Chips & Tags.
+5. Continue G4: Table, Table Filter, Pagination, Metric Tiles, Metric Tile
+   ACGR, and Inline Stats Cards are done. Next — Inline Context Data, Chips
+   & Tags.
 6. Add a `select` cellType demo to the Table registry playground for parity
    with chip/tag/switch/filter — skipped this pass (polish, not a Figma
    drift fix) since "Table Field Select" was documented as compose-inline
