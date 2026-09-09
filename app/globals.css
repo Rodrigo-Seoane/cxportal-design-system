@@ -308,7 +308,7 @@
   --text-body-primary: var(--neutral-800);
   --text-body-secondary: var(--neutral-400);
   --text-body-on-dark-surface: var(--neutral-100);
-  --text-action: var(--content-action-primary-600);
+  --text-action: var(--content-action-primary-default);
   --text-success: var(--success-default);
   --text-info: var(--info-default);
   --text-warning: var(--warning-default);
@@ -396,7 +396,7 @@
   --border-color-form-fields-focus: var(--content-action-primary-default);
 
   /* ─── Legacy aliases (keep existing consumer surface working during Phase 2 sweep) ─── */
-  --color-primary:                     var(--content-action-primary-600);
+  --color-primary:                     var(--content-action-primary-default);
   --color-text-primary:                var(--text-body-primary);
   --color-text-secondary:              var(--text-body-secondary);
   --color-text-on-dark:                var(--icon-body-on-dark-surface);
@@ -438,8 +438,8 @@
   --muted-foreground:      var(--text-body-secondary);
   --border:                var(--border-color-neutral-light);
   --input:                 var(--surface-form-field);
-  --ring:                  var(--content-action-primary-600);
-  --primary:               var(--content-action-primary-600);
+  --ring:                  var(--content-action-primary-default);
+  --primary:               var(--content-action-primary-default);
   --primary-foreground:    var(--text-on-action-primary);
   --secondary:             var(--surface-main-panel);
   --secondary-foreground:  var(--text-body-primary);

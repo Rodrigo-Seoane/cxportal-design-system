@@ -1,8 +1,9 @@
 # CxPortal DS — Component Audit Handoff
 
-_Last refreshed: 2026-09-09 (decision-rollout Phase 1 complete — global
-semantic-token repoints verified and committed; Phase 2, the Colors Foundation
-Action-color family pass, is next). Eighteenth audit pass was a cross-cutting blue→green /
+_Last refreshed: 2026-09-09 (decision-rollout Phases 1–2 complete — global
+semantic-token repoints and the Colors Foundation Action-color family are
+verified and committed; Phase 3 small documentation closeouts is next).
+Eighteenth audit pass was a cross-cutting blue→green /
 old-token sweep, not a per-component Figma pull; found and fixed the
 classic `--content-action-primary-600` bug in 6 components that were never
 part of any seed batch, plus a matching MDX-prose sweep). Supersedes the
@@ -750,8 +751,19 @@ success icons to the verified shared `--icon-success` alias (`#87d95e`) and
 corrected its MDX token value.
 
 Verified with `npx tsc --noEmit` and browser checks of Table, Modal, and the
-persistent Sidebar. Next: Phase 2 — update the Colors Foundation Action-color
-family display to its current, corrected token values.
+persistent Sidebar.
+
+## Decision rollout — Phase 2 (DONE)
+
+Repointed `--text-action`, the legacy `--color-primary` alias, and shadcn's
+`--primary`/`--ring` aliases from the incorrect dark `-600` ramp step to
+`--content-action-primary-default` (`#3a8015`). Updated the Colors Foundation
+Storybook data to display the actual context-token names and current values,
+including the Action text/icon/surface family and the Phase 1 neutral/text
+corrections. Verified with `npx tsc --noEmit` and the `/foundations/colors`
+browser page (Neutral/400 visibly renders as `#7a828c`).
+
+Next: Phase 3 — small documentation closeouts.
 
 ## Git state
 
@@ -1158,10 +1170,8 @@ Needs a decision on which surface colour the demo should use.
    single worst instance of the pre-rebrand-blue-leftover pattern this whole
    audit has found, worth asking whether it's the same root cause as Metric
    Tiles'/Collapsible Filters' milder versions of the same thing.
-3. **Completed in Decision rollout Phase 1:** apply the approved global
-   token mappings for the recurring wrong-ramp-step family and the
-   `--neutral-400` value correction. Next is the Colors Foundation Action-color
-   family pass (see the Decision rollout section above). The separate
+3. **Completed in Decision rollout Phases 1–2:** apply the approved global
+   token mappings and update the Colors Foundation Action-color family. The separate
    `--border-color-surface-active-secondary-*` token-value gap remains a
    designer follow-up.
 4. Audit Combobox (2255-8066) to actually close G1 — still the one hole in that batch.
