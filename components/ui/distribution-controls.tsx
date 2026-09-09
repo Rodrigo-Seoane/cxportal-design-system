@@ -13,8 +13,8 @@ const T = {
   textPrimary:   'var(--text-body-primary)',
   textOnDark:    'var(--neutral-100)',
   textDisabled:  'var(--content-action-disabled-700)',
-  inputBorder:   'var(--content-action-primary-600)',
-  handle:        'var(--content-action-primary-600)',
+  inputBorder:   'var(--content-action-primary-default)',
+  handle:        'var(--content-action-primary-default)',
 } as const
 
 const STEP = 10

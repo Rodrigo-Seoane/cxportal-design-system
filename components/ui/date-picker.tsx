@@ -27,7 +27,7 @@ export interface DatePickerProps {
 
 const T = {
   borderDefault:   'var(--neutral-200)',
-  borderFocus:     'var(--content-action-primary-600)',
+  borderFocus:     'var(--content-action-primary-default)',
   borderError:     'var(--error-200)',
   surfaceField:    'var(--neutral-0)',
   textLabel:       'var(--text-body-primary)',
@@ -241,7 +241,7 @@ export function DatePicker({
             padding:      '12px',
             fontFamily:   'Roboto, system-ui, sans-serif',
             // DayPicker CSS variable overrides
-            '--rdp-accent-color':            'var(--content-action-primary-600)',
+            '--rdp-accent-color':            'var(--content-action-primary-default)',
             '--rdp-accent-background-color': 'var(--content-action-primary-100)',
             '--rdp-day-height':              '32px',
             '--rdp-day-width':               '32px',

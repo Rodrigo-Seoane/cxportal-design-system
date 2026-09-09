@@ -57,11 +57,11 @@ function RadioDot({ selected }: { selected: boolean }) {
       className={cn(
         'shrink-0 size-[18px] rounded-full border bg-[var(--neutral-0)] overflow-hidden',
         selected
-          ? 'border-[var(--content-action-primary-600)] flex items-center justify-center'
+          ? 'border-[var(--content-action-primary-default)] flex items-center justify-center'
           : 'border-[var(--neutral-100)]',
       )}
     >
-      {selected && <div className="size-3 rounded-full bg-[var(--content-action-primary-600)]" />}
+      {selected && <div className="size-3 rounded-full bg-[var(--content-action-primary-default)]" />}
     </div>
   )
 }
@@ -94,22 +94,22 @@ export function ClickableCard({
       className={cn(
         'flex gap-6 items-start p-4 rounded-lg border text-left w-full cursor-pointer transition-colors',
         selected
-          ? 'bg-[var(--neutral-200)] border-[var(--content-action-primary-600)]'
-          : 'bg-[var(--neutral-0)] border-[var(--neutral-100)] hover:border-[var(--content-action-primary-600)]',
+          ? 'bg-[var(--neutral-200)] border-[var(--content-action-primary-default)]'
+          : 'bg-[var(--neutral-0)] border-[var(--neutral-100)] hover:border-[var(--content-action-primary-default)]',
         className,
       )}
     >
       {/* Category icon */}
-      <div className="bg-[var(--content-action-primary-600)] flex items-center justify-center shrink-0 overflow-hidden rounded-[4px] size-9">
+      <div className="bg-[var(--content-action-primary-default)] flex items-center justify-center shrink-0 overflow-hidden rounded-[4px] size-9">
         <IconComp size={20} color="var(--neutral-0)" weight="fill" />
       </div>
 
       {/* Content: title + description */}
       <div className="flex flex-col justify-between flex-1 min-h-[92px] min-w-0">
-        <p className="text-[18px] leading-[24px] font-normal text-[var(--text-body-primary)] truncate">
+        <p className="text-[18px] leading-[24px] font-normal text-[var(--neutral-800)] truncate">
           {title}
         </p>
-        <p className="text-[12px] leading-[20px] font-normal text-[var(--text-body-primary)]">
+        <p className="text-[12px] leading-[20px] font-normal text-[var(--neutral-800)]">
           {description}
         </p>
       </div>
@@ -142,14 +142,14 @@ export function ClickableHorizontalCard({
       className={cn(
         'flex gap-3 items-center p-6 rounded-[4px] border text-left cursor-pointer transition-colors',
         selected
-          ? 'bg-[var(--neutral-200)] border-[var(--content-action-primary-600)]'
-          : 'bg-[var(--neutral-0)] border-[var(--neutral-100)] hover:border-[var(--content-action-primary-600)]',
+          ? 'bg-[var(--neutral-200)] border-[var(--content-action-primary-default)]'
+          : 'bg-[var(--neutral-0)] border-[var(--neutral-100)] hover:border-[var(--content-action-primary-default)]',
         className,
       )}
     >
       <RadioDot selected={selected} />
       <span
-        className="text-[12px] font-semibold leading-[16px] uppercase text-[var(--text-body-primary)] whitespace-nowrap"
+        className="text-[12px] font-semibold leading-[16px] uppercase text-[var(--neutral-800)] whitespace-nowrap"
         style={{ letterSpacing: '0.48px' }}
       >
         {label}

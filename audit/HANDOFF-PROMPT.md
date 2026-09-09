@@ -1,10 +1,14 @@
 # CxPortal DS — Component Audit Handoff
 
-_Last refreshed: 2026-09-09 (seventeenth pass — File Tree closes out G5;
-fixed a wrong-dark-green selected-controller bug and the worst instance yet
-of this audit's pre-rebrand-blue-leftover pattern, both code and docs, and
-added the full WAI-ARIA TreeView keyboard pattern the previous doc had
-flagged as an open TODO). Supersedes the earlier 2026-09-09 versions.
+_Last refreshed: 2026-09-09 (eighteenth pass — a cross-cutting blue→green /
+old-token sweep, not a per-component Figma pull; found and fixed the
+classic `--content-action-primary-600` bug in 6 components that were never
+part of any seed batch, plus a matching MDX-prose sweep). Supersedes the
+seventeenth-pass version, which had: File Tree closes out G5; fixed a
+wrong-dark-green selected-controller bug and the worst instance yet of this
+audit's pre-rebrand-blue-leftover pattern, both code and docs, and added the
+full WAI-ARIA TreeView keyboard pattern the previous doc had flagged as an
+open TODO.
 **Also fixed a prior pass:** several turns' worth of `audit/` edits (Modal
 through Vertical Tabs) had been sitting uncommitted on tracked files because
 of a wrong assumption that `audit/` was untracked — it was committed back in
@@ -44,7 +48,7 @@ Batching: Foundations → Global (G1–G5) → Knowledge Management → Campaign
 - `component-audit-seed.csv` — full component list (Section/Batch/Component), already in the sheet
 - `component-audit-fill.csv` — same rows with Figma node IDs and code paths filled
 - `component-audit-fill-2cols.csv` — Figma node + Code path only, for pasting
-- `component-audit-results.csv` — **the live findings log** (34 rows as of 2026-09-09)
+- `component-audit-results.csv` — **the live findings log** (35 rows as of 2026-09-09)
 - `component-audit-results-paste-g1.csv` — Status→Notes block for G1
 - `component-audit-results-paste-g2.csv` — same, full G2 (Button, Alert Messages, Counter, Tooltip, Modal, Toast)
 - `component-audit-results-paste.csv` — same, Foundations batch
@@ -667,11 +671,76 @@ needed there.
 **G5 is now fully done: Instance Cards, Collapsible Filters, and File
 Tree all built/audited.**
 
+## Progress — Blue→Green / Old-Token Sweep (DONE)
+
+After the 34-row audit, the user gave two blanket rules plus a source-
+priority order for resolving open discrepancies: **Component > Variables >
+Hex > MDX > P&U**, "anything still pointing to Pronetx Blue must become
+Caylent Green," and "everything pointing to old token references must be
+updated to new token value." Applying those rules mechanically (not a
+fresh per-component Figma pull) surfaced the exact same
+`--content-action-primary-600` (`#204704`) wrong-ramp-step bug — already
+confirmed and fixed 15+ times across G1–G5 — in **six components that were
+never part of any seed batch**: `Stepper`, `ClickableCard` +
+`ClickableHorizontalCard`, `DatePicker`, `Loading`'s spinner,
+`DistributionControls`' slider, and `Input`'s own focus border (missed
+during the original G1 pass, which focused on state coverage rather than
+re-checking this specific token). Also fixed the identical pattern in
+`components/ds/IconGrid.tsx` (the Foundations/Icons page) and two
+registry/story demo surfaces that had the literal wrong hex hardcoded
+directly (`button.stories.tsx`'s `ColoredBg` demo,
+`lib/component-registry.ts`'s `colored-bg` codegen). Every substitution is
+the same previously-validated fix (`-600` → `-default`,
+`--text-body-primary` → `--neutral-800` bypass) — no new values invented.
+
+**Investigated and deliberately NOT touched:**
+`components/open-inventory/task-queue-visibility/FilterRail.tsx` has the
+same `#4285f4`/`#689df6` literals plus extensive *other* unrelated legacy
+raw-hex styling (`#0ea2a7`, `#021920`, etc.) — a whole un-audited feature
+area with its own styling debt, not a quick two-line fix.
+`app/foundations/colors.stories.tsx`'s hardcoded `#204704` was already
+flagged as needing an explicit scope decision (just this file, or the
+whole Action-color family) before touching it — still waiting on that.
+
+**MDX prose sweep:** fixed every remaining "blue" description of an
+*actual current* component color that the original per-row passes missed
+(those focused on Token Reference table rows, not full-file prose) —
+`button.mdx`, `checkbox.mdx`, `clickable-card.mdx`, `date-picker.mdx`,
+`modal.mdx`, `select.mdx`, `table.mdx`, and `tabs.mdx` (which had a real
+internal inconsistency: its own Open Questions section already correctly
+flagged Principles' stale blue hexes, but its Overview prose two sections
+earlier still said "blue border"). Rewrote `stepper.mdx`'s States table in
+full and added an Open Questions note there, since Stepper was never part
+of the original audit and this fix wasn't independently re-verified
+against a live Figma node. **Deliberately not touched:** `combobox.mdx`'s
+"blue count badge" line — Combobox itself was never built or audited
+(still an open G1 hole), no real component to check the color against;
+`message-box.mdx`'s "#a4beea · blue icon" — checked against the real
+component and confirmed Info is a legitimate, intentionally-blue semantic
+color (`--icon-info` → `#2859ab`, not a rebrand casualty) and `#a4beea`
+itself is correct (matches the border color, `--info-200`), just
+conflated with the icon in the same table cell — a minor precision
+nitpick, not a rebrand issue, left alone.
+
+**Foundations:** added the missing `--radius-none` alias in both alias
+blocks in `globals.css` (the raw `--border-radius-none: 0px` token and
+`lib/tokens.ts`'s `borderRadius.none` already existed, just weren't wired
+through) and added the missing "none" row to
+`app/foundations/border-radius/page.tsx`'s hardcoded token table. The
+"Md | Regular" dual-label question from that same original audit row is
+still unresolved — genuinely unclear what code change it would even
+imply.
+
+Visually verified in browser: Stepper's completed/active indicators,
+connector line, and tag-chip text all render green; ClickableCard's
+category-icon background and selected-state border+radio-dot both render
+green. `tsc --noEmit` clean across the whole repo (21 files changed).
+
 ## Git state
 
 Branch: **`fix/ds-audit-g1-g2-figma-alignment`** (cut from
 `claude/assign-worker-flow-prototype-rb4ms4`, which is where this work was
-sitting uncommitted by mistake). 29 commits ahead of `main` (2026-09-07 to
+sitting uncommitted by mistake). 30 commits ahead of `main` (2026-09-07 to
 2026-09-09):
 
 1. `fix(tokens): correct action and form-field semantic aliases` — the 4 shared globals.css aliases, landed first because of blast radius
@@ -702,7 +771,8 @@ sitting uncommitted by mistake). 29 commits ahead of `main` (2026-09-07 to
 26. `fix(chip): cover all 30 chip variants, correct wrong colors on Chip and Tag`
 27. `feat(instance-card): build Instance Card from scratch, no Figma docs yet`
 28. `feat(collapsible-filters): extract from the real sandbox reference, fix drift vs Figma`
-29. `fix(file-tree): correct selected-state colors, add hover state and keyboard nav` — about to be committed
+29. `fix(file-tree): correct selected-state colors, add hover state and keyboard nav`
+30. `fix(ds): sweep the classic wrong-ramp-step bug and stale "blue" prose across un-audited components` — about to be committed
 
 Not merged to main, no PR opened yet. Note the branch's ancestry still carries
 22 commits of Assign-to-Worker v2 prototype + Caylent rebrand work that were

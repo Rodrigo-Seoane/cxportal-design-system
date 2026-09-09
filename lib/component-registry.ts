@@ -195,7 +195,7 @@ export const registry: Record<string, ComponentEntry> = {
       // colored-bg must be shown inside a surface div to render correctly
       if (v === 'colored-bg') {
         const indented = btn.split('\n').map(l => `  ${l}`).join('\n')
-        return `<div className="bg-[#4285f4] p-6 rounded-lg">\n${indented}\n</div>`
+        return `<div className="bg-[var(--content-action-primary-default)] p-6 rounded-lg">\n${indented}\n</div>`
       }
 
       return btn

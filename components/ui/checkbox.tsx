@@ -160,7 +160,7 @@ export interface RadioProps {
   disabled?: boolean
   id?: string
   className?: string
-  /** Overrides the checked-state dot + border color. Default matches the CxPortal DS (content-action-primary-600). */
+  /** Overrides the checked-state dot + border color. Default matches the CxPortal DS (content-action-primary-default). */
   accentColor?: string
 }
 

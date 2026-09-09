@@ -67,7 +67,7 @@ export const Disabled: Story = {
 
 export const ColoredBg: Story = {
   render: () => (
-    <div style={{ backgroundColor: 'var(--content-action-primary-600)', padding: '24px', borderRadius: '8px', display: 'inline-flex', gap: '12px', alignItems: 'center' }}>
+    <div style={{ backgroundColor: 'var(--content-action-primary-default)', padding: '24px', borderRadius: '8px', display: 'inline-flex', gap: '12px', alignItems: 'center' }}>
       <Button variant="colored-bg" size="sm">Get Started</Button>
       <Button variant="colored-bg" size="sm" disabled>Disabled</Button>
     </div>

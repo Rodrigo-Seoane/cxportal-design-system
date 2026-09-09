@@ -420,6 +420,7 @@
   --color-info-200:                    var(--info-200);
 
   /* Radius aliases */
+  --radius-none:  var(--border-radius-none);
   --radius-xs:    var(--border-radius-xs);
   --radius-sm:    var(--border-radius-sm);
   --radius-md:    var(--border-radius-md);
@@ -476,6 +477,7 @@
   --color-error-200:            var(--color-error-200);
   --color-info-100:             var(--color-info-100);
   --color-info-200:             var(--color-info-200);
+  --radius-none:                var(--radius-none);
   --radius-xs:                  var(--radius-xs);
   --radius-sm:                  var(--radius-sm);
   --radius-md:                  var(--radius-md);

@@ -49,7 +49,7 @@ Each step in the Stepper consists of:
     <TableRow>
       <TableCell>Connector line</TableCell>
       <TableCell>Yes (except last step)</TableCell>
-      <TableCell>Color reflects the step above: blue if completed, neutral if default</TableCell>
+      <TableCell>Color reflects the step above: green if completed, neutral if default</TableCell>
     </TableRow>
     <TableRow>
       <TableCell>Step title</TableCell>
@@ -91,15 +91,15 @@ The Stepper has three step states, not visual variants. All states coexist withi
     </TableRow>
     <TableRow>
       <TableCell><strong>Active</strong></TableCell>
-      <TableCell>Hollow circle, blue border (#204704)</TableCell>
-      <TableCell>Link blue (#204704)</TableCell>
-      <TableCell>Blue (#204704) on the line above; neutral on the line below</TableCell>
+      <TableCell>Hollow circle, green border (#3a8015)</TableCell>
+      <TableCell>Primary green (#3a8015)</TableCell>
+      <TableCell>Green (#3a8015) on the line above; neutral on the line below</TableCell>
     </TableRow>
     <TableRow>
       <TableCell><strong>Completed</strong></TableCell>
-      <TableCell>Filled blue circle (#204704) with white checkmark</TableCell>
-      <TableCell>Link blue (#204704)</TableCell>
-      <TableCell>Blue (#204704)</TableCell>
+      <TableCell>Filled green circle (#3a8015) with white checkmark</TableCell>
+      <TableCell>Primary green (#3a8015)</TableCell>
+      <TableCell>Green (#3a8015)</TableCell>
     </TableRow>
   </TableBody>
 </Table>
@@ -176,3 +176,7 @@ const [currentStep, setCurrentStep] = useState(0)
 - Each step should convey its state to assistive technology via visible text (the indicator alone is not sufficient for screen readers).
 - The × button on tag chips must have an `aria-label` describing what it removes (e.g., `aria-label="Remove Voice Survey"`). The component handles this automatically when `onTagRemove` is provided.
 - Color alone is not used to convey state — the completed checkmark icon and the hollow/filled indicator provide state information independent of color.
+
+## Open Questions
+
+- **Token fix applied without a fresh Figma pull.** Stepper wasn't part of the original G1–G5 audit batches. The component and this doc both used `--content-action-primary-600` (`#204704`) — the same wrong-ramp-step value found and corrected on 15+ other components throughout that audit — mislabeled "blue" here despite `#204704` being a dark green, not blue at all. Corrected to `--content-action-primary-default` (`#3a8015`) by the same established pattern; not independently re-verified against a live Stepper node in Figma.

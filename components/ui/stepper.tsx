@@ -30,8 +30,8 @@ function StepIndicator({ status }: { status: StepStatus }) {
     <div
       className={cn(
         'shrink-0 size-6 rounded-full flex items-center justify-center',
-        status === 'completed' && 'bg-[var(--content-action-primary-600)]',
-        status === 'active'    && 'border-[3px] border-[var(--content-action-primary-600)] bg-white',
+        status === 'completed' && 'bg-[var(--content-action-primary-default)]',
+        status === 'active'    && 'border-[3px] border-[var(--content-action-primary-default)] bg-white',
         status === 'default'   && 'border-2 border-[var(--neutral-100)] bg-white',
       )}
     >
@@ -58,7 +58,7 @@ export function Stepper({
           i < currentStep  ? 'completed' :
           i === currentStep ? 'active'    : 'default'
 
-        const connectorColor = i < currentStep ? 'var(--content-action-primary-600)' : 'var(--neutral-100)'
+        const connectorColor = i < currentStep ? 'var(--content-action-primary-default)' : 'var(--neutral-100)'
         const textColor      = status === 'default' ? 'var(--text-body-secondary)' : 'var(--content-action-primary-default)'
 
         return (
@@ -93,7 +93,7 @@ export function Stepper({
               {status === 'completed' && step.tag && (
                 <div className="flex items-center gap-2 px-3 py-1 rounded-lg bg-[var(--info-100)] self-start mt-1">
                   <span
-                    className="text-[10px] font-semibold text-[var(--text-body-primary)]"
+                    className="text-[10px] font-semibold text-[var(--neutral-800)]"
                     style={{ letterSpacing: '0.4px' }}
                   >
                     {step.tag}
@@ -105,7 +105,7 @@ export function Stepper({
                       className="flex items-center justify-center size-3 opacity-60 hover:opacity-100 transition-opacity"
                       aria-label={`Remove ${step.tag}`}
                     >
-                      <XIcon size={10} color="var(--text-body-primary)" weight="bold" />
+                      <XIcon size={10} color="var(--neutral-800)" weight="bold" />
                     </button>
                   )}
                 </div>

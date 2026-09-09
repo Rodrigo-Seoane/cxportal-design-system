@@ -49,7 +49,7 @@ export interface InputProps {
 
 const T = {
   borderDefault:  'var(--neutral-200)',
-  borderFocus:    'var(--content-action-primary-600)',
+  borderFocus:    'var(--content-action-primary-default)',
   borderError:    'var(--error-200)',
   borderDisabled: 'var(--content-action-disabled-300)',
   bgDefault:      'var(--neutral-0)',
