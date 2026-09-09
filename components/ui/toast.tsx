@@ -43,6 +43,9 @@ interface ToasterProps {
   maxToasts?: number
 }
 
+/** Figma effect "Tooltip Shadow" (reused by Toast): drop shadow #05032614, y-offset 4, radius --scale/6. */
+const TOAST_SHADOW = '0 4px 12px rgba(5, 3, 38, 0.08)'
+
 // ── Loading icon with spin animation ──────────────────────────────────────────
 
 function LoadingIcon() {
@@ -111,9 +114,8 @@ export function Toast({
         width:          360,
         minHeight:      isMultiLine ? 64 : 48,
         background:    'var(--surface-section-bg)',
-        border:        '1px solid var(--neutral-100)',
         borderRadius:   8,
-        boxShadow:     '0px 4px 24px 0px color-mix(in srgb, var(--surface-vertical-nav) 8%, transparent)',
+        boxShadow:      TOAST_SHADOW,
         boxSizing:     'border-box',
       }}
     >
@@ -148,7 +150,7 @@ export function Toast({
             fontSize:    14,
             fontWeight:  400,
             lineHeight: '20px',
-            color:      'var(--text-body-primary)',
+            color:      'var(--neutral-800)',
           }}
         >
           {title}
@@ -160,7 +162,7 @@ export function Toast({
               fontSize:    12,
               fontWeight:  300,
               lineHeight: '20px',
-              color:      'var(--text-body-primary)',
+              color:      'var(--neutral-800)',
             }}
           >
             {description}
@@ -175,8 +177,8 @@ export function Toast({
           onClick={action.onClick}
           style={{
             flexShrink:    0,
-            background:   'var(--content-action-primary-600)',
-            border:       '1px solid var(--content-action-primary-700)',
+            background:   'var(--surface-action-primary-default)',
+            border:       '1px solid var(--border-color-surface-active-primary-default)',
             borderRadius:  4,
             padding:      '4px 8px',
             fontSize:      10,
@@ -207,7 +209,7 @@ export function Toast({
             border:       'none',
             padding:       0,
             cursor:       'pointer',
-            color:        'var(--text-body-primary)',
+            color:        'var(--neutral-800)',
             opacity:       0.45,
             transition:   'opacity 120ms ease',
             alignSelf:    isMultiLine ? 'flex-start' : 'center',
@@ -215,7 +217,7 @@ export function Toast({
           onMouseEnter={(e) => { (e.currentTarget as HTMLButtonElement).style.opacity = '0.8' }}
           onMouseLeave={(e) => { (e.currentTarget as HTMLButtonElement).style.opacity = '0.45' }}
         >
-          <XCircleIcon size={16} color="var(--text-body-primary)" weight="regular" />
+          <XCircleIcon size={16} color="var(--neutral-800)" weight="regular" />
         </button>
       )}
     </div>
@@ -248,7 +250,10 @@ const DEFAULT_DURATIONS: Record<ToastType, number> = {
 
 function addToast(props: Omit<ToastEntry, 'id' | 'visible'> & { duration?: number }): string {
   const id = generateId()
-  const duration = props.duration !== undefined ? props.duration : DEFAULT_DURATIONS[props.type]
+  // Figma Behaviour spec: "With action: may persist until dismissed or action taken."
+  const duration = props.duration !== undefined
+    ? props.duration
+    : props.action ? 0 : DEFAULT_DURATIONS[props.type]
   const entry: ToastEntry = {
     id,
     type:        props.type,
@@ -398,6 +403,9 @@ function isTopPosition(position: ToastPosition): boolean {
 
 export function Toaster({ position = 'top-right', maxToasts = 3 }: ToasterProps) {
   const [entries, setEntries] = useState<ToastEntry[]>([])
+  // Entries that have completed their slide-in — tracked separately from
+  // ToastEntry.visible (which means "not yet removed", i.e. drives exit).
+  const [enteredIds, setEnteredIds] = useState<Set<string>>(new Set())
 
   useEffect(() => {
     const listener = () => setEntries([...store])
@@ -407,17 +415,26 @@ export function Toaster({ position = 'top-right', maxToasts = 3 }: ToasterProps)
     return () => { listeners.delete(listener) }
   }, [])
 
+  // Figma Behaviour spec: "Enter: Slide in from edge + fade in." A newly
+  // added entry starts offset/transparent, then flips to its resting state
+  // one frame later so the CSS transition actually plays.
+  useEffect(() => {
+    const newIds = entries.filter(e => !enteredIds.has(e.id)).map(e => e.id)
+    if (newIds.length === 0) return
+    const frame = requestAnimationFrame(() => {
+      setEnteredIds(prev => new Set([...prev, ...newIds]))
+    })
+    return () => cancelAnimationFrame(frame)
+  }, [entries, enteredIds])
+
   const visible = entries.slice(-maxToasts)
   const posStyle = POSITION_STYLES[position]
   const isTop = isTopPosition(position)
 
-  // For exit animation direction
-  function exitTranslate(entry: ToastEntry): string {
-    if (!entry.visible) {
-      if (isRightPosition(position)) return 'translateX(16px)'
-      if (isLeftPosition(position)) return 'translateX(-16px)'
-      return 'translateX(0)'
-    }
+  // Slide direction for both enter (not yet entered) and exit (dismissed)
+  function edgeTranslate(): string {
+    if (isRightPosition(position)) return 'translateX(16px)'
+    if (isLeftPosition(position)) return 'translateX(-16px)'
     return 'translateX(0)'
   }
 
@@ -434,25 +451,28 @@ export function Toaster({ position = 'top-right', maxToasts = 3 }: ToasterProps)
         pointerEvents: 'none',
       }}
     >
-      {visible.map(entry => (
-        <div
-          key={entry.id}
-          style={{
-            pointerEvents:  'auto',
-            transition:    'opacity 200ms ease, transform 200ms ease',
-            opacity:        entry.visible ? 1 : 0,
-            transform:      exitTranslate(entry),
-          }}
-        >
-          <Toast
-            type={entry.type}
-            title={entry.title}
-            description={entry.description}
-            action={entry.action}
-            onDismiss={() => removeToast(entry.id)}
-          />
-        </div>
-      ))}
+      {visible.map(entry => {
+        const hasEntered = enteredIds.has(entry.id)
+        return (
+          <div
+            key={entry.id}
+            style={{
+              pointerEvents:  'auto',
+              transition:    'opacity 200ms ease, transform 200ms ease',
+              opacity:        entry.visible && hasEntered ? 1 : 0,
+              transform:      entry.visible && hasEntered ? 'translateX(0)' : edgeTranslate(),
+            }}
+          >
+            <Toast
+              type={entry.type}
+              title={entry.title}
+              description={entry.description}
+              action={entry.action}
+              onDismiss={() => removeToast(entry.id)}
+            />
+          </div>
+        )
+      })}
     </div>
   )
 }

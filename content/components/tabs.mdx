@@ -1,6 +1,6 @@
 ---
 title: Tabs
-description: Compact tab strip for switching between sibling views. Supports 2–4 tabs, optional icons, disabled states, and full keyboard navigation.
+description: Compact tab strip for switching between sibling views. Supports 2–5 tabs, optional icons, disabled states, and full keyboard navigation.
 figmaNodeId: 280-20700
 figmaUpdated: Apr 09, 2026
 status: stable
@@ -10,11 +10,11 @@ status: stable
 
 Tabs organise sibling content into a compact, switchable strip. They let users navigate between related views without leaving the page context — making them ideal for filtering lists, toggling between display modes, or stepping through sections inside a panel or modal.
 
-The component supports two visual types. **Button** (default) wraps tabs in a rounded pill container with a grey background; the active tab has a white card with a blue border. **Minimal** renders tabs inline with no container — the active tab is distinguished by a blue bottom border underline, ideal for embedded contexts like trays, cards, or side panels.
+The component supports two visual types. **Button** (default) wraps tabs in a rounded pill container with a grey background; the active tab has a white card with a green border. **Minimal** renders tabs inline with no container — the active tab is distinguished by a green bottom border underline, ideal for embedded contexts like trays, cards, or side panels.
 
 ## When to use
 
-- When the page or panel has **2–4 distinct sibling views** that share the same layout space
+- When the page or panel has **2–5 distinct sibling views** that share the same layout space
 - When switching between views should feel **instant and in-context** (no page load)
 - When users benefit from seeing all available views upfront — tabs expose all options at once
 - As a **filter strip** above a list or table (e.g. All / Active / Inactive)
@@ -22,15 +22,15 @@ The component supports two visual types. **Button** (default) wraps tabs in a ro
 - Inside a **modal or drawer** to switch between sections without extra navigation
 
 **Do not use** tabs when:
-- There are more than 4 tabs — prefer a secondary navigation or a Select dropdown
+- There are more than 5 tabs — prefer a secondary navigation or a Select dropdown
 - The views are sequential steps that must be completed in order — use a Stepper instead
 - The content areas are not closely related — consider separate pages or sections
 - Only one tab would ever be available — show the content directly, skip the tabs
 
 ## Anatomy
 
-- **Tab group (`TabList`)** — The outer container. Button type: `#efefef` background, 4px border-radius, 4px padding. Minimal type: transparent, no padding or radius. Both: 4px gap between tabs.
-- **Tab trigger (`Tab`)** — 10px SemiBold label, optional 16px icon on the left, 4px vertical padding. Button type: 12px horizontal padding, 4px border-radius. Minimal type: 4px padding all sides, no radius.
+- **Tab group (`TabList`)** — The outer container. Button type: `#efefef` background, 4px border-radius, 4px padding, 4px gap between tabs. Minimal type: transparent, no padding or radius, 4px horizontal padding only, **12px** gap between tabs (not 4px — items are pinned to the bottom edge so the underline sits flush).
+- **Tab trigger (`Tab`)** — 10px SemiBold label, optional icon on the left (**12px for Button type, 9px for Minimal** — not a universal 16px), 4px vertical padding. Button type: 12px horizontal padding, 8px icon-label gap, 4px border-radius. Minimal type: **2px horizontal / 4px vertical** padding (not uniform 4px), 4px icon-label gap, 24px min-height, no radius.
 - **Tab panel (`TabPanel`)** — The content region associated with the active tab. Rendered below the tab strip; hidden when its tab is not active.
 
 ## Variants
@@ -50,13 +50,13 @@ The component supports two visual types. **Button** (default) wraps tabs in a ro
     <TableRow>
       <TableCell><strong>Button</strong> (default)</TableCell>
       <TableCell><code>#efefef</code> pill, 4px radius + padding</TableCell>
-      <TableCell>White card + <code>1px #3a8015</code> border</TableCell>
+      <TableCell>White card + <code>1px #629944</code> border</TableCell>
       <TableCell>Standalone groups — page filters, view-mode switchers</TableCell>
     </TableRow>
     <TableRow>
       <TableCell><strong>Minimal</strong></TableCell>
       <TableCell>Transparent, no padding</TableCell>
-      <TableCell>Blue bottom border underline</TableCell>
+      <TableCell>Green <code>1px</code> bottom border underline</TableCell>
       <TableCell>Embedded groups — trays, cards, side panels, modals</TableCell>
     </TableRow>
   </TableBody>
@@ -76,31 +76,31 @@ The component supports two visual types. **Button** (default) wraps tabs in a ro
   </TableHeader>
   <TableBody>
     <TableRow>
-      <TableCell><strong>Active</strong></TableCell>
-      <TableCell><code>#ffffff</code> + <code>1px #3a8015</code></TableCell>
-      <TableCell>Bottom <code>2px #3a8015</code></TableCell>
-      <TableCell><code>#204704</code></TableCell>
+      <TableCell><strong>Active</strong> (Figma calls this state "Focus" — it means selected, not keyboard focus)</TableCell>
+      <TableCell><code>#ffffff</code> + <code>1px #629944</code></TableCell>
+      <TableCell>Bottom <code>1px #629944</code></TableCell>
+      <TableCell><code>#3a8015</code></TableCell>
       <TableCell>Currently selected view</TableCell>
     </TableRow>
     <TableRow>
       <TableCell><strong>Default</strong></TableCell>
       <TableCell>Transparent</TableCell>
       <TableCell>None</TableCell>
-      <TableCell><code>#373737</code></TableCell>
+      <TableCell><code>#1d1d1d</code></TableCell>
       <TableCell>Idle, available to select</TableCell>
     </TableRow>
     <TableRow>
       <TableCell><strong>Hover</strong></TableCell>
-      <TableCell><code>rgba(255,255,255,0.65)</code></TableCell>
-      <TableCell>None</TableCell>
-      <TableCell><code>#373737</code></TableCell>
+      <TableCell>Solid <code>#ffffff</code>, no border</TableCell>
+      <TableCell>Solid <code>#ffffff</code>, no underline</TableCell>
+      <TableCell><code>#3a8015</code> — Figma previews the active look on hover, same green as Active</TableCell>
       <TableCell>Mouse over an idle tab</TableCell>
     </TableRow>
     <TableRow>
       <TableCell><strong>Disabled</strong></TableCell>
       <TableCell>Transparent</TableCell>
       <TableCell>None</TableCell>
-      <TableCell><code>#8d8d8d</code></TableCell>
+      <TableCell><code>#adadad</code></TableCell>
       <TableCell>Feature not yet available</TableCell>
     </TableRow>
   </TableBody>
@@ -126,7 +126,7 @@ Each tab optionally accepts a 16px icon to the left of the label. Icons help dis
     </TableRow>
     <TableRow>
       <TableCell><strong>Icon + label</strong></TableCell>
-      <TableCell>16px, left of label</TableCell>
+      <TableCell>12px (Button type) / 9px (Minimal type), left of label</TableCell>
       <TableCell>View-mode switchers where the icon quickly communicates the layout type</TableCell>
     </TableRow>
   </TableBody>
@@ -165,8 +165,8 @@ The Tabs component appears across the product in three main patterns:
 </DosDonts>
 
 <DosDonts>
-  <Do description="Limit to 4 tabs maximum. The strip is designed for 2–4 tabs at the widths used in the product. More tabs break the compact layout and overwhelm the user." />
-  <Dont description="Exceed 4 tabs. If the information architecture requires more sections, use the vertical Navigation or a secondary Select dropdown to expose the options." />
+  <Do description="Limit to 5 tabs maximum. The strip is designed for 2–5 tabs at the widths used in the product. More tabs break the compact layout and overwhelm the user." />
+  <Dont description="Exceed 5 tabs. If the information architecture requires more sections, use the vertical Navigation or a secondary Select dropdown to expose the options." />
 </DosDonts>
 
 ## Code
@@ -198,14 +198,27 @@ import { Tabs, TabList, Tab, TabPanel } from '@/components/ui/tabs'
 ### With icons
 
 ```tsx
-import { Table, Rows } from '@phosphor-icons/react'
+import { TableIcon, RowsIcon } from '@phosphor-icons/react'
 
+{/* Button type: 12px icons */}
 <Tabs defaultValue="list">
   <TabList aria-label="View mode">
-    <Tab value="list" icon={<Table size={16} weight="thin" />}>
+    <Tab value="list" icon={<TableIcon size={12} weight="regular" />}>
       List View
     </Tab>
-    <Tab value="grid" icon={<Rows size={16} weight="thin" />}>
+    <Tab value="grid" icon={<RowsIcon size={12} weight="regular" />}>
+      Grid View
+    </Tab>
+  </TabList>
+</Tabs>
+
+{/* Minimal type: 9px icons */}
+<Tabs defaultValue="list" type="minimal">
+  <TabList aria-label="View mode">
+    <Tab value="list" icon={<TableIcon size={9} weight="regular" />}>
+      List View
+    </Tab>
+    <Tab value="grid" icon={<RowsIcon size={9} weight="regular" />}>
       Grid View
     </Tab>
   </TabList>
@@ -302,39 +315,74 @@ const [view, setView] = useState('all')
       <TableCell>Active tab background</TableCell>
     </TableRow>
     <TableRow>
-      <TableCell><code>--border-color/surface-active/primary</code></TableCell>
+      <TableCell><code>--border-color-surface-active-primary-default</code></TableCell>
+      <TableCell><code>#629944</code></TableCell>
+      <TableCell>Active tab border (Button) / underline (Minimal) — note this is a different, lighter green than the label colour below</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><code>--content-action-primary-default</code></TableCell>
       <TableCell><code>#3a8015</code></TableCell>
-      <TableCell>Active tab border</TableCell>
+      <TableCell>Active <em>and</em> hover tab label/icon colour. Applied directly rather than via the shared <code>--text-action</code> alias, which resolves to the wrong ramp step (<code>#204704</code>) in this codebase — see <strong>Open questions</strong>.</TableCell>
     </TableRow>
     <TableRow>
-      <TableCell><code>--text/action</code></TableCell>
-      <TableCell><code>#204704</code></TableCell>
-      <TableCell>Active tab label and icon colour</TableCell>
+      <TableCell><code>--neutral-800</code></TableCell>
+      <TableCell><code>#1d1d1d</code></TableCell>
+      <TableCell>Default (idle) tab label colour. Figma names this <code>--text/on-action/secondary</code>, but that shared alias also resolves to the wrong value (<code>#373737</code>) here — same reason as above.</TableCell>
     </TableRow>
     <TableRow>
-      <TableCell><code>--text/on-action/secondary</code></TableCell>
-      <TableCell><code>#373737</code></TableCell>
-      <TableCell>Default tab label colour</TableCell>
-    </TableRow>
-    <TableRow>
-      <TableCell><code>--text/form-field/disabled</code></TableCell>
-      <TableCell><code>#8d8d8d</code></TableCell>
+      <TableCell><code>--text-form-field-disabled</code></TableCell>
+      <TableCell><code>#adadad</code></TableCell>
       <TableCell>Disabled tab label colour</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><code>--surface-main-panel</code></TableCell>
+      <TableCell><code>#efefef</code></TableCell>
+      <TableCell>Button-type group background</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><code>--surface-form-field</code></TableCell>
+      <TableCell><code>#ffffff</code></TableCell>
+      <TableCell>Active and hover tab background (Button type)</TableCell>
     </TableRow>
     <TableRow>
       <TableCell><code>--border-radius/sm</code></TableCell>
       <TableCell>4px</TableCell>
-      <TableCell>Border radius for both group and individual tabs</TableCell>
+      <TableCell>Border radius for both group and individual tabs (Button type)</TableCell>
     </TableRow>
     <TableRow>
       <TableCell><code>--scale/1</code></TableCell>
       <TableCell>4px</TableCell>
-      <TableCell>Group padding and tab vertical padding</TableCell>
+      <TableCell>Button-type group padding, tab vertical padding, and Minimal-type tab vertical padding</TableCell>
     </TableRow>
     <TableRow>
       <TableCell><code>--scale/3</code></TableCell>
       <TableCell>12px</TableCell>
-      <TableCell>Tab horizontal padding</TableCell>
+      <TableCell>Button-type tab horizontal padding</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>Minimal group gap</TableCell>
+      <TableCell>12px</TableCell>
+      <TableCell>Between tabs in a Minimal-type <code>TabList</code> — not the same 4px used everywhere else</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>Minimal tab padding</TableCell>
+      <TableCell>2px horizontal / 4px vertical</TableCell>
+      <TableCell>Not uniform 4px</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>Minimal tab gap</TableCell>
+      <TableCell>4px</TableCell>
+      <TableCell>Between icon and label (Button type uses 8px)</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>Minimal min-height</TableCell>
+      <TableCell>24px</TableCell>
+      <TableCell>Both the group and each tab trigger</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>Icon size</TableCell>
+      <TableCell>12px (Button) / 9px (Minimal)</TableCell>
+      <TableCell>Not a universal 16px</TableCell>
     </TableRow>
     <TableRow>
       <TableCell>Font size</TableCell>
@@ -353,6 +401,13 @@ const [view, setView] = useState('all')
     </TableRow>
   </TableBody>
 </Table>
+
+### Open questions — Figma is internally inconsistent here, not resolved
+
+- **Tab count contradiction.** Principles (`2544-75780`) explicitly says "Tab groups support 2, 3, or 4 tabs. Do not exceed 4" — repeated in its own When to Use / When Not to Use sections. But the Tab Group component itself (`280-20700`) ships a labelled `Size=05` variant with 5 tabs, screenshot-rendered and everything. Per this design system's audit convention the component wins over prose docs — this page and the component now support 2-5. The Principles text is stale and needs a designer fix, not a silent doc pick.
+- **Principles' colour values are pre-rebrand.** Its States section describes Active text as `#4285f4` (blue), Default text as `#021920`, and Disabled text as `#aab0b8` — none of which match the component, any current token, or anything else in this codebase. Not followed; the component's green values (`#3a8015` / `#629944` / `#1d1d1d` / `#adadad`) are what's built.
+- **Two shared token aliases are themselves wrong-ramp-stepped.** `--text-action` (Figma: `text/action`) resolves to `#204704` here instead of Figma's `#3a8015`, and `--text-on-action-secondary` (Figma: `text/on-action/secondary`) resolves to `#373737` instead of `#1d1d1d` — the same recurring bug found on Modal, Toast, and the G1 Checkbox & Radio row. Not fixed globally: `--text-action` alone is also consumed by `table.tsx`, `Sidebar.tsx`, and several un-audited `open-inventory` components. Tabs bypasses both aliases locally (`--content-action-primary-default`, `--neutral-800` directly) rather than repointing the shared tokens.
+- **Minimal active border-bottom width (1px) is inferred, not stated.** The component's Tailwind class is a bare `border-b` with no width modifier, which defaults to 1px — there's no explicit numeric spec to check it against. Moderate confidence, not pixel-ironclad.
 
 ## Accessibility
 

@@ -1,71 +1,84 @@
 ---
 title: File Tree
-description: Hierarchical navigation tree for account → campaign group → topic structures. Each 24 px row has a controller cell (expand/collapse caret for groups, file icon for topics) and an indented title cell. Selected items highlight in primary blue.
-figmaNodeId: 2244-5496
-figmaUpdated: May 29, 2026
+description: Hierarchical navigation tree for account → campaign group → topic structures. Each 24 px row has a controller cell (expand/collapse caret for groups, file icon for topics) and an indented title cell. Selected items highlight in green.
+figmaNodeId: 2244-2676
+figmaUpdated: Sep 9, 2026
 status: stable
 ---
 
 ## Overview
 
-The File Tree renders a three-level hierarchy — Account → Campaign Group → Topic — as a compact vertical list. It is used inside the left filter/navigation panel of Campaign and Account Management pages to let users jump between contexts without navigating away.
+The File Tree is a compact hierarchical navigation component designed to appear inside filter panels and sidebars — not as a standalone page element. It renders a three-level Account → Campaign Group → Topic hierarchy as a vertical list of 24 px rows. Users expand groups to reveal children and click topics to navigate, all without leaving the current page context.
 
-Each row is 24 px tall and composed of two cells: a **controller cell** (24×24 px) that holds the expand/collapse icon or a file icon, and a **title cell** (remaining width) that shows the node label. Children are indented 24 px per level. Vertical connector lines visually link parent nodes to their children.
+Distinct from general-purpose tree view libraries (react-arborist, MUI TreeView). The File Tree is intentionally constrained to three levels, uses CxPortal's two-cell row anatomy (controller + title), and draws vertical connector lines to reinforce parent–child relationships. It is optimised for the Campaign and Account Management sidebars.
+
+## Design Principles
+
+**Hierarchy through indentation.** Each depth level adds 24 px of left offset. The indentation alone communicates structure — connector lines reinforce it but are not the sole signal.
+
+**Connector lines follow the parent path.** Each expanded group draws a 1 px vertical line, centered under its controller icon, spanning from the parent row's bottom edge to the last visible child. The line stops at the final child — no continuation past it. Sibling groups expanded at the same depth draw independent connectors.
+
+**Two-cell row anatomy.** Every row is a 24×24 px controller cell (icon area) plus a title cell (remaining width). This separation lets the controller carry an independent background for the selected state while the title cell uses a lighter tint.
+
+**Leaf nodes are terminal.** Topics (FileText icon) are always leaf nodes — they trigger selection, never expansion. Only Account and Campaign Group nodes are expandable.
 
 ## When to use
 
-- Inside a `FilterPanel` or sidebar to display navigable account/group/topic hierarchies.
+- Inside detail pages (Account, Campaign Group, Topic) where a navigable hierarchy helps the user drill into nested content.
+- When the hierarchy has exactly 3 levels: Account → Campaign Group → Topic.
 - When users need to switch between campaign groups or topics without a full page navigation.
-- When the hierarchy has exactly 3 levels (Account → Group → Topic). For flat lists, use `TableFilter` instead.
 
 ## When not to use
 
 - Do not use File Tree for arbitrary file systems or folder structures unrelated to the Campaign hierarchy.
-- Do not use when the hierarchy is more than 3 levels deep.
+- Do not use when the hierarchy exceeds 3 levels deep — the component does not support Level 3+.
 - Do not use as a primary page navigation element — it lives inside a collapsible panel, not the main sidebar.
+- For flat lists, use `TableFilter` instead.
 
 ## Anatomy
 
-- **Controller cell** — 24×24 px, always the first cell in a row.
-  - **Account / Group (open):** `CaretDownIcon` (12 px)
-  - **Group (closed):** `CaretRightIcon` (12 px)
-  - **Topic:** `FileTextIcon` (12 px, filled) — topics are leaf nodes, they don't expand
-- **Title cell** — Fills remaining row width. 8 px left padding. 10 px Regular text, `#373737`.
-- **Connector lines** — 1 px vertical lines in `#efefef` drawn from the bottom edge of a parent controller to the midpoint of the last visible child.
-- **Indent** — Each depth level adds 24 px of left offset to the entire row.
+1. **Controller cell** — A 24×24 px container holding the node's icon. Groups: `CaretRightIcon` (collapsed) or `CaretDownIcon` (expanded), 12 px, regular weight. Topics: `FileTextIcon`, 12 px, **filled** weight — the one icon in this component that departs from this DS's usual "regular weight" convention, matching Figma's explicit spec. Background turns green when selected; white by default, light gray on hover.
+2. **Title cell** — Fills the remaining row width. 8 px left padding. 10 px Regular label text. Background turns a light green tint when selected; white by default, light gray on hover.
+3. **"Select" affordance** — A ghost text button that appears on row hover, regardless of node type. It's the only way to mark a Group or Account node as selected, since clicking those rows only toggles expand/collapse; clicking a Topic row already selects it directly, so hovering it shows "Select" as a redundant-but-consistent affordance.
+4. **Connector lines** — 1 px vertical lines in `--neutral-100`, drawn from an expanded parent's bottom edge, centered under its controller icon. Each connector is scoped to its own parent's children.
+5. **Indent spacer** — An empty div whose width equals depth × 24 px, pushing the controller and title cells to the correct indentation level.
+6. **Row** — A 24 px tall button wrapping the indent spacer, controller, and title, with a 1 px bottom border for visual separation.
+
+## Variants
+
+| Level | Node Type | Indent | Controller icon | Controller + title width |
+|---|---|---|---|---|
+| 0 | Account | 0px | CaretDown / CaretRight | 250px |
+| 1 | Campaign group | 24px | CaretDown / CaretRight | 226px |
+| 2 | Topic | 48px | File Text (filled) | 202px |
+
+Row widths shrink by 24px per level because the outer container has a fixed 250px width and the indent spacer grows by 24px per level — `indent + (controller + title width) = 250px` at every depth.
 
 ## States
 
-| Node type | State | Controller bg | Title bg |
+| State | Controller bg | Controller border | Title bg |
 |---|---|---|---|
-| Group | Default, open | White | White |
-| Group | Default, closed | White | White |
-| Group | Selected, open | `#204704` (blue) | `#d0ecc1` (tint) |
-| Topic | Default | White | White |
-| Topic | Selected | `#204704` (blue) + right border `#3a8015` | `#d0ecc1` (tint) |
+| Default | White | none | White |
+| Hover | `--surface-action-secondary-hover` (`#f8f8f8`) | `--border-color-surface-active-secondary-hover` (`#8d8d8d`), right edge | `--surface-action-secondary-hover` |
+| Selected (Focus) | `--surface-action-primary-default` (`#3a8015`) | `--border-color-surface-active-primary-default` (`#629944`), right edge | `--surface-table-active-row` (`#d0ecc1`) |
 
-## Depth / indentation
-
-| Level | Node type | Indent | Row width (in 250 px panel) |
-|---|---|---|---|
-| 0 | Account | 0 px | 250 px |
-| 1 | Campaign Group | 24 px | 226 px |
-| 2 | Topic | 48 px | 202 px |
+Selected applies identically to Group and Topic rows — both get the green controller and the border-right accent.
 
 ## Guidelines
 
 ### DOs
 
-- Keep node labels short enough to fit on one line — 24 px row height means no line wrapping. Use `title` attribute for full labels if needed.
-- Default to expanding the root-level Account node on first render.
-- Clicking a Group node toggles expand/collapse. Clicking a Topic node triggers selection (`onSelect`).
-- Show connector lines for all expanded groups with children.
+- Always use FileTree inside a fixed-width container (typically a 250 px sidebar).
+- Keep node labels short enough for one line — 24 px row height means no line wrapping. Use a `title` attribute for the full label when truncation is needed.
+- Default to expanding the root Account node on first render so users see immediate context.
+- Show connector lines for all expanded groups with children — they reinforce the hierarchy visually.
 
 ### DON'Ts
 
 - Don't make Topics expandable — they are always leaf nodes.
-- Don't nest more than 3 levels. The component doesn't support level 4+.
-- Don't use this component without an `onSelect` handler when topics need to be navigable.
+- Don't nest beyond 3 levels. The component caps at Account → Campaign Group → Topic.
+- Don't use File Tree without an `onSelect` handler when topics need to be navigable.
+- Don't add horizontal connector stubs (T-shapes or L-shapes) — only vertical lines are part of this component's visual language.
 
 ## Code
 
@@ -77,17 +90,17 @@ import type { FileTreeNode } from '@/components/ui/file-tree'
 
 const tree: FileTreeNode[] = [
   {
-    id:    'account-1',
+    id: 'account-1',
     label: 'Social Security Admin',
-    type:  'account',
+    type: 'account',
     children: [
       {
-        id:    'group-1',
+        id: 'group-1',
         label: 'Benefit Status Updates',
-        type:  'group',
+        type: 'group',
         children: [
           { id: 'topic-1', label: 'Retirement Planning Reminders', type: 'topic' },
-          { id: 'topic-2', label: 'Disability Claim Follow-ups',   type: 'topic' },
+          { id: 'topic-2', label: 'Disability Claim Follow-ups', type: 'topic' },
         ],
       },
     ],
@@ -112,7 +125,7 @@ const tree: FileTreeNode[] = [
 />
 ```
 
-### Inside a FilterPanel
+### Inside a filter panel
 
 ```tsx
 <div style={{ width: 250, borderRight: '1px solid var(--neutral-100)' }}>
@@ -125,26 +138,60 @@ const tree: FileTreeNode[] = [
 </div>
 ```
 
+### Props
+
+```tsx
+type FileTreeNodeType = 'account' | 'group' | 'topic'
+
+interface FileTreeNode {
+  id: string
+  label: string
+  type: FileTreeNodeType
+  children?: FileTreeNode[]
+}
+
+interface FileTreeProps {
+  nodes: FileTreeNode[]
+  selectedId?: string
+  onSelect?: (node: FileTreeNode) => void  // fires for any node type — Groups via the "Select" affordance, Topics via row click
+  defaultExpanded?: string[]               // defaults to all root-level nodes expanded
+}
+```
+
 ## Token reference
 
 | Token | Value | Usage |
 |---|---|---|
-| `--color-surface-section` | `#ffffff` | Default row background |
-| `--content-action/primary/100` | `#d0ecc1` | Selected title cell background |
-| `--color-primary` / `--surface/action/primary` | `#204704` | Selected controller background |
-| `--border-color/surface-active/primary` | `#3a8015` | Selected topic controller right border |
-| `--neutral/100` | `#efefef` | Connector lines and row bottom border |
-| `--text/on-action/secondary` | `#373737` | Label text color |
-| Row height | 24 px | — |
-| Controller width | 24 px | — |
-| Indent per level | 24 px | — |
-| Label font | 10 px / Regular | — |
-| Icon size | 12 px | CaretDown, CaretRight, FileText |
+| `--surface-section-bg` | `#ffffff` | Default row background |
+| `--surface-action-secondary-hover` | `#f8f8f8` | Hover row background |
+| `--border-color-surface-active-secondary-hover` | `#8d8d8d` | Hover controller right border |
+| `--surface-action-primary-default` | `#3a8015` | Selected controller background |
+| `--border-color-surface-active-primary-default` | `#629944` | Selected controller right border |
+| `--surface-table-active-row` | `#d0ecc1` | Selected title cell background |
+| `--neutral-800` | `#1d1d1d` | Label text color — bypassed directly from `--text-on-action-secondary`, which resolves to the wrong ramp step (`--neutral-700`, `#373737`) in this codebase |
+| `--neutral-100` | `#efefef` | Connector lines and row bottom border |
+| `--text-on-action-transparent` | `#3a8015` | "Select" affordance text |
+| Row height | 24px | — |
+| Controller width | 24px | — |
+| Indent per level | 24px | — |
+| Label font | 10px Regular | — |
+| Icon size | 12px | — |
 
 ## Accessibility
 
-- The root container has `role="tree"` and `aria-label="Navigation tree"`.
-- Each group row should carry `aria-expanded={isExpanded}` and `role="treeitem"`.
-- Each topic row should carry `aria-selected={isSelected}` and `role="treeitem"`.
-- Connector lines are decorative and should have `aria-hidden="true"`.
-- Keyboard navigation (arrow keys to move, Enter/Space to activate) should be implemented per the ARIA tree pattern once extracted to a full DS component.
+- The root container uses `role="tree"` with `aria-label="Navigation tree"`.
+- Each row carries `role="treeitem"` and `aria-level` (1-indexed depth).
+- Group rows carry `aria-expanded`; every row carries `aria-selected`.
+- Connector lines are `aria-hidden="true"` — purely decorative.
+- Full WAI-ARIA TreeView keyboard support: Arrow Up/Down moves between visible rows, Arrow Right expands a collapsed group (or moves into its first child if already expanded), Arrow Left collapses an expanded group (or moves to its parent), Space toggles expansion on groups / selects a topic, Home/End jump to the first/last visible row. Implemented via a roving `tabIndex` over a flattened, expansion-aware row list.
+
+<DosDonts>
+  <Do description="Keep the tree inside a fixed-width sidebar (typically 250px) so row widths resolve correctly at every depth." />
+  <Dont description="Rely on indentation alone to convey depth in your own markup — role and aria-level already communicate nesting to screen readers independently of visual indentation." />
+</DosDonts>
+
+## Open Questions
+
+- **Figma's own docs are wrong about the accent color.** Principles, Usage's Anatomy prose, and even the formal Token Reference table describe the selected state as "primary blue" (`#4285f4` controller, `#d9e7fd` title tint, `#689df6` border) — but the live pulled component is green throughout (`#3a8015` / `#d0ecc1` / `#629944`), and the doc's own color *swatches* next to those blue hex values render green, contradicting the adjacent text. Same pre-rebrand-blue-leftover pattern found repeatedly elsewhere in this audit. Built from the live component's real values; the previous version of this doc had actually copied the stale blue hexes into code (`#204704`, a wrong dark green, not even matching the doc's own blue) — now corrected on both counts.
+- **The "Select" affordance is real but undocumented.** It appears in two independent Figma pulls (the isolated `TreeFoldertitle` component and `Doc Tree - Bulk`'s Hover variants) but isn't mentioned anywhere in Anatomy, Principles, or Usage prose. Built to match the live component — it also resolves an open question the previous doc left unaddressed: how a Group/Account node could ever reach the documented "Focus"/selected controller state, when Principles says clicking a Group only toggles expand.
+- **Row-width numbers in the Variants table exclude the indent spacer.** Cross-referencing against the Anatomy text (which describes indentation as a separate spacer element) confirms the table's "Row Width" column means controller+title only, not the full row — documented above with the reconciling math spelled out, since a literal reading would otherwise look inconsistent with the "250px fixed sidebar" guidance.

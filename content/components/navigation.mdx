@@ -1,6 +1,6 @@
 ---
 title: Navigation
-description: Vertical side navigation with collapsible groups, icon-labelled headers, and two-level hierarchy. Dark-mode-first with Light/SemiBold typography and blue interactive states.
+description: Vertical side navigation with collapsible groups, icon-labelled headers, and two-level hierarchy. Dark-mode-first with Light/SemiBold typography and green interactive states.
 figmaNodeId: 8-2368
 figmaUpdated: Apr 09, 2026
 status: stable
@@ -35,8 +35,8 @@ Users can locate the information they want. Design the information architecture 
 
 - **Sidebar panel** — Fixed left panel, 240px expanded / 64px collapsed, dark background (`#050326`). Animates via framer-motion.
 - **Brand header** — Logo mark + product name + sub-title. 64px tall. Collapse toggle (`<List />` icon) sits flush right.
-- **Group header (Menu Item)** — 48px tall. Leading icon (20px, thin weight) + label + expand/collapse caret. Toggles the sub-item list. In collapsed mode: 48×48px icon-only, centered.
-- **Sub-items (Sub Menu Item)** — 40px tall. 48px left indent. Label only (no icon). Status badge optional. Hidden entirely when sidebar is collapsed.
+- **Group header (Menu Item)** — 48px tall. Leading icon (18px, thin weight) + label + expand/collapse caret (14px). Toggles the sub-item list. In collapsed mode: 48×48px icon-only, centered.
+- **Sub-items (Sub Menu Item)** — 48px tall. 36px left indent, 8px right padding. Label only (no icon). Status badge optional. Hidden entirely when sidebar is collapsed.
 - **Collapse toggle** — `<List />` icon button (28×28px, 6px radius) in the brand header. Collapses/expands the full sidebar.
 
 ## Variants
@@ -61,7 +61,7 @@ Users can locate the information they want. Design the information architecture 
     </TableRow>
     <TableRow>
       <TableCell><strong>Hover</strong></TableCell>
-      <TableCell><code>#3a8015</code> (primary blue)</TableCell>
+      <TableCell><code>#366618</code></TableCell>
       <TableCell>Light (300)</TableCell>
       <TableCell>Mouse-over — preview of selection</TableCell>
     </TableRow>
@@ -73,7 +73,7 @@ Users can locate the information they want. Design the information architecture 
     </TableRow>
     <TableRow>
       <TableCell><strong>Active (sub-item)</strong></TableCell>
-      <TableCell><code>#366618</code> (primary dark)</TableCell>
+      <TableCell><code>#3a8015</code></TableCell>
       <TableCell>SemiBold (600)</TableCell>
       <TableCell>Currently selected page link</TableCell>
     </TableRow>
@@ -81,7 +81,7 @@ Users can locate the information they want. Design the information architecture 
       <TableCell><strong>Disabled</strong></TableCell>
       <TableCell>Transparent</TableCell>
       <TableCell>Light (300)</TableCell>
-      <TableCell>Feature not available; text <code>#6a7260</code></TableCell>
+      <TableCell>Feature not available; text <code>#adadad</code></TableCell>
     </TableRow>
   </TableBody>
 </Table>
@@ -108,9 +108,9 @@ Users can locate the information they want. Design the information architecture 
     </TableRow>
     <TableRow>
       <TableCell><strong>Sub Menu Item</strong></TableCell>
-      <TableCell>40px</TableCell>
       <TableCell>48px</TableCell>
-      <TableCell>24px</TableCell>
+      <TableCell>36px</TableCell>
+      <TableCell>8px</TableCell>
       <TableCell>Child route, text only</TableCell>
     </TableRow>
   </TableBody>
@@ -150,7 +150,7 @@ The importance of each menu item is less affected by the arrangement in a side n
 </DosDonts>
 
 <DosDonts>
-  <Do description="Use the thin-weight icon style (20px, thin) for group header icons. This maintains visual lightness and keeps icons from competing with the label text." />
+  <Do description="Use the thin-weight icon style (18px, thin) for group header icons. This maintains visual lightness and keeps icons from competing with the label text." />
   <Dont description="Use filled or bold icons in the sidebar. They create too much visual weight and make the dark-background panel feel cluttered when multiple groups are visible." />
 </DosDonts>
 
@@ -185,7 +185,7 @@ In the collapsed state each group header becomes a centered icon button. The sta
     </TableRow>
     <TableRow>
       <TableCell>Hover</TableCell>
-      <TableCell><code>#123200</code></TableCell>
+      <TableCell><code>#366618</code></TableCell>
     </TableRow>
     <TableRow>
       <TableCell>Active group</TableCell>
@@ -217,13 +217,13 @@ import { ChartBarIcon } from '@phosphor-icons/react'
 // Default
 <NavMenuItem
   label="Campaigns"
-  icon={<ChartBarIcon size={20} weight="thin" />}
+  icon={<ChartBarIcon size={18} weight="thin" />}
 />
 
 // Active + open (transparent bg, label turns #3a8015)
 <NavMenuItem
   label="Campaigns"
-  icon={<ChartBarIcon size={20} weight="thin" />}
+  icon={<ChartBarIcon size={18} weight="thin" />}
   state="active"
   isOpen
 />
@@ -231,7 +231,7 @@ import { ChartBarIcon } from '@phosphor-icons/react'
 // Light mode (CxCentral)
 <NavMenuItem
   label="Knowledge Management"
-  icon={<BrainIcon size={20} weight="thin" />}
+  icon={<BrainIcon size={18} weight="thin" />}
   state="active"
   isOpen
   darkMode={false}
@@ -240,7 +240,7 @@ import { ChartBarIcon } from '@phosphor-icons/react'
 // Disabled
 <NavMenuItem
   label="Campaigns"
-  icon={<ChartBarIcon size={20} weight="thin" />}
+  icon={<ChartBarIcon size={18} weight="thin" />}
   state="disabled"
 />
 ```
@@ -315,14 +315,14 @@ const COLLAPSED_WIDTH = 64
   padding: '0 12px',
   background: 'transparent',
 }}>
-  <Icon size={20} weight="thin" color="rgba(239,239,239,0.45)" />
-  <span style={{ flex: 1, fontSize: 14, fontWeight: 300, color: 'rgba(239,239,239,0.45)' }}>
+  <Icon size={18} weight="thin" color="#f8f8f8" />
+  <span style={{ flex: 1, fontSize: 14, fontWeight: 300, color: '#f8f8f8' }}>
     Group Label
   </span>
-  <CaretRightIcon size={16} />
+  <CaretRightIcon size={14} />
 </div>
 
-// Active state (expanded group header — transparent bg, blue text)
+// Active state (expanded group header — transparent bg, green text)
 <div style={{
   height: 48,
   background: 'transparent',
@@ -335,16 +335,16 @@ const COLLAPSED_WIDTH = 64
 ### Sub-menu item — token reference
 
 ```tsx
-// Default
-<div style={{ height: 40, paddingLeft: 48, paddingRight: 24 }}>
-  <span style={{ fontSize: 14, fontWeight: 300, color: 'rgba(239,239,239,0.75)' }}>
+// Default — full-bright text on the dark theme, not a muted/reduced-opacity one
+<div style={{ height: 48, paddingLeft: 36, paddingRight: 8 }}>
+  <span style={{ fontSize: 14, fontWeight: 300, color: '#f8f8f8' }}>
     Sub Item
   </span>
 </div>
 
 // Active
-<div style={{ height: 40, paddingLeft: 48, paddingRight: 24, background: '#366618' }}>
-  <span style={{ fontSize: 14, fontWeight: 600, color: '#efefef' }}>
+<div style={{ height: 48, paddingLeft: 36, paddingRight: 8, background: '#3a8015' }}>
+  <span style={{ fontSize: 14, fontWeight: 600, color: '#f8f8f8' }}>
     Sub Item
   </span>
 </div>
@@ -362,33 +362,28 @@ const COLLAPSED_WIDTH = 64
   </TableHeader>
   <TableBody>
     <TableRow>
-      <TableCell><code>--surface/vertical-nav</code></TableCell>
+      <TableCell><code>--surface-vertical-nav</code></TableCell>
       <TableCell><code>#050326</code></TableCell>
       <TableCell>Sidebar background</TableCell>
     </TableRow>
     <TableRow>
-      <TableCell><code>--content-action/primary/default</code></TableCell>
-      <TableCell><code>#3a8015</code></TableCell>
-      <TableCell>Hover background</TableCell>
-    </TableRow>
-    <TableRow>
-      <TableCell><code>--content-action/primary/500</code></TableCell>
+      <TableCell><code>--surface-action-primary-hover</code></TableCell>
       <TableCell><code>#366618</code></TableCell>
-      <TableCell>Active sub-item background</TableCell>
+      <TableCell>Hover background — menu item, sub-item, and collapsed icon button</TableCell>
     </TableRow>
     <TableRow>
-      <TableCell><code>--content-action/primary/default</code> (text)</TableCell>
+      <TableCell><code>--content-action-primary-default</code></TableCell>
       <TableCell><code>#3a8015</code></TableCell>
-      <TableCell>Active group header label + caret color</TableCell>
+      <TableCell>Active sub-item background <em>and</em> active group-header label + caret colour</TableCell>
     </TableRow>
     <TableRow>
-      <TableCell><code>--text/on-action/primary</code></TableCell>
-      <TableCell><code>#efefef</code></TableCell>
+      <TableCell><code>--text-on-action-primary</code></TableCell>
+      <TableCell><code>#f8f8f8</code></TableCell>
       <TableCell>Default and active label text</TableCell>
     </TableRow>
     <TableRow>
-      <TableCell><code>--text/disabled</code></TableCell>
-      <TableCell><code>#6a7260</code></TableCell>
+      <TableCell><code>--text-form-field-disabled</code></TableCell>
+      <TableCell><code>#adadad</code></TableCell>
       <TableCell>Disabled label text</TableCell>
     </TableRow>
     <TableRow>
@@ -406,7 +401,8 @@ const COLLAPSED_WIDTH = 64
 
 ### Light mode (CxCentral)
 
-Pass `darkMode={false}` on both `NavMenuItem` and `NavSubItem` when rendering inside a CxCentral product shell (white sidebar background).
+Pass `darkMode={false}` on both `NavMenuItem` and `NavSubItem` when rendering inside a CxCentral product shell (white sidebar background). Hover/active
+fills and text are identical to the dark theme — only idle (default) text differs.
 
 <Table size="compact" className="mb-6">
   <TableHeader>
@@ -420,12 +416,12 @@ Pass `darkMode={false}` on both `NavMenuItem` and `NavSubItem` when rendering in
     <TableRow>
       <TableCell>Group header — Default</TableCell>
       <TableCell>Transparent</TableCell>
-      <TableCell><code>#373737</code></TableCell>
+      <TableCell><code>#1d1d1d</code></TableCell>
     </TableRow>
     <TableRow>
       <TableCell>Group header — Hover</TableCell>
-      <TableCell><code>#123200</code></TableCell>
-      <TableCell><code>#373737</code></TableCell>
+      <TableCell><code>#366618</code></TableCell>
+      <TableCell><code>#1d1d1d</code></TableCell>
     </TableRow>
     <TableRow>
       <TableCell>Group header — Active</TableCell>
@@ -435,17 +431,17 @@ Pass `darkMode={false}` on both `NavMenuItem` and `NavSubItem` when rendering in
     <TableRow>
       <TableCell>Sub-item — Default</TableCell>
       <TableCell><code>#fbfcf2</code> (tinted)</TableCell>
-      <TableCell><code>#373737</code></TableCell>
+      <TableCell><code>#1d1d1d</code></TableCell>
     </TableRow>
     <TableRow>
       <TableCell>Sub-item — Hover</TableCell>
-      <TableCell><code>#123200</code></TableCell>
-      <TableCell><code>#373737</code></TableCell>
+      <TableCell><code>#366618</code></TableCell>
+      <TableCell><code>#1d1d1d</code></TableCell>
     </TableRow>
     <TableRow>
       <TableCell>Sub-item — Active</TableCell>
       <TableCell><code>#3a8015</code></TableCell>
-      <TableCell><code>#efefef</code> semibold</TableCell>
+      <TableCell><code>#f8f8f8</code> semibold</TableCell>
     </TableRow>
   </TableBody>
 </Table>
@@ -460,3 +456,21 @@ Pass `darkMode={false}` on both `NavMenuItem` and `NavSubItem` when rendering in
 - The collapse toggle carries `aria-label="Collapse navigation"` / `aria-label="Expand navigation"` so its purpose is announced when focused.
 - When the sidebar is collapsed, sub-items are removed from the DOM (`AnimatePresence` exit) and therefore unreachable by keyboard — this matches the visual affordance.
 - Avoid relying on colour alone to communicate the active state — the SemiBold font weight provides a second visual cue.
+
+## Open questions — not resolved
+
+- **This pattern is being redesigned.** CxPortal is mid-migration to a new
+  light-themed, rounded-pill "NT Menu" pattern — see the **NT Menu** page. It
+  has no Principles/Usage doc yet and is not wired in as the live sidebar,
+  but is buildable and testable now ahead of that swap.
+- **Sub-item height (48px, not 40px) came from a 2-vs-1 evidence split.**
+  The standalone Vertical Nav Item Expanded component (`3016-19265`) and the
+  Nav Groups compound example (`203-14455`) both show 48px rows with 36px/8px
+  padding; only this page's own hand-drawn "Variants" comparison grid (in the
+  Usage doc, `735-30339`) still shows the older 40px/48px/24px numbers. Went
+  with the two live component sources over the doc's static comparison grid.
+- **`Sidebar.tsx` doesn't consume `NavMenuItem`/`NavSubItem`/`NavMenuItemCollapsed`
+  at all.** It's a separate, hand-rolled duplicate of this same visual
+  language with its own token set. Both were fixed to the same corrected
+  colours/sizing in this pass, but the duplication itself — one canonical
+  implementation instead of two — is a separate refactor, not done here.

@@ -5,17 +5,18 @@ import { CheckIcon } from '@phosphor-icons/react'
 
 // ── Design tokens ──────────────────────────────────────────────────────────────
 const T = {
-  borderActive:         'var(--content-action-primary-600)',  // --border-color/surface-active/primary
-  borderDisabledBox:    'var(--content-action-disabled-300)', // --border-color/disabled  (checkbox)
-  borderDisabledRadio:  'var(--content-action-disabled-300)', // --border-color/surface-active/secondary (radio)
-  borderNeutral:        'var(--neutral-100)',                 // --border-color/neutral (radio default)
-  borderHoverRadio:     'var(--content-action-primary-700)',  // --border-color/form-fields/hover
+  borderActive:         'var(--content-action-primary-300)',  // --border-color/surface-active/primary-default (checkbox default + checked)
+  borderActiveHover:     'var(--content-action-primary-500)', // --border-color/surface-active/primary-hover
+  borderDisabledBox:    'var(--border-color-disabled)',       // --border-color/disabled  (checkbox)
+  borderDisabledRadio:  'var(--border-color-surface-active-secondary-disabled)', // --border-color/surface-active/secondary-disabled (radio)
+  borderNeutral:        'var(--neutral-300)',                 // --border-color/surface-active/secondary-default (radio default)
+  borderHoverRadio:     'var(--content-action-primary-500)',  // --border-color/surface-active/primary-hover
   surfaceField:         'var(--neutral-0)',                   // --surface/form-field
-  surfaceChecked:       'var(--content-action-primary-600)',  // --surface/action/primary
-  surfaceHover:         'var(--content-action-primary-700)',  // --content-action/primary/300
+  surfaceChecked:       'var(--content-action-primary-default)', // --surface/action/primary-default
+  surfaceHover:         'var(--content-action-primary-500)',  // --surface/action/primary-hover
   surfaceDisabled:      'var(--content-action-disabled-100)', // --surface/disabled
-  textPrimary:          'var(--text-body-primary)',           // --text/body/primary
-  textDisabled:         'var(--content-action-disabled-700)', // --text/form-field/disabled
+  textPrimary:          'var(--neutral-800)',                 // --text/body/primary
+  textDisabled:         'var(--neutral-300)',                 // --text/form-field/disabled
 } as const
 
 // ── Checkbox ───────────────────────────────────────────────────────────────────
@@ -57,11 +58,10 @@ export function Checkbox({
   }
 
   const isSmall = size === 'small'
-  const boxSize    = isSmall ? 12 : 18
+  const boxSize    = isSmall ? 12 : 16
   const checkSize  = isSmall ?  8 : 12
   const gap        = isSmall ?  8 : 12
   const fontSize   = isSmall ? 12 : 14
-  const padding    = '4px'
 
   const boxBg = disabled
     ? T.surfaceDisabled
@@ -71,7 +71,11 @@ export function Checkbox({
     ? T.surfaceHover
     : T.surfaceField
 
-  const boxBorder = disabled ? T.borderDisabledBox : T.borderActive
+  const boxBorder = disabled
+    ? T.borderDisabledBox
+    : hovered
+    ? T.borderActiveHover
+    : T.borderActive
 
   return (
     <label
@@ -81,7 +85,7 @@ export function Checkbox({
         display: 'inline-flex',
         alignItems: 'center',
         gap,
-        padding,
+        padding: isSmall ? '0 4px' : '4px',
         height: isSmall ? undefined : 32,
         cursor: disabled ? 'not-allowed' : 'pointer',
         userSelect: 'none',
@@ -156,7 +160,7 @@ export interface RadioProps {
   disabled?: boolean
   id?: string
   className?: string
-  /** Overrides the checked-state dot + border color. Default matches the CxPortal DS (content-action-primary-600). */
+  /** Overrides the checked-state dot + border color. Default matches the CxPortal DS (content-action-primary-default). */
   accentColor?: string
 }
 
@@ -182,7 +186,7 @@ export function Radio({
   }
 
   const isSmall = size === 'small'
-  const boxSize  = isSmall ? 12 : 18
+  const boxSize  = isSmall ? 12 : 16
   const dotSize  = isSmall ?  8 : 12
   const gap      = isSmall ?  8 : 12
   const fontSize = isSmall ? 12 : 14
@@ -199,7 +203,7 @@ export function Radio({
   const boxBorder = disabled
     ? T.borderDisabledRadio
     : checked
-    ? (accentColor ?? T.borderActive)
+    ? (accentColor ?? T.surfaceChecked)
     : hovered
     ? T.borderHoverRadio
     : T.borderNeutral

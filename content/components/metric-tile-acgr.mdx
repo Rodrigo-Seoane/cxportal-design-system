@@ -1,0 +1,160 @@
+---
+title: Metric Tile ACGR
+description: Data Card for Access Management ACGR contexts. "Only View" shows a TDG-assignment caption; "Action" turns the card into a red alert with an inline Assign CTA instead of a trend indicator.
+figmaNodeId: 1969-2493
+figmaUpdated: Apr 09, 2026
+status: stable
+---
+
+## Overview
+
+Metric Tile ACGR is a Data Card variant used specifically in Access Management ACGR contexts. Unlike [Stats Cards](/components/stats-cards), it doesn't show a trend indicator — instead it either shows how many TDGs (Territory/Distribution Groups) an entity is assigned to, or, when the card needs attention, turns into a red alert with an inline "Assign" action.
+
+## When to use
+
+- Access Management dashboards showing agent-group ("ACGR") assignment status
+- When a metric needs a quick informational affordance (the info icon next to the label) rather than a period-over-period trend
+- When an unassigned or otherwise actionable state needs to surface an inline CTA directly on the card, rather than requiring navigation elsewhere
+
+**Do not use** for general KPI/trend metrics — use [Stats Cards](/components/stats-cards) for those; this component doesn't support a trend indicator at all.
+
+## Anatomy
+
+- **Category icon** — 24×24px rounded square, 16px inner glyph. Green fill + white `UsersThree` icon in "Only View"; white fill + dark `UserFocus` icon in "Action".
+- **TDG caption** *(Only View only)* — "Assigned to N TDGs", 10px, muted secondary text. Omitted entirely in "Action" — that slot is blank, not repurposed for something else.
+- **Label + info icon** — The metric name (10px, semibold) paired with a `WarningCircle` icon, a static informational affordance next to the label.
+- **Value** — The primary metric (20px / Heading H3).
+- **Assign button** *(Action only)* — An inline Extra-Small button, right-aligned with the value, that surfaces the corrective action directly on the card instead of requiring navigation elsewhere.
+
+## Variants
+
+<Table size="compact" className="mb-6">
+  <TableHeader>
+    <tr>
+      <TableHead>Type</TableHead>
+      <TableHead>Background</TableHead>
+      <TableHead>Text</TableHead>
+      <TableHead>Extra content</TableHead>
+    </tr>
+  </TableHeader>
+  <TableBody>
+    <TableRow>
+      <TableCell><strong>Only View</strong></TableCell>
+      <TableCell>White</TableCell>
+      <TableCell>Dark (<code>#1d1d1d</code>)</TableCell>
+      <TableCell>Optional "Assigned to N TDGs" caption</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><strong>Action</strong></TableCell>
+      <TableCell>Red (<code>--error-default</code>, <code>#ef2056</code>)</TableCell>
+      <TableCell>On-dark (<code>#efefef</code>)</TableCell>
+      <TableCell>"Assign" CTA button, no TDG caption</TableCell>
+    </TableRow>
+  </TableBody>
+</Table>
+
+## Do's & Don'ts
+
+<DosDonts>
+  <Do description="Use the Action type only for a genuinely actionable state — something the Assign button will actually resolve. The red fill is a strong visual interrupt and should be reserved for cards that need attention now." />
+  <Dont description="Use Action as a decorative important-metric highlight. It reads as an alert requiring action, not simply as emphasis — pair it with a real onAssign handler." />
+</DosDonts>
+
+<DosDonts>
+  <Do description="Show the TDG-assignment caption whenever the count is known and relevant. It's the one piece of contextual information Only View offers in place of a trend." />
+  <Dont description="Show a stale or placeholder TDG count. Omit assignedTdgCount entirely rather than showing a count that hasn't been fetched yet." />
+</DosDonts>
+
+## Code
+
+```tsx
+import { MetricTileAcgr } from '@/components/ui/stats-cards'
+
+// Only View — with TDG assignment caption
+<MetricTileAcgr
+  label="Total Agents"
+  value="6,893"
+  type="only-view"
+  assignedTdgCount={3}
+/>
+
+// Only View — no caption
+<MetricTileAcgr
+  label="Total Agents"
+  value="6,893"
+  type="only-view"
+/>
+
+// Action — needs attention, surfaces an inline CTA
+<MetricTileAcgr
+  label="Total Agents"
+  value="6,893"
+  type="action"
+  onAssign={() => openAssignmentModal()}
+/>
+```
+
+## Token reference
+
+<Table size="compact" className="mb-6">
+  <TableHeader>
+    <tr>
+      <TableHead>Token</TableHead>
+      <TableHead>Value</TableHead>
+      <TableHead>Usage</TableHead>
+    </tr>
+  </TableHeader>
+  <TableBody>
+    <TableRow>
+      <TableCell><code>--border-color-form-fields-default</code></TableCell>
+      <TableCell><code>#cdcdcd</code></TableCell>
+      <TableCell>Card border, both types</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><code>--surface-action-primary-default</code></TableCell>
+      <TableCell><code>#3a8015</code></TableCell>
+      <TableCell>Icon background, Only View</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><code>--error-default</code></TableCell>
+      <TableCell><code>#ef2056</code></TableCell>
+      <TableCell>Card background, Action</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><code>--text-body-on-dark-surface</code></TableCell>
+      <TableCell><code>#efefef</code></TableCell>
+      <TableCell>Label, info icon, and value text — Action only</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><code>--neutral-800</code></TableCell>
+      <TableCell><code>#1d1d1d</code></TableCell>
+      <TableCell>Label, value, and Assign-button text — Only View, plus the button text in Action. Figma names the button's text token <code>text/on-action/secondary</code>, but that shared alias resolves to the wrong ramp step (<code>#373737</code>) in this codebase — bypassed directly, the same recurring bug found throughout this audit.</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><code>--surface-action-terciary-default</code></TableCell>
+      <TableCell><code>#efefef</code></TableCell>
+      <TableCell>Assign button background</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><code>--border-color-surface-active-secondary-default</code></TableCell>
+      <TableCell><code>#adadad</code></TableCell>
+      <TableCell>Assign button border</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>Width</TableCell>
+      <TableCell>172px</TableCell>
+      <TableCell>Fixed, both types</TableCell>
+    </TableRow>
+  </TableBody>
+</Table>
+
+## Accessibility
+
+- The "Assign" CTA renders as a native `<button>` — keyboard-focusable and activatable with Enter or Space.
+- The info icon next to the label is decorative/static in this implementation — it carries no tooltip or click behavior since Figma's pull doesn't specify one. If it's meant to expose additional context on hover/focus in the product, that interaction needs to be added by the consumer, not assumed here.
+- Color is not the sole differentiator between states — the icon (green UsersThree vs. white UserFocus) and the presence of the Assign button also change between Only View and Action.
+
+## Open questions
+
+- **Resolved: icon glyph colors inherit their containing state color.** `UsersThree` inherits the Only View card's light foreground (`--neutral-0`); `UserFocus` inherits the Action card's dark foreground (`--neutral-800`).
+- **The info icon's interaction is undefined.** Figma shows a static `WarningCircle` glyph next to the label in both states with no described behavior in Usage or Principles. Rendered as purely decorative here — flag if product requirements call for a tooltip or click handler.

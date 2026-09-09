@@ -50,6 +50,7 @@ export default function BorderRadiusPage() {
             </thead>
             <tbody>
               {[
+                { token: 'none', cssVar: '--radius-none', value: '0px' },
                 { token: 'xs', cssVar: '--radius-xs', value: '2px' },
                 { token: 'sm', cssVar: '--radius-sm', value: '4px' },
                 { token: 'md', cssVar: '--radius-md', value: '8px' },

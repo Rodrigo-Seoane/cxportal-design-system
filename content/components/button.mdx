@@ -51,7 +51,7 @@ The Button component consists of:
     </TableRow>
     <TableRow>
       <TableCell>Colored Background</TableCell>
-      <TableCell>Button rendered on a primary blue surface — colors adapt to maintain contrast</TableCell>
+      <TableCell>Button rendered on a primary green surface — colors adapt to maintain contrast</TableCell>
     </TableRow>
     <TableRow>
       <TableCell>Destructive</TableCell>
@@ -110,7 +110,7 @@ CxPortal uses six button variants, each bound to a specific usage context. Picki
 
 ### Colored Background state
 
-The `colored-bg` variant is for buttons placed on non-white surfaces — blue action bars, colored page headers, hero banners, or highlighted cards. The default white fill and blue border maintain clear button affordance against colored backgrounds while adapting to the surface context.
+The `colored-bg` variant is for buttons placed on non-white surfaces — green action bars, colored page headers, hero banners, or highlighted cards. The default white fill and green border maintain clear button affordance against colored backgrounds while adapting to the surface context.
 
 **Color spec:**
 
@@ -122,7 +122,7 @@ The `colored-bg` variant is for buttons placed on non-white surfaces — blue ac
 | Disabled | Surface/Disabled `#f1f5ed` | Border/Disabled `#cfd7c2` | Text/Disabled `#6a7260` |
 
 <DosDonts>
-  <Do description="Use colored-bg buttons on non-white surfaces — blue banners, colored cards, tinted page headers — where default button tokens would blend into the background." />
+  <Do description="Use colored-bg buttons on non-white surfaces — green banners, colored cards, tinted page headers — where default button tokens would blend into the background." />
   <Dont description="Use colored-bg buttons on white or neutral backgrounds. On white, use the default Primary, Secondary, or Form Controls variants instead." />
 </DosDonts>
 
@@ -334,4 +334,4 @@ import { Trash } from 'lucide-react'
 - Ensure sufficient color contrast (minimum **4.5:1** for text against background)
 - Disabled buttons should remain perceivable but clearly indicate unavailability — do not hide them
 - Focus states must be visible for keyboard navigation (the component ships with a `focus-visible` ring)
-- Icon-only buttons require a tooltip or `aria-label` to communicate their purpose to assistive technology
+- Icon-only buttons require a tooltip or `aria-label` to communicate their purpose to assistive technology. SVG icons inherit the button's current text color for every variant and state.

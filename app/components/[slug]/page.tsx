@@ -42,7 +42,7 @@ function ShowcaseHeader({ title, description }: { title: string; description: st
 function TextButtonShowcase() {
   const cols = [
     { key: 'regular', label: 'Regular · 48px' },
-    { key: 'sm',      label: 'Small · 36px' },
+    { key: 'sm',      label: 'Small · 32px' },
     { key: 'xs',      label: 'XS · 24px' },
     { key: 'disabled', label: 'Disabled' },
   ] as const
@@ -441,11 +441,11 @@ function InputShowcase() {
 // ─── Navigation showcase ─────────────────────────────────────────────────────
 
 const NAV_BG      = 'var(--surface-vertical-nav)'
-const NAV_HOVER   = 'var(--content-action-primary-700)'
-const NAV_ACTIVE  = 'var(--content-action-primary-600)'
-const NAV_TEXT    = 'var(--text-body-on-dark-surface)'
-const NAV_MUTED   = 'color-mix(in srgb, var(--text-body-on-dark-surface) 45%, transparent)'
-const NAV_SUB     = 'color-mix(in srgb, var(--text-body-on-dark-surface) 75%, transparent)'
+const NAV_HOVER   = 'var(--surface-action-primary-hover)'
+const NAV_ACTIVE  = 'var(--surface-action-primary-default)'
+const NAV_TEXT    = 'var(--text-on-action-primary)'
+const NAV_MUTED   = 'color-mix(in srgb, var(--text-on-action-primary) 45%, transparent)'
+const NAV_DISABLED = 'var(--text-form-field-disabled)'
 
 function NavItemRow({ label, state, type }: { label: string; state: 'Default' | 'Hover' | 'Active' | 'Disabled'; type: 'menu' | 'sub' }) {
   const isMenu   = type === 'menu'
@@ -453,9 +453,9 @@ function NavItemRow({ label, state, type }: { label: string; state: 'Default' | 
   const isHover  = state === 'Hover'
   const isDisabled = state === 'Disabled'
   const bg = isActive ? NAV_ACTIVE : isHover ? NAV_HOVER : 'transparent'
-  // TODO: #808080 (disabled nav-item text) left as-is — no dark-surface disabled-text
-  // token exists in the lookup table; needs a design decision. See hex-sweep report.
-  const color = isDisabled ? '#808080' : isActive || isHover ? NAV_TEXT : isMenu ? NAV_MUTED : NAV_SUB
+  // Figma: sub-items are full-bright text at every non-disabled state on the
+  // dark theme — menu items are muted only while idle (default).
+  const color = isDisabled ? NAV_DISABLED : isMenu && state === 'Default' ? NAV_MUTED : NAV_TEXT
   const fw = isActive && !isMenu ? 600 : 300
 
   return (
@@ -463,9 +463,9 @@ function NavItemRow({ label, state, type }: { label: string; state: 'Default' | 
       style={{
         display: 'flex',
         alignItems: 'center',
-        height: isMenu ? 48 : 40,
-        paddingLeft: isMenu ? 12 : 48,
-        paddingRight: isMenu ? 12 : 24,
+        height: 48,
+        paddingLeft: isMenu ? 12 : 36,
+        paddingRight: isMenu ? 12 : 8,
         gap: 8,
         background: bg,
         borderRadius: 0,
@@ -525,7 +525,7 @@ function NavigationShowcase() {
       </div>
 
       {/* Sub Menu Items */}
-      <ShowcaseHeader title="Sub Menu Item" description="40px height · Indented 48px · Active uses SemiBold (600)" />
+      <ShowcaseHeader title="Sub Menu Item" description="48px height · Indented 36px · Active uses SemiBold (600)" />
       <div className="rounded-lg border overflow-hidden" style={{ borderColor: 'var(--color-border)' }}>
         <div
           className="grid border-b"
@@ -610,7 +610,7 @@ function CheckboxShowcase() {
   ] as const
 
   const sizes = [
-    { key: 'regular' as const, label: 'Regular · 18px' },
+    { key: 'regular' as const, label: 'Regular · 16px' },
     { key: 'small'   as const, label: 'Small · 12px' },
   ]
 

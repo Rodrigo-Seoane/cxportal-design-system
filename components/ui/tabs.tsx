@@ -8,35 +8,57 @@ import {
   useRef,
   useCallback,
 } from 'react'
+import { TableIcon } from '@phosphor-icons/react'
 
-// ── Design tokens (Figma: nodes 280-20671 / 280-20700) ────────────────────────
+// Re-export for use in component-registry scope (must stay behind the
+// 'use client' boundary — do not import @phosphor-icons/react directly in
+// server-side modules like component-registry.ts).
+export { TableIcon }
+
+// ── Design tokens (Figma: nodes 280-20673 / 280-20700) ────────────────────────
 const T = {
-  // Tab group container
-  groupBg:       'var(--neutral-100)',
+  // Tab group container — Button type
+  groupBg:       'var(--surface-main-panel)',
   groupPad:       4,
   groupGap:       4,
   groupRadius:    4,                 // --border-radius/sm
 
-  // Active tab
+  // Tab group container — Minimal type (Figma: 12px gap, 4px horizontal
+  // padding only, items pinned to the bottom edge so the underline sits flush)
+  minimalGroupGap:     12,
+  minimalGroupPadH:     4,
+  minimalGroupMinH:    24,
+
+  // Active tab — Figma's "Focus" state name means the selected tab, not
+  // keyboard focus. Points at the raw ramp step directly (not --text-action /
+  // --text-on-action-secondary) because those shared aliases are themselves
+  // wrong-ramp-stepped — see HANDOFF-PROMPT.md.
   activeBg:      'var(--surface-form-field)',
-  activeBorder:  'var(--content-action-primary-600)',
-  activeText:    'var(--text-action)',
+  activeBorder:  'var(--border-color-surface-active-primary-default)',
+  activeText:    'var(--content-action-primary-default)',
 
   // Default (idle) tab
   defaultBg:     'transparent',
-  defaultText:   'var(--text-body-primary)',
+  defaultText:   'var(--neutral-800)',
 
-  // Hover tab (not in Figma spec — inferred)
-  hoverBg:       'color-mix(in srgb, var(--neutral-0) 65%, transparent)',
+  // Hover tab — Figma: Button type gets a solid white fill (same bg as
+  // active, no border); both types get the active green text/icon colour.
+  hoverBg:       'var(--surface-form-field)',
 
   // Disabled tab
-  disabledText:  'var(--content-action-disabled-700)',
+  disabledText:  'var(--text-form-field-disabled)',
 
-  // Tab trigger shared
+  // Tab trigger — Button type
   tabPadV:        4,
   tabPadH:       12,
   tabGap:         8,
   tabRadius:      4,
+
+  // Tab trigger — Minimal type (2px horizontal / 4px vertical, not uniform)
+  minimalPadV:    4,
+  minimalPadH:    2,
+  minimalGap:     4,
+  minimalMinH:   24,
 
   // Typography — Caption/regular
   fontSize:       10,
@@ -161,9 +183,10 @@ export function TabList({
       onKeyDown={handleKeyDown}
       style={{
         display:      'inline-flex',
-        alignItems:   'center',
-        gap:          T.groupGap,
-        padding:      isMinimal ? 0 : T.groupPad,
+        alignItems:   isMinimal ? 'flex-end' : 'center',
+        gap:          isMinimal ? T.minimalGroupGap : T.groupGap,
+        padding:      isMinimal ? `0 ${T.minimalGroupPadH}px` : T.groupPad,
+        minHeight:    isMinimal ? T.minimalGroupMinH : undefined,
         borderRadius: isMinimal ? 0 : T.groupRadius,
         background:   isMinimal ? 'transparent' : T.groupBg,
         ...style,
@@ -202,9 +225,11 @@ export function Tab({
   const isMinimal = ctx?.type === 'minimal'
   const [hovered, setHovered] = useState(false)
 
+  // Figma previews the active look on hover too — same green text/icon
+  // colour for both types, plus a solid white fill for Button type.
   const textColor = disabled
     ? T.disabledText
-    : active
+    : active || (hovered && !disabled)
     ? T.activeText
     : T.defaultText
 
@@ -223,9 +248,9 @@ export function Tab({
     : '1px solid transparent'
 
   const borderBottom = isMinimal && active
-    ? `2px solid ${T.activeBorder}`
+    ? `1px solid ${T.activeBorder}`
     : isMinimal
-    ? '2px solid transparent'
+    ? '1px solid transparent'
     : undefined
 
   return (
@@ -243,10 +268,11 @@ export function Tab({
       style={{
         display:      'inline-flex',
         alignItems:   'center',
-        gap:          T.tabGap,
+        gap:          isMinimal ? T.minimalGap : T.tabGap,
         padding:      isMinimal
-          ? `${T.tabPadV}px`
+          ? `${T.minimalPadV}px ${T.minimalPadH}px`
           : `${T.tabPadV}px ${T.tabPadH}px`,
+        minHeight:    isMinimal ? T.minimalMinH : undefined,
         borderRadius: isMinimal ? 0 : T.tabRadius,
         background:   bg,
         border,

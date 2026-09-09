@@ -20,14 +20,17 @@ import {
 } from '@phosphor-icons/react'
 
 // ── Design tokens ─────────────────────────────────────────────────────────────
+// Figma (Vertical Nav Item / Vertical Nav Item Collapsed, nodes 3016-19265 /
+// 22-6316): hoverBg/activeBg/activeText bypass the shared --surface-action-
+// primary-hover / --text-action aliases directly where those were themselves
+// wrong-ramp-stepped in this codebase — see HANDOFF-PROMPT.md.
 const NAV = {
   bg:          'var(--surface-vertical-nav)',
-  hoverBg:     'var(--content-action-primary-700)',
-  activeBg:    'var(--content-action-primary-600)',
-  activeText:  'var(--text-action)',
-  textDefault: 'var(--neutral-100)',
+  hoverBg:     'var(--surface-action-primary-hover)',
+  activeBg:    'var(--surface-action-primary-default)',
+  activeText:  'var(--content-action-primary-default)',
+  textDefault: 'var(--text-on-action-primary)',
   textMuted:     'color-mix(in srgb, var(--neutral-100) 55%, transparent)',
-  textSubItem:   'color-mix(in srgb, var(--neutral-100) 75%, transparent)',
   divider:       'color-mix(in srgb, var(--neutral-100) 8%, transparent)',
   widthExpanded:  240,
   widthCollapsed: 64,
@@ -91,9 +94,14 @@ const NAV_GROUPS: NavGroup[] = [
       { label: 'Checkbox & Radio',      href: '/components/checkbox',              status: 'stable' },
       { label: 'Navigation',            href: '/components/navigation',            status: 'stable' },
       { label: 'Nav Item',              href: '/components/nav-item',              status: 'stable' },
+      { label: 'NT Menu',               href: '/components/nt-menu',               status: 'wip'    },
+      { label: 'Breadcrumb',            href: '/components/breadcrumb',            status: 'stable' },
       { label: 'Top Bar',               href: '/components/top-bar',               status: 'stable' },
       { label: 'Table',                 href: '/components/table',                 status: 'stable' },
+      { label: 'Table Filter',          href: '/components/table-filter',          status: 'stable' },
+      { label: 'Collapsible Filters',   href: '/components/collapsible-filters',   status: 'stable' },
       { label: 'Chips & Tags',          href: '/components/chips',                 status: 'stable' },
+      { label: 'Counter',               href: '/components/counter',               status: 'wip'    },
       { label: 'Tabs',                  href: '/components/tabs',                  status: 'stable' },
       { label: 'Vertical Tabs',         href: '/components/vertical-tabs',         status: 'stable' },
       { label: 'Modal',                 href: '/components/modal',                 status: 'stable' },
@@ -104,7 +112,10 @@ const NAV_GROUPS: NavGroup[] = [
       { label: 'Toast Notifications',   href: '/components/toast',                 status: 'stable' },
       { label: 'Tooltip',               href: '/components/tooltip',               status: 'stable' },
       { label: 'Stats Cards',           href: '/components/stats-cards',           status: 'stable' },
+      { label: 'Metric Tile ACGR',      href: '/components/metric-tile-acgr',      status: 'stable' },
+      { label: 'Inline Stats Cards',    href: '/components/inline-stats-cards',    status: 'stable' },
       { label: 'Inline Context Data',   href: '/components/inline-context-data',   status: 'stable' },
+      { label: 'Instance Card',         href: '/components/instance-card',         status: 'stable' },
       { label: 'Clickable Card',        href: '/components/clickable-card',        status: 'stable' },
       { label: 'Page Title',             href: '/components/page-title',            status: 'stable' },
       { label: 'Stepper',               href: '/components/stepper',               status: 'stable' },
@@ -216,7 +227,7 @@ function DirectLinkItem({ link, active, collapsed }: { link: DirectLink; active:
         overflow:       'hidden',
       }}
     >
-      <Icon size={20} color={NAV.textDefault} weight="thin" style={{ flexShrink: 0 }} />
+      <Icon size={18} color={NAV.textDefault} weight="thin" style={{ flexShrink: 0 }} />
       <span style={{
         flex:       collapsed ? '0 0 0px' : '1',
         fontSize:    14, fontWeight: active ? 600 : 300, lineHeight: '20px',
@@ -246,9 +257,9 @@ function SubItem({ item, active }: { item: NavItem; active: boolean }) {
       style={{
         display:        'flex',
         alignItems:     'center',
-        height:          40,
-        paddingLeft:     48,
-        paddingRight:    16,
+        height:          48,
+        paddingLeft:     36,
+        paddingRight:    8,
         gap:             8,
         background:      active ? NAV.activeBg : hovered ? NAV.hoverBg : 'transparent',
         textDecoration: 'none',
@@ -260,7 +271,7 @@ function SubItem({ item, active }: { item: NavItem; active: boolean }) {
     >
       <span style={{
         flex: 1, fontSize: 14, fontWeight: active ? 600 : 300, lineHeight: '20px',
-        color: active || hovered ? NAV.textDefault : NAV.textSubItem,
+        color: NAV.textDefault,
         overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap',
         transition: 'color 100ms ease',
       }}>
@@ -314,7 +325,7 @@ function GroupHeader({
         overflow:       'hidden',
       }}
     >
-      <Icon size={20} color={NAV.textDefault} weight="thin" style={{ flexShrink: 0 }} />
+      <Icon size={18} color={NAV.textDefault} weight="thin" style={{ flexShrink: 0 }} />
 
       {/* Label */}
       <span style={{
@@ -338,8 +349,8 @@ function GroupHeader({
         transition: `opacity 0.15s cubic-bezier(${EASE.join(',')}), width 0.15s cubic-bezier(${EASE.join(',')})`,
       }}>
         {isOpen
-          ? <CaretDownIcon  size={16} color={isGroupActive ? NAV.activeText : NAV.textDefault} />
-          : <CaretRightIcon size={16} color={NAV.textDefault} />
+          ? <CaretDownIcon  size={14} color={isGroupActive ? NAV.activeText : NAV.textDefault} />
+          : <CaretRightIcon size={14} color={NAV.textDefault} />
         }
       </span>
     </button>

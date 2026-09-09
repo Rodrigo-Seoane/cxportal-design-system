@@ -1,0 +1,147 @@
+---
+title: Table Filter
+description: Filter trigger placed above a Table — shows a count badge and green border once at least one filter is applied, plus an inline "select all" shortcut.
+figmaNodeId: 71-16179
+figmaUpdated: Apr 09, 2026
+status: stable
+---
+
+## Overview
+
+Table Filter is the trigger control shown above a `Table` to open a filter picker (dropdown, panel, or modal — the picker itself is not part of this component). It communicates at a glance whether any filters are currently applied via a green border and a count badge, and offers a quick "select all" shortcut alongside the funnel icon that opens the full filter UI.
+
+## When to use
+
+- Above any `Table` that supports filtering its rows
+- When you need to show, at a glance, how many filters are currently active
+- When a quick "select all" shortcut is useful alongside opening the full filter picker
+
+**Do not use** as a generic dropdown trigger for non-filtering purposes — use `Select` for that.
+
+## Anatomy
+
+- **Count badge** *(active state only)* — Small round badge showing the number of applied filters. Hidden when `active` is false or `count` is 0.
+- **Label** — The trigger's text, e.g. "Select Option".
+- **Select all** *(optional)* — `SelectionAll` icon + "All" text, a quick shortcut distinct from opening the picker.
+- **Funnel icon** — Opens the filter picker. Always present.
+
+## Variants
+
+<Table size="compact" className="mb-6">
+  <TableHeader>
+    <tr>
+      <TableHead>State</TableHead>
+      <TableHead>Border</TableHead>
+      <TableHead>Count badge</TableHead>
+    </tr>
+  </TableHeader>
+  <TableBody>
+    <TableRow>
+      <TableCell><strong>Default</strong></TableCell>
+      <TableCell><code>#efefef</code> (terciary)</TableCell>
+      <TableCell>Hidden</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><strong>Active</strong></TableCell>
+      <TableCell><code>#629944</code> (primary)</TableCell>
+      <TableCell>Shown — width grows with the digit count (Figma models 1/2/3-digit counts as separate width variants; this component sizes the badge automatically instead of hardcoding three widths)</TableCell>
+    </TableRow>
+  </TableBody>
+</Table>
+
+## Do's & Don'ts
+
+<DosDonts>
+  <Do description="Show the count badge only once at least one filter is applied. An active state with a zero count is contradictory — the component already hides the badge when count is 0 or omitted." />
+  <Dont description="Use Table Filter to replace a Select field inside a form. It's specifically a trigger for a filter picker above a table, not a general-purpose dropdown control." />
+</DosDonts>
+
+<DosDonts>
+  <Do description="Keep the select-all shortcut visually and functionally distinct from opening the picker — clicking it should immediately select/deselect all rows, not open a menu." />
+  <Dont description="Hide the select-all shortcut just to save space unless the table genuinely has no bulk-select concept — it's a meaningfully faster path than opening the full picker." />
+</DosDonts>
+
+## Code
+
+```tsx
+import { TableFilter } from '@/components/ui/table-filter'
+
+// Default — no filters applied
+<TableFilter label="Select Option" />
+
+// Active with one filter applied
+<TableFilter label="Select Option" active count={1} />
+
+// Active with multiple filters, no select-all shortcut
+<TableFilter label="Select Option" active count={2} showSelectAll={false} />
+```
+
+## Token reference
+
+<Table size="compact" className="mb-6">
+  <TableHeader>
+    <tr>
+      <TableHead>Token</TableHead>
+      <TableHead>Value</TableHead>
+      <TableHead>Usage</TableHead>
+    </tr>
+  </TableHeader>
+  <TableBody>
+    <TableRow>
+      <TableCell><code>--border-color-surface-active-terciary-default</code></TableCell>
+      <TableCell><code>#efefef</code></TableCell>
+      <TableCell>Default (inactive) border</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><code>--border-color-surface-active-primary-default</code></TableCell>
+      <TableCell><code>#629944</code></TableCell>
+      <TableCell>Active border + count badge border</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><code>--surface-form-field</code></TableCell>
+      <TableCell><code>#ffffff</code></TableCell>
+      <TableCell>Trigger background</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><code>--neutral-800</code></TableCell>
+      <TableCell><code>#1d1d1d</code></TableCell>
+      <TableCell>Label text. Figma names this <code>text/on-action/secondary</code>, but that shared alias resolves to the wrong ramp step in this codebase — bypassed directly, same recurring bug as the rest of this audit.</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><code>--content-action-primary-default</code></TableCell>
+      <TableCell><code>#3a8015</code></TableCell>
+      <TableCell>"All" select-all text + icon</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><code>--surface-action-primary-default</code></TableCell>
+      <TableCell><code>#3a8015</code></TableCell>
+      <TableCell>Count badge background</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><code>--text-body-on-dark-surface</code></TableCell>
+      <TableCell><code>#efefef</code></TableCell>
+      <TableCell>Count badge text</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>Min width</TableCell>
+      <TableCell>220px</TableCell>
+      <TableCell>Trigger container</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>Height</TableCell>
+      <TableCell>40px</TableCell>
+      <TableCell>Trigger container</TableCell>
+    </TableRow>
+  </TableBody>
+</Table>
+
+## Accessibility
+
+- Renders as a native `<button>` — keyboard-focusable and activatable with Enter or Space.
+- The "select all" shortcut is a separate focusable, keyboard-activatable control nested inside the trigger, with its click handled independently (`stopPropagation`) so it never also triggers the outer button's `onClick`.
+- The funnel icon has no separate click handler of its own — clicking anywhere on the trigger (outside "select all") opens the picker via the button's `onClick`.
+
+## Open questions
+
+- Figma models three distinct Active variants (`decimals: "01" | "02" | "03"`) with hardcoded counter widths (18px / 24px / 32px) for 1/2/3-digit counts. This component sizes the badge with `minWidth` + horizontal padding instead of three fixed widths — visually equivalent for any digit count, but not a literal 1:1 port of the three Figma variants.
+- The filter picker itself (dropdown/panel that opens on click) is not part of this component or the Figma pull — only the trigger's closed-state visual was provided.

@@ -4,7 +4,11 @@ import {
   PencilSimpleIcon,
   TrashIcon,
   MagnifyingGlassIcon,
+  DownloadIcon,
+  UploadIcon,
+  MegaphoneSimpleIcon,
   SignpostIcon,
+  CaretDownIcon,
 } from '@phosphor-icons/react'
 
 const meta: Meta<typeof PageTitle> = {
@@ -89,64 +93,72 @@ const OneButtonAction = ({ label = 'Edit List' }: { label?: string }) => (
   />
 )
 
-const DfcHeaderActions = () => (
-  <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
-    {/* Search input */}
-    <div style={{
-      display:      'flex',
-      alignItems:   'center',
-      justifyContent: 'space-between',
-      width:        240,
-      height:       24,
-      padding:      8,
-      border:       '1px solid var(--neutral-200)',
-      borderRadius: 4,
-      background:   'var(--neutral-0)',
-    }}>
-      <span style={{ fontSize: 12, color: 'var(--text-body-secondary)' }}>Search</span>
-      <MagnifyingGlassIcon size={16} color="var(--text-body-secondary)" />
-    </div>
-    {/* Path Tester button */}
+// Matches Figma's "Title Controls" component, type="User Roles": a search
+// field, four icon-only utility buttons (Download/Upload/Megaphone/Signpost),
+// and a Role label + dropdown field -- not the fabricated "Path Tester" +
+// segmented tabs this story previously showed, which had no Figma backing.
+function IconOnlyButton({ icon }: { icon: React.ReactNode }) {
+  return (
     <button style={{
       display:      'flex',
       alignItems:   'center',
-      gap:          8,
+      height:       24,
       padding:      '4px 8px',
-      border:       '1px solid var(--content-action-primary-600)',
+      border:       '1px solid var(--border-color-form-fields-default)',
       borderRadius: 4,
-      background:   'var(--neutral-0)',
+      background:   'var(--surface-action-secondary-default)',
       cursor:       'pointer',
     }}>
-      <SignpostIcon size={16} weight="thin" color="#3d5459" />
-      <span style={{ fontSize: 10, color: '#3d5459' }}>Path Tester</span>
+      {icon}
     </button>
-    {/* Role tabs */}
+  )
+}
+
+const DfcHeaderActions = () => (
+  <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+    {/* Search DFC */}
     <div style={{
-      display:      'flex',
-      alignItems:   'center',
-      gap:          4,
-      padding:      4,
-      borderRadius: 4,
-      background:   'var(--neutral-100)',
+      display:        'flex',
+      alignItems:     'center',
+      justifyContent: 'space-between',
+      width:          227,
+      height:         24,
+      padding:        8,
+      border:         '1px solid var(--border-color-form-fields-default)',
+      borderRadius:   4,
+      background:     'var(--surface-action-secondary-default)',
     }}>
-      <span style={{
-        padding:      '4px 12px',
-        borderRadius: 4,
-        background:   'var(--neutral-0)',
-        border:       '1px solid var(--content-action-primary-600)',
-        fontSize:     10,
-        fontWeight:   600,
-        color:        'var(--content-action-primary-600)',
-        letterSpacing:'0.4px',
+      <span style={{ fontSize: 12, color: 'var(--text-form-field-placeholder)' }}>Search</span>
+      <MagnifyingGlassIcon size={16} color="var(--text-form-field-placeholder)" />
+    </div>
+
+    {/* Utility icon buttons */}
+    <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+      <IconOnlyButton icon={<DownloadIcon size={16} weight="regular" color="var(--neutral-800)" />} />
+      <IconOnlyButton icon={<UploadIcon size={16} weight="regular" color="var(--neutral-800)" />} />
+      <IconOnlyButton icon={<MegaphoneSimpleIcon size={16} weight="regular" color="var(--neutral-800)" />} />
+      <IconOnlyButton icon={<SignpostIcon size={16} weight="regular" color="var(--neutral-800)" />} />
+    </div>
+
+    {/* Role field */}
+    <div style={{ display: 'flex', alignItems: 'center', gap: 4, width: 150 }}>
+      <span style={{ fontSize: 10, fontWeight: 600, color: 'var(--text-form-field-focus)', whiteSpace: 'nowrap' }}>
+        Role
+      </span>
+      <div style={{
+        display:        'flex',
+        alignItems:     'center',
+        justifyContent: 'space-between',
+        flex:           1,
+        height:         24,
+        padding:        8,
+        border:         '1px solid var(--border-color-form-fields-default)',
+        borderRadius:   4,
+        background:     'var(--surface-action-secondary-default)',
       }}>
-        Admin
-      </span>
-      <span style={{ padding: '4px 12px', fontSize: 10, fontWeight: 600, color: 'var(--text-body-primary)', letterSpacing: '0.4px' }}>
-        Business User
-      </span>
-      <span style={{ padding: '4px 12px', fontSize: 10, fontWeight: 600, color: 'var(--text-body-primary)', letterSpacing: '0.4px' }}>
-        Reader
-      </span>
+        <span style={{ fontSize: 12, color: 'var(--text-form-field-placeholder)' }}>Admin</span>
+        <CaretDownIcon size={16} color="var(--text-form-field-placeholder)" />
+      </div>
     </div>
   </div>
 )

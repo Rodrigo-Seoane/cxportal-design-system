@@ -13,7 +13,7 @@ The Nav Item primitives are the building blocks of the sidebar navigation. They 
 There are three exported components:
 
 - **`NavMenuItem`** — 48px group header with leading icon, label, and expand/collapse caret
-- **`NavSubItem`** — 40px child route link with left indent, text only
+- **`NavSubItem`** — 48px child route link with left indent, text only
 - **`NavMenuItemCollapsed`** — 48×48px icon-only button for the collapsed sidebar state
 
 ## When to use
@@ -29,13 +29,13 @@ Use these primitives when:
 
 ### NavMenuItem
 
-- **Leading icon** — 20px, thin weight Phosphor icon. Color inherits from the item's current state.
+- **Leading icon** — 18px, thin weight Phosphor icon. Color inherits from the item's current state.
 - **Label** — 14px, Light (300) by default, SemiBold (600) when active.
-- **Trailing caret** — `CaretRightIcon` (closed) or `CaretDownIcon` (open). Color matches label.
+- **Trailing caret** — `CaretRightIcon` (closed) or `CaretDownIcon` (open), 14px. Color matches label.
 
 ### NavSubItem
 
-- **Label** — 14px, 48px left indent. No icon. Muted opacity at default, full white when hover/active.
+- **Label** — 14px, 36px left indent, 8px right padding. No icon. Full-bright text at every state on the dark theme — light theme is the only case where idle/hover text is dark instead.
 
 ### NavMenuItemCollapsed
 
@@ -58,25 +58,25 @@ Use these primitives when:
     <TableRow>
       <TableCell><strong>Default</strong></TableCell>
       <TableCell>Transparent</TableCell>
-      <TableCell><code>#efefef</code></TableCell>
+      <TableCell><code>#f8f8f8</code></TableCell>
       <TableCell>Transparent</TableCell>
     </TableRow>
     <TableRow>
       <TableCell><strong>Hover</strong></TableCell>
-      <TableCell><code>#3a8015</code></TableCell>
-      <TableCell><code>#efefef</code></TableCell>
-      <TableCell><code>#3a8015</code></TableCell>
+      <TableCell><code>#366618</code></TableCell>
+      <TableCell><code>#f8f8f8</code></TableCell>
+      <TableCell><code>#366618</code></TableCell>
     </TableRow>
     <TableRow>
       <TableCell><strong>Active</strong></TableCell>
       <TableCell>Transparent</TableCell>
-      <TableCell><code>#3a8015</code> (blue text)</TableCell>
-      <TableCell><code>#366618</code></TableCell>
+      <TableCell><code>#3a8015</code> (green text)</TableCell>
+      <TableCell><code>#3a8015</code></TableCell>
     </TableRow>
     <TableRow>
       <TableCell><strong>Disabled</strong></TableCell>
       <TableCell>Transparent</TableCell>
-      <TableCell><code>#6a7260</code></TableCell>
+      <TableCell><code>#adadad</code></TableCell>
       <TableCell>Transparent</TableCell>
     </TableRow>
   </TableBody>
@@ -85,6 +85,8 @@ Use these primitives when:
 ### Product themes
 
 Both `NavMenuItem` and `NavSubItem` accept a `darkMode` prop (default `true`).
+Hover/active fills and text are identical across themes — only the idle
+(default) text colour differs.
 
 <Table size="compact" className="mb-6">
   <TableHeader>
@@ -99,13 +101,13 @@ Both `NavMenuItem` and `NavSubItem` accept a `darkMode` prop (default `true`).
     <TableRow>
       <TableCell><code>darkMode={'{true}'}</code> (default)</TableCell>
       <TableCell><code>#050326</code></TableCell>
-      <TableCell><code>#3a8015</code></TableCell>
+      <TableCell><code>#366618</code></TableCell>
       <TableCell><code>#3a8015</code></TableCell>
     </TableRow>
     <TableRow>
       <TableCell><code>darkMode={'{false}'}</code></TableCell>
       <TableCell><code>#ffffff</code></TableCell>
-      <TableCell><code>#123200</code></TableCell>
+      <TableCell><code>#366618</code></TableCell>
       <TableCell><code>#3a8015</code></TableCell>
     </TableRow>
   </TableBody>
@@ -119,7 +121,7 @@ Both `NavMenuItem` and `NavSubItem` accept a `darkMode` prop (default `true`).
 </DosDonts>
 
 <DosDonts>
-  <Do description="Use thin-weight Phosphor icons at 20px for NavMenuItem. This is the established visual standard across all CxPortal module icons." />
+  <Do description="Use thin-weight Phosphor icons at 18px for NavMenuItem. This is the established visual standard across all CxPortal module icons." />
   <Dont description="Mix icon weights. Filled or bold icons compete with the label text and make the sidebar panel feel heavy." />
 </DosDonts>
 
@@ -139,13 +141,13 @@ import { BrainIcon } from '@phosphor-icons/react'
 // Default
 <NavMenuItem
   label="Knowledge Management"
-  icon={<BrainIcon size={20} weight="thin" />}
+  icon={<BrainIcon size={18} weight="thin" />}
 />
 
 // Active + open (transparent bg, label turns #3a8015)
 <NavMenuItem
   label="Knowledge Management"
-  icon={<BrainIcon size={20} weight="thin" />}
+  icon={<BrainIcon size={18} weight="thin" />}
   state="active"
   isOpen
 />
@@ -153,7 +155,7 @@ import { BrainIcon } from '@phosphor-icons/react'
 // Light mode (CxCentral)
 <NavMenuItem
   label="Knowledge Management"
-  icon={<BrainIcon size={20} weight="thin" />}
+  icon={<BrainIcon size={18} weight="thin" />}
   state="active"
   isOpen
   darkMode={false}
@@ -181,13 +183,13 @@ import { BrainIcon } from '@phosphor-icons/react'
 
 // Dark (default)
 <NavMenuItemCollapsed
-  icon={<BrainIcon size={20} weight="thin" />}
+  icon={<BrainIcon size={18} weight="thin" />}
   state="active"
 />
 
 // Light
 <NavMenuItemCollapsed
-  icon={<BrainIcon size={20} weight="thin" />}
+  icon={<BrainIcon size={18} weight="thin" />}
   state="active"
   darkMode={false}
 />
@@ -198,7 +200,7 @@ import { BrainIcon } from '@phosphor-icons/react'
 ```tsx
 <NavMenuItem
   label="Knowledge Management"
-  icon={<BrainIcon size={20} weight="thin" />}
+  icon={<BrainIcon size={18} weight="thin" />}
   state="active"
   isOpen
 />
@@ -220,38 +222,28 @@ import { BrainIcon } from '@phosphor-icons/react'
   </TableHeader>
   <TableBody>
     <TableRow>
-      <TableCell><code>--content-action/primary/default</code></TableCell>
+      <TableCell><code>--content-action-primary-default</code></TableCell>
       <TableCell><code>#3a8015</code></TableCell>
-      <TableCell>Dark hover bg + active group header text</TableCell>
+      <TableCell>Active group-header text + active sub-item bg (both themes)</TableCell>
     </TableRow>
     <TableRow>
-      <TableCell><code>--content-action/primary/hover</code></TableCell>
-      <TableCell><code>#123200</code></TableCell>
-      <TableCell>Collapsed icon button hover bg (dark)</TableCell>
-    </TableRow>
-    <TableRow>
-      <TableCell><code>--content-action/primary/500</code></TableCell>
+      <TableCell><code>--surface-action-primary-hover</code></TableCell>
       <TableCell><code>#366618</code></TableCell>
-      <TableCell>Active sub-item bg (dark)</TableCell>
+      <TableCell>Hover bg — menu item, sub-item, and collapsed icon button (both themes)</TableCell>
     </TableRow>
     <TableRow>
-      <TableCell><code>--content-action/teal/default</code></TableCell>
-      <TableCell><code>#3a8015</code></TableCell>
-      <TableCell>Light mode active text + sub-item active bg</TableCell>
+      <TableCell><code>--text-on-action-primary</code></TableCell>
+      <TableCell><code>#f8f8f8</code></TableCell>
+      <TableCell>Default dark-theme label + all active/hover labels (both themes)</TableCell>
     </TableRow>
     <TableRow>
-      <TableCell><code>--content-action/teal/hover</code></TableCell>
-      <TableCell><code>#123200</code></TableCell>
-      <TableCell>Light mode hover bg</TableCell>
+      <TableCell><code>--neutral-800</code></TableCell>
+      <TableCell><code>#1d1d1d</code></TableCell>
+      <TableCell>Light-theme (CxCentral) idle/hover label text. Figma names this <code>text/on-action/secondary</code>, but that shared alias resolves to the wrong value in this codebase — bypassed directly.</TableCell>
     </TableRow>
     <TableRow>
-      <TableCell><code>--text/on-action/primary</code></TableCell>
-      <TableCell><code>#efefef</code></TableCell>
-      <TableCell>Default dark label + all active/hover labels</TableCell>
-    </TableRow>
-    <TableRow>
-      <TableCell><code>--text/disabled</code></TableCell>
-      <TableCell><code>#6a7260</code></TableCell>
+      <TableCell><code>--text-form-field-disabled</code></TableCell>
+      <TableCell><code>#adadad</code></TableCell>
       <TableCell>Disabled state text and icon</TableCell>
     </TableRow>
   </TableBody>

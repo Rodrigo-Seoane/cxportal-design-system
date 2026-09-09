@@ -4,32 +4,36 @@ import { CaretRightIcon, CaretDownIcon } from '@phosphor-icons/react'
 
 // ── Design tokens ─────────────────────────────────────────────────────────────
 
+// Figma: hover/active fills and text are the same across the dark (CxPortal)
+// and light (CxCentral) themes — only the idle/default text colour differs
+// per theme. textDefault/disabled bypass the shared --text-on-action-secondary
+// / --text-body-primary aliases directly because those aliases are themselves
+// wrong-ramp-stepped in this codebase (see HANDOFF-PROMPT.md).
 const DARK = {
-  menuHover:      'var(--content-action-primary-600)',
-  menuActiveText: 'var(--content-action-primary-600)',
-  subDefaultText: 'color-mix(in srgb, var(--neutral-100) 75%, transparent)',
-  subHover:       'var(--content-action-primary-600)',
-  subActive:      'var(--content-action-primary-700)',
-  textOn:         'var(--neutral-100)',
-  textDefault:    'var(--neutral-100)',
-  disabled:       'var(--content-action-disabled-700)',
-  colHover:       'var(--content-action-primary-300)',
-  colActive:      'var(--content-action-primary-600)',
+  menuHover:      'var(--surface-action-primary-hover)',
+  menuActiveText: 'var(--content-action-primary-default)',
+  subHover:       'var(--surface-action-primary-hover)',
+  subActive:      'var(--surface-action-primary-default)',
+  textOn:         'var(--text-on-action-primary)',
+  textDefault:    'var(--text-on-action-primary)',
+  disabled:       'var(--text-form-field-disabled)',
+  colHover:       'var(--surface-action-primary-hover)',
+  colActive:      'var(--surface-action-primary-default)',
 } as const
 
 // Light-background nav variant (formerly a distinct "CxCentral" teal treatment) —
 // collapsed onto the same Content Action/Primary ramp as DARK, tuned for a light surface.
 const LIGHT = {
-  menuHover:      'var(--content-action-primary-100)',
-  menuActiveText: 'var(--content-action-primary-600)',
+  menuHover:      'var(--surface-action-primary-hover)',
+  menuActiveText: 'var(--content-action-primary-default)',
   subDefaultBg:   'var(--content-action-primary-50)',
-  subHover:       'var(--content-action-primary-100)',
-  subActive:      'var(--content-action-primary-600)',
-  textOn:         'var(--neutral-100)',
-  textDefault:    'var(--text-body-primary)',
-  disabled:       'var(--content-action-disabled-700)',
-  colHover:       'var(--content-action-primary-100)',
-  colActive:      'var(--content-action-primary-600)',
+  subHover:       'var(--surface-action-primary-hover)',
+  subActive:      'var(--surface-action-primary-default)',
+  textOn:         'var(--text-on-action-primary)',
+  textDefault:    'var(--neutral-800)',
+  disabled:       'var(--text-form-field-disabled)',
+  colHover:       'var(--surface-action-primary-hover)',
+  colActive:      'var(--surface-action-primary-default)',
 } as const
 
 // ── Types ─────────────────────────────────────────────────────────────────────
@@ -107,8 +111,8 @@ export function NavMenuItem({
 
       <span style={{ flexShrink: 0, display: 'flex', alignItems: 'center', color: textColor }}>
         {isOpen
-          ? <CaretDownIcon  size={16} />
-          : <CaretRightIcon size={16} />
+          ? <CaretDownIcon  size={14} />
+          : <CaretRightIcon size={14} />
         }
       </span>
     </button>
@@ -116,7 +120,7 @@ export function NavMenuItem({
 }
 
 // ── NavSubItem ────────────────────────────────────────────────────────────────
-// Child route item: 40px tall, indented, text only.
+// Child route item: 48px tall, indented, text only.
 
 export interface NavSubItemProps {
   label:     string
@@ -136,11 +140,13 @@ export function NavSubItem({
     state === 'active' ? (darkMode ? DARK.subActive : LIGHT.subActive) :
     !darkMode          ? LIGHT.subDefaultBg : 'transparent'
 
+  // Figma: active is always light text (full green fill needs the contrast).
+  // Dark theme stays light text through default/hover too — only light
+  // theme's idle/hover state uses dark text.
   const textColor =
     state === 'disabled' ? (darkMode ? DARK.disabled : LIGHT.disabled) :
     state === 'active'   ? DARK.textOn :
-    !darkMode            ? LIGHT.textDefault :
-    state === 'default'  ? DARK.subDefaultText : DARK.textOn
+    darkMode              ? DARK.textOn : LIGHT.textDefault
 
   const weight = state === 'active' ? 600 : 300
 
@@ -150,11 +156,11 @@ export function NavSubItem({
       disabled={state === 'disabled'}
       style={{
         width:          240,
-        height:         40,
+        height:         48,
         display:        'flex',
         alignItems:     'center',
-        paddingLeft:    48,
-        paddingRight:   24,
+        paddingLeft:    36,
+        paddingRight:   8,
         background:      bg,
         border:         'none',
         cursor:          state === 'disabled' ? 'not-allowed' : 'pointer',

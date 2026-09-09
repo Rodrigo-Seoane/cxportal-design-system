@@ -71,11 +71,11 @@ When the full page count is not important to the task — such as navigating a w
 
 ## Anatomy
 
-- **Previous / Back button** — navigates to page − 1. Disabled on the first page. Icon-only (`directional`) or icon + "Back" label (`back-next`, `numbered`).
+- **Previous / Back button** — navigates to page − 1. Disabled on the first page. Icon-only (`directional`) or icon + "Back" label (`back-next`, `numbered`). 32px tall standalone (`back-next`); shrinks to 25px + 36px min-width when shown alongside page numbers (`numbered`), matching the page-number buttons' own sizing.
 - **Next button** — navigates to page + 1. Disabled on the last page.
-- **Page number buttons** — 36 × 36 px pills. Active page has a white (`#ffffff`) background; idle pages are transparent.
+- **Page number buttons** — 36 × 25 px pills, white idle background. Active/current page has no distinct style anywhere in Figma's pulled component (see Open questions) — kept a distinguishing solid-green fill since Usage's own Anatomy explicitly requires one.
 - **Ellipsis (…)** — non-interactive placeholder indicating a hidden page range. Renders as the same pill shape to maintain visual rhythm.
-- **Counter label** — "X of Y" text rendered between directional arrows in the `directional-counter` variant. 14 px / `#373737`.
+- **Counter label** — "X of Y" text rendered between directional arrows in the `directional-counter` variant. 14 px, dark neutral text.
 
 ---
 
@@ -235,19 +235,19 @@ return (
       <TableCell>Button border on all states</TableCell>
     </TableRow>
     <TableRow>
-      <TableCell><code>--text/on-action/transparent</code></TableCell>
-      <TableCell><code>#366618</code></TableCell>
-      <TableCell>Button text and icon colour</TableCell>
+      <TableCell><code>--text-on-action-transparent</code></TableCell>
+      <TableCell><code>#3a8015</code></TableCell>
+      <TableCell>Button text and icon colour. This doc previously listed <code>#366618</code> here — that's the hover green, not this token's actual resolved value; corrected.</TableCell>
     </TableRow>
     <TableRow>
-      <TableCell><code>--surface/form-field</code></TableCell>
+      <TableCell><code>--surface-action-primary-default</code></TableCell>
+      <TableCell><code>#3a8015</code></TableCell>
+      <TableCell>Active (current) page background — solid fill, paired with <code>--text-on-action-primary</code> (<code>#f8f8f8</code>) for the number itself. Previously white (<code>--surface-form-field</code>), which became indistinguishable from the idle background once that was corrected to white too (see below).</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><code>--surface-section-bg</code></TableCell>
       <TableCell><code>#ffffff</code></TableCell>
-      <TableCell>Active (current) page background</TableCell>
-    </TableRow>
-    <TableRow>
-      <TableCell><code>--surface/action/empty</code></TableCell>
-      <TableCell><code>transparent</code></TableCell>
-      <TableCell>Idle button background</TableCell>
+      <TableCell>Idle AND disabled button background — Figma's component renders every button with a white background in every one of its 5 pulled variants, never transparent. Previously <code>transparent</code>.</TableCell>
     </TableRow>
     <TableRow>
       <TableCell><code>--border-radius/sm</code></TableCell>
@@ -261,8 +261,13 @@ return (
     </TableRow>
     <TableRow>
       <TableCell>Page button size</TableCell>
-      <TableCell>36 × 36 px</TableCell>
-      <TableCell>Fixed width for numbered buttons to maintain visual alignment</TableCell>
+      <TableCell>36 × 25 px</TableCell>
+      <TableCell>Fixed size for numbered buttons and, when paired with page numbers, Back/Next too. Corrected from a content-driven ~36px height.</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>Back/Next height (standalone)</TableCell>
+      <TableCell>32 px</TableCell>
+      <TableCell>The <code>back-next</code> variant, with no page numbers alongside it</TableCell>
     </TableRow>
     <TableRow>
       <TableCell>Button padding</TableCell>
@@ -276,8 +281,8 @@ return (
     </TableRow>
     <TableRow>
       <TableCell>Font — counter</TableCell>
-      <TableCell>14 px / weight 400 / <code>#373737</code></TableCell>
-      <TableCell>Body/Regular — "X of Y" label</TableCell>
+      <TableCell>14 px / weight 400 / <code>#1d1d1d</code></TableCell>
+      <TableCell>Body/Regular — "X of Y" label. Figma's own component literally fills this text pure black (<code>#000000</code>, no token) — treated as a Figma-authoring slip and bypassed to <code>--neutral-800</code>, matching the DS-wide "darkest text" convention used everywhere else. See Open questions.</TableCell>
     </TableRow>
   </TableBody>
 </Table>
@@ -292,3 +297,11 @@ return (
 - The `directional-counter` label is wrapped in `aria-live="polite"` + `aria-atomic="true"` so page changes are announced to assistive technologies without interrupting ongoing speech.
 - All interactive elements are keyboard-accessible via Tab. Clicking a page button or Back/Next is the intended interaction — no arrow-key roving tabindex is needed since these are not related option groups.
 - Icon-only buttons (`directional`) carry `aria-label="Previous page"` / `aria-label="Next page"` so their purpose is clear without a visible label.
+
+## Open questions
+
+- **Touch target size contradicts Usage's own Don'ts.** Usage explicitly says "Don't make pagination buttons too small for touch targets (min 44×44px)" — but every button in the actual component is smaller than that in at least one dimension (32px/25px tall, 36px page-button width). Component wins per the standing rule (these are the real, confirmed pixel values), but this is a genuine Figma-component-vs-Figma-Usage-doc contradiction, not a stale-doc mismatch — worth a designer call rather than silently building to either spec.
+- **No current-page style anywhere in Figma's pull.** The component's own prop API is just a single `type` axis (which UI form to show) — there's no per-page "active" state modeled anywhere across all 5 pulled variants; every page-number button in every demo (including the 6-wide "98 99 100 101 102 103" run) renders identically. This directly contradicts Usage's own Anatomy, which requires a "Current Page | Active/selected page indicator." Kept the pre-existing distinguishing treatment (required by the docs) and recoloured it to a solid green fill so it stays visible against the newly-corrected white idle background — an inferred choice, not a Figma-confirmed one.
+- **Counter text is raw black in Figma, not a token.** The "2 of 4" demo instance's text fill is literal `#000000` with no semantic style applied — no other text anywhere else in this design system uses pure black instead of `#1d1d1d`. Treated as a one-off Figma-authoring slip rather than a deliberate value; bypassed to `--neutral-800` for consistency with the rest of the DS.
+- **Hover and disabled colors are unverified.** None of the 5 pulled variants expose a Hover, Active-page, or Disabled state directly — only the `type` axis (which buttons/labels to show) is modeled. The hover tint (`--content-action-primary-100`) and disabled colors (`--content-action-disabled-300` / `-700`) were already in place before this pass and are left as reasonable, DS-consistent choices, not verified against a live Figma state.
+- **Long Counter demo shows a wider truncation window than the current algorithm.** Figma's 125-page example shows six consecutive middle numbers (98–103) around the ellipsis, while this component's `getPageRange` always shows exactly one adjacent page on each side of the current page. Principles' own Truncation Logic explicitly allows "1-2 adjacent pages" (a flexible range, not a fixed count), so the current 1-adjacent behavior is compliant — not treated as a bug, just noted since the demo itself doesn't match it exactly.

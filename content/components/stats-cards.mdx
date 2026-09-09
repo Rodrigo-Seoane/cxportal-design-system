@@ -1,7 +1,7 @@
 ---
 title: Stats Cards
 description: Compact KPI cards for executive dashboards. Combine a metric value, category icon, and color-coded trend indicator so stakeholders can assess performance at a glance.
-figmaNodeId: 814-14892
+figmaNodeId: 814-10561
 figmaUpdated: Apr 13, 2026
 status: stable
 ---
@@ -28,10 +28,10 @@ Stats Cards (also called Data Cards) are compact dashboard components that displ
 
 A Stats Card is composed of four parts:
 
-- **Category icon** — 36×36px (regular) or 24×24px (small) rounded square in primary blue. The icon communicates what metric category this card belongs to (e.g. PaperPlaneTilt for SMS, PhoneCall for Voice).
+- **Category icon** — 36×36px (regular, 24px inner glyph) or 24×24px (small, 16px inner glyph) rounded square, solid green fill. The icon communicates what metric category this card belongs to (e.g. PaperPlaneTilt for SMS, Microphone for Voice Duration).
 - **Trend indicator** — A directional arrow (8px) followed by a percentage and period label. Arrow color signals direction: green for increase, red for decrease.
 - **Metric label** — The name of the KPI (10px, semibold). Identifies the card when multiple are shown side-by-side.
-- **Value** — The primary metric (24px regular / 20px small). The largest element — intended for fast scanning.
+- **Value** — The primary metric (24px / Heading H2 for regular, 18px / Heading H4 for small). The largest element — intended for fast scanning.
 
 ## Variants
 
@@ -54,12 +54,12 @@ A Stats Card is composed of four parts:
     <TableRow>
       <TableCell><strong>Blue</strong></TableCell>
       <TableCell><code>#f8f8f8</code></TableCell>
-      <TableCell>Highlighted or selected cards; subtle emphasis</TableCell>
+      <TableCell>Highlighted or selected cards; subtle emphasis. Despite the name, this surface renders as the same gray used for the table zebra-stripe row.</TableCell>
     </TableRow>
   </TableBody>
 </Table>
 
-Both surfaces share the same `#efefef` border and `8px` border radius.
+Both surfaces share the same `#cdcdcd` border (`--border-color-form-fields-default`) and `8px` border radius. Previously the card used `--neutral-100` (`#efefef`) for the border — a different, lighter gray that didn't match Figma's actual component.
 
 ### Size
 
@@ -70,23 +70,28 @@ Both surfaces share the same `#efefef` border and `8px` border radius.
       <TableHead>Width</TableHead>
       <TableHead>Icon</TableHead>
       <TableHead>Value text</TableHead>
+      <TableHead>Padding / gap</TableHead>
     </tr>
   </TableHeader>
   <TableBody>
     <TableRow>
       <TableCell><strong>Regular</strong></TableCell>
-      <TableCell>180px</TableCell>
-      <TableCell>36×36px</TableCell>
-      <TableCell>24px / H3</TableCell>
+      <TableCell>180px, content-driven height (98px min)</TableCell>
+      <TableCell>36×36px, 24px inner glyph</TableCell>
+      <TableCell>24px / Heading H2</TableCell>
+      <TableCell>12px padding, 12px gap</TableCell>
     </TableRow>
     <TableRow>
       <TableCell><strong>Small</strong></TableCell>
-      <TableCell>172px</TableCell>
-      <TableCell>24×24px</TableCell>
-      <TableCell>20px / H4</TableCell>
+      <TableCell>172px, fixed 80px height</TableCell>
+      <TableCell>24×24px, 16px inner glyph</TableCell>
+      <TableCell>18px / Heading H4</TableCell>
+      <TableCell>8px padding, no gap (content is split via <code>justify-content: space-between</code> across the fixed height instead)</TableCell>
     </TableRow>
   </TableBody>
 </Table>
+
+Regular and Small aren't just a typography/icon scale-down — they use different layout strategies. Regular's height grows with content and spaces its rows with an explicit 12px gap; Small locks the height to 80px and relies on `justify-content: space-between` to push the icon row and the label/value block apart. The previous implementation used one fixed `8px 12px` padding and one fixed `8px` gap for both sizes, and a `82px` min-height for Small instead of Figma's `80px` — all corrected.
 
 ### Trend type
 
@@ -109,8 +114,8 @@ Both surfaces share the same `#efefef` border and `8px` border radius.
     <TableRow>
       <TableCell><strong>Decrease</strong></TableCell>
       <TableCell>ArrowFatLineDown ↓</TableCell>
-      <TableCell>Error red</TableCell>
-      <TableCell>Negative trend vs reference period</TableCell>
+      <TableCell>Error red (<code>--error-default</code>, <code>#ef2056</code>)</TableCell>
+      <TableCell>Negative trend vs reference period. Previously used <code>--text-destructive</code>, which resolves to a darker error step (<code>#ab0c36</code>) that doesn't match Figma's <code>text/error</code> value.</TableCell>
     </TableRow>
     <TableRow>
       <TableCell><strong>Neutral</strong></TableCell>
@@ -222,7 +227,7 @@ import { StatCard } from '@/components/ui/stats-cards'
 </div>
 ```
 
-### Small size / blue surface
+### Small size / gray `surface="blue"`
 
 ```tsx
 <StatCard
@@ -246,3 +251,9 @@ import { StatCard } from '@/components/ui/stats-cards'
   icon="voice-duration"
 />
 ```
+
+## Open questions
+
+- **7 of the 10 category icons were mapped to the wrong Phosphor icon entirely** — not a colour or size mismatch, a semantically different icon. Verified directly against Figma's "Metric Tile Icons" component (`814-10540`) per `iconLabel`: `voice-duration` → Microphone (was PhoneCall), `delivery-rate` → BoxArrowUp (was CheckCircle), `response-rate` → UploadSimple (was ChatCircle), `opt-out` → SubtitlesSlash (was UserMinus), `voice-survey` → UserSound (was Microphone), `voice-notification` → ListChecks (was BellSimple), `sms-notification` → ClipboardText (was ChatDots). Only `sms-sent`, `open-rate`, and `sms-survey` were already correct. All corrected.
+- **Icon weight is unverified.** Figma's icon assets are flattened SVG exports with no readable Phosphor weight attribute. The previous code used `weight="fill"` (solid); switched to `weight="regular"` to match this design system's established line-icon convention used everywhere else (nav items, table actions, etc.) — an inferred, not Figma-confirmed, choice.
+- **Resolved: the `surface="blue"` prop is intentionally retained for Figma/API compatibility, while its actual surface is `--surface-table-zebra-row` gray (`#f8f8f8`).**

@@ -6,7 +6,7 @@ import { SpinnerGapIcon } from '@phosphor-icons/react'
 // ── Design tokens ──────────────────────────────────────────────────────────────
 const T = {
   skeletonBg:   'var(--neutral-100)',
-  spinnerColor: 'var(--content-action-primary-600)',
+  spinnerColor: 'var(--content-action-primary-default)',
 } as const
 
 // ── Skeleton ───────────────────────────────────────────────────────────────────

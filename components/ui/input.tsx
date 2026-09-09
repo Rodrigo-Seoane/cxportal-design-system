@@ -49,7 +49,7 @@ export interface InputProps {
 
 const T = {
   borderDefault:  'var(--neutral-200)',
-  borderFocus:    'var(--content-action-primary-600)',
+  borderFocus:    'var(--content-action-primary-default)',
   borderError:    'var(--error-200)',
   borderDisabled: 'var(--content-action-disabled-300)',
   bgDefault:      'var(--neutral-0)',
@@ -60,7 +60,6 @@ const T = {
   textLabel:      'var(--text-body-primary)',
   textHint:       'var(--text-body-primary)',
   textError:      'var(--error-default)',
-  textRequired:   'var(--error-default)',
 } as const
 
 // ─── Size tokens ─────────────────────────────────────────────────────────────
@@ -194,7 +193,7 @@ export function Input({
             {label}
           </label>
           {required && (
-            <span aria-hidden style={{ fontSize: sz.labelFontSize, lineHeight: sz.labelLineHeight, color: T.textRequired }}>
+            <span aria-hidden style={{ fontSize: sz.labelFontSize, lineHeight: sz.labelLineHeight, color: T.textLabel }}>
               *
             </span>
           )}

@@ -32,7 +32,7 @@
   /* ─── Raw palette (private — do not consume directly in components) ─── */
   --raw-pronetx-greys-200: #cdcdcd;
   --raw-pronetx-greys-300: #adadad;
-  --raw-pronetx-greys-400: #8d8d8d;
+  --raw-pronetx-greys-400: #7a828c;
   --raw-pronetx-greys-600: #525252;
   --raw-pronetx-greys-500: #6f6f6f;
   --raw-blue-100: #d6e2f5;
@@ -153,7 +153,7 @@
   /* ─── Semantic colors (CxPortal/Light) ─── */
   --neutral-200: #cdcdcd;
   --neutral-300: #adadad;
-  --neutral-400: #8d8d8d;
+  --neutral-400: #7a828c;
   --neutral-600: #525252;
   --neutral-500: #6f6f6f;
   --success-100: #ddf4d2;
@@ -293,11 +293,11 @@
   --surface-accent-warning-hover: #815d21;
   --border-color-accent-warning-light: #f7ddb1;
   --border-color-accent-warning-hover: #eaa93c;
-  --border-color-surface-active-primary-disabled: #cfd7c2;
-  --border-color-surface-active-secondary-disabled: #d2e0c8;
+  --border-color-surface-active-primary-disabled: var(--content-action-disabled-300);
+  --border-color-surface-active-secondary-disabled: var(--content-action-disabled-200);
   --surface-action-secondary-disabled: rgba(249, 251, 247, 0);
   --surface-action-terciary-disabled: #f1f5ed;
-  --border-color-surface-active-terciary-disabled: #d2e0c8;
+  --border-color-surface-active-terciary-disabled: var(--content-action-disabled-200);
   --text-on-action-disabled: #cfd7c2;
   --icon-on-action-disabled: #cfd7c2;
 
@@ -305,23 +305,23 @@
   --message-title: "Message Title";
 
   /* ─── Context (Text / Icon / Surface / Border) — full alias set from Figma live query ─── */
-  --text-body-primary: var(--neutral-700);
+  --text-body-primary: var(--neutral-800);
   --text-body-secondary: var(--neutral-400);
   --text-body-on-dark-surface: var(--neutral-100);
-  --text-action: var(--content-action-primary-600);
+  --text-action: var(--content-action-primary-default);
   --text-success: var(--success-default);
   --text-info: var(--info-default);
   --text-warning: var(--warning-default);
   --text-error: var(--error-default);
   --text-destructive: var(--error-500);
-  --text-on-action-primary: var(--neutral-100);
-  --text-on-action-secondary: var(--neutral-700);
-  --text-on-action-transparent: var(--content-action-primary-500);
+  --text-on-action-primary: var(--neutral-50);
+  --text-on-action-secondary: var(--neutral-800);
+  --text-on-action-transparent: var(--content-action-primary-default);
   --text-form-field-placeholder: var(--neutral-400);
   --text-form-field-hover: var(--content-action-primary-500);
   --text-form-field-focus: var(--neutral-700);
-  --text-form-field-disabled: var(--neutral-400);
-  --icon-action: var(--content-action-primary-600);
+  --text-form-field-disabled: var(--neutral-300);
+  --icon-action: var(--content-action-primary-default);
   --icon-success: var(--success-300);
   --icon-info: var(--info-default);
   --icon-warning: var(--warning-default);
@@ -342,9 +342,12 @@
   --surface-section-group-bg: var(--neutral-50);
   --surface-form-field: var(--neutral-0);
   --surface-form-group: var(--neutral-50);
-  --surface-action-primary-default: var(--content-action-primary-600);
-  --surface-action-primary-hover: var(--content-action-primary-700);
+  --surface-action-primary-default: var(--content-action-primary-default);
+  --surface-action-primary-hover: var(--content-action-primary-500);
   --surface-action-primary-disabled: var(--content-action-disabled-default);
+  /* NT Menu (module tree nav redesign, Figma: surface/action/highlight-(active)) */
+  --surface-action-highlight-active: var(--raw-caylent-green-100);
+  --surface-action-highlight-active-hover: var(--raw-caylent-green-200);
   --surface-action-secondary-default: var(--neutral-0);
   --surface-action-secondary-hover: var(--neutral-50);
   --surface-action-terciary-default: var(--neutral-100);
@@ -368,12 +371,16 @@
   --surface-table-checkbox-active: var(--content-action-primary-500);
   --border-color-neutral-light: var(--neutral-100);
   --border-color-neutral-dark: var(--neutral-600);
-  --border-color-surface-active-primary-default: var(--content-action-primary-default);
+  --border-color-surface-active-primary-default: var(--content-action-primary-300);
   --border-color-surface-active-primary-hover: var(--content-action-primary-500);
   --border-color-surface-active-secondary-default: var(--neutral-300);
   --border-color-surface-active-secondary-hover: var(--neutral-400);
   --border-color-surface-active-terciary-default: var(--neutral-100);
   --border-color-surface-active-terciary-hover: var(--neutral-200);
+  /* NT Menu (module tree nav redesign) */
+  --border-color-surface-active-highlight-active: var(--raw-caylent-green-200);
+  --border-color-surface-active-highlight-active-hover: var(--raw-caylent-green-200);
+  --border-color-surface-active-highlight-active-disabled: var(--neutral-200);
   --border-color-accent-success-light: var(--success-200);
   --border-color-accent-success-dark: var(--success-600);
   --border-color-accent-success-hover: var(--success-default);
@@ -389,7 +396,7 @@
   --border-color-form-fields-focus: var(--content-action-primary-default);
 
   /* ─── Legacy aliases (keep existing consumer surface working during Phase 2 sweep) ─── */
-  --color-primary:                     var(--content-action-primary-600);
+  --color-primary:                     var(--content-action-primary-default);
   --color-text-primary:                var(--text-body-primary);
   --color-text-secondary:              var(--text-body-secondary);
   --color-text-on-dark:                var(--icon-body-on-dark-surface);
@@ -414,6 +421,7 @@
   --color-info-200:                    var(--info-200);
 
   /* Radius aliases */
+  --radius-none:  var(--border-radius-none);
   --radius-xs:    var(--border-radius-xs);
   --radius-sm:    var(--border-radius-sm);
   --radius-md:    var(--border-radius-md);
@@ -430,8 +438,8 @@
   --muted-foreground:      var(--text-body-secondary);
   --border:                var(--border-color-neutral-light);
   --input:                 var(--surface-form-field);
-  --ring:                  var(--content-action-primary-600);
-  --primary:               var(--content-action-primary-600);
+  --ring:                  var(--content-action-primary-default);
+  --primary:               var(--content-action-primary-default);
   --primary-foreground:    var(--text-on-action-primary);
   --secondary:             var(--surface-main-panel);
   --secondary-foreground:  var(--text-body-primary);
@@ -470,6 +478,7 @@
   --color-error-200:            var(--color-error-200);
   --color-info-100:             var(--color-info-100);
   --color-info-200:             var(--color-info-200);
+  --radius-none:                var(--radius-none);
   --radius-xs:                  var(--radius-xs);
   --radius-sm:                  var(--radius-sm);
   --radius-md:                  var(--radius-md);

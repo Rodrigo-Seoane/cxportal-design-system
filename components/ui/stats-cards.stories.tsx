@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/react'
-import { StatCard, STAT_ICON_KEYS } from './stats-cards'
+import { StatCard, STAT_ICON_KEYS, MetricTileAcgr } from './stats-cards'
 
 const meta: Meta<typeof StatCard> = {
   title: 'UI/StatCard',
@@ -89,6 +89,27 @@ export const Row: Story = {
       <StatCard title="Delivery Rate" value="98.1%" icon="delivery-rate" trendType="increase" trend="0.3%" />
       <StatCard title="Open Rate" value="43.2%" icon="open-rate" trendType="decrease" trend="1.1%" />
       <StatCard title="Opt-Out" value="142" icon="opt-out" trendType="decrease" trend="2.1%" />
+    </div>
+  ),
+}
+
+export const AcgrOnlyView: Story = {
+  render: () => (
+    <MetricTileAcgr label="Total Agents" value="6,893" type="only-view" assignedTdgCount={3} />
+  ),
+}
+
+export const AcgrAction: Story = {
+  render: () => (
+    <MetricTileAcgr label="Total Agents" value="6,893" type="action" onAssign={() => {}} />
+  ),
+}
+
+export const AcgrRow: Story = {
+  render: () => (
+    <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+      <MetricTileAcgr label="Total Agents" value="6,893" type="only-view" assignedTdgCount={3} />
+      <MetricTileAcgr label="Total Agents" value="6,893" type="action" onAssign={() => {}} />
     </div>
   ),
 }

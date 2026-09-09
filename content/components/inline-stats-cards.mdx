@@ -1,157 +1,193 @@
 ---
 title: Inline Stats Cards
-description: Analytics metric tiles for detail-view pages. Display a formatted KPI value with an optional sparkline trend and signed delta vs a comparison period. Used inline within campaign, topic, and account detail views.
+description: Compact metric tiles for inline placement within detail pages — a row of 3-5 equal-width tiles, no icon, no trend indicator. Distinct from the dashboard-oriented Stats Cards / Metric Tiles.
 figmaNodeId: 2216-8007
-figmaUpdated: May 29, 2026
+figmaUpdated: Apr 09, 2026
 status: stable
 ---
 
 ## Overview
 
-Inline Stats Cards (component: `MetricTile`) are compact analytics tiles designed to appear inline within detail pages — not as standalone executive dashboards. They surface a single KPI with a formatted value, an optional signed delta against a comparison period, and an optional sparkline for at-a-glance trend reading.
+Inline Stats Cards are compact analytics tiles designed to appear inline within detail pages — not as standalone executive dashboards. Each tile shows a label and a formatted value side by side, and a row groups 3–5 tiles horizontally, sharing the available width equally. They're used inside Account, Campaign Group, and Topic detail views to surface key counts and rates at a glance without leaving the page context.
 
-Unlike the dashboard [`StatCard`](/components/stats-cards), Inline Stats Cards have no category icon. They rely on the metric title for identification and are intended to sit in a horizontal row directly below a detail page header.
-
-Current usages:
-- **Campaign Detail** — shows Sent, Delivered, Open Rate, Click Rate, Bounce Rate, Unsubscribes
-- **Campaign List Overview** — shows aggregated KPIs with week-over-week deltas
-- **Topic Detail** — shows per-topic performance metrics
+Distinct from [Stats Cards](/components/stats-cards) (dashboard KPI cards with a category icon, used standalone on index pages and dashboards) — Inline Stats Cards have no icon and no trend indicator. They're intentionally minimal, optimised for scanning rather than deep analysis.
 
 ## When to use
 
-- Inside a detail page, directly below the page title, as a summary strip of 4–6 KPIs.
-- When the reader has navigated into a specific record (campaign, topic, account) and needs a quick performance snapshot.
-- When one or more metrics benefit from a sparkline to communicate trend direction over time.
+- Inside a detail page (Account, Campaign Group, Topic), directly below the title and breadcrumb, where a handful of summary KPIs help orient the user before they scroll into tables and charts
+- When the metrics are counts or rates — not trends or time-series that need a chart
+- When you need 3–5 metrics in a single horizontal row without vertical stacking
 
-## When not to use
-
-- Do not use Inline Stats Cards as a top-level executive dashboard — use `StatCard` with category icons instead.
-- Do not mix `MetricTile` and `StatCard` in the same row.
-- Do not use for more than 6 tiles in a single row — overflow wraps unpredictably on smaller viewports.
+**Do not use** for dashboard-level KPI cards — use [Stats Cards](/components/stats-cards), which includes a category icon and is designed for standalone card grids. Do not use when the metric needs a sparkline or trend indicator. Do not use for a single isolated metric — a plain text label is sufficient.
 
 ## Anatomy
 
-- **Metric label** — 11 px semibold, secondary text color. Identifies the KPI.
-- **Value** — 26 px bold, primary text color. The primary read. Auto-formatted by format type.
-- **Sparkline** *(optional)* — 80×28 px SVG polyline in primary blue. Positioned to the right of the value. Requires 2+ data points.
-- **Delta** *(optional)* — 11 px with directional arrow (10 px). Green for positive, red for negative. Includes a comparison period label in secondary color.
+- **Inline Stats Row** — A horizontal flex container holding 3–5 tile children with an 8px gap, on a light gray background (`--surface-section-group-bg`). Tiles share available width equally.
+- **Inline Stat Tile** — A single tile with two elements side by side: the label (left, semibold, primary text color) and the value (right, light weight, primary text color). White background, 4px radius, `15px 10px` padding.
+- **Label** — Descriptive text identifying the metric (e.g. "Campaign Groups", "Topics"). 12px semibold.
+- **Value** — The metric's pre-formatted value string (e.g. "48,5", "24"). 14px, light weight (300) — deliberately lighter than the label, not bold.
+- **Unit** *(optional)* — A trailing glyph after the value (`%`, `€`, `$`, `k`, `M`, `kb`, `ms`, `s`), 10px, light weight, secondary text color.
 
 ## Variants
 
-### Surface
+### Tile count
 
-| Surface | Background token | Use case |
-|---|---|---|
-| **White** | `--color-surface-section` | Standard on page backgrounds |
-| **Gray** | `--color-surface-display` | When tiles sit on a white page and need subtle separation |
+<Table size="compact" className="mb-6">
+  <TableHeader>
+    <tr>
+      <TableHead>Count</TableHead>
+      <TableHead>Layout</TableHead>
+    </tr>
+  </TableHeader>
+  <TableBody>
+    <TableRow>
+      <TableCell><strong>3</strong></TableCell>
+      <TableCell>All 3 tiles equal-width</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><strong>4</strong></TableCell>
+      <TableCell>All 4 tiles equal-width</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><strong>5</strong></TableCell>
+      <TableCell>All 5 tiles equal-width (Figma's own 5-tile instance fixes the first tile's width instead — see Open questions)</TableCell>
+    </TableRow>
+  </TableBody>
+</Table>
 
-### Value format
+### Units
 
-| Format | Example output | When to use |
-|---|---|---|
-| `number` | `62.4M`, `1.2K`, `850` | Counts — messages sent, bounces, clicks |
-| `percent` | `59.4%` | Rates — open rate, click rate, bounce rate |
-| `currency` | `$12,400` | Spend or revenue values |
+<Table size="compact" className="mb-6">
+  <TableHeader>
+    <tr>
+      <TableHead>Unit</TableHead>
+      <TableHead>Glyph</TableHead>
+    </tr>
+  </TableHeader>
+  <TableBody>
+    <TableRow><TableCell><code>percent</code></TableCell><TableCell>%</TableCell></TableRow>
+    <TableRow><TableCell><code>euro</code></TableCell><TableCell>€</TableCell></TableRow>
+    <TableRow><TableCell><code>dollar</code></TableCell><TableCell>$</TableCell></TableRow>
+    <TableRow><TableCell><code>kilo</code></TableCell><TableCell>k</TableCell></TableRow>
+    <TableRow><TableCell><code>mega</code></TableCell><TableCell>M</TableCell></TableRow>
+    <TableRow><TableCell><code>kilobyte</code></TableCell><TableCell>kb</TableCell></TableRow>
+    <TableRow><TableCell><code>millisecond</code></TableCell><TableCell>ms</TableCell></TableRow>
+    <TableRow><TableCell><code>second</code></TableCell><TableCell>s</TableCell></TableRow>
+  </TableBody>
+</Table>
 
-### Delta display
+## Do's & Don'ts
 
-- **With delta** — Shows directional arrow + formatted delta value + period label (e.g. `↑ +2.3pp vs last period`)
-- **Without delta** — Value row stands alone; use when a comparison period is unavailable or irrelevant
+<DosDonts>
+  <Do description="Always use the Inline Stats Row container — never place tiles directly on the page without the row wrapper. Keep tile count between 3 and 5 per row." />
+  <Dont description="Go below 3 or above 5 tiles in a row. Fewer than 3 looks sparse; more than 5 becomes unreadable at common viewport widths." />
+</DosDonts>
 
-Percent deltas are displayed as percentage points (pp) with a `+/−` prefix. Number deltas use the same K/M abbreviation as the main value.
+<DosDonts>
+  <Do description="Place the row immediately below the entity title and breadcrumb, before tables or tab content, to anchor the summary at the top of the detail view." />
+  <Dont description="Set fixed widths on individual tiles. The row distributes space equally across whatever tiles are present." />
+</DosDonts>
 
-## Guidelines
-
-### DOs
-
-- Always provide a `deltaLabel` when passing a `delta` — naked numbers without context mislead readers.
-- Use `sparkline` on the 1–2 most important rate metrics in a row (e.g. Open Rate, Click Rate). Not every tile needs one.
-- Use `format="percent"` for rate metrics and `format="number"` for volume metrics. Mixing formats in a row is fine and expected.
-- Keep the row to a maximum of 6 tiles. Beyond that, consider grouping or a tabbed breakdown.
-
-### DON'Ts
-
-- Don't use `sparkline` on volume metrics (Sent, Delivered) — absolute counts don't trend-read as naturally as rates.
-- Don't omit `deltaLabel` — the comparison period (vs last campaign, vs last week) is critical context.
-- Don't hardcode values — always derive from real data. Placeholder zeros mislead stakeholders during loading states.
+<DosDonts>
+  <Do description="Use consistent formatting within a row. If most tiles show counts, keep the odd rate-based tile in the same row or move it to a separate row instead." />
+  <Dont description="Mix Inline Stats Cards with Stats Cards in the same row. They serve different contexts and have different visual weights." />
+</DosDonts>
 
 ## Code
 
 ### Basic usage
 
 ```tsx
-import { MetricTile } from '@/app/sandbox/campaigns-email/_components/MetricTile'
+import { InlineStatTile, InlineStatsRow } from '@/components/ui/inline-stats'
 
-<MetricTile
-  title="Open Rate"
-  value={0.594}
-  format="percent"
-  delta={0.023}
-  deltaLabel="vs last period"
-  sparkline={opensByHourData}
-/>
+<InlineStatsRow>
+  <InlineStatTile label="Campaign Groups" value="11" />
+  <InlineStatTile label="Topics" value="4" />
+  <InlineStatTile label="Lists" value="4" />
+  <InlineStatTile label="Templates" value="2" />
+  <InlineStatTile label="Campaigns" value="14" />
+</InlineStatsRow>
 ```
 
-### Campaign detail metrics row
+### With units
 
 ```tsx
-<div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
-  <MetricTile title="Sent"         value={62400000} format="number"  />
-  <MetricTile title="Delivered"    value={61100000} format="number"  />
-  <MetricTile title="Open Rate"    value={0.594}    format="percent" sparkline={opensByHour} />
-  <MetricTile title="Click Rate"   value={0.073}    format="percent" />
-  <MetricTile title="Bounce Rate"  value={0.022}    format="percent" />
-  <MetricTile title="Unsubscribes" value={1150}     format="number"  />
-</div>
-```
-
-### With delta and gray surface
-
-```tsx
-<MetricTile
-  title="Click Rate"
-  value={0.073}
-  format="percent"
-  delta={-0.004}
-  deltaLabel="vs last campaign"
-  surface="gray"
-/>
-```
-
-### Without delta (no comparison available)
-
-```tsx
-<MetricTile
-  title="Bounces"
-  value={1150000}
-  format="number"
-/>
+<InlineStatsRow>
+  <InlineStatTile label="Subscribers" value="678" />
+  <InlineStatTile label="Active Campaigns" value="4" />
+  <InlineStatTile label="Open Rate" value="61,5" unit="percent" />
+  <InlineStatTile label="Delivery Rate" value="78,4" unit="percent" />
+</InlineStatsRow>
 ```
 
 ## Token reference
 
-| Token | Value | Usage |
-|---|---|---|
-| `--color-surface-section` | `#ffffff` | White surface background |
-| `--color-surface-display` | (gray) | Gray surface background |
-| `--color-border` | `#efefef` | Card border |
-| `--color-primary` | `#204704` | Sparkline stroke color |
-| `--color-text-primary` | `#373737` | Value text |
-| `--color-text-secondary` | `#8d8d8d` | Label and delta period text |
-| Success green | `#1a6b1a` | Positive delta arrow and text |
-| Error red | `#8b1a2a` | Negative delta arrow and text |
-| Card border radius | `10 px` | — |
-| Card padding | `12 px 16 px` | — |
-| Card min-width | `160 px` | — |
-| Value font size | `26 px / 700` | — |
-| Label font size | `11 px / 600` | — |
-| Delta font size | `11 px / 500` | — |
-| Sparkline size | `80 × 28 px` | — |
+<Table size="compact" className="mb-6">
+  <TableHeader>
+    <tr>
+      <TableHead>Token</TableHead>
+      <TableHead>Value</TableHead>
+      <TableHead>Usage</TableHead>
+    </tr>
+  </TableHeader>
+  <TableBody>
+    <TableRow>
+      <TableCell><code>--surface-section-bg</code></TableCell>
+      <TableCell><code>#ffffff</code></TableCell>
+      <TableCell>Tile background</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><code>--surface-section-group-bg</code></TableCell>
+      <TableCell><code>#f8f8f8</code></TableCell>
+      <TableCell>Row background</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><code>--neutral-800</code></TableCell>
+      <TableCell><code>#1d1d1d</code></TableCell>
+      <TableCell>Label and value text. Figma names this <code>text/body/primary</code>, but that shared alias resolves to the wrong ramp step (<code>#373737</code>) in this codebase — bypassed directly, the same recurring bug found throughout this whole audit.</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><code>--text-body-secondary</code></TableCell>
+      <TableCell><code>#8d8d8d</code></TableCell>
+      <TableCell>Unit glyph text</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>Tile padding</TableCell>
+      <TableCell>15px 10px</TableCell>
+      <TableCell>Vertical / horizontal</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>Row padding / gap</TableCell>
+      <TableCell>8px / 8px</TableCell>
+      <TableCell>Row container</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>Label font</TableCell>
+      <TableCell>12px / 600 / 0.24px tracking</TableCell>
+      <TableCell>Body/Small semibold</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>Value font</TableCell>
+      <TableCell>14px / 300 (light)</TableCell>
+      <TableCell>Body/Regular light — deliberately lighter than the label, not bold</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>Unit font</TableCell>
+      <TableCell>10px / 300 (light)</TableCell>
+      <TableCell>Body/Extra Small light</TableCell>
+    </TableRow>
+  </TableBody>
+</Table>
 
 ## Accessibility
 
-- The sparkline SVG should carry `aria-hidden="true"` — it is supplementary to the numeric value and the delta text.
-- Each tile should have a descriptive `aria-label` on its container: e.g. `"Open Rate: 59.4%, up 2.3 percentage points vs last period"`.
-- Use `role="status"` on tiles that update in real time (e.g. live campaign monitoring) so assistive technology announces changes.
-- Color is never the sole indicator of delta direction — the directional arrow icon provides a shape-based redundant signal.
-- Ensure a minimum **4.5:1** contrast ratio for all text against the tile background.
+- The row renders with `role="list"` and each tile with `role="listitem"` so assistive technology can announce the tile count and navigate between them.
+- Labels and values are adjacent text nodes within each tile, which screen readers parse naturally as an associated pair without needing extra ARIA wiring.
+- No color-only signal is used anywhere in this component — there's no trend/delta indicator to begin with.
+
+## Open questions
+
+- **This doc previously described an entirely different, unrelated component.** Before this pass, this page documented a fictional `MetricTile` API with sparklines, signed deltas, and `format="currency"|"percent"|"number"` smart-formatting (K/M abbreviation, `$X,XXX` currency, etc.) — none of which has any backing in the actual Figma "Inline Cards" / "Inline Stats Row" component nodes, which are a dead-simple label + value + optional unit-glyph pair with no icon, no sparkline, no delta, and no format-conversion logic at all. The previous doc's own Code samples imported from `@/app/sandbox/campaigns-email/_components/MetricTile` — a real, separate sandbox prototype in this codebase, but not the DS component this page is supposed to document. That sandbox component was not touched by this pass; it's a distinct, feature-specific prototype, out of scope here.
+- **Figma's own Usage doc (`2297-4741`) describes that same fictional richer API** — sparklines, deltas, `aria-label` with unabbreviated numbers, a token table with pre-rebrand-blue values (`#4285f4` for a "sparkline stroke color" that doesn't exist) — none of which matches the real pulled components either. Figma's own Principles doc (`2297-4845`) is more accurate: it explicitly says "MetricTile has no icon, no sparkline in the current implementation." Built to match the real components per the standing "component wins" rule; Usage's speculative Code/Token sections were not implemented.
+- **The 5-tile row instance breaks its own equal-distribution rule.** Figma's 3-tile and 4-tile "Inline Stats Row" instances give every tile `flex-1` (equal width), matching Principles' explicit "auto-layout with equal distribution" anatomy rule. The 5-tile instance instead fixes the first tile's width (`shrink-0`) while the other four stay `flex-1` — an inconsistency with its own sibling variants and the written rule. Treated as a Figma authoring slip; built with equal distribution for all tile counts.
+- **Kilobyte and Millisecond units are rendered as text, not Figma's baked icon assets.** Both are tiny (9×9px) flattened SVGs in Figma with no readable path data worth extracting; rendered as "kb"/"ms" text abbreviations instead, consistent with the other 6 unit types (which are already plain text glyphs).

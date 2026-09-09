@@ -1,0 +1,183 @@
+---
+title: NT Menu
+description: In-progress redesign of the left/vertical nav — light theme, rounded pill rows, drop shadows, tree connector lines. Not yet wired in as the live sidebar.
+figmaNodeId: 3660-6296
+status: wip
+---
+
+## Overview
+
+CxPortal is mid-redesign of the left/vertical navigation, moving away from
+the current dark, full-width sidebar (see the **Navigation** / **Nav Item**
+pages) toward this new pattern — a light-themed, rounded-pill tree menu with
+drop shadows and connector lines between nested items, internally named
+`MenuItemRow` / `MenuItemRowCollapsed` / `ModuleMenuGroup` in Figma.
+
+This page exists so the new pattern can be built and tested independently
+before it becomes the live sidebar. It has **no Principles or Usage doc yet**
+in Figma — everything below is read directly off the component nodes.
+
+## Anatomy
+
+- **`NTMenuHomeItem`** — the root "Home" row. `HouseIcon` + label + trailing
+  caret. Pass `ancestor` to render it as a muted breadcrumb trail
+  ("Home › {ancestor}") instead — Figma's "Nested" state.
+- **`NTMenuModuleItem`** — a top-level, collapsible module row. `TreeViewIcon`
+  (default) + label + caret, `CaretDownIcon` when `isOpen`.
+- **`NTMenuSubItem`** — a nested child row. Leading elbow glyph + label, no
+  icon slot.
+- **`NTMenuGroup`** — composes an `NTMenuModuleItem` header with its
+  `NTMenuSubItem` children, drawing the vertical trunk line that visually
+  connects them.
+- **`NTMenuItemCollapsed`** — icon-only pill for a collapsed sidebar state.
+  Defaults to `HouseIcon`.
+
+All rows are 220px wide, 36px tall (`max-height`), 8px radius, 12px padding.
+
+## States
+
+<Table size="compact" className="mb-6">
+  <TableHeader>
+    <tr>
+      <TableHead>State</TableHead>
+      <TableHead>Background</TableHead>
+      <TableHead>Border</TableHead>
+      <TableHead>Label weight</TableHead>
+    </tr>
+  </TableHeader>
+  <TableBody>
+    <TableRow>
+      <TableCell><strong>Default</strong></TableCell>
+      <TableCell><code>#ffffff</code>, subtle shadow</TableCell>
+      <TableCell>None</TableCell>
+      <TableCell>400 (Regular)</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><strong>Hover</strong></TableCell>
+      <TableCell><code>#97ca6f</code>, stronger shadow</TableCell>
+      <TableCell><code>0.5px #97ca6f</code></TableCell>
+      <TableCell>400 (Regular)</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><strong>Active</strong></TableCell>
+      <TableCell><code>#d0ecc1</code></TableCell>
+      <TableCell><code>0.5px #97ca6f</code></TableCell>
+      <TableCell>600 (SemiBold)</TableCell>
+    </TableRow>
+  </TableBody>
+</Table>
+
+There is no `disabled` state on this component in Figma yet.
+
+## Code
+
+### Basic group
+
+```tsx
+import { NTMenuGroup, NTMenuSubItem } from '@/components/ui/nt-menu'
+
+<NTMenuGroup label="Global Permissions" open>
+  <NTMenuSubItem label="Roles" state="active" />
+  <NTMenuSubItem label="Users" />
+  <NTMenuSubItem label="Companies" />
+</NTMenuGroup>
+```
+
+### Home row + breadcrumb
+
+```tsx
+import { NTMenuHomeItem } from '@/components/ui/nt-menu'
+
+<NTMenuHomeItem state="active" />
+
+{/* Breadcrumb trail — display-only, matches Figma's "Nested" state */}
+<NTMenuHomeItem ancestor="Admin" />
+```
+
+### Collapsed rail
+
+```tsx
+import { NTMenuItemCollapsed } from '@/components/ui/nt-menu'
+import { GlobeIcon } from '@phosphor-icons/react'
+
+<NTMenuItemCollapsed icon={<GlobeIcon size={13} />} state="active" />
+```
+
+## Token reference
+
+<Table size="compact" className="mb-6">
+  <TableHeader>
+    <tr>
+      <TableHead>Token</TableHead>
+      <TableHead>Value</TableHead>
+      <TableHead>Usage</TableHead>
+    </tr>
+  </TableHeader>
+  <TableBody>
+    <TableRow>
+      <TableCell><code>--surface-action-highlight-active</code></TableCell>
+      <TableCell><code>#d0ecc1</code></TableCell>
+      <TableCell>Active row background. New alias, added for this component — points at the existing <code>--raw-caylent-green-100</code> raw step.</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><code>--surface-action-highlight-active-hover</code></TableCell>
+      <TableCell><code>#97ca6f</code></TableCell>
+      <TableCell>Hover row background. New alias, points at <code>--raw-caylent-green-200</code>.</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><code>--border-color-surface-active-highlight-active</code></TableCell>
+      <TableCell><code>#97ca6f</code></TableCell>
+      <TableCell>Active row border</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><code>--border-color-surface-active-highlight-active-hover</code></TableCell>
+      <TableCell><code>#97ca6f</code></TableCell>
+      <TableCell>Hover row border — same hex as the active border token, Figma names them separately</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><code>--neutral-800</code></TableCell>
+      <TableCell><code>#1d1d1d</code></TableCell>
+      <TableCell>Row label/icon colour. Figma names this <code>text/on-action/secondary</code>, but that shared alias resolves to the wrong value in this codebase — bypassed directly, same as <code>nav-item.tsx</code>.</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><code>--text-body-secondary</code></TableCell>
+      <TableCell><code>#8d8d8d</code></TableCell>
+      <TableCell>Muted ancestor label in the Home breadcrumb trail</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>Row width</TableCell>
+      <TableCell>220px (Sub Item: 205px)</TableCell>
+      <TableCell>All row types</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>Row radius</TableCell>
+      <TableCell>8px</TableCell>
+      <TableCell>All row types</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>Icon size</TableCell>
+      <TableCell>13px (elbow glyph: 11px)</TableCell>
+      <TableCell>House / TreeView / Caret / elbow icons</TableCell>
+    </TableRow>
+  </TableBody>
+</Table>
+
+## Open questions — not resolved
+
+- **No Principles or Usage doc exists for this component in Figma yet** —
+  everything on this page was read directly off the component nodes
+  (`3660-6232` / `3869-13623` / `3660-6296`). The separate Navigation
+  Principles/Usage pages (`735-30319` / `735-30339`) only cover the old dark
+  sidebar family and don't mention this pattern at all.
+- **The vertical trunk-line height is a formula, not a lookup table.**
+  Figma hand-authors a distinct pixel height per sub-item count (28 / 73 /
+  119 / 164 / 209px for 1–5 items) that doesn't reduce to one clean constant.
+  Rather than hardcode five magic numbers, `NTMenuGroup` derives the line
+  height from a single row-height constant, which visually approximates but
+  does not pixel-match Figma's specific per-count values.
+- **Not wired into `Sidebar.tsx`.** This is deliberately buildable and
+  testable in isolation first — swapping it in as the live default sidebar
+  skin is a separate step once it's been tried out.
+- **No `disabled` state, module icon default, or deep-nesting (grandchild)
+  pattern** is defined in the Figma nodes pulled so far — only what's listed
+  above.

@@ -2,7 +2,7 @@
 title: Collapsible Filters
 description: A side-panel filter bar that toggles between a collapsed icon-only rail (48 px) and a full filter panel (240 px). Supports multi-select dropdowns and tag-based filtering with active-count badges.
 figmaNodeId: 2212-5926
-figmaUpdated: May 29, 2026
+figmaUpdated: Sep 9, 2026
 status: stable
 ---
 
@@ -16,7 +16,7 @@ The component is currently used in the Knowledge Management list view, where it 
 
 **Space efficiency first.** The panel collapses to 48 px so the content area is never crowded when filters are unused. Users who rely on filters expand once and keep the panel open.
 
-**Always show filter state.** When the panel is collapsed but filters are active, a blue count badge on the icon communicates that the current view is filtered — even before the panel is opened.
+**Always show filter state.** When the panel is collapsed but filters are active, a green count badge on the icon communicates that the current view is filtered — even before the panel is opened.
 
 **Filtering is reversible.** A "Clear Filters" shortcut is always visible in the expanded header. Users never need to hunt for a way to reset.
 
@@ -35,10 +35,10 @@ The component is currently used in the Knowledge Management list view, where it 
 
 - **Panel container** — Fixed-width column (`48 px` collapsed / `240 px` expanded) with a `0.2 s ease` width transition. Bordered on the right.
 - **Header row** — 48 px tall. Contains the toggle trigger and, when expanded, the "Filters" label and "Clear Filters" action.
-  - **Collapsed state** — A secondary icon button (`SlidersHorizontalIcon`). If any filters are active a blue circular badge shows the total active count.
-  - **Expanded state** — A form-controls icon button to collapse, an 18 px "Filters" label, and a ghost "Clear Filters" link with an `XCircleIcon`.
+  - **Collapsed state** — A secondary icon button (`SlidersHorizontalIcon`). If any filters are active a green circular badge shows the total active count.
+  - **Expanded state** — A secondary icon button to collapse (same green-bordered style as the collapsed toggle), an 18 px "Filters" label, and a ghost "Clear Filters" link with an `XCircleIcon`.
 - **Filter content area** — Visible only when expanded. Scrolls vertically. Contains one or more filter controls separated by 16 px gaps.
-  - **TableFilter** — A full-width trigger that opens a portal checkbox dropdown. Shows a blue pill with the active-selection count when filters are applied.
+  - **TableFilter** — A full-width trigger that opens a portal checkbox dropdown. Shows a green pill with the active-selection count when filters are applied.
   - **Tags section** — A label row with a "New Tag" action, followed by `FilterTagItem` rows.
 - **FilterTagItem** — A 32 px row with a custom checkbox, a color dot (solid or dashed), and the tag label. On hover or when the context menu is open, a `⋯` overflow button appears for Edit and Delete actions.
 
@@ -47,7 +47,7 @@ The component is currently used in the Knowledge Management list view, where it 
 | State | Width | Description |
 |---|---|---|
 | **Collapsed — no filters** | 48 px | Secondary icon button only |
-| **Collapsed — filters active** | 48 px | Icon button with blue count badge |
+| **Collapsed — filters active** | 48 px | Icon button with green count badge |
 | **Expanded** | 240 px | Full filter panel with header, controls, and tag list |
 
 ## Guidelines
@@ -70,61 +70,97 @@ The component is currently used in the Knowledge Management list view, where it 
 ### Basic usage
 
 ```tsx
-import { FilterPanel } from '@/app/sandbox/collapsible-filter/page'
+import { CollapsibleFilters } from '@/components/ui/collapsible-filters'
+import { TableFilter } from '@/components/ui/table-filter'
 
-<FilterPanel
-  open={filterOpen}
-  onToggle={() => setFilterOpen(v => !v)}
-  activeKBs={activeKBs}
-  onToggleKB={toggleKB}
-  activeTags={activeTags}
-  onToggleTag={toggleTag}
-  onClearAll={clearAll}
-  tagItems={TAG_ITEMS}
-  onNewTag={handleNewTag}
-  onEditTag={handleEditTag}
-  onDeleteTag={handleDeleteTag}
-/>
+<CollapsibleFilters
+  collapsed={collapsed}
+  onToggleCollapsed={() => setCollapsed(v => !v)}
+  activeCount={activeKBs.size}
+  onClearFilters={() => setActiveKBs(new Set())}
+>
+  <TableFilter
+    label="Knowledge Base"
+    size="compact"
+    active={activeKBs.size > 0}
+    count={activeKBs.size}
+    onClick={openKbDropdown}
+  />
+</CollapsibleFilters>
 ```
 
-### TableFilter (standalone)
+### Tags section
 
 ```tsx
-import { TableFilter } from '@/app/sandbox/collapsible-filter/page'
+import { FilterTagItem } from '@/components/ui/collapsible-filters'
 
-<TableFilter
-  label="Knowledge Base"
-  items={KB_LIST}
-  active={activeKBs}
-  onToggle={toggleKB}
-/>
+<div>
+  <div style={{ fontSize: 18, color: 'var(--neutral-800)', marginBottom: 8 }}>Tags</div>
+  <FilterTagItem
+    label="status: Archived"
+    dotColor="var(--info-100)"
+    checked={activeTags.has('status:Archived')}
+    onToggle={() => toggleTag('status:Archived')}
+    onEdit={() => editTag('status:Archived')}
+    onDelete={() => deleteTag('status:Archived')}
+  />
+</div>
 ```
 
 ### Collapsed with active count badge
 
-The badge renders automatically when `activeKBs.size + activeTags.size > 0` while `open` is `false`. No extra prop required.
+Pass `activeCount` — the badge renders automatically whenever it's greater than 0 while `collapsed` is `true`. No separate prop toggles it.
+
+### Props
+
+```tsx
+interface CollapsibleFiltersProps {
+  collapsed: boolean               // controlled — persists across cycles per Figma's own principle
+  onToggleCollapsed: () => void
+  activeCount?: number             // drives the collapsed-state badge
+  onClearFilters?: () => void      // omit to hide the "Clear Filters" link
+  children?: ReactNode             // compose TableFilter / a Tags section / etc.
+}
+
+interface FilterTagItemProps {
+  label: string
+  dotColor: string                 // caller-supplied — tag colors are per-tag data
+  dotDashed?: boolean
+  checked?: boolean
+  onToggle?: () => void
+  onEdit?: () => void
+  onDelete?: () => void
+}
+```
 
 ## Token reference
 
 | Token | Value | Usage |
 |---|---|---|
-| `--content-action/primary/default` | `#3a8015` | Active count badge background, active filter icon tint, checkbox accent |
-| `--text/body/primary` | `#373737` | "Filters" label, section headings |
-| `--text/body/secondary` | `#8d8d8d` | Inactive icon color |
-| `--content-action/secondary` | `#8d8d8d` | "Clear Filters" and "New Tag" link color |
-| `--border/subtle` | `#efefef` | Panel right border, header bottom border, row dividers |
-| `--neutral/200` | `#cdcdcd` | TableFilter trigger border (inactive) |
-| `--surface/section` | `#ffffff` | Panel background |
-| Panel collapsed width | `48 px` | — |
-| Panel expanded width | `240 px` | — |
-| Header height | `48 px` | — |
-| Tag item height | `32 px` | — |
-| Transition | `width 0.2 s ease` | Collapse/expand animation |
+| `--content-action-primary-default` | `#3a8015` | Active count badge background, active filter icon tint, "Clear Filters"/"New Tag" text |
+| `--neutral-800` | `#1d1d1d` | "Filters" label, section headings — bypassed directly from `--text-body-primary`, which resolves to the wrong ramp step (`--neutral-700`, `#373737`) in this codebase |
+| `--text-body-secondary` | `#8d8d8d` in this codebase | Inactive icon color — Figma's own Usage doc gives `#7a828c` for this same spot; see Open Questions |
+| `--border-color-surface-active-terciary-default` | `#efefef` | Panel right border, header bottom border, row dividers |
+| `--neutral-200` | `#d9dce0` | TableFilter trigger border (inactive) |
+| `--surface-section-bg` | `#ffffff` | Panel background |
+| Panel collapsed width | `48px` | — |
+| Panel expanded width | `240px` | — |
+| Header height | `48px` | — |
+| Tag item height | `32px` | — |
+| Transition | `width 0.2s ease` | Collapse/expand animation |
 
 ## Accessibility
 
 - The toggle button in both collapsed and expanded states must have a descriptive `title` attribute (`"Expand filters"` / `"Collapse filters"`).
 - When collapsed, the active-count badge is a decorative overlay on the icon button — provide an `aria-label` on the button that includes the count (e.g. `"Expand filters — 3 active"`).
-- `TableFilter` and `FilterTagItem` dropdowns are portal-rendered; they must trap focus and close on `Escape`.
 - Tag color dots are purely visual — tag meaning must never be conveyed by color alone. The text label is always required.
 - Filter changes apply immediately; no explicit Apply button means no confirmation step is needed. Screen readers should announce the updated result count via a live region on the list it filters.
+
+## Open Questions
+
+- **Figma's own component has no badge variant.** The pulled `CollapsibleFilters` component (`2212-5926`) only exposes `collapsed` and a `filterRows` demo count (2–5) — there's no modeled "collapsed with badge" variant at all. The badge is real and correctly documented in Principles/Usage, and a real, shipped reference implementation exists (`app/sandbox/collapsible-filter/page.tsx`, the Knowledge Management list view), so it was built to match those — but it's a gap in the Figma component's own variant coverage, not something to resolve by editing Figma.
+- **The real reference implementation itself has a drift from the live component.** `app/sandbox/collapsible-filter/page.tsx`'s `FilterPanel` uses `variant="form-controls"` (a gray border) for the expanded-state collapse-toggle button, but Figma's own pulled component shows an identical green-bordered `secondary`-style button for both the collapsed and expanded toggles. Built to match the live component (`variant="secondary"` for both) rather than copy the sandbox's own inconsistency.
+- **Doc's own stale token values, not followed:** Figma's Usage doc token table lists `--content-action/primary/default` as `#4285f4` (a pre-rebrand blue) even though the live pulled component renders "Clear Filters" in green (`#3a8015`) — the same pre-rebrand-blue stale-doc-value pattern found elsewhere in this audit. It also references `--content-action/secondary` (`#3264b8`, blue) and `--border/subtle` (`#eff1f3`) — neither token exists in this codebase at all, and the live component's own real colors (green "Clear Filters"/"New Tag" text, `#efefef` borders) don't match either. Documented above using the real, existing token names instead.
+- **`--text-body-secondary` reinforces a second cross-cutting token-value gap.** Figma's Usage doc gives `#7a828c` for this exact spot (inactive icon color); this codebase's `--text-body-secondary` (`--neutral-400`) resolves to `#8d8d8d` instead. This is the same exact hex substitution (`#8d8d8d` instead of `#7a828c`) already flagged on Instance Card's `--border-color-surface-active-secondary-hover` — corroborating evidence that `--neutral-400`'s raw value itself may be wrong site-wide, not just one alias. Not changed here (blast radius, needs a designer call) — see `HANDOFF-PROMPT.md`.
+- **Non-portal overflow menu.** `FilterTagItem`'s Edit/Delete menu is positioned `absolute` within the row rather than portal-rendered like the sandbox's `createPortal` version — a deliberate simplification, not a bug. `TableFilter`'s own dropdown (Anatomy item 6) isn't built into this component either; it's a trigger only, matching the already-shipped standalone `TableFilter` component's own scope.
+- **"Blue" is leftover pre-rebrand terminology.** Figma's own Principles/Anatomy/Variants prose calls the active-count badge and TableFilter's count pill "blue" four separate times, but every real rendering — the pulled component's screenshot, the live sandbox implementation, and the doc's own Token Reference table — is green. Same naming-vs-value drift category as Metric Tiles' "Blue" surface rendering gray and Top Bar's purple-vs-green accent elsewhere in this audit. Corrected to "green" above rather than quoted verbatim.

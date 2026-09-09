@@ -68,28 +68,28 @@ export default menuMeta
 type MenuStory = StoryObj<typeof NavMenuItem>
 
 export const MenuDefault: MenuStory = {
-  args: { label: 'Campaigns', icon: <MegaphoneIcon size={20} weight="thin" />, state: 'default' },
+  args: { label: 'Campaigns', icon: <MegaphoneIcon size={18} weight="thin" />, state: 'default' },
 }
 
 export const MenuHover: MenuStory = {
-  args: { label: 'Campaigns', icon: <MegaphoneIcon size={20} weight="thin" />, state: 'hover' },
+  args: { label: 'Campaigns', icon: <MegaphoneIcon size={18} weight="thin" />, state: 'hover' },
 }
 
 export const MenuActive: MenuStory = {
-  args: { label: 'Campaigns', icon: <MegaphoneIcon size={20} weight="thin" />, state: 'active', isOpen: true },
+  args: { label: 'Campaigns', icon: <MegaphoneIcon size={18} weight="thin" />, state: 'active', isOpen: true },
 }
 
 export const MenuDisabled: MenuStory = {
-  args: { label: 'Campaigns', icon: <MegaphoneIcon size={20} weight="thin" />, state: 'disabled' },
+  args: { label: 'Campaigns', icon: <MegaphoneIcon size={18} weight="thin" />, state: 'disabled' },
 }
 
 export const AllMenuStates: MenuStory = {
   render: () => (
     <NavBg>
-      <NavMenuItem label="Centene Framework"  icon={<SelectionAllIcon size={20} weight="thin" />} state="default"  />
-      <NavMenuItem label="Knowledge Management" icon={<BrainIcon       size={20} weight="thin" />} state="hover"   />
-      <NavMenuItem label="Campaigns"          icon={<MegaphoneIcon    size={20} weight="thin" />} state="active"  isOpen />
-      <NavMenuItem label="Change Management"  icon={<ListChecksIcon   size={20} weight="thin" />} state="disabled" />
+      <NavMenuItem label="Centene Framework"  icon={<SelectionAllIcon size={18} weight="thin" />} state="default"  />
+      <NavMenuItem label="Knowledge Management" icon={<BrainIcon       size={18} weight="thin" />} state="hover"   />
+      <NavMenuItem label="Campaigns"          icon={<MegaphoneIcon    size={18} weight="thin" />} state="active"  isOpen />
+      <NavMenuItem label="Change Management"  icon={<ListChecksIcon   size={18} weight="thin" />} state="disabled" />
     </NavBg>
   ),
   decorators: [],
@@ -148,7 +148,7 @@ export const AllSubStates: StoryObj = {
 export const FullGroupExample: StoryObj = {
   render: () => (
     <NavBg>
-      <NavMenuItem label="Knowledge Management" icon={<BrainIcon size={20} weight="thin" />} state="active" isOpen />
+      <NavMenuItem label="Knowledge Management" icon={<BrainIcon size={18} weight="thin" />} state="active" isOpen />
       <NavSubItem label="Knowledge Bases"    state="active"  />
       <NavSubItem label="Add New Document"   state="default" />
       <NavSubItem label="Folders"            state="default" />
@@ -164,10 +164,10 @@ export const FullGroupExample: StoryObj = {
 export const LightModeDefault: StoryObj = {
   render: () => (
     <LightBg>
-      <NavMenuItem label="Q in Connect"       icon={<BookOpenTextIcon size={20} weight="thin" />} state="default"  darkMode={false} />
-      <NavMenuItem label="Knowledge Management" icon={<BrainIcon       size={20} weight="thin" />} state="hover"    darkMode={false} />
-      <NavMenuItem label="Campaigns"          icon={<MegaphoneIcon    size={20} weight="thin" />} state="active"   darkMode={false} isOpen />
-      <NavMenuItem label="Change Management"  icon={<ListChecksIcon   size={20} weight="thin" />} state="disabled" darkMode={false} />
+      <NavMenuItem label="Q in Connect"       icon={<BookOpenTextIcon size={18} weight="thin" />} state="default"  darkMode={false} />
+      <NavMenuItem label="Knowledge Management" icon={<BrainIcon       size={18} weight="thin" />} state="hover"    darkMode={false} />
+      <NavMenuItem label="Campaigns"          icon={<MegaphoneIcon    size={18} weight="thin" />} state="active"   darkMode={false} isOpen />
+      <NavMenuItem label="Change Management"  icon={<ListChecksIcon   size={18} weight="thin" />} state="disabled" darkMode={false} />
     </LightBg>
   ),
   decorators: [],
@@ -177,7 +177,7 @@ export const LightModeDefault: StoryObj = {
 export const LightModeGroup: StoryObj = {
   render: () => (
     <LightBg>
-      <NavMenuItem label="Knowledge Management" icon={<BrainIcon size={20} weight="thin" />} state="active" isOpen darkMode={false} />
+      <NavMenuItem label="Knowledge Management" icon={<BrainIcon size={18} weight="thin" />} state="active" isOpen darkMode={false} />
       <NavSubItem label="Knowledge Bases"    state="active"  darkMode={false} />
       <NavSubItem label="Add New Document"   state="default" darkMode={false} />
       <NavSubItem label="Folders"            state="hover"   darkMode={false} />
@@ -195,17 +195,17 @@ export const CollapsedStates: StoryObj = {
     <div style={{ display: 'flex', gap: 16, alignItems: 'flex-start' }}>
       {/* Dark */}
       <NavBg>
-        <NavMenuItemCollapsed icon={<SelectionAllIcon size={20} weight="thin" />} state="default"  />
-        <NavMenuItemCollapsed icon={<BrainIcon        size={20} weight="thin" />} state="hover"    />
-        <NavMenuItemCollapsed icon={<MegaphoneIcon    size={20} weight="thin" />} state="active"   />
-        <NavMenuItemCollapsed icon={<ListChecksIcon   size={20} weight="thin" />} state="disabled" />
+        <NavMenuItemCollapsed icon={<SelectionAllIcon size={18} weight="thin" />} state="default"  />
+        <NavMenuItemCollapsed icon={<BrainIcon        size={18} weight="thin" />} state="hover"    />
+        <NavMenuItemCollapsed icon={<MegaphoneIcon    size={18} weight="thin" />} state="active"   />
+        <NavMenuItemCollapsed icon={<ListChecksIcon   size={18} weight="thin" />} state="disabled" />
       </NavBg>
       {/* Light */}
       <LightBg>
-        <NavMenuItemCollapsed icon={<SelectionAllIcon size={20} weight="thin" />} state="default"  darkMode={false} />
-        <NavMenuItemCollapsed icon={<BrainIcon        size={20} weight="thin" />} state="hover"    darkMode={false} />
-        <NavMenuItemCollapsed icon={<MegaphoneIcon    size={20} weight="thin" />} state="active"   darkMode={false} />
-        <NavMenuItemCollapsed icon={<ListChecksIcon   size={20} weight="thin" />} state="disabled" darkMode={false} />
+        <NavMenuItemCollapsed icon={<SelectionAllIcon size={18} weight="thin" />} state="default"  darkMode={false} />
+        <NavMenuItemCollapsed icon={<BrainIcon        size={18} weight="thin" />} state="hover"    darkMode={false} />
+        <NavMenuItemCollapsed icon={<MegaphoneIcon    size={18} weight="thin" />} state="active"   darkMode={false} />
+        <NavMenuItemCollapsed icon={<ListChecksIcon   size={18} weight="thin" />} state="disabled" darkMode={false} />
       </LightBg>
     </div>
   ),
@@ -218,16 +218,16 @@ export const CollapsedStates: StoryObj = {
 export const AllModules: StoryObj = {
   render: () => (
     <NavBg>
-      <NavMenuItem label="Centene Framework"   icon={<SelectionAllIcon size={20} weight="thin" />} state="default" />
-      <NavMenuItem label="Q in Connect"        icon={<BookOpenTextIcon size={20} weight="thin" />} state="default" />
-      <NavMenuItem label="Knowledge Management" icon={<BrainIcon       size={20} weight="thin" />} state="default" />
-      <NavMenuItem label="Proficiency Routing" icon={<HeadsetIcon      size={20} weight="thin" />} state="default" />
-      <NavMenuItem label="ACGR"                icon={<StackPlusIcon    size={20} weight="thin" />} state="default" />
-      <NavMenuItem label="Bulk Edit"           icon={<FlowArrowIcon    size={20} weight="thin" />} state="default" />
-      <NavMenuItem label="Insights"            icon={<FlowArrowIcon    size={20} weight="thin" />} state="default" />
-      <NavMenuItem label="DFC"                 icon={<FileCodeIcon     size={20} weight="thin" />} state="default" />
-      <NavMenuItem label="Campaigns"           icon={<MegaphoneIcon    size={20} weight="thin" />} state="default" />
-      <NavMenuItem label="Change Management"   icon={<ListChecksIcon   size={20} weight="thin" />} state="default" />
+      <NavMenuItem label="Centene Framework"   icon={<SelectionAllIcon size={18} weight="thin" />} state="default" />
+      <NavMenuItem label="Q in Connect"        icon={<BookOpenTextIcon size={18} weight="thin" />} state="default" />
+      <NavMenuItem label="Knowledge Management" icon={<BrainIcon       size={18} weight="thin" />} state="default" />
+      <NavMenuItem label="Proficiency Routing" icon={<HeadsetIcon      size={18} weight="thin" />} state="default" />
+      <NavMenuItem label="ACGR"                icon={<StackPlusIcon    size={18} weight="thin" />} state="default" />
+      <NavMenuItem label="Bulk Edit"           icon={<FlowArrowIcon    size={18} weight="thin" />} state="default" />
+      <NavMenuItem label="Insights"            icon={<FlowArrowIcon    size={18} weight="thin" />} state="default" />
+      <NavMenuItem label="DFC"                 icon={<FileCodeIcon     size={18} weight="thin" />} state="default" />
+      <NavMenuItem label="Campaigns"           icon={<MegaphoneIcon    size={18} weight="thin" />} state="default" />
+      <NavMenuItem label="Change Management"   icon={<ListChecksIcon   size={18} weight="thin" />} state="default" />
     </NavBg>
   ),
   decorators: [],

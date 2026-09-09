@@ -9,43 +9,33 @@ import {
 } from '@phosphor-icons/react'
 
 // ── Design tokens ──────────────────────────────────────────────────────────────
+// Icon color on dark theme is not verified against Figma (baked SVG assets) —
+// uses the neutral on-dark-surface text color as a reasonable default.
 const VARIANTS = {
   info: {
-    bg:         'var(--surface-accent-info-light)',
-    border:     'var(--border-color-accent-info-light)',
-    iconColor:  'var(--icon-info)',
-    titleSize:  16,         // H5
-    titleLh:    '24px',
+    light: { bg: 'var(--surface-accent-info-light)', border: 'var(--border-color-accent-info-light)', icon: 'var(--icon-info)', text: 'var(--text-body-primary)', cta: 'var(--text-info)' },
+    dark:  { bg: 'var(--surface-accent-info-dark)',  border: 'var(--border-color-accent-info-dark)',  icon: 'var(--text-body-on-dark-surface)', text: 'var(--text-body-on-dark-surface)', cta: 'var(--info-200)' },
   },
   success: {
-    bg:         'var(--surface-accent-success-light)',
-    border:     'var(--border-color-accent-success-light)',
-    iconColor:  'var(--icon-success)',
-    titleSize:  16,         // H5
-    titleLh:    '24px',
+    light: { bg: 'var(--surface-accent-success-light)', border: 'var(--border-color-accent-success-light)', icon: 'var(--icon-success)', text: 'var(--text-body-primary)', cta: 'var(--text-success)' },
+    dark:  { bg: 'var(--surface-accent-success-dark)',  border: 'var(--border-color-accent-success-dark)',  icon: 'var(--text-body-on-dark-surface)', text: 'var(--text-body-on-dark-surface)', cta: 'var(--success-200)' },
   },
   warning: {
-    bg:         'var(--surface-accent-warning-light)',
-    border:     'var(--border-color-accent-warning-light)',
-    iconColor:  'var(--icon-warning)',
-    titleSize:  18,         // H4 — matches Figma Block treatment for warning/error
-    titleLh:    '24px',
+    light: { bg: 'var(--surface-accent-warning-light)', border: 'var(--border-color-accent-warning-light)', icon: 'var(--icon-warning)', text: 'var(--text-body-primary)', cta: 'var(--text-warning)' },
+    dark:  { bg: 'var(--surface-accent-warning-dark)',  border: 'var(--border-color-accent-warning-dark)',  icon: 'var(--text-body-on-dark-surface)', text: 'var(--text-body-on-dark-surface)', cta: 'var(--warning-200)' },
   },
   error: {
-    bg:         'var(--surface-accent-error-light)',
-    border:     'var(--border-color-accent-error-light)',
-    iconColor:  'var(--icon-error)',
-    titleSize:  18,         // H4
-    titleLh:    '24px',
+    light: { bg: 'var(--surface-accent-error-light)', border: 'var(--border-color-accent-error-light)', icon: 'var(--icon-error)', text: 'var(--text-body-primary)', cta: 'var(--text-error)' },
+    dark:  { bg: 'var(--surface-accent-error-dark)',  border: 'var(--border-color-accent-error-dark)',  icon: 'var(--text-body-on-dark-surface)', text: 'var(--text-body-on-dark-surface)', cta: 'var(--error-200)' },
   },
 } as const
 
 type MessageBoxType = keyof typeof VARIANTS
+type MessageBoxTheme = 'light' | 'dark'
 
 // ── Icon map ───────────────────────────────────────────────────────────────────
 
-function StatusIcon({ type, size }: { type: MessageBoxType; size: number }) {
-  const color = VARIANTS[type].iconColor
+function StatusIcon({ type, size, color }: { type: MessageBoxType; size: number; color: string }) {
   switch (type) {
     case 'info':    return <InfoIcon    size={size} color={color} weight="regular" />
     case 'success': return <ChecksIcon  size={size} color={color} weight="regular" />
@@ -59,19 +49,29 @@ function StatusIcon({ type, size }: { type: MessageBoxType; size: number }) {
 export interface MessageBoxProps {
   /** Visual intent and colour. Default: 'info'. */
   type?: MessageBoxType
+  /** Default: 'light'. */
+  theme?: MessageBoxTheme
   /**
    * `line` — single-row message with icon and optional dismiss.
    * `block` — expanded card with a title and rich body content.
    * Default: 'line'.
    */
   size?: 'line' | 'block'
+  /**
+   * Radius choice. Default: false (4px, both sizes).
+   * true → 16px for `line`, full pill (64px) for `block`.
+   */
+  rounded?: boolean
   /** Line: the message text. Block: simple body text (alternative to children). */
   message?: string
   /** Block only. Heading above the body. */
   title?: string
   /** Block only. Rich body content — use instead of or alongside `message`. */
   children?: React.ReactNode
-  /** Render a dismiss button on the trailing edge. */
+  /** Block only. Type-coloured action link shown below the body. */
+  cta?: string
+  onCtaClick?: () => void
+  /** Render a dismiss button on the trailing edge. Opt-in: Figma hides it by default. */
   dismissible?: boolean
   /** Called when the user clicks dismiss. If omitted, the box manages its own visibility. */
   onDismiss?: () => void
@@ -80,11 +80,15 @@ export interface MessageBoxProps {
 
 export function MessageBox({
   type = 'info',
+  theme = 'light',
   size = 'line',
+  rounded = false,
   message,
   title,
   children,
-  dismissible = true,
+  cta,
+  onCtaClick,
+  dismissible = false,
   onDismiss,
   className,
 }: MessageBoxProps) {
@@ -92,8 +96,9 @@ export function MessageBox({
 
   if (dismissed) return null
 
-  const config = VARIANTS[type]
+  const config = VARIANTS[type][theme]
   const isBlock = size === 'block'
+  const radius = rounded ? (isBlock ? 64 : 16) : 4
 
   const handleDismiss = () => {
     if (onDismiss) {
@@ -105,15 +110,15 @@ export function MessageBox({
 
   return (
     <div
-      role="alert"
+      role={type === 'error' ? 'alert' : 'status'}
       className={className}
       style={{
         display: 'flex',
         alignItems: isBlock ? 'flex-start' : 'center',
-        gap: 16,
-        padding: 16,
+        gap: 8,
+        padding: isBlock ? (rounded ? '16px 24px' : 16) : '8px 16px',
         background: config.bg,
-        borderRadius: 8,
+        borderRadius: radius,
         // 4px left accent, 1px on all other sides
         borderTop:    `1px solid ${config.border}`,
         borderRight:  `1px solid ${config.border}`,
@@ -126,7 +131,7 @@ export function MessageBox({
         aria-hidden="true"
         style={{ flexShrink: 0, display: 'flex', paddingTop: isBlock ? 2 : 0 }}
       >
-        <StatusIcon type={type} size={24} />
+        <StatusIcon type={type} size={16} color={config.icon} />
       </span>
 
       {/* ── Content ───────────────────────────────────────────────────── */}
@@ -143,10 +148,11 @@ export function MessageBox({
           <p
             style={{
               margin: 0,
-              fontSize: config.titleSize,
-              fontWeight: 400,
-              lineHeight: config.titleLh,
-              color: 'var(--text-body-primary)',
+              fontSize: 12,
+              fontWeight: 600,
+              lineHeight: '20px',
+              letterSpacing: '0.24px',
+              color: config.text,
             }}
           >
             {title}
@@ -160,22 +166,44 @@ export function MessageBox({
               <p
                 style={{
                   margin: 0,
-                  fontSize: 14,
+                  fontSize: 12,
                   fontWeight: 400,
                   lineHeight: '20px',
-                  color: 'var(--text-body-primary)',
+                  color: config.text,
                 }}
               >
                 {message}
               </p>
             )}
+
+        {isBlock && cta && (
+          <button
+            type="button"
+            onClick={onCtaClick}
+            style={{
+              margin: 0,
+              padding: 0,
+              border: 'none',
+              background: 'transparent',
+              cursor: onCtaClick ? 'pointer' : 'default',
+              textAlign: 'left',
+              fontSize: 12,
+              fontWeight: 600,
+              lineHeight: '20px',
+              letterSpacing: '0.24px',
+              color: config.cta,
+            }}
+          >
+            {cta}
+          </button>
+        )}
       </div>
 
       {/* ── Dismiss button ────────────────────────────────────────────── */}
       {dismissible && (
         <button
           type="button"
-          aria-label="Dismiss"
+          aria-label="Dismiss message"
           onClick={handleDismiss}
           style={{
             flexShrink: 0,
@@ -186,14 +214,14 @@ export function MessageBox({
             border: 'none',
             padding: 0,
             cursor: 'pointer',
-            color: config.iconColor,
+            color: config.icon,
             opacity: 0.7,
             transition: 'opacity 120ms ease',
           }}
           onMouseEnter={(e) => ((e.currentTarget as HTMLButtonElement).style.opacity = '1')}
           onMouseLeave={(e) => ((e.currentTarget as HTMLButtonElement).style.opacity = '0.7')}
         >
-          <XCircleIcon size={24} color={config.iconColor} weight="regular" />
+          <XCircleIcon size={24} color={config.icon} weight="regular" />
         </button>
       )}
     </div>

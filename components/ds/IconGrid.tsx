@@ -391,9 +391,9 @@ const CATEGORIES: { name: string; icons: { name: string; Icon: Ph.Icon }[] }[] =
 const FILTER = {
   groupBg:      'var(--neutral-100)',
   activeBg:     'var(--surface-section-bg)',
-  activeBorder: 'var(--content-action-primary-600)',
-  activeText:   'var(--content-action-primary-600)',
-  defaultText:  'var(--text-body-primary)',
+  activeBorder: 'var(--content-action-primary-default)',
+  activeText:   'var(--content-action-primary-default)',
+  defaultText:  'var(--neutral-800)',
   hoverBg:      'rgba(255,255,255,0.65)',
   disabledText: 'var(--content-action-disabled-700)',
 }

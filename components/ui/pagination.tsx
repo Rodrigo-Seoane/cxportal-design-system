@@ -5,12 +5,24 @@ import { CaretLeft, CaretRight } from '@phosphor-icons/react'
 // ── Design tokens (Figma: node 350-6690) ──────────────────────────────────────
 
 const T = {
-  // Shared button
+  // Shared button — Figma's component (all 5 pulled variants) renders every
+  // button with a white idle background (icon buttons: surface/section-bg;
+  // label/page buttons: surface/action/secondary-default — both resolve to
+  // the same white), never transparent.
   border:        'var(--border-color-surface-active-primary-default)',              // --border-color/surface-active/primary
   textColor:     'var(--text-on-action-transparent)',              // --text/on-action/transparent
-  idleBg:        'transparent',          // --surface/action/empty
-  activeBg:      'var(--surface-form-field)',              // --surface/form-field — current page
+  idleBg:        'var(--surface-section-bg)',
   hoverBg:       'var(--content-action-primary-100)',
+  // Figma's pull shows no distinct current-page style at all — every page
+  // button in every demo renders identically, despite Usage explicitly
+  // requiring a "Current Page | Active/selected page indicator." Kept the
+  // pre-existing distinguishing treatment (required by the docs) but
+  // recoloured to a solid fill, since the idle background is now correctly
+  // white and the old white-on-white "active" fill would otherwise vanish.
+  // Flagged as inferred, not Figma-confirmed, in the component's Open
+  // Questions.
+  activeBg:         'var(--surface-action-primary-default)',
+  activeTextColor:  'var(--text-on-action-primary)',
 
   // Border radii
   radiusSm:       4,                     // --border-radius/sm — directional icons
@@ -18,15 +30,19 @@ const T = {
 
   // Page number button fixed size
   pageWidth:      36,
+  pageHeight:     25,                    // Figma: h-[25px] on every page-number button
 
   // Typography — Body/Small
   fontSize:       12,
   fontWeight:     400,
   lineHeight:    '20px',
 
-  // Counter label ("2 of 4") — Body/Regular
+  // Counter label ("2 of 4") — Body/Regular. Figma's own component fills
+  // this text pure black (#000000, no token at all) — treated as a
+  // Figma-authoring slip and bypassed to --neutral-800, matching the
+  // DS-wide "darkest text" convention used everywhere else in this app.
   counterSize:    14,
-  counterColor:  'var(--text-body-primary)',              // --text/body/primary
+  counterColor:  'var(--neutral-800)',
 } as const
 
 // ── Types ─────────────────────────────────────────────────────────────────────
@@ -102,7 +118,7 @@ function IconBtn({ onClick, disabled, 'aria-label': ariaLabel, children }: IconB
         padding:         8,
         border:         `1px solid ${disabled ? 'var(--content-action-disabled-300)' : T.border}`,
         borderRadius:    T.radiusSm,
-        background:      disabled ? 'transparent' : hovered ? T.hoverBg : T.idleBg,
+        background:      !disabled && hovered ? T.hoverBg : T.idleBg,
         color:           disabled ? 'var(--content-action-disabled-700)' : T.textColor,
         cursor:          disabled ? 'not-allowed' : 'pointer',
         transition:     'background 100ms ease, border-color 100ms ease',
@@ -117,10 +133,14 @@ function IconBtn({ onClick, disabled, 'aria-label': ariaLabel, children }: IconB
 interface LabelBtnProps {
   onClick: () => void
   disabled?: boolean
+  /** Shrinks to Figma's 25px/36px-min-width sizing used when Back/Next
+   *  appears alongside page-number buttons, instead of the 32px height
+   *  used when Back/Next appears alone. */
+  compact?: boolean
   children: React.ReactNode
 }
 
-function LabelBtn({ onClick, disabled, children }: LabelBtnProps) {
+function LabelBtn({ onClick, disabled, compact = false, children }: LabelBtnProps) {
   const [hovered, setHovered] = React.useState(false)
   return (
     <button
@@ -133,11 +153,14 @@ function LabelBtn({ onClick, disabled, children }: LabelBtnProps) {
       style={{
         display:     'inline-flex',
         alignItems:  'center',
+        justifyContent: compact ? 'center' : undefined,
         gap:          8,
+        height:       compact ? T.pageHeight : 32,
+        minWidth:     compact ? T.pageWidth : undefined,
         padding:      8,
         border:      `1px solid ${disabled ? 'var(--content-action-disabled-300)' : T.border}`,
         borderRadius: T.radiusMd,
-        background:   disabled ? 'transparent' : hovered ? T.hoverBg : T.idleBg,
+        background:   !disabled && hovered ? T.hoverBg : T.idleBg,
         color:        disabled ? 'var(--content-action-disabled-700)' : T.textColor,
         fontSize:     T.fontSize,
         fontWeight:   T.fontWeight,
@@ -175,11 +198,12 @@ function PageBtn({ page, active, onClick }: PageBtnProps) {
         justifyContent: 'center',
         width:           T.pageWidth,
         minWidth:        T.pageWidth,
+        height:          T.pageHeight,
         padding:         8,
         border:         `1px solid ${T.border}`,
         borderRadius:    T.radiusMd,
         background:      active ? T.activeBg : hovered ? T.hoverBg : T.idleBg,
-        color:           T.textColor,
+        color:           active ? T.activeTextColor : T.textColor,
         fontSize:        T.fontSize,
         fontWeight:      T.fontWeight,
         lineHeight:      T.lineHeight,
@@ -202,6 +226,7 @@ function Ellipsis() {
         justifyContent: 'center',
         width:           T.pageWidth,
         minWidth:        T.pageWidth,
+        height:          T.pageHeight,
         padding:         8,
         border:         `1px solid ${T.border}`,
         borderRadius:    T.radiusMd,
@@ -317,7 +342,7 @@ export function Pagination({
       style={{ display: 'inline-flex', alignItems: 'center', gap: 8, ...style }}
       className={className}
     >
-      <LabelBtn onClick={prev} disabled={disabled || atFirst}>
+      <LabelBtn onClick={prev} disabled={disabled || atFirst} compact>
         <CaretLeft size={16} weight="thin" />
         Back
       </LabelBtn>
@@ -335,7 +360,7 @@ export function Pagination({
         ),
       )}
 
-      <LabelBtn onClick={next} disabled={disabled || atLast}>
+      <LabelBtn onClick={next} disabled={disabled || atLast} compact>
         Next
         <CaretRight size={16} weight="thin" />
       </LabelBtn>

@@ -25,13 +25,13 @@ export const ChipDefault: Story = {
   argTypes: {
     type: {
       control: 'select',
-      options: ['info', 'success', 'warning', 'error'],
+      options: ['grey', 'info', 'success', 'warning', 'error'],
       description: 'Semantic colour family applied to the chip background and text.',
     },
     shade: {
       control: 'select',
-      options: [100, 200, 400, 500],
-      description: 'Tint level within the colour family — 100 is lightest, 500 is darkest.',
+      options: [100, 200, 300, 400, 500, 600],
+      description: 'Tint level within the colour family — 100 is lightest, 600 is darkest.',
     },
     iconLeft: {
       control: 'boolean',
@@ -47,6 +47,7 @@ export const ChipDefault: Story = {
 export const ChipTypes: Story = {
   render: () => (
     <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+      <Chip label="Grey" type="grey" shade={100} />
       <Chip label="Info" type="info" shade={100} />
       <Chip label="Success" type="success" shade={100} />
       <Chip label="Warning" type="warning" shade={100} />
@@ -58,18 +59,16 @@ export const ChipTypes: Story = {
 export const ChipShades: Story = {
   render: () => (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
-      <div style={{ display: 'flex', gap: 8 }}>
-        <Chip label="100" type="info" shade={100} />
-        <Chip label="200" type="info" shade={200} />
-        <Chip label="400" type="info" shade={400} />
-        <Chip label="500" type="info" shade={500} />
-      </div>
-      <div style={{ display: 'flex', gap: 8 }}>
-        <Chip label="100" type="success" shade={100} />
-        <Chip label="200" type="success" shade={200} />
-        <Chip label="400" type="success" shade={400} />
-        <Chip label="500" type="success" shade={500} />
-      </div>
+      {(['grey', 'info', 'success', 'warning', 'error'] as const).map(type => (
+        <div key={type} style={{ display: 'flex', gap: 8 }}>
+          <Chip label="100" type={type} shade={100} />
+          <Chip label="200" type={type} shade={200} />
+          <Chip label="300" type={type} shade={300} />
+          <Chip label="400" type={type} shade={400} />
+          <Chip label="500" type={type} shade={500} />
+          <Chip label="600" type={type} shade={600} />
+        </div>
+      ))}
     </div>
   ),
 }

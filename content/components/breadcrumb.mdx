@@ -1,0 +1,234 @@
+---
+title: Breadcrumb
+description: A horizontal navigation trail showing the user's location within the page hierarchy. Always starts with a Home icon and ends with the current page in semibold. Supports 1 to 4 depth levels.
+figmaNodeId: 1933-2500
+figmaUpdated: May 29, 2026
+status: stable
+---
+
+## Overview
+
+Breadcrumbs render the user's current position within the application hierarchy as a left-to-right trail of links separated by caret icons. The trail always begins with a `HouseIcon` (the module root) and ends with the current page label in semibold — every item before it is a real navigation link. The component supports 1 to 4 depth levels.
+
+Breadcrumbs were previously deprecated in CxPortal; they are being re-introduced as a first-class DS component to support deeper navigation hierarchies introduced in the Campaigns Email and Knowledge Management modules. This is a new build — no prior implementation existed in the codebase; the app's existing per-page inline breadcrumb JSX (14+ call sites) has not yet been migrated to it.
+
+## When to use
+
+- On any page that is two or more levels deep in the navigation hierarchy (i.e. below a top-level section).
+- Above the `PageTitle` component, at the very top of the content area.
+- When the sidebar alone doesn't convey position — e.g. a page reachable through multiple parent paths.
+
+## When not to use
+
+- Do not use breadcrumbs on top-level pages — there is nothing to navigate up to.
+- Do not use breadcrumbs as a replacement for tab navigation within a single page — use the Tab Group component instead.
+- Do not nest deeper than 4 levels. If you need a 5th, the information architecture needs rethinking, not a wider component.
+
+## Anatomy
+
+- **Home icon** — `HouseIcon` (16×16), always the first item, always a link to `homeHref`.
+- **Caret separator** — `CaretRightIcon` (12×12) between each item. Decorative, `aria-hidden="true"`.
+- **Ancestor labels** — Body/Extra Small Regular (10 px, 400 weight). Each is a link.
+- **Current page label** — Body/Extra Small SemiBold (10 px, 600 weight). Not a link — represents where the user is.
+
+All labels use `--text-on-action-transparent` (`#3a8015`) — see **Token reference** for why this doesn't match either of the Figma docs frames.
+
+## Variants
+
+Depth is simply `items.length` — there's no separate "variant" prop to set.
+
+<Table size="compact" className="mb-6">
+  <TableHeader>
+    <tr>
+      <TableHead>Depth</TableHead>
+      <TableHead>Structure</TableHead>
+      <TableHead>Use case</TableHead>
+    </tr>
+  </TableHeader>
+  <TableBody>
+    <TableRow>
+      <TableCell>1 item</TableCell>
+      <TableCell>Home › <strong>Current</strong></TableCell>
+      <TableCell>One level below home</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>2 items</TableCell>
+      <TableCell>Home › Ancestor › <strong>Current</strong></TableCell>
+      <TableCell>Account-level pages</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>3 items</TableCell>
+      <TableCell>Home › Ancestor › Ancestor › <strong>Current</strong></TableCell>
+      <TableCell>Campaign Group-level pages</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>4 items</TableCell>
+      <TableCell>Home › Ancestor › Ancestor › Ancestor › <strong>Current</strong></TableCell>
+      <TableCell>Topic or item-level pages</TableCell>
+    </TableRow>
+  </TableBody>
+</Table>
+
+### Real-world examples
+
+<Table size="compact" className="mb-6">
+  <TableHeader>
+    <tr>
+      <TableHead>Context</TableHead>
+      <TableHead>Breadcrumb trail</TableHead>
+    </tr>
+  </TableHeader>
+  <TableBody>
+    <TableRow>
+      <TableCell>Account overview</TableCell>
+      <TableCell>Home › <strong>Social Security Admin</strong></TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>Campaign Group view</TableCell>
+      <TableCell>Home › Social Security Admin › <strong>Benefit Status Updates</strong></TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>Topic detail</TableCell>
+      <TableCell>Home › Social Security Admin › Benefit Status Updates › <strong>Retirement Planning Reminders</strong></TableCell>
+    </TableRow>
+  </TableBody>
+</Table>
+
+## Guidelines
+
+### DOs
+
+- Always position breadcrumbs above the `PageTitle` — they are a navigation aid, not a heading element.
+- Use the depth that matches the actual page hierarchy — don't pad `items` with placeholder levels.
+- Keep ancestor labels to the actual page/resource name — no generic labels like "Back" or "Parent".
+- Give every item except the last one an `href` — that's what makes it a real navigation link.
+
+### DON'Ts
+
+- Don't render breadcrumbs on root-level pages — the Home icon alone conveys nothing useful.
+- Don't truncate ancestor labels with ellipsis — if the trail overflows, the hierarchy is too deep for breadcrumbs alone; consider restructuring the navigation. (Figma's Usage doc allows middle-truncation past 200px; not implemented — see **Open questions**.)
+- Don't style the current page label as a link — it represents the current location and should not be interactive.
+- Don't pass more than 4 items. Beyond that, use a different navigation pattern.
+
+## Code
+
+### Props
+
+```tsx
+interface BreadcrumbItem {
+  /** Label text. The last item in the array is treated as the current page. */
+  label: string
+  /** Destination for this item. Omit only on the last (current-page) item. */
+  href?: string
+}
+
+interface BreadcrumbProps {
+  /** Ancestor + current page trail. Depth (1-4 per Figma) is items.length. */
+  items: BreadcrumbItem[]
+  /** Destination for the leading Home icon (the module root). */
+  homeHref: string
+  className?: string
+}
+```
+
+### Usage examples
+
+```tsx
+import { Breadcrumb } from '@/components/ui/breadcrumbs'
+
+{/* 1 level — current page only */}
+<Breadcrumb
+  homeHref="/accounts"
+  items={[{ label: 'Social Security Admin' }]}
+/>
+
+{/* 2 levels — account level */}
+<Breadcrumb
+  homeHref="/accounts"
+  items={[
+    { label: 'Social Security Admin', href: '/accounts/ssa' },
+    { label: 'Benefit Status Updates' },
+  ]}
+/>
+
+{/* 4 levels — topic / item level */}
+<Breadcrumb
+  homeHref="/campaigns"
+  items={[
+    { label: 'Campaigns', href: '/campaigns' },
+    { label: 'User Lists', href: '/campaigns/lists' },
+    { label: 'Retirees Q4', href: '/campaigns/lists/retirees-q4' },
+    { label: 'Retirement Planning Reminders' },
+  ]}
+/>
+```
+
+## Token reference
+
+<Table size="compact" className="mb-6">
+  <TableHeader>
+    <tr>
+      <TableHead>Token</TableHead>
+      <TableHead>Value</TableHead>
+      <TableHead>Usage</TableHead>
+    </tr>
+  </TableHeader>
+  <TableBody>
+    <TableRow>
+      <TableCell><code>--text-on-action-transparent</code></TableCell>
+      <TableCell><code>#3a8015</code></TableCell>
+      <TableCell>All breadcrumb text — ancestor links <strong>and</strong> the current-page label</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>Body/Extra Small Regular</TableCell>
+      <TableCell>10 px / 400</TableCell>
+      <TableCell>Ancestor link labels</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>Body/Extra Small SemiBold</TableCell>
+      <TableCell>10 px / 600</TableCell>
+      <TableCell>Current page label</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>Home icon size</TableCell>
+      <TableCell>16×16 px</TableCell>
+      <TableCell><code>HouseIcon</code></TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>Caret icon size</TableCell>
+      <TableCell>12×12 px</TableCell>
+      <TableCell><code>CaretRightIcon</code> separator, coloured <code>--neutral-300</code>. The glyph inherits this assigned component color.</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>Item padding</TableCell>
+      <TableCell>2 px</TableCell>
+      <TableCell>Each breadcrumb item wrapper</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>Gap between items</TableCell>
+      <TableCell>4 px</TableCell>
+      <TableCell>Horizontal gap in the trail</TableCell>
+    </TableRow>
+  </TableBody>
+</Table>
+
+### Figma documentation conflict — resolved
+
+The live Figma **component** (node `1933-2500`) renders every label — ancestor and current alike — in `text/on-action/transparent` (`#3a8015`, the same green as link text elsewhere in the DS). But the two documentation frames disagree with the component **and with each other**:
+
+- Principles (`2303-5400`) Anatomy items 5–6 and the Usage (`2303-5312`) Accessibility note both say ancestor and current labels use `--text/breadcrumb` at `#323840` — a token that doesn't exist anywhere in this codebase.
+- The Usage doc's own Token Reference table instead lists `--text/body/secondary` at `#7a828c` for the same "all breadcrumb text" row — a third value, and one that doesn't match the codebase's actual `--text-body-secondary` (`#8d8d8d`) either.
+
+The confirmed decision is to keep the live component's green `--text-on-action-transparent` color for both ancestor links and the current-page label. The semibold, non-interactive current-page treatment remains its distinguishing affordance; the contradictory Figma prose is not implemented.
+
+Also unresolved:
+- No prop exists yet for middle-truncating labels past 200px (Usage DO's truncation allowance) — not built.
+- Neither Figma docs frame nor the component specifies where the Home icon points; `homeHref` is a plain required prop, left for the consumer to supply per-module.
+
+## Accessibility
+
+- The trail is a `<nav aria-label="Breadcrumb">` wrapping an `<ol>`, each item an `<li>` — this gives screen readers the "list, N items" / "position X of N" announcements Figma's Usage doc calls for.
+- The Home icon's link carries `aria-label="Home"`.
+- `CaretRightIcon` separators carry `aria-hidden="true"` — never rendered as literal `/` or `›` characters.
+- Ancestor items are real `next/link` anchors. The current page item is a `<span>` with `aria-current="page"`, not a link.
+- The 10 px label size is below the WCAG-recommended 12px minimum for body text; Figma's Usage doc accepts this because breadcrumbs are supplementary navigation, not primary content, provided contrast passes AA with the confirmed green label color.

@@ -12,26 +12,40 @@ import {
   TableCheckboxHead,
   TableCheckboxCell,
 } from '@/components/ui/table'
+import { TableFilter } from '@/components/ui/table-filter'
+import { CollapsibleFilters, FilterTagItem } from '@/components/ui/collapsible-filters'
 import { Chip, Tag } from '@/components/ui/chip'
-import { Tabs, TabList, Tab, TabPanel } from '@/components/ui/tabs'
-import { Modal, ModalHeader, ModalBody, ModalFooter, XIcon, FloppyDisk } from '@/components/ui/modal'
+import { Counter } from '@/components/ui/counter'
+import { Tabs, TabList, Tab, TabPanel, TableIcon } from '@/components/ui/tabs'
+import { Modal, ModalHeader, ModalBody, ModalFooter, XCircleIcon, FloppyDisk } from '@/components/ui/modal'
 import { Switch, BooleanIcon } from '@/components/ui/switch'
 import { MessageBox } from '@/components/ui/message-box'
 import { Pagination } from '@/components/ui/pagination'
 import { VerticalTab, VerticalTabGroup, VerticalTabIcon } from '@/components/ui/vertical-tabs'
 import { Skeleton, Spinner } from '@/components/ui/loading'
-import { Plus, Grid } from 'lucide-react'
+import { Plus } from 'lucide-react'
 import { DistributionControls } from '@/components/ui/distribution-controls'
 import { Toast } from '@/components/ui/toast'
 import { Tooltip } from '@/components/ui/tooltip'
-import { StatCard } from '@/components/ui/stats-cards'
+import { DismissibleTip } from '@/components/ui/dismissible-tip'
+import { StatCard, MetricTileAcgr } from '@/components/ui/stats-cards'
+import { InlineStatTile, InlineStatsRow } from '@/components/ui/inline-stats'
 import { ClickableCard, ClickableHorizontalCard } from '@/components/ui/clickable-card'
 import { InlineContextData } from '@/components/ui/inline-context-data'
+import { InstanceCard } from '@/components/ui/instance-card'
 import { AddressBookIcon, CalendarIcon, TagIcon, UserListIcon, SquaresFourIcon } from '@/components/ui/playground-icons'
 import { Stepper } from '@/components/ui/stepper'
 import { DatePicker } from '@/components/ui/date-picker'
-import { NavMenuItem, NavSubItem } from '@/components/ui/nav-item'
+import { NavMenuItem, NavSubItem, NavMenuItemCollapsed } from '@/components/ui/nav-item'
+import {
+  NTMenuHomeItem,
+  NTMenuModuleItem,
+  NTMenuSubItem,
+  NTMenuGroup,
+  NTMenuItemCollapsed,
+} from '@/components/ui/nt-menu'
 import { PageTitle } from '@/components/ui/page-title'
+import { Breadcrumb } from '@/components/ui/breadcrumbs'
 import { TopBar } from '@/components/ui/top-bar'
 import { FileTree } from '@/components/ui/file-tree'
 import type { FileTreeNode } from '@/components/ui/file-tree'
@@ -121,14 +135,14 @@ export const registry: Record<string, ComponentEntry> = {
     slug: 'button',
     title: 'Button',
     description:
-      'Triggers an action or navigation. Six visual variants aligned to usage context, three sizes, and icon support.',
+      'Triggers an action or navigation. Eight visual variants aligned to usage context, three sizes, and icon support.',
     status: 'stable',
     scope: { Button, Plus },
     propSchema: {
       variant: {
         type: 'chip-select',
         label: 'Variant',
-        options: ['primary', 'secondary', 'form-controls', 'text', 'destructive', 'colored-bg'],
+        options: ['primary', 'secondary', 'form-controls', 'text', 'destructive', 'secondary-destructive', 'text-destructive', 'colored-bg'],
         default: 'primary',
       },
       size: {
@@ -140,8 +154,13 @@ export const registry: Record<string, ComponentEntry> = {
       iconPosition: {
         type: 'chip-select',
         label: 'Icon',
-        options: ['none', 'left', 'right', 'only'],
+        options: ['none', 'left', 'only'],
         default: 'none',
+      },
+      noPadding: {
+        type: 'boolean',
+        label: 'No padding (text variants)',
+        default: false,
       },
       disabled: {
         type: 'boolean',
@@ -154,30 +173,29 @@ export const registry: Record<string, ComponentEntry> = {
         default: 'Button label',
       },
     },
-    generateCode: ({ variant, size, disabled, children, iconPosition }) => {
+    generateCode: ({ variant, size, disabled, children, iconPosition, noPadding }) => {
       const v = String(variant)
-      // Destructive and colored-bg are small-only — force sm
-      const s = (v === 'destructive' || v === 'colored-bg') ? 'sm' : String(size)
+      const s = String(size)
       const pos = String(iconPosition)
       const label = String(children)
       const disabledAttr = disabled ? ' disabled' : ''
+      const isText = v === 'text' || v === 'text-destructive'
+      const padAttr = isText && (noPadding === true || noPadding === 'true') ? ' noPadding' : ''
 
       // Build button snippet first, then wrap for colored-bg
       let btn: string
       if (pos === 'only') {
-        btn = `<Button variant="${v}" size="${ICON_SIZE_MAP[s] ?? 'icon-regular'}"${disabledAttr} aria-label="Action">\n  <Plus />\n</Button>`
+        btn = `<Button variant="${v}" size="${ICON_SIZE_MAP[s] ?? 'icon-regular'}"${padAttr}${disabledAttr} aria-label="Action">\n  <Plus />\n</Button>`
       } else if (pos === 'left') {
-        btn = `<Button variant="${v}" size="${s}"${disabledAttr}>\n  <Plus />\n  ${label}\n</Button>`
-      } else if (pos === 'right') {
-        btn = `<Button variant="${v}" size="${s}"${disabledAttr}>\n  ${label}\n  <Plus />\n</Button>`
+        btn = `<Button variant="${v}" size="${s}"${padAttr}${disabledAttr}>\n  <Plus />\n  ${label}\n</Button>`
       } else {
-        btn = `<Button variant="${v}" size="${s}"${disabledAttr}>\n  ${label}\n</Button>`
+        btn = `<Button variant="${v}" size="${s}"${padAttr}${disabledAttr}>\n  ${label}\n</Button>`
       }
 
       // colored-bg must be shown inside a surface div to render correctly
       if (v === 'colored-bg') {
         const indented = btn.split('\n').map(l => `  ${l}`).join('\n')
-        return `<div className="bg-[#4285f4] p-6 rounded-lg">\n${indented}\n</div>`
+        return `<div className="bg-[var(--content-action-primary-default)] p-6 rounded-lg">\n${indented}\n</div>`
       }
 
       return btn
@@ -341,61 +359,61 @@ export const registry: Record<string, ComponentEntry> = {
     slug: 'navigation',
     title: 'Navigation',
     description:
-      'Vertical side navigation with collapsible groups, icon-labelled headers, and two-level hierarchy. Dark-mode-first with Light/SemiBold typography and blue interactive states.',
+      'Vertical side navigation with collapsible groups, icon-labelled headers, and two-level hierarchy. Dark-mode-first with Light/SemiBold typography and green interactive states.',
     status: 'stable',
-    scope: {},
+    scope: { NavMenuItem, NavSubItem, NavMenuItemCollapsed, SquaresFourIcon },
     propSchema: {
       type: {
         type: 'chip-select',
         label: 'Type',
-        options: ['Menu Item', 'Sub Menu Item'],
+        options: ['Menu Item', 'Sub Menu Item', 'Collapsed'],
         default: 'Menu Item',
       },
       state: {
         type: 'chip-select',
         label: 'State',
-        options: ['Default', 'Hover', 'Active', 'Disabled'],
-        default: 'Default',
+        options: ['default', 'hover', 'active', 'disabled'],
+        default: 'default',
+      },
+      darkMode: {
+        type: 'boolean',
+        label: 'Dark (CxPortal)',
+        default: true,
       },
     },
-    generateCode: ({ type, state }) => {
-      const t = String(type)
-      const s = String(state)
+    generateCode: ({ type, state, darkMode }) => {
+      const t    = String(type)
+      const s    = String(state)
+      const dark = darkMode === true || darkMode === 'true'
+      const darkAttr = dark ? '' : `\n  darkMode={false}`
+
       if (t === 'Sub Menu Item') {
-        const bg = s === 'Active' ? '#3264b8' : s === 'Hover' ? '#4285f4' : 'transparent'
-        const fw = s === 'Active' ? 600 : 300
         return [
-          `<div style={{`,
-          `  display: 'flex',`,
-          `  alignItems: 'center',`,
-          `  height: 40,`,
-          `  paddingLeft: 48,`,
-          `  paddingRight: 24,`,
-          `  background: '${bg}',`,
-          `}}>`,
-          `  <span style={{ fontSize: 14, fontWeight: ${fw}, color: '#eff1f3' }}>`,
-          `    Sub Menu Label`,
-          `  </span>`,
-          `</div>`,
-        ].join('\n')
+          `<NavSubItem`,
+          `  label="Sub Menu Label"`,
+          s !== 'default' ? `  state="${s}"` : null,
+          darkAttr || null,
+          `/>`,
+        ].filter(Boolean).join('\n')
       }
-      const bg = s === 'Active' ? '#3264b8' : s === 'Hover' ? '#4285f4' : 'transparent'
+      if (t === 'Collapsed') {
+        return [
+          `<NavMenuItemCollapsed`,
+          `  icon={<SquaresFourIcon size={18} weight="thin" />}`,
+          s !== 'default' ? `  state="${s}"` : null,
+          darkAttr || null,
+          `/>`,
+        ].filter(Boolean).join('\n')
+      }
       return [
-        `<div style={{`,
-        `  display: 'flex',`,
-        `  alignItems: 'center',`,
-        `  height: 48,`,
-        `  padding: '0 12px',`,
-        `  gap: 8,`,
-        `  background: '${bg}',`,
-        `}}>`,
-        `  {/* icon */}`,
-        `  <span style={{ fontSize: 14, fontWeight: 300, color: '${s === 'Disabled' ? '#808080' : '#eff1f3'}', flex: 1 }}>`,
-        `    Menu Label`,
-        `  </span>`,
-        `  {/* caret */}`,
-        `</div>`,
-      ].join('\n')
+        `<NavMenuItem`,
+        `  label="Menu Label"`,
+        `  icon={<SquaresFourIcon size={18} weight="thin" />}`,
+        s !== 'default' ? `  state="${s}"` : null,
+        s === 'active' ? `  isOpen` : null,
+        darkAttr || null,
+        `/>`,
+      ].filter(Boolean).join('\n')
     },
   },
 
@@ -415,6 +433,10 @@ export const registry: Record<string, ComponentEntry> = {
       TableCell,
       TableCheckboxHead,
       TableCheckboxCell,
+      TableFilter,
+      Chip,
+      Tag,
+      Switch,
       Button,
     },
     propSchema: {
@@ -457,48 +479,31 @@ export const registry: Record<string, ComponentEntry> = {
       const chkHead  = sel  ? `\n        <TableCheckboxHead />` : ''
       const chkCell  = (row: string) => sel ? `\n          <TableCheckboxCell ariaLabel="Select ${row}" />` : ''
 
-      // ── Inline cell content per type (tokens from Figma node 69-1408) ──────
+      // ── Inline cell content per type — reuses the DS's real Chip/Tag/
+      // Switch/TableFilter components rather than hand-rolled markup, per
+      // Figma node 69-1408 "Table Fields Wide" / 422-7991 "Table Fields
+      // Compact" (Chip/Tag/Switch types) and 71-16179 "Table Filter" ──────
       const chipCell = [
         `          <TableCell>`,
-        `            <span style={{ display: 'inline-flex', alignItems: 'center', gap: 8,`,
-        `              background: '#d6e2f5', borderRadius: 8, padding: '4px 12px',`,
-        `              fontSize: 10, fontWeight: 600, color: '#021920', whiteSpace: 'nowrap' }}>`,
-        `              Current`,
-        `            </span>`,
+        `            <Chip label="Current" />`,
         `          </TableCell>`,
       ].join('\n')
 
       const tagCell = [
         `          <TableCell>`,
-        `            <span style={{ display: 'inline-flex', alignItems: 'center',`,
-        `              background: '#d9dce0', borderRadius: 16, padding: '4px 12px',`,
-        `              fontSize: 10, fontWeight: 600, color: '#021920', whiteSpace: 'nowrap' }}>`,
-        `              Audience`,
-        `            </span>`,
+        `            <Tag label="Audience" value="2" type="with-value" />`,
         `          </TableCell>`,
       ].join('\n')
 
       const switchCell = [
         `          <TableCell>`,
-        `            <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8 }}>`,
-        `              <div style={{ width: 41, height: 22, background: '#4285f4',`,
-        `                borderRadius: 11, position: 'relative', flexShrink: 0 }}>`,
-        `                <div style={{ position: 'absolute', right: 3, top: 3,`,
-        `                  width: 16, height: 16, background: 'white', borderRadius: '50%' }} />`,
-        `              </div>`,
-        `              <span style={{ fontSize: 12, color: '#021920' }}>Yes</span>`,
-        `            </div>`,
+        `            <Switch size="small" checked />`,
         `          </TableCell>`,
       ].join('\n')
 
       const filterCell = [
         `          <TableCell>`,
-        `            <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8,`,
-        `              border: '1px solid #eff1f3', borderRadius: 6, padding: '4px 8px', cursor: 'pointer' }}>`,
-        `              <span style={{ background: '#4285f4', color: 'white', borderRadius: 48,`,
-        `                padding: '2px 6px', fontSize: 10, fontWeight: 600, whiteSpace: 'nowrap' }}>2</span>`,
-        `              <span style={{ fontSize: 12, color: '#021920' }}>Select Option</span>`,
-        `            </div>`,
+        `            <TableFilter label="Select Option" active count={2} />`,
         `          </TableCell>`,
       ].join('\n')
 
@@ -565,14 +570,117 @@ export const registry: Record<string, ComponentEntry> = {
     },
   },
 
+  // ─── Table Filter ────────────────────────────────────────────────────────────
+  'table-filter': {
+    slug: 'table-filter',
+    title: 'Table Filter',
+    description:
+      'Filter trigger placed above a Table — shows a count badge and green border once at least one filter is applied, plus an inline "select all" shortcut.',
+    status: 'stable',
+    scope: { TableFilter },
+    propSchema: {
+      label: {
+        type: 'text',
+        label: 'Label',
+        default: 'Select Option',
+      },
+      active: {
+        type: 'boolean',
+        label: 'Active',
+        default: false,
+      },
+      count: {
+        type: 'select',
+        label: 'Count',
+        options: ['1', '2', '3'],
+        default: '1',
+      },
+      showSelectAll: {
+        type: 'boolean',
+        label: 'Show "All"',
+        default: true,
+      },
+    },
+    generateCode: ({ label, active, count, showSelectAll }) => {
+      const l   = String(label)
+      const a   = active === true || active === 'true'
+      const c   = Number(count)
+      const sel = showSelectAll === true || showSelectAll === 'true'
+
+      const lines: string[] = ['<TableFilter']
+      if (l !== 'Select Option') lines.push(`  label="${l}"`)
+      if (a) lines.push('  active')
+      if (a) lines.push(`  count={${c}}`)
+      if (!sel) lines.push('  showSelectAll={false}')
+      lines.push('/>')
+      return lines.join('\n')
+    },
+  },
+
+  // ─── Collapsible Filters ────────────────────────────────────────────────────
+  'collapsible-filters': {
+    slug: 'collapsible-filters',
+    title: 'Collapsible Filters',
+    description:
+      'A persistent side panel that collapses to a 48px icon rail or expands to a 240px filter panel, composing Table Filter rows and FilterTagItem rows in its content area.',
+    status: 'stable',
+    scope: { CollapsibleFilters, FilterTagItem, TableFilter },
+    propSchema: {
+      collapsed: {
+        type: 'boolean',
+        label: 'Collapsed',
+        default: false,
+      },
+      activeCount: {
+        type: 'select',
+        label: 'Active count badge',
+        options: ['0', '1', '2', '3'],
+        default: '2',
+      },
+      showClearFilters: {
+        type: 'boolean',
+        label: '"Clear Filters" link',
+        default: true,
+      },
+      showTagsSection: {
+        type: 'boolean',
+        label: 'Tags section',
+        default: true,
+      },
+    },
+    generateCode: ({ collapsed, activeCount, showClearFilters, showTagsSection }) => {
+      const c      = collapsed === true || collapsed === 'true'
+      const count  = Number(activeCount)
+      const clear  = showClearFilters === true || showClearFilters === 'true'
+      const tags   = showTagsSection === true || showTagsSection === 'true'
+
+      const lines = [`<CollapsibleFilters`]
+      lines.push(`  collapsed={${c}}`)
+      lines.push(`  onToggleCollapsed={() => {}}`)
+      if (count > 0) lines.push(`  activeCount={${count}}`)
+      if (clear) lines.push(`  onClearFilters={() => {}}`)
+      lines.push(`>`)
+      lines.push(`  <TableFilter label="Knowledge Base" size="compact" active count={2} onClick={() => {}} />`)
+      if (tags) {
+        lines.push(`  <div>`)
+        lines.push(`    <div style={{ fontSize: 18, color: 'var(--neutral-800)', marginBottom: 8 }}>Tags</div>`)
+        lines.push(`    <FilterTagItem label="status: Archived" dotColor="var(--info-100)" onEdit={() => {}} onDelete={() => {}} />`)
+        lines.push(`    <FilterTagItem label="priority: High" dotColor="var(--success-100)" checked onEdit={() => {}} onDelete={() => {}} />`)
+        lines.push(`  </div>`)
+      }
+      lines.push(`</CollapsibleFilters>`)
+      return lines.join('\n')
+    },
+  },
+
   // ─── Tabs ────────────────────────────────────────────────────────────────────
   tabs: {
     slug: 'tabs',
     title: 'Tabs',
     description:
-      'Compact tab strip for switching between sibling views. Supports 2–4 tabs, optional icons, disabled states, and full keyboard navigation.',
+      'Compact tab strip for switching between sibling views. Supports 2–5 tabs, optional icons, disabled states, and full keyboard navigation.',
     status: 'stable',
-    scope: { Tabs, TabList, Tab, TabPanel, Grid },
+    scope: { Tabs, TabList, Tab, TabPanel, TableIcon },
     propSchema: {
       type: {
         type: 'chip-select',
@@ -583,7 +691,7 @@ export const registry: Record<string, ComponentEntry> = {
       count: {
         type: 'chip-select',
         label: 'Tab count',
-        options: ['2', '3', '4'],
+        options: ['2', '3', '4', '5'],
         default: '3',
       },
       showIcons: {
@@ -599,7 +707,7 @@ export const registry: Record<string, ComponentEntry> = {
     },
     generateCode: ({ type, count, showIcons, disabled }) => {
       const tabType = type === 'minimal' ? 'minimal' : 'button'
-      const n     = Math.min(4, Math.max(2, parseInt(String(count)) || 3))
+      const n     = Math.min(5, Math.max(2, parseInt(String(count)) || 3))
       const icons = showIcons === true || showIcons === 'true'
       const dis   = disabled  === true || disabled  === 'true'
 
@@ -608,10 +716,13 @@ export const registry: Record<string, ComponentEntry> = {
         { value: 'active',   label: 'Active'    },
         { value: 'inactive', label: 'Inactive'  },
         { value: 'archived', label: 'Archived'  },
+        { value: 'deleted',  label: 'Deleted'   },
       ].slice(0, n)
 
+      // Figma sizes the icon per type: 12px (Button) / 9px (Minimal).
+      const iconSize = tabType === 'minimal' ? 9 : 12
       const iconProp = icons
-        ? ` icon={<Grid size={16} strokeWidth={1.5} />}`
+        ? ` icon={<TableIcon size={${iconSize}} weight="regular" />}`
         : ''
 
       const typeProp = tabType === 'minimal' ? ' type="minimal"' : ''
@@ -646,13 +757,13 @@ export const registry: Record<string, ComponentEntry> = {
       chipType: {
         type: 'chip-select',
         label: 'Chip type',
-        options: ['info', 'success', 'warning', 'error'],
+        options: ['grey', 'info', 'success', 'warning', 'error'],
         default: 'info',
       },
       chipShade: {
         type: 'chip-select',
         label: 'Chip shade',
-        options: ['100', '200', '400', '500'],
+        options: ['100', '200', '300', '400', '500', '600'],
         default: '100',
       },
       iconLeft: {
@@ -717,6 +828,33 @@ export const registry: Record<string, ComponentEntry> = {
       ].join('\n')
     },
   },
+  counter: {
+    slug: 'counter',
+    title: 'Counter',
+    description:
+      'A fully-rounded count badge shown inline beside the label it counts. Height is fixed at 18px; width grows with digit count.',
+    status: 'wip',
+    scope: { Counter },
+    propSchema: {
+      value: {
+        type: 'text',
+        label: 'Value',
+        default: '8',
+      },
+      tone: {
+        type: 'chip-select',
+        label: 'Tone',
+        options: ['default', 'muted', 'attention'],
+        default: 'default',
+      },
+    },
+    generateCode: ({ value, tone }) => {
+      const v = Math.max(0, Math.trunc(Number(value) || 0))
+      const t = String(tone)
+      const toneAttr = t !== 'default' ? ` tone="${t}"` : ''
+      return `<Counter value={${v}}${toneAttr} />`
+    },
+  },
 
   // ─── Modal ───────────────────────────────────────────────────────────────────
   modal: {
@@ -725,7 +863,7 @@ export const registry: Record<string, ComponentEntry> = {
     description:
       'A focused overlay dialog that interrupts the current workflow to request input, confirm an action, or display contextual information.',
     status: 'stable',
-    scope: { Modal, ModalHeader, ModalBody, ModalFooter, Button, XIcon, FloppyDisk },
+    scope: { Modal, ModalHeader, ModalBody, ModalFooter, Button, XCircleIcon, FloppyDisk },
     propSchema: {
       size: {
         type: 'chip-select',
@@ -770,7 +908,7 @@ export const registry: Record<string, ComponentEntry> = {
         `  </ModalBody>`,
         `  <ModalFooter>`,
         `    <Button variant="text" size="${btnSize}">`,
-        `      <XIcon size={${iconSize}} weight="thin" />`,
+        `      <XCircleIcon size={${iconSize}} weight="thin" />`,
         `      Cancel`,
         `    </Button>`,
         `    <Button variant="primary" size="${btnSize}">`,
@@ -788,7 +926,7 @@ export const registry: Record<string, ComponentEntry> = {
     slug: 'message-box',
     title: 'Message Box',
     description:
-      'Contextual feedback banners for outcomes, guidance, and system state. Four semantic types × two layout sizes.',
+      'Contextual feedback banners for outcomes, guidance, and system state. Four semantic types × two themes × two layout sizes.',
     status: 'stable',
     scope: { MessageBox },
     propSchema: {
@@ -798,28 +936,47 @@ export const registry: Record<string, ComponentEntry> = {
         options: ['info', 'success', 'warning', 'error'],
         default: 'info',
       },
+      theme: {
+        type: 'chip-select',
+        label: 'Theme',
+        options: ['light', 'dark'],
+        default: 'light',
+      },
       size: {
         type: 'chip-select',
         label: 'Size',
         options: ['line', 'block'],
         default: 'line',
       },
+      rounded: {
+        type: 'boolean',
+        label: 'Rounded',
+        default: false,
+      },
       dismissible: {
         type: 'boolean',
         label: 'Dismissible',
-        default: true,
+        default: false,
       },
       message: {
         type: 'text',
         label: 'Message',
         default: 'This campaign is currently paused. Resume to continue sending.',
       },
+      cta: {
+        type: 'text',
+        label: 'CTA (block only)',
+        default: '',
+      },
     },
-    generateCode: ({ type, size, dismissible, message }) => {
+    generateCode: ({ type, theme, size, rounded, dismissible, message, cta }) => {
       const t   = String(type)
+      const th  = String(theme)
       const s   = String(size)
+      const rnd = rounded === true || rounded === 'true'
       const dis = dismissible === true || dismissible === 'true'
       const msg = String(message)
+      const ctaText = String(cta ?? '')
       const isBlock = s === 'block'
 
       const titleMap: Record<string, string> = {
@@ -837,11 +994,14 @@ export const registry: Record<string, ComponentEntry> = {
 
       const lines: string[] = ['<MessageBox']
       lines.push(`  type="${t}"`)
+      if (th !== 'light') lines.push(`  theme="${th}"`)
       if (s !== 'line') lines.push(`  size="${s}"`)
+      if (rnd) lines.push(`  rounded`)
       if (isBlock) lines.push(`  title="${titleMap[t]}"`)
-      if (!dis) lines.push(`  dismissible={false}`)
+      if (dis) lines.push(`  dismissible`)
       if (isBlock) {
         lines.push(`  message="${bodyMap[t]}"`)
+        if (ctaText) lines.push(`  cta="${ctaText}"`)
         lines.push('/>')
       } else {
         lines.push(`  message="${msg}"`)
@@ -1264,13 +1424,13 @@ export const registry: Record<string, ComponentEntry> = {
       activeIndex: {
         type: 'chip-select',
         label: 'Active tab',
-        options: ['0', '1', '2', '3', '4'],
+        options: ['0', '1', '2', '3', '4', '5', '6'],
         default: '2',
       },
       count: {
         type: 'chip-select',
         label: 'Tab count',
-        options: ['3', '4', '5'],
+        options: ['2', '3', '4', '5', '6', '7'],
         default: '5',
       },
     },
@@ -1285,6 +1445,8 @@ export const registry: Record<string, ComponentEntry> = {
         'Production',
         'Development',
         'Q&A',
+        'Reporting',
+        'Audit Log',
       ].slice(0, total)
 
       const iconAttr = icons ? `\n    icon={<VerticalTabIcon size={16} />}` : ''
@@ -1381,6 +1543,95 @@ export const registry: Record<string, ComponentEntry> = {
     },
   },
 
+  // ─── Metric Tile ACGR ────────────────────────────────────────────────────────
+  'metric-tile-acgr': {
+    slug: 'metric-tile-acgr',
+    title: 'Metric Tile ACGR',
+    description:
+      'Data Card for Access Management ACGR contexts. "Only View" shows a TDG-assignment caption; "Action" turns the card into a red alert with an inline Assign CTA instead of a trend indicator.',
+    status: 'stable',
+    scope: { MetricTileAcgr },
+    propSchema: {
+      type: {
+        type: 'chip-select',
+        label: 'Type',
+        options: ['only-view', 'action'],
+        default: 'only-view',
+      },
+      label: {
+        type: 'text',
+        label: 'Label',
+        default: 'Total Agents',
+      },
+      value: {
+        type: 'text',
+        label: 'Value',
+        default: '6,893',
+      },
+      assignedTdgCount: {
+        type: 'text',
+        label: 'Assigned TDGs',
+        default: '3',
+      },
+    },
+    generateCode: ({ type, label, value, assignedTdgCount }) => {
+      const t   = String(type)
+      const l   = String(label)
+      const v   = String(value)
+      const tdg = parseInt(String(assignedTdgCount))
+
+      const lines = ['<MetricTileAcgr']
+      if (l !== 'Total Agents') lines.push(`  label="${l}"`)
+      if (v !== '6,893') lines.push(`  value="${v}"`)
+      if (t !== 'only-view') lines.push(`  type="${t}"`)
+      if (t === 'only-view' && !isNaN(tdg)) lines.push(`  assignedTdgCount={${tdg}}`)
+      if (t === 'action') lines.push(`  onAssign={() => {}}`)
+      lines.push('/>')
+      return lines.join('\n')
+    },
+  },
+
+  // ─── Inline Stats Cards ──────────────────────────────────────────────────────
+  'inline-stats-cards': {
+    slug: 'inline-stats-cards',
+    title: 'Inline Stats Cards',
+    description:
+      'Compact metric tiles for inline placement within detail pages — a row of 3-5 equal-width tiles, no icon, no trend indicator. Distinct from the dashboard-oriented Stats Cards / Metric Tiles.',
+    status: 'stable',
+    scope: { InlineStatTile, InlineStatsRow },
+    propSchema: {
+      count: {
+        type: 'chip-select',
+        label: 'Tile count',
+        options: ['3', '4', '5'],
+        default: '4',
+      },
+      unit: {
+        type: 'select',
+        label: 'Unit',
+        options: ['none', 'percent', 'euro', 'dollar', 'kilo', 'mega', 'kilobyte', 'millisecond', 'second'],
+        default: 'none',
+      },
+    },
+    generateCode: ({ count, unit }) => {
+      const n = parseInt(String(count)) || 4
+      const u = String(unit)
+      const unitAttr = u !== 'none' ? ` unit="${u}"` : ''
+      const labels = ['Campaign Groups', 'Topics', 'Lists', 'Templates', 'Campaigns']
+
+      const tiles = labels
+        .slice(0, n)
+        .map(label => `      <InlineStatTile label="${label}" value="48,5"${unitAttr} />`)
+        .join('\n')
+
+      return [
+        `<InlineStatsRow>`,
+        tiles,
+        `    </InlineStatsRow>`,
+      ].join('\n')
+    },
+  },
+
   // ─── Clickable Card ──────────────────────────────────────────────────────────
   'clickable-card': {
     slug: 'clickable-card',
@@ -1460,9 +1711,9 @@ export const registry: Record<string, ComponentEntry> = {
     slug: 'tooltip',
     title: 'Tooltip',
     description:
-      'A simple text popup that appears on hover to provide supplementary information about an element. Supports four placement directions.',
+      'Two anchored context components. Tooltip carries short text on hover or focus and closes itself; Dismissible Tip carries a title and longer body until the user closes it.',
     status: 'stable',
-    scope: { Tooltip },
+    scope: { Tooltip, DismissibleTip, Button },
     propSchema: {
       placement: {
         type: 'chip-select',
@@ -1470,31 +1721,59 @@ export const registry: Record<string, ComponentEntry> = {
         options: ['top', 'right', 'bottom', 'left'],
         default: 'top',
       },
+      theme: {
+        type: 'chip-select',
+        label: 'Theme',
+        options: ['light', 'dark'],
+        default: 'light',
+      },
       content: {
         type: 'text',
-        label: 'Content',
+        label: 'Tooltip content',
         default: 'Tooltip content',
       },
+      tipType: {
+        type: 'chip-select',
+        label: 'Tip type',
+        options: ['primary', 'secondary'],
+        default: 'primary',
+      },
+      showClose: {
+        type: 'boolean',
+        label: 'Tip close control',
+        default: true,
+      },
     },
-    generateCode: ({ placement, content }) => {
+    generateCode: ({ placement, theme, content, tipType, showClose }) => {
       const p = String(placement)
+      const th = String(theme)
       const c = String(content)
-      const placementAttr = p !== 'top' ? `\n  placement="${p}"` : ''
+      const tt = String(tipType)
+      const close = showClose === true || showClose === 'true'
+
+      const tooltipAttrs = [
+        `content="${c}"`,
+        p !== 'top' ? `placement="${p}"` : null,
+        th !== 'light' ? `theme="${th}"` : null,
+      ].filter(Boolean).join(' ')
+
+      const tipAttrs = [
+        `title="Permission Roles"`,
+        tt !== 'primary' ? `type="${tt}"` : null,
+        !close ? `showClose={false}` : null,
+      ].filter(Boolean).join(' ')
+
+      // Both components render in one preview, so they need a single root —
+      // the playground evaluates the snippet as one expression.
       return [
-        `<div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', padding: 48 }}>`,
-        `  <Tooltip content="${c}"${placementAttr}>`,
-        `    <button style={{`,
-        `      padding: '8px 16px',`,
-        `      background: '#4285f4',`,
-        `      color: '#eff1f3',`,
-        `      border: 'none',`,
-        `      borderRadius: 4,`,
-        `      cursor: 'pointer',`,
-        `      fontSize: 14,`,
-        `    }}>`,
-        `      Hover me`,
-        `    </button>`,
+        `<div style={{ display: 'flex', flexDirection: 'column', gap: 32, alignItems: 'flex-start', padding: 48 }}>`,
+        `  <Tooltip ${tooltipAttrs}>`,
+        `    <Button variant="secondary">Hover me</Button>`,
         `  </Tooltip>`,
+        `  <DismissibleTip`,
+        `    ${tipAttrs}`,
+        `    content="This Entity contains Items that reference this field so it cannot be deleted."`,
+        `  />`,
         `</div>`,
       ].join('\n')
     },
@@ -1563,7 +1842,7 @@ export const registry: Record<string, ComponentEntry> = {
     slug: 'nav-item',
     title: 'Nav Item',
     description:
-      'Atomic navigation item for vertical sidebars. Two types: Menu Item (48px, icon + caret) and Sub Menu Item (40px, indented). Four interaction states.',
+      'Atomic navigation item for vertical sidebars. Two types: Menu Item (48px, icon + caret) and Sub Menu Item (48px, indented). Four interaction states.',
     status: 'stable',
     scope: { NavMenuItem, NavSubItem, SquaresFourIcon },
     propSchema: {
@@ -1606,10 +1885,102 @@ export const registry: Record<string, ComponentEntry> = {
 
       const lines = ['<NavMenuItem']
       lines.push(`  label="${lbl}"`)
-      lines.push(`  icon={<SquaresFourIcon size={20} weight="thin" />}`)
+      lines.push(`  icon={<SquaresFourIcon size={18} weight="thin" />}`)
       if (s !== 'default') lines.push(`  state="${s}"`)
       if (open) lines.push(`  isOpen`)
       lines.push('/>')
+      return lines.join('\n')
+    },
+  },
+
+  // ─── NT Menu ──────────────────────────────────────────────────────────────────
+  'nt-menu': {
+    slug: 'nt-menu',
+    title: 'NT Menu',
+    description:
+      'In-progress redesign of the left/vertical nav — light theme, rounded pill rows, drop shadows, tree connector lines. Not yet wired in as the live sidebar.',
+    status: 'wip',
+    scope: { NTMenuHomeItem, NTMenuModuleItem, NTMenuSubItem, NTMenuGroup, NTMenuItemCollapsed },
+    propSchema: {
+      type: {
+        type: 'chip-select',
+        label: 'Type',
+        options: ['Home', 'Module', 'Sub Item', 'Group', 'Collapsed'],
+        default: 'Group',
+      },
+      state: {
+        type: 'chip-select',
+        label: 'State',
+        options: ['default', 'hover', 'active'],
+        default: 'default',
+      },
+      open: {
+        type: 'boolean',
+        label: 'Open (Module/Group only)',
+        default: true,
+      },
+    },
+    generateCode: ({ type, state, open }) => {
+      const t    = String(type)
+      const s    = String(state)
+      const isOpen = open === true || open === 'true'
+
+      if (t === 'Home') {
+        return `<NTMenuHomeItem${s !== 'default' ? ` state="${s}"` : ''} />`
+      }
+      if (t === 'Sub Item') {
+        return `<NTMenuSubItem\n  label="Module Sub Item"${s !== 'default' ? `\n  state="${s}"` : ''}\n/>`
+      }
+      if (t === 'Collapsed') {
+        return `<NTMenuItemCollapsed${s !== 'default' ? ` state="${s}"` : ''} />`
+      }
+      if (t === 'Group') {
+        return [
+          `<NTMenuGroup label="Module Name"${isOpen ? ' open' : ''}>`,
+          `  <NTMenuSubItem label="Module Sub Item" state="active" />`,
+          `  <NTMenuSubItem label="Module Sub Item" />`,
+          `  <NTMenuSubItem label="Module Sub Item" />`,
+          `</NTMenuGroup>`,
+        ].join('\n')
+      }
+      // Module
+      return [
+        `<NTMenuModuleItem`,
+        `  label="Module Name"`,
+        s !== 'default' ? `  state="${s}"` : null,
+        isOpen ? `  isOpen` : null,
+        `/>`,
+      ].filter(Boolean).join('\n')
+    },
+  },
+
+  // ─── Breadcrumb ───────────────────────────────────────────────────────────────
+  breadcrumb: {
+    slug: 'breadcrumb',
+    title: 'Breadcrumb',
+    description:
+      'A horizontal navigation trail showing the current position within the page hierarchy. Always starts with a Home icon; the last item is the current page. Depth is 1-4 items.',
+    status: 'stable',
+    scope: { Breadcrumb },
+    propSchema: {
+      depth: {
+        type: 'chip-select',
+        label: 'Depth',
+        options: ['1', '2', '3', '4'],
+        default: '2',
+      },
+    },
+    generateCode: ({ depth }) => {
+      const labels = ['Social Security Admin', 'Benefit Status Updates', 'Retirement Planning Reminders', 'Send Schedule']
+      const hrefs  = ['/accounts/ssa', '/accounts/ssa/campaign-groups/benefit-status', '/accounts/ssa/campaign-groups/benefit-status/reminders']
+      const n = Math.min(4, Math.max(1, Number(depth) || 2))
+
+      const lines = ['<Breadcrumb', `  homeHref="/"`, '  items={[']
+      for (let i = 0; i < n; i++) {
+        const isCurrent = i === n - 1
+        lines.push(isCurrent ? `    { label: '${labels[i]}' },` : `    { label: '${labels[i]}', href: '${hrefs[i]}' },`)
+      }
+      lines.push('  ]}', '/>')
       return lines.join('\n')
     },
   },
@@ -1619,7 +1990,7 @@ export const registry: Record<string, ComponentEntry> = {
     slug: 'page-title',
     title: 'Page Title',
     description:
-      'Page-level header with a large blue title, optional subtitle, optional chip, and a composable right-side actions slot.',
+      'Page-level header with a large title, optional subtitle, optional chip, and a composable right-side actions slot.',
     status: 'stable',
     scope: { PageTitle },
     propSchema: {
@@ -1711,19 +2082,59 @@ export const registry: Record<string, ComponentEntry> = {
       return lines.join('\n')
     },
   },
+  // ─── Instance Card ──────────────────────────────────────────────────────────
+  'instance-card': {
+    slug: 'instance-card',
+    title: 'Instance Card',
+    description:
+      'A draggable, selectable row used to list an org instance inside a group. Clickable adds a leading multi-select checkbox; Read Only fills the row without one.',
+    status: 'stable',
+    scope: { InstanceCard },
+    propSchema: {
+      title: {
+        type: 'text',
+        label: 'Title',
+        default: 'qa-cft-testing',
+      },
+      state: {
+        type: 'chip-select',
+        label: 'State',
+        options: ['default', 'active', 'multi-select', 'disabled'] as const,
+        default: 'default',
+      },
+      interaction: {
+        type: 'chip-select',
+        label: 'Interaction',
+        options: ['clickable', 'read-only'] as const,
+        default: 'clickable',
+      },
+    },
+    generateCode: ({ title, state, interaction }) => {
+      const t = String(title)
+      const s = String(state)
+      const i = String(interaction)
+
+      const lines = ['<InstanceCard']
+      lines.push(`  title="${t}"`)
+      if (s !== 'default') lines.push(`  state="${s}"`)
+      if (i !== 'clickable') lines.push(`  interaction="${i}"`)
+      lines.push('/>')
+      return lines.join('\n')
+    },
+  },
   // ─── Top Bar ──────────────────────────────────────────────────────────────────
   'top-bar': {
     slug: 'top-bar',
     title: 'Top Bar',
     description:
-      'Application-level top bar with product branding, instance label, and action icon buttons. Supports three product themes: CxPortal, CxCentral, and Cases.',
+      'Application-level top bar with product branding, instance label, and action icon buttons. CxPortal, CxCentral, and Cases share one unified accent — only the wordmark differs. "New UI" is a stripped-down variant tracking the org\'s active redesign direction.',
     status: 'stable',
     scope: { TopBar },
     propSchema: {
       product: {
         type: 'chip-select',
         label: 'Product',
-        options: ['cx-portal', 'cx-central', 'cases'] as const,
+        options: ['cx-portal', 'cx-central', 'cases', 'new-ui'] as const,
         default: 'cx-portal',
       },
       instance: {
