@@ -1,0 +1,156 @@
+---
+title: Instance Card
+description: A draggable, selectable row for listing an org instance inside a group, with an optional leading multi-select checkbox.
+figmaNodeId: 3437-9650
+figmaUpdated: Sep 9, 2026
+status: stable
+---
+
+## Overview
+
+Instance Card is a compact row used to list a single org instance — typically inside a scrollable "Instances" panel, grouped by category. Each card shows the instance name and a drag handle for reordering, and can optionally lead with a checkbox for multi-select bulk actions.
+
+## When to use
+
+**Use Instance Card for:**
+
+- Listing org instances inside a group in the Roles/Users detail sidebar panel
+- Letting a user drag-reorder instances within or across groups
+- Multi-select bulk actions across instances (Clickable interaction)
+- A read-only, non-selectable instance reference (Read Only interaction)
+
+**Do not use for:**
+
+- General-purpose list items unrelated to instances — use Vertical Tab or Table Row instead
+- Free-form tag or filter selection — use Chips
+- Single-select tab navigation without drag reordering — use Vertical Tab
+
+## Anatomy
+
+- **Checkbox** (Clickable only) — 16×16px multi-select control, ticked when the card is Active or Multi Select
+- **Card** — bordered container with the instance title and a drag handle
+  - **Title** — instance name, semibold, 12px, truncates with ellipsis
+  - **Drag handle** — `DotsSixVertical` icon, 12×12px, signals the row can be reordered
+
+<Table size="compact" className="mb-6">
+  <TableHeader>
+    <tr>
+      <TableHead>State</TableHead>
+      <TableHead>Background</TableHead>
+      <TableHead>Border</TableHead>
+      <TableHead>Text</TableHead>
+    </tr>
+  </TableHeader>
+  <TableBody>
+    <TableRow>
+      <TableCell>Default</TableCell>
+      <TableCell>White</TableCell>
+      <TableCell>#aab0b8 (unverified — see Open Questions)</TableCell>
+      <TableCell>#1d1d1d</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>Hover</TableCell>
+      <TableCell>#f8f8f8</TableCell>
+      <TableCell>#7a828c (unverified — see Open Questions)</TableCell>
+      <TableCell>#1d1d1d</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>Active</TableCell>
+      <TableCell>#3a8015</TableCell>
+      <TableCell>#629944</TableCell>
+      <TableCell>#f8f8f8</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>Multi Select</TableCell>
+      <TableCell>#fbfcf2</TableCell>
+      <TableCell>#629944</TableCell>
+      <TableCell>#1d1d1d</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>Disabled</TableCell>
+      <TableCell>transparent</TableCell>
+      <TableCell>#eff1f3 (unverified — see Open Questions)</TableCell>
+      <TableCell>#adadad</TableCell>
+    </TableRow>
+  </TableBody>
+</Table>
+
+## Interaction
+
+<Table size="compact" className="mb-6">
+  <TableHeader>
+    <tr>
+      <TableHead>Interaction</TableHead>
+      <TableHead>Checkbox</TableHead>
+      <TableHead>Card width</TableHead>
+    </tr>
+  </TableHeader>
+  <TableBody>
+    <TableRow>
+      <TableCell>Clickable</TableCell>
+      <TableCell>Shown, leading</TableCell>
+      <TableCell>Fixed 192px (240px row total)</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>Read Only</TableCell>
+      <TableCell>Hidden</TableCell>
+      <TableCell>Fills the row</TableCell>
+    </TableRow>
+  </TableBody>
+</Table>
+
+## Accessibility
+
+- The card itself is `role="button"` with `tabIndex`, `Enter`/`Space` activation, and `aria-pressed` reflecting selection
+- Disabled cards drop `role`/`tabIndex` and set `aria-disabled`
+- The checkbox uses the same accessible native `<input type="checkbox">` as the standalone Checkbox component
+- The drag handle icon is `aria-hidden` — it is a visual affordance only; actual reordering must be wired through a real drag-and-drop implementation (not built here)
+
+<DosDonts>
+  <Do description="Use Clickable when the list supports multi-select bulk actions; use Read Only for a static reference list with no selection." />
+  <Dont description="Combine Active and Multi Select on the same card — they're mutually exclusive states in Figma, not a state you can stack." />
+</DosDonts>
+
+## Code
+
+### Clickable, default
+
+```tsx
+import { InstanceCard } from '@/components/ui/instance-card'
+
+<InstanceCard title="qa-cft-testing" />
+```
+
+### Multi-select checked
+
+```tsx
+<InstanceCard title="qa-cft-testing" state="multi-select" onCheckedChange={(checked) => {}} />
+```
+
+### Read only
+
+```tsx
+<InstanceCard title="qa-cft-testing" interaction="read-only" />
+```
+
+### Props
+
+```tsx
+type InstanceCardState = 'default' | 'active' | 'multi-select' | 'disabled'
+type InstanceCardInteraction = 'clickable' | 'read-only'
+
+interface InstanceCardProps {
+  title?: string                         // default: 'qa-cft-testing'
+  state?: InstanceCardState              // default: 'default' — Hover is derived internally
+  interaction?: InstanceCardInteraction  // default: 'clickable'
+  onClick?: () => void
+  onCheckedChange?: (checked: boolean) => void
+  className?: string
+}
+```
+
+## Open Questions
+
+- **Border token values don't match Figma's hex.** Figma's Default/Hover/Disabled secondary border colors (`#aab0b8`, `#7a828c`, `#eff1f3`) don't correspond to any existing `--border-color-surface-active-secondary-*` token value in this codebase — those resolve to `#adadad`, `#8d8d8d`, and a hardcoded `#d2e0c8` respectively. This is different from the usual wrong-ramp-step bug (where the right hex exists under another token name) — here the right hex doesn't exist anywhere in the palette. The component uses the same token *names* Figma binds to (and that Button/Checkbox-radio already consume), so a future token-value correction will propagate here automatically. Needs a designer call before the shared token values are changed, given the blast radius.
+- **Read Only still shows the drag handle.** A card that can't be selected or reordered (no checkbox) still renders the `DotsSixVertical` drag-handle icon in Figma. Implemented faithfully, but this reads as a real contradiction — a drag affordance implies drag capability, which "Read Only" explicitly denies. Needs a designer call.
+- **Drag-reorder itself isn't implemented.** The design shows a drag handle, but no drag-and-drop behavior is specified or built — only the visual affordance exists.

@@ -1,12 +1,13 @@
 # CxPortal DS — Component Audit Handoff
 
-_Last refreshed: 2026-09-09 (fourteenth pass — Chips & Tags closed; Chip
-rebuilt to cover 30 real variants instead of 16, an entire missing type and
-two missing shades). Supersedes the earlier 2026-09-09 version.
-**Also fixed this pass:** several turns' worth of `audit/` edits (Modal
+_Last refreshed: 2026-09-09 (fifteenth pass — G4 closed out its audited rows
+and G5 opened with Instance Cards, a genuinely new composite built from
+scratch with no prior DS component). Supersedes the earlier 2026-09-09
+version.
+**Also fixed a prior pass:** several turns' worth of `audit/` edits (Modal
 through Vertical Tabs) had been sitting uncommitted on tracked files because
 of a wrong assumption that `audit/` was untracked — it was committed back in
-`e2272da`. Caught and committed properly in the prior pass; see Git state below._
+`e2272da`. Caught and committed; see Git state below._
 
 ## Context
 
@@ -42,7 +43,7 @@ Batching: Foundations → Global (G1–G5) → Knowledge Management → Campaign
 - `component-audit-seed.csv` — full component list (Section/Batch/Component), already in the sheet
 - `component-audit-fill.csv` — same rows with Figma node IDs and code paths filled
 - `component-audit-fill-2cols.csv` — Figma node + Code path only, for pasting
-- `component-audit-results.csv` — **the live findings log** (31 rows as of 2026-09-09)
+- `component-audit-results.csv` — **the live findings log** (32 rows as of 2026-09-09)
 - `component-audit-results-paste-g1.csv` — Status→Notes block for G1
 - `component-audit-results-paste-g2.csv` — same, full G2 (Button, Alert Messages, Counter, Tooltip, Modal, Toast)
 - `component-audit-results-paste.csv` — same, Foundations batch
@@ -503,11 +504,59 @@ selected/hover/focus treatment with no Figma backing.
 
 **G4 is not quite done — Inline Context Data is still the one hole.**
 
+## Progress — G5 (IN PROGRESS)
+
+| Component | Status | Priority | Docs |
+|---|---|---|---|
+| Instance Cards | missing → built | P1 | no Principles/Usage exists yet (user-confirmed) |
+| Collapsible Filters | — | — | not started |
+| File Tree | — | — | not started (code already exists, unaudited) |
+
+**Instance Cards — new component, built from scratch, no Principles/Usage
+doc exists yet.** Pulled the real component (`3437-9650`: state=Active/
+Default/Hover/Disabled/Multi Select × interaction=Clickable/Read Only, 10
+combinations) plus its real-world Examples frame (`3898-36608`) since there
+was no Principles/Usage pair to cross-check against — the user confirmed
+none exists yet. Nothing in `components/ui` implemented this pattern at
+all. The closest prior art, `components/access-management/VerticalTabV2.tsx`
+(a different, older Figma node, `3745-79448`, wired into live Access
+Management pages via `InstancePanel.tsx`), is missing the checkbox, the
+drag handle, and the Multi Select tint entirely — left untouched since it's
+an app-level component consuming a different Figma source, not this DS
+registry component; not in scope to retrofit this pass. Built
+`components/ui/instance-card.tsx`: a single `state` enum
+(`'default'|'active'|'multi-select'|'disabled'`, with Hover derived
+internally via mouse events — matching this DS's `VerticalTabV2`/
+`Checkbox`/`Radio` precedent rather than exposing Figma's Hover as an
+external prop) plus an `interaction` enum (`'clickable'|'read-only'`)
+controlling whether the leading multi-select checkbox renders. Reused the
+existing `Checkbox` component (`checkbox.tsx`, `size="regular"`) for the
+leading checkbox instead of re-implementing it — its border token already
+matches Figma's checkbox border exactly. Confirmed the recurring wrong-
+ramp-step bug a **seventh** time on `--text-on-action-secondary` (Default/
+Hover/Multi-Select text) — see the cross-cutting thread below. Found a
+**new, distinct** token problem, not the usual wrong-ramp-step pattern:
+Figma's Default/Hover/Disabled secondary border colors (`#aab0b8`,
+`#7a828c`, `#eff1f3`) don't match *any* existing
+`--border-color-surface-active-secondary-*` token value in this codebase —
+and unlike every prior wrong-ramp-step case, the correct hex doesn't exist
+under any other token name either. Kept the same token names Figma's own
+component binds to (and that `Button` and `Checkbox`'s `Radio` disabled
+state already consume) rather than inventing raw hex or silently changing
+the shared token values, which would ripple into those already-audited
+components — flagged as a token-value gap needing a designer call, see
+below. **Figma-internal contradiction flagged, not resolved:** the Read
+Only variant (no checkbox, meant to be non-interactive) still renders the
+`DotsSixVertical` drag-handle icon — a drag affordance on a row that
+explicitly can't be selected or reordered. Implemented faithfully since
+that's what the live component shows. Added registry entry, stories,
+sidebar nav entry, and `content/components/instance-card.mdx`.
+
 ## Git state
 
 Branch: **`fix/ds-audit-g1-g2-figma-alignment`** (cut from
 `claude/assign-worker-flow-prototype-rb4ms4`, which is where this work was
-sitting uncommitted by mistake). 26 commits ahead of `main` (2026-09-07 to
+sitting uncommitted by mistake). 27 commits ahead of `main` (2026-09-07 to
 2026-09-09):
 
 1. `fix(tokens): correct action and form-field semantic aliases` — the 4 shared globals.css aliases, landed first because of blast radius
@@ -535,7 +584,8 @@ sitting uncommitted by mistake). 26 commits ahead of `main` (2026-09-07 to
 23. `fix(pagination): correct idle/active button backgrounds and sizing to Figma`
 24. `fix(stats-cards): correct 7 wrong category icons, sizing, and tokens; build Metric Tile ACGR`
 25. `feat(inline-stats): build Inline Stats Cards from scratch, replace fictional doc content`
-26. `fix(chip): cover all 30 chip variants, correct wrong colors on Chip and Tag` — about to be committed
+26. `fix(chip): cover all 30 chip variants, correct wrong colors on Chip and Tag`
+27. `feat(instance-card): build Instance Card from scratch, no Figma docs yet` — about to be committed
 
 Not merged to main, no PR opened yet. Note the branch's ancestry still carries
 22 commits of Assign-to-Worker v2 prototype + Caylent rebrand work that were
@@ -640,15 +690,28 @@ All six docs frames supplied on 2026-09-07 have been read, and Button Icon Small
   the identical `#373737`-instead-of-`#1d1d1d` split — a **third** time
   on Page Title's chip text — a **fourth** time on Metric Tile ACGR's
   Assign-button text (this token is Figma's own name for that button's
-  text colour, `text/on-action/secondary`) — and now a **fifth and sixth**
-  time simultaneously on Chip AND Tag's dark label text, the single
-  most-repeated instance of this alias bug in this whole audit. This is
-  now five confirmed tokens in the same wrong-ramp-step family
-  (`--text-body-primary`, `--icon-action`, `--icon-success`,
-  `--text-action`, `--text-on-action-secondary`), hit across thirteen
+  text colour, `text/on-action/secondary`) — a **fifth and sixth**
+  time simultaneously on Chip AND Tag's dark label text — and now a
+  **seventh** time on Instance Card's Default/Hover/Multi-Select text,
+  the single most-repeated instance of this alias bug in this whole
+  audit. This is now five confirmed tokens in the same wrong-ramp-step
+  family (`--text-body-primary`, `--icon-action`, `--icon-success`,
+  `--text-action`, `--text-on-action-secondary`), hit across fourteen
   component rows total — worth asking whether there's a systemic cause
   (e.g. a bulk find-replace during the rebrand that landed one ramp step
   short) rather than treating each as an isolated bug.
+- **New, distinct from the wrong-ramp-step family above:** Instance
+  Card's Default/Hover/Disabled secondary border colors — Figma's real
+  hex values (`#aab0b8`, `#7a828c`, `#eff1f3`) don't match `--border-
+  color-surface-active-secondary-default/-hover/-disabled`'s current
+  values (`--neutral-300`/#adadad, `--neutral-400`/#8d8d8d, and a
+  hardcoded `#d2e0c8`) — and unlike every case above, the *correct* hex
+  doesn't exist under any other token name in the palette either. This
+  is a token-**value** gap, not a wrong-alias-pointer bug. These same
+  three tokens are already consumed by `Button` (disabled state) and
+  `Checkbox`'s `Radio` (disabled border), so correcting the values has
+  real blast radius into components already marked aligned — needs a
+  designer call before changing them, not a silent fix.
 - `--surface-action-primary-hover` joins the list too, but with a twist:
   blast-radius check found **zero real consumers** anywhere before this
   pass (only the token definition itself and the non-consuming reference
@@ -853,9 +916,9 @@ Needs a decision on which surface colour the demo should use.
 1. Paste `component-audit-results-paste-g2.csv` into the sheet — the full G2
    batch (Button, Alert Messages, Counter, Tooltip, Modal, Toast). The whole
    of G3 (Breadcrumb, Horizontal Tabs, Vertical Tabs, Left/Vertical Nav, Top
-   Bar, Page Title) and Table + Table Filter + Pagination + Metric Tiles +
-   Metric Tile ACGR + Inline Stats Cards + Chips & Tags (G4 so far) still
-   need their own paste blocks produced.
+   Bar, Page Title), G4 (Table, Table Filter, Pagination, Metric Tiles,
+   Metric Tile ACGR, Inline Stats Cards, Chips & Tags), and G5 so far
+   (Instance Cards) still need their own paste blocks produced.
 2. Get a designer call on the Figma-internal/docs contradictions logged above:
    old variant model on Usage 742-11289; multi-line Alert vs its own docs;
    Modal's `role="alertdialog"` conflict; Modal's missing `xlarge` Figma frame;
@@ -869,28 +932,34 @@ Needs a decision on which surface colour the demo should use.
    token fix — Figma's own Usage/Principles docs for Inline Stats Cards
    disagreeing with each other about whether sparklines/deltas exist at all;
    Chip's Anatomy prose claiming selected/hover/focus states the real
-   component doesn't have.
+   component doesn't have; Instance Card's Read Only variant still showing
+   a drag handle it shouldn't be able to use.
 3. Decide on the cross-cutting wrong-ramp-step token sweep (see Cross-cutting
-   thread above) — six confirmed tokens, `--text-on-action-secondary` alone
-   now hit six times (Horizontal/Vertical Tabs, Page Title, Metric Tile
-   ACGR, and now Chip + Tag simultaneously) — the single most-repeated
-   instance in this whole audit. Worth asking whether this is one systemic
-   rebrand-migration bug rather than isolated ones.
+   thread above) — five confirmed tokens, `--text-on-action-secondary` alone
+   now hit seven times (Horizontal/Vertical Tabs, Page Title, Metric Tile
+   ACGR, Chip + Tag simultaneously, and now Instance Card) — the single
+   most-repeated instance in this whole audit. Worth asking whether this is
+   one systemic rebrand-migration bug rather than isolated ones. Also decide
+   on the new, distinct `--border-color-surface-active-secondary-*` token-
+   **value** gap found on Instance Card (correct hex doesn't exist under any
+   token name at all — different problem from the wrong-ramp-step family).
 4. Audit Combobox (2255-8066) to actually close G1 — still the one hole in that batch.
-5. Continue G4: Table, Table Filter, Pagination, Metric Tiles, Metric Tile
-   ACGR, Inline Stats Cards, and Chips & Tags are done. **Inline Context
-   Data is the one remaining hole in this batch.**
-6. Add a `select` cellType demo to the Table registry playground for parity
+5. Close out G4: Inline Context Data is the one remaining hole (code already
+   exists at `/components/inline-context-data`, unaudited against Figma).
+6. Continue G5: Instance Cards is done. Collapsible Filters and File Tree
+   remain — File Tree already has code (`/components/file-tree`) but is
+   unaudited against Figma; Collapsible Filters has no code yet.
+7. Add a `select` cellType demo to the Table registry playground for parity
    with chip/tag/switch/filter — skipped this pass (polish, not a Figma
    drift fix) since "Table Field Select" was documented as compose-inline
    rather than built as its own component.
-7. Decide whether to migrate the 14+ existing inline breadcrumb call sites to
+8. Decide whether to migrate the 14+ existing inline breadcrumb call sites to
    the new shared component — not done this pass, flagged only.
-8. Decide whether to consolidate `nav-item.tsx` and `Sidebar.tsx`'s duplicated
+9. Decide whether to consolidate `nav-item.tsx` and `Sidebar.tsx`'s duplicated
    implementations — not done this pass, flagged only.
-9. Test the new NT Menu pattern (`/components/nt-menu`) and decide when to
-   wire it into `Sidebar.tsx` as the live default, per the user's own framing.
-10. Decide whether to open a PR for the branch.
+10. Test the new NT Menu pattern (`/components/nt-menu`) and decide when to
+    wire it into `Sidebar.tsx` as the live default, per the user's own framing.
+11. Decide whether to open a PR for the branch.
 
 ## Rules for how to read Figma (learned the hard way)
 

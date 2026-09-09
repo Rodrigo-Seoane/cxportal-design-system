@@ -114,6 +114,7 @@ const NAV_GROUPS: NavGroup[] = [
       { label: 'Metric Tile ACGR',      href: '/components/metric-tile-acgr',      status: 'stable' },
       { label: 'Inline Stats Cards',    href: '/components/inline-stats-cards',    status: 'stable' },
       { label: 'Inline Context Data',   href: '/components/inline-context-data',   status: 'stable' },
+      { label: 'Instance Card',         href: '/components/instance-card',         status: 'stable' },
       { label: 'Clickable Card',        href: '/components/clickable-card',        status: 'stable' },
       { label: 'Page Title',             href: '/components/page-title',            status: 'stable' },
       { label: 'Stepper',               href: '/components/stepper',               status: 'stable' },

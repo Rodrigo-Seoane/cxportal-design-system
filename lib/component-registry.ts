@@ -31,6 +31,7 @@ import { StatCard, MetricTileAcgr } from '@/components/ui/stats-cards'
 import { InlineStatTile, InlineStatsRow } from '@/components/ui/inline-stats'
 import { ClickableCard, ClickableHorizontalCard } from '@/components/ui/clickable-card'
 import { InlineContextData } from '@/components/ui/inline-context-data'
+import { InstanceCard } from '@/components/ui/instance-card'
 import { AddressBookIcon, CalendarIcon, TagIcon, UserListIcon, SquaresFourIcon } from '@/components/ui/playground-icons'
 import { Stepper } from '@/components/ui/stepper'
 import { DatePicker } from '@/components/ui/date-picker'
@@ -2020,6 +2021,46 @@ export const registry: Record<string, ComponentEntry> = {
       lines.push(`  label="${lbl}"`)
       lines.push(`  value="${val}"`)
       if (two) lines.push(`  value2="${val2}"`)
+      lines.push('/>')
+      return lines.join('\n')
+    },
+  },
+  // ─── Instance Card ──────────────────────────────────────────────────────────
+  'instance-card': {
+    slug: 'instance-card',
+    title: 'Instance Card',
+    description:
+      'A draggable, selectable row used to list an org instance inside a group. Clickable adds a leading multi-select checkbox; Read Only fills the row without one.',
+    status: 'stable',
+    scope: { InstanceCard },
+    propSchema: {
+      title: {
+        type: 'text',
+        label: 'Title',
+        default: 'qa-cft-testing',
+      },
+      state: {
+        type: 'chip-select',
+        label: 'State',
+        options: ['default', 'active', 'multi-select', 'disabled'] as const,
+        default: 'default',
+      },
+      interaction: {
+        type: 'chip-select',
+        label: 'Interaction',
+        options: ['clickable', 'read-only'] as const,
+        default: 'clickable',
+      },
+    },
+    generateCode: ({ title, state, interaction }) => {
+      const t = String(title)
+      const s = String(state)
+      const i = String(interaction)
+
+      const lines = ['<InstanceCard']
+      lines.push(`  title="${t}"`)
+      if (s !== 'default') lines.push(`  state="${s}"`)
+      if (i !== 'clickable') lines.push(`  interaction="${i}"`)
       lines.push('/>')
       return lines.join('\n')
     },
