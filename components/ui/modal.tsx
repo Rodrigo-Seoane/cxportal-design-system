@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef, createContext, useContext } from 'react'
+import { useEffect, useRef, createContext, useContext, type RefObject } from 'react'
 import { createPortal } from 'react-dom'
 import { X, XCircle, FloppyDisk } from '@phosphor-icons/react'
 
@@ -48,6 +48,9 @@ const T = {
 interface ModalCtxValue { size: 'large' | 'medium' | 'xlarge' }
 const ModalCtx = createContext<ModalCtxValue>({ size: 'large' })
 
+let openModalCount = 0
+let appShellRestore: { ariaHidden: string | null; inert: boolean } | null = null
+
 // ── Modal (root) ──────────────────────────────────────────────────────────────
 
 export interface ModalProps {
@@ -57,6 +60,10 @@ export interface ModalProps {
   onClose?: () => void
   /** Panel width: large (701 px, H1 header) / medium (453 px, H2 header) / xlarge (860 px, wizard flows). Default: 'large'. */
   size?: 'large' | 'medium' | 'xlarge'
+  /** Critical, irreversible confirmation. Uses `role="alertdialog"`; other modals use `role="dialog"`. */
+  severity?: 'default' | 'critical'
+  /** Focus target on open. Without this, Modal focuses the first neutral action (typically Cancel). */
+  initialFocusRef?: RefObject<HTMLElement | null>
   /**
    * Render inline without backdrop — for playground and docs preview only.
    * When true, `open` is ignored and the panel always renders.
@@ -73,6 +80,8 @@ export function Modal({
   open = false,
   onClose,
   size = 'large',
+  severity = 'default',
+  initialFocusRef,
   preview = false,
   children,
   'aria-label': ariaLabel,
@@ -101,7 +110,11 @@ export function Modal({
         'button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])',
       ),
     )
-    focusable[0]?.focus()
+    const initialFocus = initialFocusRef?.current
+      ?? panelRef.current.querySelector<HTMLElement>('[data-modal-initial-focus]')
+      ?? focusable.find((element) => element.tagName === 'BUTTON' && element.getAttribute('aria-label') !== 'Close')
+      ?? focusable[0]
+    initialFocus?.focus()
 
     const trap = (e: KeyboardEvent) => {
       if (e.key !== 'Tab' || !focusable.length) return
@@ -118,6 +131,32 @@ export function Modal({
       document.removeEventListener('keydown', trap)
       triggerElement?.focus()
     }
+  }, [open, preview, initialFocusRef])
+
+  // ── App-shell isolation ──────────────────────────────────────────────────
+  useEffect(() => {
+    if (!open || preview) return
+    const appShell = document.getElementById('app-shell')
+    if (!appShell) return
+
+    if (openModalCount === 0) {
+      appShellRestore = {
+        ariaHidden: appShell.getAttribute('aria-hidden'),
+        inert: appShell.inert,
+      }
+      appShell.setAttribute('aria-hidden', 'true')
+      appShell.inert = true
+    }
+    openModalCount += 1
+
+    return () => {
+      openModalCount -= 1
+      if (openModalCount !== 0 || !appShellRestore) return
+      if (appShellRestore.ariaHidden === null) appShell.removeAttribute('aria-hidden')
+      else appShell.setAttribute('aria-hidden', appShellRestore.ariaHidden)
+      appShell.inert = appShellRestore.inert
+      appShellRestore = null
+    }
   }, [open, preview])
 
   // ── Body scroll lock ──────────────────────────────────────────────────────
@@ -133,7 +172,7 @@ export function Modal({
     <ModalCtx.Provider value={{ size }}>
       <div
         ref={panelRef}
-        role="dialog"
+        role={severity === 'critical' ? 'alertdialog' : 'dialog'}
         aria-modal={!preview}
         aria-label={ariaLabel}
         aria-labelledby={ariaLabelledby}

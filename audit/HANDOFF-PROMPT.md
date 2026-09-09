@@ -1,9 +1,9 @@
 # CxPortal DS — Component Audit Handoff
 
-_Last refreshed: 2026-09-09 (decision-rollout Phases 1–4 complete — global
+_Last refreshed: 2026-09-09 (decision-rollout Phases 1–5 complete — global
 semantic-token repoints, the Colors Foundation Action-color family, and small
-documentation closeouts, and Table keyboard focus are verified and committed;
-Phase 5 Modal accessibility is next).
+documentation closeouts, Table keyboard focus, and Modal accessibility are
+verified and committed; Phase 6 Grid Foundation is next).
 Eighteenth audit pass was a cross-cutting blue→green /
 old-token sweep, not a per-component Figma pull; found and fixed the
 classic `--content-action-primary-600` bug in 6 components that were never
@@ -788,6 +788,19 @@ live `/components/table` preview: a focused row visibly receives the green
 ring.
 
 Next: Phase 5 — Modal accessibility overhaul.
+
+## Decision rollout — Phase 5 (DONE)
+
+Modal now uses `role="dialog"` by default and `role="alertdialog"` only with
+`severity="critical"`. Its initial focus defaults to the first neutral action
+(usually Cancel), with `initialFocusRef` and `data-modal-initial-focus`
+available for explicit overrides. The root `#app-shell` is marked `inert` and
+`aria-hidden` while one or more non-preview modals are open, restoring its
+prior state only after the final modal closes. Verified with `npx tsc --noEmit`
+and the live Add Company modal: focus lands on Cancel and the app shell is
+absent from the accessibility tree.
+
+Next: Phase 6 — build the Grid Foundation.
 
 ## Git state
 

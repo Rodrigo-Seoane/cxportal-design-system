@@ -304,10 +304,10 @@ export function CreateTagModal() {
 
 ## Accessibility
 
-- The dialog root renders with `role="dialog"` and `aria-modal="true"`. Provide `aria-labelledby` pointing to the `ModalHeader` title element, or `aria-label` if there is no visible heading.
-- **Focus management** — focus moves to the first focusable element inside the dialog when it opens. On close, focus returns to the element that triggered the modal.
-- **Focus trap** — keyboard Tab/Shift+Tab cycles only within the dialog while it is open. Users cannot interact with the background page.
+- The dialog root renders with `role="dialog"` and `aria-modal="true"`. Use `severity="critical"` only for a high-severity, irreversible confirmation (such as permanently deleting data or discarding unsaved work); that changes the role to `alertdialog`. Provide `aria-labelledby` pointing to the `ModalHeader` title element, or `aria-label` if there is no visible heading.
+- **Focus management** — focus moves to the first neutral action (typically Cancel) when the dialog opens. Pass `initialFocusRef` or add `data-modal-initial-focus` to override that choice. On close, focus returns to the element that triggered the modal.
+- **Focus trap** — keyboard Tab/Shift+Tab cycles only within the dialog while it is open. The app shell is also marked `inert` and `aria-hidden` while any modal is open, so users cannot interact with the background page.
 - **Escape key** — always closes the dialog and triggers `onClose`. Do not suppress this behaviour.
 - **Backdrop click** — closes the dialog by default. If the action is in progress and closing would be destructive, you may disable this by omitting the `onClose` prop from `Modal`, but retain the Cancel button in the footer.
 - Screen readers announce the dialog when it opens. The `aria-labelledby` attribute ensures the title is read immediately, so users understand the context without scanning.
-- Do not use `role="alertdialog"` unless the dialog is specifically a system-level alert requiring an immediate response.
+- Do not use `severity="critical"` for routine forms, confirmations, or status messages. Reserve it for irreversible, high-severity choices that require immediate attention.
