@@ -111,6 +111,7 @@ const NAV_GROUPS: NavGroup[] = [
       { label: 'Toast Notifications',   href: '/components/toast',                 status: 'stable' },
       { label: 'Tooltip',               href: '/components/tooltip',               status: 'stable' },
       { label: 'Stats Cards',           href: '/components/stats-cards',           status: 'stable' },
+      { label: 'Metric Tile ACGR',      href: '/components/metric-tile-acgr',      status: 'stable' },
       { label: 'Inline Context Data',   href: '/components/inline-context-data',   status: 'stable' },
       { label: 'Clickable Card',        href: '/components/clickable-card',        status: 'stable' },
       { label: 'Page Title',             href: '/components/page-title',            status: 'stable' },

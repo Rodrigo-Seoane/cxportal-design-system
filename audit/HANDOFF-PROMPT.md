@@ -1,7 +1,7 @@
 # CxPortal DS — Component Audit Handoff
 
-_Last refreshed: 2026-09-09 (eleventh pass — Pagination closed). Supersedes
-the earlier 2026-09-09 version.
+_Last refreshed: 2026-09-09 (twelfth pass — Metric Tiles closed; Metric Tile
+ACGR built as a new extra component). Supersedes the earlier 2026-09-09 version.
 **Also fixed this pass:** several turns' worth of `audit/` edits (Modal
 through Vertical Tabs) had been sitting uncommitted on tracked files because
 of a wrong assumption that `audit/` was untracked — it was committed back in
@@ -41,7 +41,7 @@ Batching: Foundations → Global (G1–G5) → Knowledge Management → Campaign
 - `component-audit-seed.csv` — full component list (Section/Batch/Component), already in the sheet
 - `component-audit-fill.csv` — same rows with Figma node IDs and code paths filled
 - `component-audit-fill-2cols.csv` — Figma node + Code path only, for pasting
-- `component-audit-results.csv` — **the live findings log** (27 rows as of 2026-09-09)
+- `component-audit-results.csv` — **the live findings log** (29 rows as of 2026-09-09)
 - `component-audit-results-paste-g1.csv` — Status→Notes block for G1
 - `component-audit-results-paste-g2.csv` — same, full G2 (Button, Alert Messages, Counter, Tooltip, Modal, Toast)
 - `component-audit-results-paste.csv` — same, Foundations batch
@@ -71,7 +71,7 @@ Sheet name wins over code/Figma on conflict:
 - "Voice Controls" — still needs confirmation vs "Distribution Controls"
 - "Metric Tiles" (renamed from "Stats Cards [Metric Tile]" per shadcn convention)
 - Left/Vertical Nav — single row, do not split (Figma has separate Navigation + Nav Item nodes)
-- Extra code-side components added as rows: Chips & Tags (G4), Combobox (G1), Toast (G2), **Table Filter (G4, new this pass)**. Border Radius added as a Foundation.
+- Extra code-side components added as rows: Chips & Tags (G4), Combobox (G1), Toast (G2), Table Filter (G4), **Metric Tile ACGR (G4, new this pass)**. Border Radius added as a Foundation.
 - Prototypes-in-app-only (Collapsible Filters, Markdown, Upload) are "missing" in DS.
 
 ## Progress — Foundations (DONE)
@@ -319,8 +319,9 @@ registry playground doesn't exercise the `actions` slot.
 | Table | major | P0 | complete (Principles 795-2128 + Usage 795-2129) |
 | Table Filter | missing → built | P1 | complete (shared P&U with Table) |
 | Pagination | major | P0 | complete (Principles 797-4236 + Usage 797-4251) |
-| Metric Tiles | — | — | not started |
-| Inline Stats Cards | — | — | not started |
+| Metric Tiles | major | P0 | complete (Principles 966-33127 + Usage 966-33149) |
+| Metric Tile ACGR | missing → built | P1 | complete (shared P&U with Metric Tiles) |
+| Inline Stats Cards | — | — | not started — different Figma node (2216-8007) from Metric Tiles, same code file (stats-cards.tsx) |
 | Inline Context Data | — | — | not started |
 | Chips & Tags | — | — | not started |
 
@@ -398,11 +399,49 @@ confirmed component renders every button smaller than that in at least
 one dimension — component wins per the standing rule since these are
 directly-measured live values, but it's worth a designer call.
 
+Metric Tiles — the existing `StatCard` (in `components/ui/stats-cards.tsx`)
+already maps cleanly onto Figma's "Data Cards / Campaigns" anatomy
+(`814-10561`), so no structural rebuild was needed — but its **category
+icon mapping had 7 of 10 icons wrong**, not a colour/size mismatch, a
+completely different Phosphor icon (verified against "Data Card Icons",
+`814-10540`, per `iconLabel`): `voice-duration` used PhoneCall instead of
+Microphone, `delivery-rate` used CheckCircle instead of BoxArrowUp,
+`response-rate` used ChatCircle instead of UploadSimple, `opt-out` used
+UserMinus instead of SubtitlesSlash, `voice-survey` used Microphone
+instead of UserSound, `voice-notification` used BellSimple instead of
+ListChecks, `sms-notification` used ChatDots instead of ClipboardText.
+Only `sms-sent`, `open-rate`, and `sms-survey` were already right. All 7
+fixed. Icon container background hit the classic wrong-ramp-step bug
+directly on a raw token reference (`--content-action-primary-600`
+instead of `--surface-action-primary-default`) — same recurring pattern,
+new form. Icon inner-glyph sizes, card padding, card gap, Small size's
+min-height (82px vs. Figma's actual 80px) and value font-size (20px vs.
+Figma's actual 18px), and the Decrease-trend arrow colour (pointed at
+`--text-destructive`'s darker error step instead of Figma's actual
+`--error-default`) were all wrong and fixed. **Naming-vs-value leftover
+found:** Figma's `surface="Blue"` variant doesn't render blue at all —
+it's the exact same gray as the table zebra-stripe row. Same category of
+drift as Top Bar's CxPortal-purple accent from earlier in this audit;
+kept the prop name (matches Figma) but flagged the mismatch.
+
+**Metric Tile ACGR — new component, built from scratch.** "Data Card /
+ACGR" (`1969-2493`) turned out to be a genuinely distinct card family
+sharing the same Principles/Usage doc as Metric Tiles but with different
+anatomy entirely: an info-icon affordance next to the label, a
+TDG-assignment caption in place of a trend indicator, and a red "Action"
+alert state with an inline "Assign" CTA replacing the trend-row slot
+rather than adding to it. Zero implementation existed before this pass —
+built as a second export in `stats-cards.tsx` (matching the Chip/Tag
+same-file precedent for closely-related families), registered as its
+own `metric-tile-acgr` slug with its own MDX doc, following the same
+"build genuinely-different missing pieces as their own thing" precedent
+as Table Filter in the previous G4 row.
+
 ## Git state
 
 Branch: **`fix/ds-audit-g1-g2-figma-alignment`** (cut from
 `claude/assign-worker-flow-prototype-rb4ms4`, which is where this work was
-sitting uncommitted by mistake). 23 commits ahead of `main` (2026-09-07 to
+sitting uncommitted by mistake). 24 commits ahead of `main` (2026-09-07 to
 2026-09-09):
 
 1. `fix(tokens): correct action and form-field semantic aliases` — the 4 shared globals.css aliases, landed first because of blast radius
@@ -427,7 +466,8 @@ sitting uncommitted by mistake). 23 commits ahead of `main` (2026-09-07 to
 20. `fix(top-bar): align product theme, instance styling, and a11y to Figma`
 21. `fix(page-title): correct colors, spacing, and DFC controls story to Figma`
 22. `fix(table): correct checkbox/link/header tokens, add row-hover recolor; build Table Filter`
-23. `fix(pagination): correct idle/active button backgrounds and sizing to Figma` — about to be committed
+23. `fix(pagination): correct idle/active button backgrounds and sizing to Figma`
+24. `fix(stats-cards): correct 7 wrong category icons, sizing, and tokens; build Metric Tile ACGR` — about to be committed
 
 Not merged to main, no PR opened yet. Note the branch's ancestry still carries
 22 commits of Assign-to-Worker v2 prototype + Caylent rebrand work that were
@@ -483,7 +523,7 @@ All six docs frames supplied on 2026-09-07 have been read, and Button Icon Small
 
 **Cross-cutting wrong-ramp-step tokens — needs a decision, bigger than one component**
 - `--text-body-primary` (`--neutral-700`, `#373737`) is very likely the wrong
-  ramp step site-wide. Now confirmed on **nine** rows: G1 Checkbox & Radio
+  ramp step site-wide. Now confirmed on **ten** rows: G1 Checkbox & Radio
   (first local workaround, switched to `--neutral-800` directly); Modal's
   Header node (`Text/Body/Primary = #1d1d1d`); Toast's component node (same);
   Horizontal/Vertical Tabs; Left/Vertical Nav (via `nav-item.tsx`'s own
@@ -491,7 +531,8 @@ All six docs frames supplied on 2026-09-07 have been read, and Button Icon Small
   Bar's user-email/icon/instance-label text; Page Title's title text
   (previously wired to the green accent token instead, masking the same
   underlying alias bug until the component was actually compared against
-  Figma); and now Table's header label + default cell text. `--neutral-800`
+  Figma); Table's header label + default cell text; and now Metric Tiles'
+  card label + value text. `--neutral-800`
   (`#1d1d1d`) already exists as the correct value. NOT fixed globally —
   `--text-body-primary` also backs `--color-text-primary`, `--foreground`,
   `--secondary-foreground`, `--accent-foreground`, `--card-foreground`, and
@@ -526,11 +567,14 @@ All six docs frames supplied on 2026-09-07 have been read, and Button Icon Small
   locally, same pattern as above. `--text-on-action-secondary` was
   confirmed wrong a **second** time
   on Vertical Tabs the same session — its Default-state text token reads
-  the identical `#373737`-instead-of-`#1d1d1d` split — and a **third** time
-  on Page Title's chip text. This is now five confirmed tokens in the
-  same wrong-ramp-step family (`--text-body-primary`, `--icon-action`,
-  `--icon-success`, `--text-action`, `--text-on-action-secondary`), hit
-  across eight component rows total — worth asking whether there's a systemic cause (e.g. a bulk
+  the identical `#373737`-instead-of-`#1d1d1d` split — a **third** time
+  on Page Title's chip text — and a **fourth** time on Metric Tile ACGR's
+  Assign-button text (this token is Figma's own name for that button's
+  text colour, `text/on-action/secondary`). This is now five confirmed
+  tokens in the same wrong-ramp-step family (`--text-body-primary`,
+  `--icon-action`, `--icon-success`, `--text-action`,
+  `--text-on-action-secondary`), hit across ten component rows total —
+  worth asking whether there's a systemic cause (e.g. a bulk
   find-replace during the rebrand that landed one ramp step short) rather
   than treating each as an isolated bug.
 - `--surface-action-primary-hover` joins the list too, but with a twist:
@@ -626,6 +670,26 @@ All six docs frames supplied on 2026-09-07 have been read, and Button Icon Small
   no token) in Figma's own component — no other text anywhere in this DS
   uses raw black. Treated as a Figma-authoring slip, bypassed to
   `--neutral-800` instead of matched literally.
+- Metric Tiles: icon weight (fill vs. line) is unverified — Figma's icon
+  assets are flattened SVGs. Switched from `weight="fill"` to
+  `weight="regular"` to match this whole DS's established line-icon
+  convention, an inferred choice.
+- Metric Tile ACGR: both icon glyph colours (`UsersThree` white,
+  `UserFocus` dark) and the info icon's interaction (rendered as purely
+  decorative — no tooltip/click behaviour is specified anywhere in Usage
+  or Principles) are unverified/undefined; flagged in the component's own
+  doc rather than guessed at with false confidence.
+
+**Metric Tiles — "Blue" surface renders gray, needs a designer call**
+- Figma's `surface="Blue"` variant on the Data Card doesn't render blue
+  at all — it uses the exact same `--surface-table-zebra-row` gray
+  (`#f8f8f8`) as every zebra-striped table row in this design system.
+  Kept the prop name (matches Figma's own variant name) but flagged the
+  mismatch as very likely a pre-Caylent-rebrand leftover — same category
+  of naming-vs-value drift as Top Bar's CxPortal-purple accent found
+  earlier in this audit. Worth a designer confirming whether the surface
+  should actually be a light blue tint, or whether the *name* should
+  just be updated to match its current gray value.
 
 **Pagination — 44×44px touch-target requirement, needs a designer call**
 - Usage's own Don'ts explicitly say "Don't make pagination buttons too
@@ -706,8 +770,8 @@ Needs a decision on which surface colour the demo should use.
 1. Paste `component-audit-results-paste-g2.csv` into the sheet — the full G2
    batch (Button, Alert Messages, Counter, Tooltip, Modal, Toast). The whole
    of G3 (Breadcrumb, Horizontal Tabs, Vertical Tabs, Left/Vertical Nav, Top
-   Bar, Page Title) and Table + Table Filter + Pagination (G4 so far) still
-   need their own paste blocks produced.
+   Bar, Page Title) and Table + Table Filter + Pagination + Metric Tiles +
+   Metric Tile ACGR (G4 so far) still need their own paste blocks produced.
 2. Get a designer call on the Figma-internal/docs contradictions logged above:
    old variant model on Usage 742-11289; multi-line Alert vs its own docs;
    Modal's `role="alertdialog"` conflict; Modal's missing `xlarge` Figma frame;
@@ -715,14 +779,17 @@ Needs a decision on which surface colour the demo should use.
    Top Bar's CxPortal-purple-vs-green accent; Page Title's `<h2>`-vs-`<h1>`
    heading-hierarchy tension; Table's keyboard-focus row state (documented,
    unbuilt); Pagination's 44×44px touch-target contradiction and its
-   missing current-page/hover/disabled Figma variants.
+   missing current-page/hover/disabled Figma variants; Metric Tiles' "Blue"
+   surface rendering gray instead of blue.
 3. Decide on the cross-cutting wrong-ramp-step token sweep (see Cross-cutting
    thread above) — six confirmed tokens, `--text-body-primary` alone now
-   hit on nine component rows. Worth asking whether this is one systemic
+   hit on ten component rows. Worth asking whether this is one systemic
    rebrand-migration bug rather than isolated ones.
 4. Audit Combobox (2255-8066) to actually close G1 — still the one hole in that batch.
-5. Continue G4: Table, Table Filter, and Pagination are done. Next — Metric
-   Tiles, Inline Stats Cards, Inline Context Data, Chips & Tags.
+5. Continue G4: Table, Table Filter, Pagination, Metric Tiles, and Metric
+   Tile ACGR are done. Next — Inline Stats Cards (a *different* Figma node,
+   2216-8007, sharing the same `stats-cards.tsx` code file — not the same
+   row as Metric Tiles), Inline Context Data, Chips & Tags.
 6. Add a `select` cellType demo to the Table registry playground for parity
    with chip/tag/switch/filter — skipped this pass (polish, not a Figma
    drift fix) since "Table Field Select" was documented as compose-inline

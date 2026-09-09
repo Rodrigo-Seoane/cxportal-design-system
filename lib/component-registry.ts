@@ -27,7 +27,7 @@ import { DistributionControls } from '@/components/ui/distribution-controls'
 import { Toast } from '@/components/ui/toast'
 import { Tooltip } from '@/components/ui/tooltip'
 import { DismissibleTip } from '@/components/ui/dismissible-tip'
-import { StatCard } from '@/components/ui/stats-cards'
+import { StatCard, MetricTileAcgr } from '@/components/ui/stats-cards'
 import { ClickableCard, ClickableHorizontalCard } from '@/components/ui/clickable-card'
 import { InlineContextData } from '@/components/ui/inline-context-data'
 import { AddressBookIcon, CalendarIcon, TagIcon, UserListIcon, SquaresFourIcon } from '@/components/ui/playground-icons'
@@ -1479,6 +1479,54 @@ export const registry: Record<string, ComponentEntry> = {
       if (String(surface) !== 'white') lines.push(`  surface="${String(surface)}"`)
       if (String(size) !== 'regular')   lines.push(`  size="${String(size)}"`)
       if (String(icon) !== 'sms-sent')  lines.push(`  icon="${String(icon)}"`)
+      lines.push('/>')
+      return lines.join('\n')
+    },
+  },
+
+  // ─── Metric Tile ACGR ────────────────────────────────────────────────────────
+  'metric-tile-acgr': {
+    slug: 'metric-tile-acgr',
+    title: 'Metric Tile ACGR',
+    description:
+      'Data Card for Access Management ACGR contexts. "Only View" shows a TDG-assignment caption; "Action" turns the card into a red alert with an inline Assign CTA instead of a trend indicator.',
+    status: 'stable',
+    scope: { MetricTileAcgr },
+    propSchema: {
+      type: {
+        type: 'chip-select',
+        label: 'Type',
+        options: ['only-view', 'action'],
+        default: 'only-view',
+      },
+      label: {
+        type: 'text',
+        label: 'Label',
+        default: 'Total Agents',
+      },
+      value: {
+        type: 'text',
+        label: 'Value',
+        default: '6,893',
+      },
+      assignedTdgCount: {
+        type: 'text',
+        label: 'Assigned TDGs',
+        default: '3',
+      },
+    },
+    generateCode: ({ type, label, value, assignedTdgCount }) => {
+      const t   = String(type)
+      const l   = String(label)
+      const v   = String(value)
+      const tdg = parseInt(String(assignedTdgCount))
+
+      const lines = ['<MetricTileAcgr']
+      if (l !== 'Total Agents') lines.push(`  label="${l}"`)
+      if (v !== '6,893') lines.push(`  value="${v}"`)
+      if (t !== 'only-view') lines.push(`  type="${t}"`)
+      if (t === 'only-view' && !isNaN(tdg)) lines.push(`  assignedTdgCount={${tdg}}`)
+      if (t === 'action') lines.push(`  onAssign={() => {}}`)
       lines.push('/>')
       return lines.join('\n')
     },
