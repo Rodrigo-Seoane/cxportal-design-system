@@ -99,6 +99,7 @@ const NAV_GROUPS: NavGroup[] = [
       { label: 'Top Bar',               href: '/components/top-bar',               status: 'stable' },
       { label: 'Table',                 href: '/components/table',                 status: 'stable' },
       { label: 'Table Filter',          href: '/components/table-filter',          status: 'stable' },
+      { label: 'Collapsible Filters',   href: '/components/collapsible-filters',   status: 'stable' },
       { label: 'Chips & Tags',          href: '/components/chips',                 status: 'stable' },
       { label: 'Counter',               href: '/components/counter',               status: 'wip'    },
       { label: 'Tabs',                  href: '/components/tabs',                  status: 'stable' },

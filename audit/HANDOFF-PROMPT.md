@@ -1,9 +1,9 @@
 # CxPortal DS — Component Audit Handoff
 
-_Last refreshed: 2026-09-09 (fifteenth pass — G4 closed out its audited rows
-and G5 opened with Instance Cards, a genuinely new composite built from
-scratch with no prior DS component). Supersedes the earlier 2026-09-09
-version.
+_Last refreshed: 2026-09-09 (sixteenth pass — Collapsible Filters built,
+extracted from a real sandbox reference implementation rather than left as
+a raw app-page import; G5 now has Instance Cards and Collapsible Filters
+done). Supersedes the earlier 2026-09-09 versions.
 **Also fixed a prior pass:** several turns' worth of `audit/` edits (Modal
 through Vertical Tabs) had been sitting uncommitted on tracked files because
 of a wrong assumption that `audit/` was untracked — it was committed back in
@@ -43,7 +43,7 @@ Batching: Foundations → Global (G1–G5) → Knowledge Management → Campaign
 - `component-audit-seed.csv` — full component list (Section/Batch/Component), already in the sheet
 - `component-audit-fill.csv` — same rows with Figma node IDs and code paths filled
 - `component-audit-fill-2cols.csv` — Figma node + Code path only, for pasting
-- `component-audit-results.csv` — **the live findings log** (32 rows as of 2026-09-09)
+- `component-audit-results.csv` — **the live findings log** (33 rows as of 2026-09-09)
 - `component-audit-results-paste-g1.csv` — Status→Notes block for G1
 - `component-audit-results-paste-g2.csv` — same, full G2 (Button, Alert Messages, Counter, Tooltip, Modal, Toast)
 - `component-audit-results-paste.csv` — same, Foundations batch
@@ -509,7 +509,7 @@ selected/hover/focus treatment with no Figma backing.
 | Component | Status | Priority | Docs |
 |---|---|---|---|
 | Instance Cards | missing → built | P1 | no Principles/Usage exists yet (user-confirmed) |
-| Collapsible Filters | — | — | not started |
+| Collapsible Filters | missing → built | P1 | complete (Principles 2216-4961 + Usage 2212-8572) |
 | File Tree | — | — | not started (code already exists, unaudited) |
 
 **Instance Cards — new component, built from scratch, no Principles/Usage
@@ -552,11 +552,73 @@ explicitly can't be selected or reordered. Implemented faithfully since
 that's what the live component shows. Added registry entry, stories,
 sidebar nav entry, and `content/components/instance-card.mdx`.
 
+**Collapsible Filters — new component, extracted from a real, shipped
+sandbox reference.** Pulled the component (`2212-5926`: `collapsed`
+boolean × a `filterRows` demo prop showing 2–5 generic Table Filter rows —
+purely a Figma demo affordance, not a real prop), Principles (`2216-4961`),
+and Usage (`2212-8572`). Nothing in `components/ui` implemented this
+pattern, but a `content/components/collapsible-filters.mdx` doc already
+existed (status `stable`, pre-dating this audit row) whose own Code
+section pointed at a **real, shipped** reference implementation —
+`app/sandbox/collapsible-filter/page.tsx`, a 3600+-line Knowledge
+Management list-view prototype containing a page-local `FilterPanel` +
+`TableFilter` + `FilterTagItem` — confirmed genuine (not a fictional
+decoy like Inline Stats Cards' doc pointed at earlier in this audit).
+Extracted the real, reusable pieces into a new
+`components/ui/collapsible-filters.tsx`: `CollapsibleFilters` (panel
+chrome — collapsed/expanded, header, badge, Clear Filters, a composable
+children content area) and `FilterTagItem` (the 32px checkbox+dot+label
+tag row with a hover-revealed Edit/Delete overflow menu). Reused the
+already-built `TableFilter` (from the earlier Table Filter audit row)
+for the generic filter-row anatomy piece instead of duplicating the
+sandbox's own separate, less-correct local `TableFilter`; also reused
+`Checkbox` and `Button`. Built as a composable-children API (matching
+Table's own established "compose, don't bake in every field type"
+precedent) rather than a fixed row-count prop, since the real content
+is one `TableFilter` row plus a distinct Tags section, not N identical
+generic rows. Confirmed the wrong-ramp-step bug an **eighth** time on
+`--text-body-primary` (the "Filters" label). **New bug found via direct
+comparison against the live sandbox reference:** the sandbox's own
+`FilterPanel` uses `variant="form-controls"` (gray border) for the
+expanded-state collapse-toggle button, but Figma's own pulled component
+shows an identical green-bordered `secondary`-style button for *both*
+toggles — built to match the live component, not the sandbox's own
+drift. **New corroborating data point for Instance Card's border-token-
+value-gap thread:** Figma's Usage doc gives `#7a828c` for
+`--text-body-secondary`'s "inactive icon color" slot; this codebase's
+`--text-body-secondary` (`--neutral-400`) resolves to `#8d8d8d` instead —
+the *exact same* wrong hex substitution already flagged on Instance
+Card's `--border-color-surface-active-secondary-hover`, now reinforcing
+that `--neutral-400`'s raw value itself may be wrong site-wide. Added an
+optional `size="compact"` (36px) prop to the existing `TableFilter`
+component — Figma's Collapsible Filters pull shows every embedded Table
+Filter row at 36px, not the already-implemented standalone 40px — the
+same category of context-dependent sizing drift as Pagination's
+Back/Next-in-context finding; default unchanged, so Table Filter's own
+already-audited 40px behavior is untouched elsewhere. **Figma-internal
+prose error, corrected in the doc rather than quoted verbatim:**
+Principles/Anatomy/Variants all call the count badge and TableFilter's
+count pill "blue" (four times) — every real rendering (component
+screenshot, sandbox, doc's own token table) is green, the same category
+as Metric Tiles' "Blue" surface and Top Bar's purple-vs-green. **Stale
+doc token values, not followed:** the doc's own Token Reference table
+lists `--content-action/primary/default` as `#4285f4` (pre-rebrand blue)
+and references `--content-action/secondary` / `--border/subtle`, neither
+of which exists anywhere in this codebase — corrected to the real,
+existing token names and values. **Gap in Figma's own component
+coverage, not a contradiction:** the pulled component has no "collapsed
+with badge" variant modeled at all; built to match Principles, Usage,
+and the live sandbox implementation, which all three agree the badge is
+real. Rewrote `content/components/collapsible-filters.mdx` in full
+(previous version already correctly pointed at the real sandbox, but as
+a raw `app/sandbox/...` import path rather than a real DS export). Added
+registry entry, stories, and sidebar nav entry.
+
 ## Git state
 
 Branch: **`fix/ds-audit-g1-g2-figma-alignment`** (cut from
 `claude/assign-worker-flow-prototype-rb4ms4`, which is where this work was
-sitting uncommitted by mistake). 27 commits ahead of `main` (2026-09-07 to
+sitting uncommitted by mistake). 28 commits ahead of `main` (2026-09-07 to
 2026-09-09):
 
 1. `fix(tokens): correct action and form-field semantic aliases` — the 4 shared globals.css aliases, landed first because of blast radius
@@ -585,7 +647,8 @@ sitting uncommitted by mistake). 27 commits ahead of `main` (2026-09-07 to
 24. `fix(stats-cards): correct 7 wrong category icons, sizing, and tokens; build Metric Tile ACGR`
 25. `feat(inline-stats): build Inline Stats Cards from scratch, replace fictional doc content`
 26. `fix(chip): cover all 30 chip variants, correct wrong colors on Chip and Tag`
-27. `feat(instance-card): build Instance Card from scratch, no Figma docs yet` — about to be committed
+27. `feat(instance-card): build Instance Card from scratch, no Figma docs yet`
+28. `feat(collapsible-filters): extract from the real sandbox reference, fix drift vs Figma` — about to be committed
 
 Not merged to main, no PR opened yet. Note the branch's ancestry still carries
 22 commits of Assign-to-Worker v2 prototype + Caylent rebrand work that were
@@ -641,7 +704,7 @@ All six docs frames supplied on 2026-09-07 have been read, and Button Icon Small
 
 **Cross-cutting wrong-ramp-step tokens — needs a decision, bigger than one component**
 - `--text-body-primary` (`--neutral-700`, `#373737`) is very likely the wrong
-  ramp step site-wide. Now confirmed on **eleven** rows: G1 Checkbox & Radio
+  ramp step site-wide. Now confirmed on **twelve** rows: G1 Checkbox & Radio
   (first local workaround, switched to `--neutral-800` directly); Modal's
   Header node (`Text/Body/Primary = #1d1d1d`); Toast's component node (same);
   Horizontal/Vertical Tabs; Left/Vertical Nav (via `nav-item.tsx`'s own
@@ -650,9 +713,10 @@ All six docs frames supplied on 2026-09-07 have been read, and Button Icon Small
   (previously wired to the green accent token instead, masking the same
   underlying alias bug until the component was actually compared against
   Figma); Table's header label + default cell text; Metric Tiles' card
-  label + value text; and now Inline Stats Cards' label + value text
+  label + value text; Inline Stats Cards' label + value text
   (bypassed from the start, since this was a brand-new component built
-  with the bug already known). `--neutral-800`
+  with the bug already known); and now Collapsible Filters' "Filters"
+  label. `--neutral-800`
   (`#1d1d1d`) already exists as the correct value. NOT fixed globally —
   `--text-body-primary` also backs `--color-text-primary`, `--foreground`,
   `--secondary-foreground`, `--accent-foreground`, `--card-foreground`, and
@@ -711,7 +775,15 @@ All six docs frames supplied on 2026-09-07 have been read, and Button Icon Small
   three tokens are already consumed by `Button` (disabled state) and
   `Checkbox`'s `Radio` (disabled border), so correcting the values has
   real blast radius into components already marked aligned — needs a
-  designer call before changing them, not a silent fix.
+  designer call before changing them, not a silent fix. **Corroborating
+  evidence found on Collapsible Filters:** Figma's Usage doc gives
+  `#7a828c` for `--text-body-secondary`'s ("inactive icon color") slot;
+  this codebase's `--text-body-secondary` (`--neutral-400`) resolves to
+  `#8d8d8d` — the exact same wrong hex substitution, via a *different*
+  token that happens to share the same underlying `--neutral-400`
+  value. Suggests `--neutral-400`'s raw hex itself may be wrong
+  site-wide, not just the one border alias — worth checking as part of
+  the same designer call rather than as a separate issue.
 - `--surface-action-primary-hover` joins the list too, but with a twist:
   blast-radius check found **zero real consumers** anywhere before this
   pass (only the token definition itself and the non-consuming reference
@@ -918,7 +990,8 @@ Needs a decision on which surface colour the demo should use.
    of G3 (Breadcrumb, Horizontal Tabs, Vertical Tabs, Left/Vertical Nav, Top
    Bar, Page Title), G4 (Table, Table Filter, Pagination, Metric Tiles,
    Metric Tile ACGR, Inline Stats Cards, Chips & Tags), and G5 so far
-   (Instance Cards) still need their own paste blocks produced.
+   (Instance Cards, Collapsible Filters) still need their own paste blocks
+   produced.
 2. Get a designer call on the Figma-internal/docs contradictions logged above:
    old variant model on Usage 742-11289; multi-line Alert vs its own docs;
    Modal's `role="alertdialog"` conflict; Modal's missing `xlarge` Figma frame;
@@ -933,22 +1006,27 @@ Needs a decision on which surface colour the demo should use.
    disagreeing with each other about whether sparklines/deltas exist at all;
    Chip's Anatomy prose claiming selected/hover/focus states the real
    component doesn't have; Instance Card's Read Only variant still showing
-   a drag handle it shouldn't be able to use.
+   a drag handle it shouldn't be able to use; Collapsible Filters' own doc
+   calling the count badge "blue" four times when it's green everywhere real.
 3. Decide on the cross-cutting wrong-ramp-step token sweep (see Cross-cutting
-   thread above) — five confirmed tokens, `--text-on-action-secondary` alone
-   now hit seven times (Horizontal/Vertical Tabs, Page Title, Metric Tile
-   ACGR, Chip + Tag simultaneously, and now Instance Card) — the single
-   most-repeated instance in this whole audit. Worth asking whether this is
-   one systemic rebrand-migration bug rather than isolated ones. Also decide
-   on the new, distinct `--border-color-surface-active-secondary-*` token-
-   **value** gap found on Instance Card (correct hex doesn't exist under any
-   token name at all — different problem from the wrong-ramp-step family).
+   thread above) — five confirmed tokens, `--text-body-primary` alone now
+   hit twelve times and `--text-on-action-secondary` seven times (Horizontal/
+   Vertical Tabs, Page Title, Metric Tile ACGR, Chip + Tag simultaneously,
+   and Instance Card) — the single most-repeated instance in this whole
+   audit. Worth asking whether this is one systemic rebrand-migration bug
+   rather than isolated ones. Also decide on the new, distinct
+   `--border-color-surface-active-secondary-*` token-**value** gap found on
+   Instance Card (correct hex doesn't exist under any token name at all —
+   different problem from the wrong-ramp-step family) — now with a second
+   corroborating data point from Collapsible Filters' `--text-body-secondary`
+   (`--neutral-400`) hitting the identical `#8d8d8d`-instead-of-`#7a828c`
+   substitution, suggesting `--neutral-400`'s raw value itself may be wrong.
 4. Audit Combobox (2255-8066) to actually close G1 — still the one hole in that batch.
 5. Close out G4: Inline Context Data is the one remaining hole (code already
    exists at `/components/inline-context-data`, unaudited against Figma).
-6. Continue G5: Instance Cards is done. Collapsible Filters and File Tree
-   remain — File Tree already has code (`/components/file-tree`) but is
-   unaudited against Figma; Collapsible Filters has no code yet.
+6. Continue G5: Instance Cards and Collapsible Filters are done. File Tree
+   remains — it already has code (`/components/file-tree`) but is
+   unaudited against Figma.
 7. Add a `select` cellType demo to the Table registry playground for parity
    with chip/tag/switch/filter — skipped this pass (polish, not a Figma
    drift fix) since "Table Field Select" was documented as compose-inline

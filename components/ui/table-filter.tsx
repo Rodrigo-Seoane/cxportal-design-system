@@ -31,6 +31,14 @@ export interface TableFilterProps {
   showSelectAll?: boolean
   onSelectAll?: () => void
   onClick?: () => void
+  /**
+   * 'regular' (40px, standalone) matches the standalone Table Filter pull.
+   * 'compact' (36px) matches Figma's own Collapsible Filters pull, where
+   * every embedded Table Filter row measures 36px instead — the same
+   * category of context-dependent sizing drift found on Pagination's
+   * Back/Next buttons earlier in this audit.
+   */
+  size?: 'regular' | 'compact'
   className?: string
 }
 
@@ -41,6 +49,7 @@ export function TableFilter({
   showSelectAll = true,
   onSelectAll,
   onClick,
+  size = 'regular',
   className,
 }: TableFilterProps) {
   return (
@@ -53,7 +62,7 @@ export function TableFilter({
         alignItems:   'center',
         gap:           8,
         minWidth:      220,
-        height:        40,
+        height:        size === 'compact' ? 36 : 40,
         padding:       8,
         borderRadius:  8,
         border:       `1px solid ${active ? T.borderActive : T.border}`,

@@ -13,6 +13,7 @@ import {
   TableCheckboxCell,
 } from '@/components/ui/table'
 import { TableFilter } from '@/components/ui/table-filter'
+import { CollapsibleFilters, FilterTagItem } from '@/components/ui/collapsible-filters'
 import { Chip, Tag } from '@/components/ui/chip'
 import { Counter } from '@/components/ui/counter'
 import { Tabs, TabList, Tab, TabPanel, TableIcon } from '@/components/ui/tabs'
@@ -612,6 +613,62 @@ export const registry: Record<string, ComponentEntry> = {
       if (a) lines.push(`  count={${c}}`)
       if (!sel) lines.push('  showSelectAll={false}')
       lines.push('/>')
+      return lines.join('\n')
+    },
+  },
+
+  // ─── Collapsible Filters ────────────────────────────────────────────────────
+  'collapsible-filters': {
+    slug: 'collapsible-filters',
+    title: 'Collapsible Filters',
+    description:
+      'A persistent side panel that collapses to a 48px icon rail or expands to a 240px filter panel, composing Table Filter rows and FilterTagItem rows in its content area.',
+    status: 'stable',
+    scope: { CollapsibleFilters, FilterTagItem, TableFilter },
+    propSchema: {
+      collapsed: {
+        type: 'boolean',
+        label: 'Collapsed',
+        default: false,
+      },
+      activeCount: {
+        type: 'select',
+        label: 'Active count badge',
+        options: ['0', '1', '2', '3'],
+        default: '2',
+      },
+      showClearFilters: {
+        type: 'boolean',
+        label: '"Clear Filters" link',
+        default: true,
+      },
+      showTagsSection: {
+        type: 'boolean',
+        label: 'Tags section',
+        default: true,
+      },
+    },
+    generateCode: ({ collapsed, activeCount, showClearFilters, showTagsSection }) => {
+      const c      = collapsed === true || collapsed === 'true'
+      const count  = Number(activeCount)
+      const clear  = showClearFilters === true || showClearFilters === 'true'
+      const tags   = showTagsSection === true || showTagsSection === 'true'
+
+      const lines = [`<CollapsibleFilters`]
+      lines.push(`  collapsed={${c}}`)
+      lines.push(`  onToggleCollapsed={() => {}}`)
+      if (count > 0) lines.push(`  activeCount={${count}}`)
+      if (clear) lines.push(`  onClearFilters={() => {}}`)
+      lines.push(`>`)
+      lines.push(`  <TableFilter label="Knowledge Base" size="compact" active count={2} onClick={() => {}} />`)
+      if (tags) {
+        lines.push(`  <div>`)
+        lines.push(`    <div style={{ fontSize: 18, color: 'var(--neutral-800)', marginBottom: 8 }}>Tags</div>`)
+        lines.push(`    <FilterTagItem label="status: Archived" dotColor="var(--info-100)" onEdit={() => {}} onDelete={() => {}} />`)
+        lines.push(`    <FilterTagItem label="priority: High" dotColor="var(--success-100)" checked onEdit={() => {}} onDelete={() => {}} />`)
+        lines.push(`  </div>`)
+      }
+      lines.push(`</CollapsibleFilters>`)
       return lines.join('\n')
     },
   },
