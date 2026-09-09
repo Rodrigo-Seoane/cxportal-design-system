@@ -156,9 +156,12 @@ export function TableRow({
   style,
   onMouseEnter,
   onMouseLeave,
+  onFocus,
+  onBlur,
   ...props
 }: TableRowProps) {
   const [hovered, setHovered] = useState(false)
+  const [focused, setFocused] = useState(false)
   const [internalSelected, setInternalSelected] = useState(false)
 
   const isSelectionControlled = controlledSelected !== undefined
@@ -183,17 +186,22 @@ export function TableRow({
       <tr
         aria-selected={selected || undefined}
         aria-disabled={disabled || undefined}
+        {...props}
+        tabIndex={0}
         style={{
           background: bg,
           borderBottom: `1px solid ${T.borderRow}`,
+          outline: focused ? '2px solid var(--content-action-primary-default)' : '2px solid transparent',
+          outlineOffset: -2,
           opacity: disabled ? 0.5 : 1,
-          transition: 'background 120ms ease',
+          transition: 'background 120ms ease, outline-color 120ms ease',
           cursor: disabled ? 'not-allowed' : 'default',
           ...style,
         }}
         onMouseEnter={e => { if (!disabled) setHovered(true); onMouseEnter?.(e) }}
         onMouseLeave={e => { setHovered(false); onMouseLeave?.(e) }}
-        {...props}
+        onFocus={e => { setFocused(true); onFocus?.(e) }}
+        onBlur={e => { setFocused(false); onBlur?.(e) }}
       >
         {children}
       </tr>

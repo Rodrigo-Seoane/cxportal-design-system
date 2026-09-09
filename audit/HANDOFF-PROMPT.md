@@ -1,9 +1,9 @@
 # CxPortal DS — Component Audit Handoff
 
-_Last refreshed: 2026-09-09 (decision-rollout Phases 1–3 complete — global
+_Last refreshed: 2026-09-09 (decision-rollout Phases 1–4 complete — global
 semantic-token repoints, the Colors Foundation Action-color family, and small
-documentation closeouts are verified and committed; Phase 4 Table keyboard
-focus is next).
+documentation closeouts, and Table keyboard focus are verified and committed;
+Phase 5 Modal accessibility is next).
 Eighteenth audit pass was a cross-cutting blue→green /
 old-token sweep, not a per-component Figma pull; found and fixed the
 classic `--content-action-primary-600` bug in 6 components that were never
@@ -776,6 +776,18 @@ resolved state-color inheritance. `npx tsc --noEmit` remains clean.
 
 Next: Phase 4 — make all Table rows keyboard-focusable with a visible focus
 ring and document the behavior.
+
+## Decision rollout — Phase 4 (DONE)
+
+`TableRow` now sets `tabIndex={0}` for every row and tracks focus to render a
+2 px Caylent Green ring. Consumer focus/blur handlers remain composed with the
+component behavior, and disabled rows remain focusable so their state is
+discoverable. The Table accessibility guidance and prior open question now
+describe the implemented behavior. Verified with `npx tsc --noEmit` and the
+live `/components/table` preview: a focused row visibly receives the green
+ring.
+
+Next: Phase 5 — Modal accessibility overhaul.
 
 ## Git state
 
