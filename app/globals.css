@@ -32,7 +32,7 @@
   /* ─── Raw palette (private — do not consume directly in components) ─── */
   --raw-pronetx-greys-200: #cdcdcd;
   --raw-pronetx-greys-300: #adadad;
-  --raw-pronetx-greys-400: #8d8d8d;
+  --raw-pronetx-greys-400: #7a828c;
   --raw-pronetx-greys-600: #525252;
   --raw-pronetx-greys-500: #6f6f6f;
   --raw-blue-100: #d6e2f5;
@@ -153,7 +153,7 @@
   /* ─── Semantic colors (CxPortal/Light) ─── */
   --neutral-200: #cdcdcd;
   --neutral-300: #adadad;
-  --neutral-400: #8d8d8d;
+  --neutral-400: #7a828c;
   --neutral-600: #525252;
   --neutral-500: #6f6f6f;
   --success-100: #ddf4d2;
@@ -293,11 +293,11 @@
   --surface-accent-warning-hover: #815d21;
   --border-color-accent-warning-light: #f7ddb1;
   --border-color-accent-warning-hover: #eaa93c;
-  --border-color-surface-active-primary-disabled: #cfd7c2;
-  --border-color-surface-active-secondary-disabled: #d2e0c8;
+  --border-color-surface-active-primary-disabled: var(--content-action-disabled-300);
+  --border-color-surface-active-secondary-disabled: var(--content-action-disabled-200);
   --surface-action-secondary-disabled: rgba(249, 251, 247, 0);
   --surface-action-terciary-disabled: #f1f5ed;
-  --border-color-surface-active-terciary-disabled: #d2e0c8;
+  --border-color-surface-active-terciary-disabled: var(--content-action-disabled-200);
   --text-on-action-disabled: #cfd7c2;
   --icon-on-action-disabled: #cfd7c2;
 
@@ -305,7 +305,7 @@
   --message-title: "Message Title";
 
   /* ─── Context (Text / Icon / Surface / Border) — full alias set from Figma live query ─── */
-  --text-body-primary: var(--neutral-700);
+  --text-body-primary: var(--neutral-800);
   --text-body-secondary: var(--neutral-400);
   --text-body-on-dark-surface: var(--neutral-100);
   --text-action: var(--content-action-primary-600);
@@ -315,7 +315,7 @@
   --text-error: var(--error-default);
   --text-destructive: var(--error-500);
   --text-on-action-primary: var(--neutral-50);
-  --text-on-action-secondary: var(--neutral-700);
+  --text-on-action-secondary: var(--neutral-800);
   --text-on-action-transparent: var(--content-action-primary-default);
   --text-form-field-placeholder: var(--neutral-400);
   --text-form-field-hover: var(--content-action-primary-500);
@@ -380,6 +380,7 @@
   /* NT Menu (module tree nav redesign) */
   --border-color-surface-active-highlight-active: var(--raw-caylent-green-200);
   --border-color-surface-active-highlight-active-hover: var(--raw-caylent-green-200);
+  --border-color-surface-active-highlight-active-disabled: var(--neutral-200);
   --border-color-accent-success-light: var(--success-200);
   --border-color-accent-success-dark: var(--success-600);
   --border-color-accent-success-hover: var(--success-default);

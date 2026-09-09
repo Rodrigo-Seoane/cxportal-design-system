@@ -29,7 +29,7 @@ export const SEMANTIC_GROUPS: ColorGroup[] = [
       { name: 'Neutral/100', token: 'neutral-100', hex: '#efefef' },
       { name: 'Neutral/200', token: 'neutral-200', hex: '#cdcdcd' },
       { name: 'Neutral/300', token: 'neutral-300', hex: '#adadad' },
-      { name: 'Neutral/400', token: 'neutral-400', hex: '#8d8d8d' },
+      { name: 'Neutral/400', token: 'neutral-400', hex: '#7a828c' },
       { name: 'Neutral/500', token: 'neutral-500', hex: '#6f6f6f' },
       { name: 'Neutral/600', token: 'neutral-600', hex: '#525252' },
       { name: 'Neutral/700', token: 'neutral-700', hex: '#373737' },

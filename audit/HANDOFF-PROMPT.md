@@ -1,6 +1,8 @@
 # CxPortal DS — Component Audit Handoff
 
-_Last refreshed: 2026-09-09 (eighteenth pass — a cross-cutting blue→green /
+_Last refreshed: 2026-09-09 (decision-rollout Phase 1 complete — global
+semantic-token repoints verified and committed; Phase 2, the Colors Foundation
+Action-color family pass, is next). Eighteenth audit pass was a cross-cutting blue→green /
 old-token sweep, not a per-component Figma pull; found and fixed the
 classic `--content-action-primary-600` bug in 6 components that were never
 part of any seed batch, plus a matching MDX-prose sweep). Supersedes the
@@ -736,6 +738,21 @@ connector line, and tag-chip text all render green; ClickableCard's
 category-icon background and selected-state border+radio-dot both render
 green. `tsc --noEmit` clean across the whole repo (21 files changed).
 
+## Decision rollout — Phase 1 (DONE)
+
+Applied the user-approved global-token mapping. `--text-body-primary` and
+`--text-on-action-secondary` now resolve to `--neutral-800` (`#1d1d1d`);
+`--neutral-400` now resolves to `#7a828c` in both the CSS token layer and the
+foundations token catalogs; and the approved disabled/highlight border aliases
+now point at their semantic sources rather than raw literals. Added the missing
+`--border-color-surface-active-highlight-active-disabled` token. Restored Toast
+success icons to the verified shared `--icon-success` alias (`#87d95e`) and
+corrected its MDX token value.
+
+Verified with `npx tsc --noEmit` and browser checks of Table, Modal, and the
+persistent Sidebar. Next: Phase 2 — update the Colors Foundation Action-color
+family display to its current, corrected token values.
+
 ## Git state
 
 Branch: **`fix/ds-audit-g1-g2-figma-alignment`** (cut from
@@ -772,7 +789,7 @@ sitting uncommitted by mistake). 30 commits ahead of `main` (2026-09-07 to
 27. `feat(instance-card): build Instance Card from scratch, no Figma docs yet`
 28. `feat(collapsible-filters): extract from the real sandbox reference, fix drift vs Figma`
 29. `fix(file-tree): correct selected-state colors, add hover state and keyboard nav`
-30. `fix(ds): sweep the classic wrong-ramp-step bug and stale "blue" prose across un-audited components` — about to be committed
+30. `fix(ds): sweep the classic wrong-ramp-step bug and stale "blue" prose across un-audited components`
 
 Not merged to main, no PR opened yet. Note the branch's ancestry still carries
 22 commits of Assign-to-Worker v2 prototype + Caylent rebrand work that were
@@ -857,13 +874,16 @@ All six docs frames supplied on 2026-09-07 have been read, and Button Icon Small
   foundation has clearly gone stale for the whole Action-color family and
   needs its own re-pass; not touched here, out of scope for a single
   component row.
-- `--icon-success` (`--success-300`, `#87d95e`) is also very likely wrong —
-  Toast's own MDX already documented the correct value (`#4b9924` =
-  `--success-500`) before this audit even touched it. Not repointed globally
-  because Message Box also consumes `--icon-success` and wasn't re-verified
-  against Figma this pass; Toast's CheckCircle now points at `--success-500`
-  directly instead. Worth a quick Message Box re-check, then decide on the
-  global alias.
+- **RESOLVED (2026-09-09):** `--icon-success` was suspected wrong based on
+  Toast's own MDX, which had documented `#4b9924` (`--success-500`) as the
+  correct value. A direct `get_variable_defs` read on the real Alert
+  Messages/Message Box success-icon node (`2788:21153`) instead returned
+  `Icon/Success: #87d95e` — exactly matching the *current*
+  `--icon-success` → `--success-300` alias. The shared alias was correct
+  all along; Toast's own MDX had the stale value, and Toast's `CheckCircle`
+  (which had been pointed at `--success-500` directly to route around the
+  suspected bug) has been reverted to consume `--icon-success` again.
+  Fixed in `components/ui/toast.tsx` and `content/components/toast.mdx`.
 - `--text-action` (`--content-action-primary-600`, `#204704`) and
   `--text-on-action-secondary` (`--neutral-700`, `#373737`) join the list —
   both confirmed wrong by direct Figma reads on Horizontal Tabs (should be
@@ -882,12 +902,13 @@ All six docs frames supplied on 2026-09-07 have been read, and Button Icon Small
   time simultaneously on Chip AND Tag's dark label text — and now a
   **seventh** time on Instance Card's Default/Hover/Multi-Select text,
   the single most-repeated instance of this alias bug in this whole
-  audit. This is now five confirmed tokens in the same wrong-ramp-step
-  family (`--text-body-primary`, `--icon-action`, `--icon-success`,
-  `--text-action`, `--text-on-action-secondary`), hit across fourteen
-  component rows total — worth asking whether there's a systemic cause
-  (e.g. a bulk find-replace during the rebrand that landed one ramp step
-  short) rather than treating each as an isolated bug.
+  audit. This is now four confirmed tokens in the same wrong-ramp-step
+  family (`--text-body-primary`, `--icon-action`, `--text-action`,
+  `--text-on-action-secondary`) — `--icon-success` was cleared by direct
+  variable read, see above — hit across fourteen component rows total —
+  worth asking whether there's a systemic cause (e.g. a bulk find-replace
+  during the rebrand that landed one ramp step short) rather than treating
+  each as an isolated bug.
 - **New, distinct from the wrong-ramp-step family above:** Instance
   Card's Default/Hover/Disabled secondary border colors — Figma's real
   hex values (`#aab0b8`, `#7a828c`, `#eff1f3`) don't match `--border-
@@ -1137,19 +1158,12 @@ Needs a decision on which surface colour the demo should use.
    single worst instance of the pre-rebrand-blue-leftover pattern this whole
    audit has found, worth asking whether it's the same root cause as Metric
    Tiles'/Collapsible Filters' milder versions of the same thing.
-3. Decide on the cross-cutting wrong-ramp-step token sweep (see Cross-cutting
-   thread above) — five confirmed tokens, `--text-body-primary` alone now
-   hit thirteen times and `--text-on-action-secondary` seven times (Horizontal/
-   Vertical Tabs, Page Title, Metric Tile ACGR, Chip + Tag simultaneously,
-   and Instance Card) — the single most-repeated instance in this whole
-   audit. Worth asking whether this is one systemic rebrand-migration bug
-   rather than isolated ones. Also decide on the new, distinct
-   `--border-color-surface-active-secondary-*` token-**value** gap found on
-   Instance Card (correct hex doesn't exist under any token name at all —
-   different problem from the wrong-ramp-step family) — now with a second
-   corroborating data point from Collapsible Filters' `--text-body-secondary`
-   (`--neutral-400`) hitting the identical `#8d8d8d`-instead-of-`#7a828c`
-   substitution, suggesting `--neutral-400`'s raw value itself may be wrong.
+3. **Completed in Decision rollout Phase 1:** apply the approved global
+   token mappings for the recurring wrong-ramp-step family and the
+   `--neutral-400` value correction. Next is the Colors Foundation Action-color
+   family pass (see the Decision rollout section above). The separate
+   `--border-color-surface-active-secondary-*` token-value gap remains a
+   designer follow-up.
 4. Audit Combobox (2255-8066) to actually close G1 — still the one hole in that batch.
 5. Close out G4: Inline Context Data is the one remaining hole (code already
    exists at `/components/inline-context-data`, unaudited against Figma).

@@ -78,7 +78,7 @@ function LoadingIcon() {
 
 function ToastIcon({ type }: { type: ToastType }) {
   switch (type) {
-    case 'success': return <CheckCircleIcon size={16} color="var(--success-500)" weight="regular" />
+    case 'success': return <CheckCircleIcon size={16} color="var(--icon-success)" weight="regular" />
     case 'error':   return <XCircleIcon     size={16} color="var(--icon-error)" weight="regular" />
     case 'warning': return <WarningIcon     size={16} color="var(--icon-warning)" weight="regular" />
     case 'info':    return <InfoIcon        size={16} color="var(--icon-info)" weight="regular" />
