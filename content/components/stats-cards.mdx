@@ -54,7 +54,7 @@ A Stats Card is composed of four parts:
     <TableRow>
       <TableCell><strong>Blue</strong></TableCell>
       <TableCell><code>#f8f8f8</code></TableCell>
-      <TableCell>Highlighted or selected cards; subtle emphasis. Despite the name, this surface doesn't render blue at all in Figma — it's the same gray used for the table zebra-stripe row. Likely a pre-rebrand name left over from before this token pointed at a different color — see Open questions.</TableCell>
+      <TableCell>Highlighted or selected cards; subtle emphasis. Despite the name, this surface renders as the same gray used for the table zebra-stripe row.</TableCell>
     </TableRow>
   </TableBody>
 </Table>
@@ -227,7 +227,7 @@ import { StatCard } from '@/components/ui/stats-cards'
 </div>
 ```
 
-### Small size / blue surface
+### Small size / gray `surface="blue"`
 
 ```tsx
 <StatCard
@@ -256,5 +256,4 @@ import { StatCard } from '@/components/ui/stats-cards'
 
 - **7 of the 10 category icons were mapped to the wrong Phosphor icon entirely** — not a colour or size mismatch, a semantically different icon. Verified directly against Figma's "Metric Tile Icons" component (`814-10540`) per `iconLabel`: `voice-duration` → Microphone (was PhoneCall), `delivery-rate` → BoxArrowUp (was CheckCircle), `response-rate` → UploadSimple (was ChatCircle), `opt-out` → SubtitlesSlash (was UserMinus), `voice-survey` → UserSound (was Microphone), `voice-notification` → ListChecks (was BellSimple), `sms-notification` → ClipboardText (was ChatDots). Only `sms-sent`, `open-rate`, and `sms-survey` were already correct. All corrected.
 - **Icon weight is unverified.** Figma's icon assets are flattened SVG exports with no readable Phosphor weight attribute. The previous code used `weight="fill"` (solid); switched to `weight="regular"` to match this design system's established line-icon convention used everywhere else (nav items, table actions, etc.) — an inferred, not Figma-confirmed, choice.
-- **"Blue" surface renders gray, not blue.** Figma's `surface="Blue"` variant uses the same `--surface-table-zebra-row` gray (`#f8f8f8`) as every other "zebra" surface in this design system — there is no blue anywhere in the component. Kept the prop name since it matches Figma's own variant name, but flagging the mismatch: this is very likely a pre-Caylent-rebrand leftover (the surface probably was a light blue tint before the rebrand swept it to gray) whose *name* never got updated to match its *current* value, the same category of leftover found on Top Bar's CxPortal-purple accent earlier in this audit.
-- **`MetricTileAcgr`'s icon glyph colors are unverified.** Both the "Only View" `UsersThree` icon and the "Action" `UserFocus` icon are baked SVG assets in Figma with no readable fill color — `--neutral-0` (white) and `--neutral-800` (dark) respectively were chosen to match what's visible in the screenshot, not confirmed against an actual token reference.
+- **Resolved: the `surface="blue"` prop is intentionally retained for Figma/API compatibility, while its actual surface is `--surface-table-zebra-row` gray (`#f8f8f8`).**

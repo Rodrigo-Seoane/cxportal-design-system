@@ -197,7 +197,7 @@ import { Breadcrumb } from '@/components/ui/breadcrumbs'
     <TableRow>
       <TableCell>Caret icon size</TableCell>
       <TableCell>12×12 px</TableCell>
-      <TableCell><code>CaretRightIcon</code> separator, coloured <code>--neutral-300</code> (unverified — baked SVG asset, matched to the existing inline breadcrumb JSX's own convention)</TableCell>
+      <TableCell><code>CaretRightIcon</code> separator, coloured <code>--neutral-300</code>. The glyph inherits this assigned component color.</TableCell>
     </TableRow>
     <TableRow>
       <TableCell>Item padding</TableCell>
@@ -212,14 +212,14 @@ import { Breadcrumb } from '@/components/ui/breadcrumbs'
   </TableBody>
 </Table>
 
-### Open questions — Figma is internally inconsistent here, not resolved
+### Figma documentation conflict — resolved
 
 The live Figma **component** (node `1933-2500`) renders every label — ancestor and current alike — in `text/on-action/transparent` (`#3a8015`, the same green as link text elsewhere in the DS). But the two documentation frames disagree with the component **and with each other**:
 
 - Principles (`2303-5400`) Anatomy items 5–6 and the Usage (`2303-5312`) Accessibility note both say ancestor and current labels use `--text/breadcrumb` at `#323840` — a token that doesn't exist anywhere in this codebase.
 - The Usage doc's own Token Reference table instead lists `--text/body/secondary` at `#7a828c` for the same "all breadcrumb text" row — a third value, and one that doesn't match the codebase's actual `--text-body-secondary` (`#8d8d8d`) either.
 
-Per this design system's audit convention, the component instance wins over prose docs, so the built component uses the green. But a bold, non-interactive "current page" label rendered in link-green is worth a second look from a designer — the Principles doc's own emphasis on the current page being visually distinct from clickable ancestors argues against it. Flagged for a decision, not silently changed.
+The confirmed decision is to keep the live component's green `--text-on-action-transparent` color for both ancestor links and the current-page label. The semibold, non-interactive current-page treatment remains its distinguishing affordance; the contradictory Figma prose is not implemented.
 
 Also unresolved:
 - No prop exists yet for middle-truncating labels past 200px (Usage DO's truncation allowance) — not built.
@@ -231,4 +231,4 @@ Also unresolved:
 - The Home icon's link carries `aria-label="Home"`.
 - `CaretRightIcon` separators carry `aria-hidden="true"` — never rendered as literal `/` or `›` characters.
 - Ancestor items are real `next/link` anchors. The current page item is a `<span>` with `aria-current="page"`, not a link.
-- The 10 px label size is below the WCAG-recommended 12px minimum for body text; Figma's Usage doc accepts this because breadcrumbs are supplementary navigation, not primary content, provided contrast still passes AA at whatever colour is finalized (see **Open questions** above).
+- The 10 px label size is below the WCAG-recommended 12px minimum for body text; Figma's Usage doc accepts this because breadcrumbs are supplementary navigation, not primary content, provided contrast passes AA with the confirmed green label color.

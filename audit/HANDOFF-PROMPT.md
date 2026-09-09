@@ -1,8 +1,9 @@
 # CxPortal DS — Component Audit Handoff
 
-_Last refreshed: 2026-09-09 (decision-rollout Phases 1–2 complete — global
-semantic-token repoints and the Colors Foundation Action-color family are
-verified and committed; Phase 3 small documentation closeouts is next).
+_Last refreshed: 2026-09-09 (decision-rollout Phases 1–3 complete — global
+semantic-token repoints, the Colors Foundation Action-color family, and small
+documentation closeouts are verified and committed; Phase 4 Table keyboard
+focus is next).
 Eighteenth audit pass was a cross-cutting blue→green /
 old-token sweep, not a per-component Figma pull; found and fixed the
 classic `--content-action-primary-600` bug in 6 components that were never
@@ -764,6 +765,17 @@ corrections. Verified with `npx tsc --noEmit` and the `/foundations/colors`
 browser page (Neutral/400 visibly renders as `#7a828c`).
 
 Next: Phase 3 — small documentation closeouts.
+
+## Decision rollout — Phase 3 (DONE)
+
+Closed the approved documentation decisions: Stats Cards retains
+`surface="blue"` for API compatibility while documenting its actual gray
+surface; Breadcrumb retains the live green current-page color; and the Radio,
+Button, Metric Tile ACGR, and Breadcrumb glyph-color notes now document their
+resolved state-color inheritance. `npx tsc --noEmit` remains clean.
+
+Next: Phase 4 — make all Table rows keyboard-focusable with a visible focus
+ring and document the behavior.
 
 ## Git state
 

@@ -156,5 +156,5 @@ import { MetricTileAcgr } from '@/components/ui/stats-cards'
 
 ## Open questions
 
-- **Icon glyph colors are unverified.** Both `UsersThree` (Only View) and `UserFocus` (Action) are baked SVG assets in Figma with no readable fill color — white and dark neutral were chosen to match the screenshot, not confirmed against a token.
+- **Resolved: icon glyph colors inherit their containing state color.** `UsersThree` inherits the Only View card's light foreground (`--neutral-0`); `UserFocus` inherits the Action card's dark foreground (`--neutral-800`).
 - **The info icon's interaction is undefined.** Figma shows a static `WarningCircle` glyph next to the label in both states with no described behavior in Usage or Principles. Rendered as purely decorative here — flag if product requirements call for a tooltip or click handler.
