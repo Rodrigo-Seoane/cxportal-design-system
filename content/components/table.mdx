@@ -49,7 +49,7 @@ Use typography weight, colour, and spacing to differentiate between headers, dat
     </TableRow>
     <TableRow>
       <TableCell><strong>Header Cell</strong> (<code>TableHead</code>)</TableCell>
-      <TableCell>Individual <code>&lt;th&gt;</code> with label and optional sort indicator (CaretUpDown)</TableCell>
+      <TableCell>Individual <code>&lt;th&gt;</code> with an optional leading <code>icon</code> (16px), label, and optional sort indicator (CaretUpDown)</TableCell>
     </TableRow>
     <TableRow>
       <TableCell><strong>Table Body</strong></TableCell>
@@ -74,6 +74,10 @@ Use typography weight, colour, and spacing to differentiate between headers, dat
     <TableRow>
       <TableCell><strong>Table Caption</strong></TableCell>
       <TableCell>Optional visible/screen-reader caption anchored below the table</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><strong>Table Filter</strong> (<code>TableFilter</code>)</TableCell>
+      <TableCell>Standalone filter trigger placed above the table — shows a count badge and green border once at least one filter is applied</TableCell>
     </TableRow>
   </TableBody>
 </Table>
@@ -129,12 +133,12 @@ Use typography weight, colour, and spacing to differentiate between headers, dat
     <TableRow>
       <TableCell><strong>Hover</strong></TableCell>
       <TableCell><code>#fbfcf2</code></TableCell>
-      <TableCell>Subtle blue tint</TableCell>
+      <TableCell>Subtle green tint. "Default"/"link" cell text also repaints to the action green (see Cell content types below) — confirmed directly off Figma's live component, not just this row-background claim.</TableCell>
     </TableRow>
     <TableRow>
       <TableCell><strong>Selected</strong></TableCell>
       <TableCell><code>#d0ecc1</code></TableCell>
-      <TableCell>Accent background + checked checkbox</TableCell>
+      <TableCell>Accent background + checked checkbox. Usage's own prose gives a different, pre-rebrand-blue value (<code>#EAEFF8</code>) that matches no current token — see Open questions.</TableCell>
     </TableRow>
     <TableRow>
       <TableCell><strong>Disabled</strong></TableCell>
@@ -322,6 +326,11 @@ The component primitives (`TableCell`) are layout-agnostic. Compose these patter
       <TableCell><strong>Actions</strong></TableCell>
       <TableCell><code>Button</code> <code>variant="secondary"</code> <code>size="icon-xs"</code> (compact) or <code>"icon-sm"</code> (wide)</TableCell>
       <TableCell>Right</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><strong>Select trigger</strong></TableCell>
+      <TableCell>Inline icon (18px, e.g. <code>FolderOpenIcon</code>) or <code>Counter</code> + label + <code>CaretDownIcon</code> (16px), <code>gap-[8px]</code>, no border/background chrome — matches Figma's "Table Field Select" component. Composed inline like Chip/Tag, not a dedicated component (see Open questions).</TableCell>
+      <TableCell>Left</TableCell>
     </TableRow>
   </TableBody>
 </Table>
@@ -527,9 +536,9 @@ function toggleAll(checked: boolean) {
       <TableCell>Checkbox border, sort icon active</TableCell>
     </TableRow>
     <TableRow>
-      <TableCell><code>--text/body/primary</code></TableCell>
-      <TableCell><code>#373737</code></TableCell>
-      <TableCell>Default cell text, header label</TableCell>
+      <TableCell><code>--neutral-800</code></TableCell>
+      <TableCell><code>#1d1d1d</code></TableCell>
+      <TableCell>Default cell text, header label. Figma names this <code>text/body/primary</code>, but that shared alias resolves to the wrong ramp step (<code>#373737</code>) in this codebase — bypassed directly, the same recurring bug found throughout this whole audit.</TableCell>
     </TableRow>
     <TableRow>
       <TableCell><code>--text/body/secondary</code></TableCell>
@@ -537,9 +546,14 @@ function toggleAll(checked: boolean) {
       <TableCell>Muted / secondary cell text, sort icon idle</TableCell>
     </TableRow>
     <TableRow>
-      <TableCell><code>--text/action</code></TableCell>
-      <TableCell><code>#204704</code></TableCell>
-      <TableCell>Link cell text, active sort icon</TableCell>
+      <TableCell><code>--content-action/primary/default</code></TableCell>
+      <TableCell><code>#3a8015</code></TableCell>
+      <TableCell>Link cell text, active sort icon. Figma names this <code>text/action</code>, but that shared alias resolves to the wrong ramp step (<code>#204704</code>) in this codebase — bypassed directly.</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><code>--text/form-field/hover</code></TableCell>
+      <TableCell><code>#366618</code></TableCell>
+      <TableCell>Link cell text on row hover (distinct from the default-text hover recolor, which uses the token above)</TableCell>
     </TableRow>
     <TableRow>
       <TableCell><code>--text/info</code></TableCell>
@@ -547,14 +561,19 @@ function toggleAll(checked: boolean) {
       <TableCell>Visited link cell text</TableCell>
     </TableRow>
     <TableRow>
-      <TableCell><code>--surface/action/primary</code></TableCell>
-      <TableCell><code>#204704</code></TableCell>
+      <TableCell><code>--surface/action/primary-default</code></TableCell>
+      <TableCell><code>#3a8015</code></TableCell>
       <TableCell>Checkbox checked fill</TableCell>
     </TableRow>
     <TableRow>
-      <TableCell><code>--content-action/primary/300</code></TableCell>
+      <TableCell><code>--border-color/surface-active/primary-default</code></TableCell>
       <TableCell><code>#629944</code></TableCell>
-      <TableCell>Checkbox hover fill</TableCell>
+      <TableCell>Checkbox idle + checked border (same border both states — only Hover gets a distinct one, below)</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><code>--surface/action/primary-hover</code></TableCell>
+      <TableCell><code>#366618</code></TableCell>
+      <TableCell>Checkbox hover fill + border (both this value)</TableCell>
     </TableRow>
     <TableRow>
       <TableCell>Header font</TableCell>
@@ -596,6 +615,11 @@ function toggleAll(checked: boolean) {
       <TableCell>18 px</TableCell>
       <TableCell><code>CaretUpDown / CaretUp / CaretDown</code></TableCell>
     </TableRow>
+    <TableRow>
+      <TableCell>Header label → icon gap</TableCell>
+      <TableCell>8 px</TableCell>
+      <TableCell>Between the label and the leading icon / sort indicator. Corrected from 4px.</TableCell>
+    </TableRow>
   </TableBody>
 </Table>
 
@@ -611,3 +635,13 @@ function toggleAll(checked: boolean) {
 - Maintain a 4.5 : 1 contrast ratio for all cell text; the design tokens meet this threshold.
 - Visible focus rings are inherited from the global focus styles — do not suppress `outline` on table rows or cells.
 - Announce selection count changes to screen readers by pairing the table with a live region (e.g. `aria-live="polite"`) in the toolbar that reads "3 of 12 rows selected".
+
+## Open questions
+
+- **Row-hover text recolor** — Figma's live "Table Fields Wide/Compact" components confirm that on row hover, `default`-variant cell text repaints to the action green and `link`-variant text repaints to a slightly darker hover green — consistently across both density pulls. This wasn't implemented at all before this pass (`TableCell` had no row-hover awareness); now implemented via a shared row-hover context. `secondary` and `visited` variants have no Hover variant anywhere in Figma, so they intentionally stay static — don't generalize the recolor to them.
+- **Selected-row background (`#EAEFF8`) and header text color (`Text/Body/Secondary #7C7B8B`) in Usage's own prose tables are stale pre-rebrand values** — neither matches any current token or the live component. Same stale-doc pattern found repeatedly throughout this whole audit (Alert Messages, Dropdown, Switch, Top Bar, Page Title, etc.). The actual "Table Title" header-cell component renders labels in `text/body/primary`, not a muted secondary — component wins, kept as-is; not corrected in Figma.
+- **"Table Field Select" has no dedicated component** — Figma's `273-18568` node is just a closed trigger (icon-or-Counter + label + caret, no border/background, no dropdown panel modeled). Documented as a compose-inline pattern in Cell content types above, matching how Chip/Tag/Switch/Progress-Bar are already handled — building a dedicated component would duplicate the DS's existing full-featured `Select` component for a narrower, chrome-less use case that isn't clearly justified by what Figma actually models.
+- **Checkbox row states, corrected** — `TableRowCheckbox` (`69-1469`) confirmed the idle/unchecked box border was pointing at the wrong ramp step (`--content-action-primary-600`, dark, should be `--border-color-surface-active-primary-default` #629944 — the same value the checked state already used, just not idle), and the hover fill/border was pointing at an entirely wrong token family (`--content-action-primary-300`, which is actually the *idle* border color, not a hover fill at all) instead of `--surface-action-primary-hover` / `--border-color-surface-active-primary-hover` (#366618, matching this whole audit's established "hover = -500 step" convention). Both fixed. The disabled-state border was also off by one token (`--content-action-disabled-300` = `#cfd7c2` vs. Figma's actual `--border-color-disabled` = `#cdcdcd`) — a subtle, easy-to-miss near-miss, now fixed.
+- **Two dead tokens removed** — `borderActive` and `textDisabled` were defined in the component's token block but never consumed anywhere in the code. Disabled rows already get their muted look from `opacity: 0.5` on the whole `<tr>`, matching Usage's own "Disabled | Reduced opacity" description, so no separate disabled-text color was needed.
+- **Keyboard focus / "Active" row state — flagged, not built.** Usage's own Table Row States table lists a fourth state, "Active/Focused" ("Row has keyboard focus" → "Focus ring or highlight"), and the Accessibility section explicitly requires visible focus states and Tab/Arrow-key navigation. `TableRow` currently has no `tabIndex`, no focus tracking, and no visible focus ring. Not implemented this pass — Figma gives no exact visual spec beyond "focus ring or highlight," and deciding which rows should even become keyboard-focusable (all rows? only rows with an `onClick`?) is a real product decision, not a token-alignment fix. Worth a designer/dev call.
+- **`Chip`/`Tag`/`Switch` colors themselves were not re-verified** — the registry's demo cell snippets now call the DS's real `Chip`, `Tag`, and `Switch` components (previously hand-rolled `<span>`/`<div>` markup with several stale pre-rebrand hex values) rather than duplicating their styling inline. Chips & Tags has its own dedicated row later in this G4 batch — this pass only fixed the *duplication*, not a fresh Figma audit of those components' own internals.

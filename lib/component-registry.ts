@@ -12,6 +12,7 @@ import {
   TableCheckboxHead,
   TableCheckboxCell,
 } from '@/components/ui/table'
+import { TableFilter } from '@/components/ui/table-filter'
 import { Chip, Tag } from '@/components/ui/chip'
 import { Counter } from '@/components/ui/counter'
 import { Tabs, TabList, Tab, TabPanel, TableIcon } from '@/components/ui/tabs'
@@ -429,6 +430,10 @@ export const registry: Record<string, ComponentEntry> = {
       TableCell,
       TableCheckboxHead,
       TableCheckboxCell,
+      TableFilter,
+      Chip,
+      Tag,
+      Switch,
       Button,
     },
     propSchema: {
@@ -471,48 +476,31 @@ export const registry: Record<string, ComponentEntry> = {
       const chkHead  = sel  ? `\n        <TableCheckboxHead />` : ''
       const chkCell  = (row: string) => sel ? `\n          <TableCheckboxCell ariaLabel="Select ${row}" />` : ''
 
-      // ── Inline cell content per type (tokens from Figma node 69-1408) ──────
+      // ── Inline cell content per type — reuses the DS's real Chip/Tag/
+      // Switch/TableFilter components rather than hand-rolled markup, per
+      // Figma node 69-1408 "Table Fields Wide" / 422-7991 "Table Fields
+      // Compact" (Chip/Tag/Switch types) and 71-16179 "Table Filter" ──────
       const chipCell = [
         `          <TableCell>`,
-        `            <span style={{ display: 'inline-flex', alignItems: 'center', gap: 8,`,
-        `              background: '#d6e2f5', borderRadius: 8, padding: '4px 12px',`,
-        `              fontSize: 10, fontWeight: 600, color: '#021920', whiteSpace: 'nowrap' }}>`,
-        `              Current`,
-        `            </span>`,
+        `            <Chip label="Current" />`,
         `          </TableCell>`,
       ].join('\n')
 
       const tagCell = [
         `          <TableCell>`,
-        `            <span style={{ display: 'inline-flex', alignItems: 'center',`,
-        `              background: '#d9dce0', borderRadius: 16, padding: '4px 12px',`,
-        `              fontSize: 10, fontWeight: 600, color: '#021920', whiteSpace: 'nowrap' }}>`,
-        `              Audience`,
-        `            </span>`,
+        `            <Tag label="Audience" value="2" type="with-value" />`,
         `          </TableCell>`,
       ].join('\n')
 
       const switchCell = [
         `          <TableCell>`,
-        `            <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8 }}>`,
-        `              <div style={{ width: 41, height: 22, background: '#4285f4',`,
-        `                borderRadius: 11, position: 'relative', flexShrink: 0 }}>`,
-        `                <div style={{ position: 'absolute', right: 3, top: 3,`,
-        `                  width: 16, height: 16, background: 'white', borderRadius: '50%' }} />`,
-        `              </div>`,
-        `              <span style={{ fontSize: 12, color: '#021920' }}>Yes</span>`,
-        `            </div>`,
+        `            <Switch size="small" checked />`,
         `          </TableCell>`,
       ].join('\n')
 
       const filterCell = [
         `          <TableCell>`,
-        `            <div style={{ display: 'inline-flex', alignItems: 'center', gap: 8,`,
-        `              border: '1px solid #eff1f3', borderRadius: 6, padding: '4px 8px', cursor: 'pointer' }}>`,
-        `              <span style={{ background: '#4285f4', color: 'white', borderRadius: 48,`,
-        `                padding: '2px 6px', fontSize: 10, fontWeight: 600, whiteSpace: 'nowrap' }}>2</span>`,
-        `              <span style={{ fontSize: 12, color: '#021920' }}>Select Option</span>`,
-        `            </div>`,
+        `            <TableFilter label="Select Option" active count={2} />`,
         `          </TableCell>`,
       ].join('\n')
 
@@ -576,6 +564,53 @@ export const registry: Record<string, ComponentEntry> = {
         `      </TableBody>`,
         `    </Table>`,
       ].filter(l => l !== '').join('\n')
+    },
+  },
+
+  // ─── Table Filter ────────────────────────────────────────────────────────────
+  'table-filter': {
+    slug: 'table-filter',
+    title: 'Table Filter',
+    description:
+      'Filter trigger placed above a Table — shows a count badge and green border once at least one filter is applied, plus an inline "select all" shortcut.',
+    status: 'stable',
+    scope: { TableFilter },
+    propSchema: {
+      label: {
+        type: 'text',
+        label: 'Label',
+        default: 'Select Option',
+      },
+      active: {
+        type: 'boolean',
+        label: 'Active',
+        default: false,
+      },
+      count: {
+        type: 'select',
+        label: 'Count',
+        options: ['1', '2', '3'],
+        default: '1',
+      },
+      showSelectAll: {
+        type: 'boolean',
+        label: 'Show "All"',
+        default: true,
+      },
+    },
+    generateCode: ({ label, active, count, showSelectAll }) => {
+      const l   = String(label)
+      const a   = active === true || active === 'true'
+      const c   = Number(count)
+      const sel = showSelectAll === true || showSelectAll === 'true'
+
+      const lines: string[] = ['<TableFilter']
+      if (l !== 'Select Option') lines.push(`  label="${l}"`)
+      if (a) lines.push('  active')
+      if (a) lines.push(`  count={${c}}`)
+      if (!sel) lines.push('  showSelectAll={false}')
+      lines.push('/>')
+      return lines.join('\n')
     },
   },
 

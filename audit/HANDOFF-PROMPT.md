@@ -1,7 +1,7 @@
 # CxPortal DS — Component Audit Handoff
 
-_Last refreshed: 2026-09-08 (ninth pass — Page Title closed, G3 complete).
-Supersedes the earlier 2026-09-08 version.
+_Last refreshed: 2026-09-09 (tenth pass — Table closed, G4 started; Table
+Filter built as a new extra component). Supersedes the earlier 2026-09-08 version.
 **Also fixed this pass:** several turns' worth of `audit/` edits (Modal
 through Vertical Tabs) had been sitting uncommitted on tracked files because
 of a wrong assumption that `audit/` was untracked — it was committed back in
@@ -41,7 +41,7 @@ Batching: Foundations → Global (G1–G5) → Knowledge Management → Campaign
 - `component-audit-seed.csv` — full component list (Section/Batch/Component), already in the sheet
 - `component-audit-fill.csv` — same rows with Figma node IDs and code paths filled
 - `component-audit-fill-2cols.csv` — Figma node + Code path only, for pasting
-- `component-audit-results.csv` — **the live findings log** (24 rows as of 2026-09-08)
+- `component-audit-results.csv` — **the live findings log** (26 rows as of 2026-09-09)
 - `component-audit-results-paste-g1.csv` — Status→Notes block for G1
 - `component-audit-results-paste-g2.csv` — same, full G2 (Button, Alert Messages, Counter, Tooltip, Modal, Toast)
 - `component-audit-results-paste.csv` — same, Foundations batch
@@ -71,7 +71,7 @@ Sheet name wins over code/Figma on conflict:
 - "Voice Controls" — still needs confirmation vs "Distribution Controls"
 - "Metric Tiles" (renamed from "Stats Cards [Metric Tile]" per shadcn convention)
 - Left/Vertical Nav — single row, do not split (Figma has separate Navigation + Nav Item nodes)
-- Extra code-side components added as rows: Chips & Tags (G4), Combobox (G1), Toast (G2). Border Radius added as a Foundation.
+- Extra code-side components added as rows: Chips & Tags (G4), Combobox (G1), Toast (G2), **Table Filter (G4, new this pass)**. Border Radius added as a Foundation.
 - Prototypes-in-app-only (Collapsible Filters, Markdown, Upload) are "missing" in DS.
 
 ## Progress — Foundations (DONE)
@@ -312,12 +312,65 @@ verified live in a temporarily-started Storybook instance since this
 repo has no Storybook server running by default and the docs-site
 registry playground doesn't exercise the `actions` slot.
 
+## Progress — G4 (IN PROGRESS)
+
+| Component | Status | Priority | Docs |
+|---|---|---|---|
+| Table | major | P0 | complete (Principles 795-2128 + Usage 795-2129) |
+| Table Filter | missing → built | P1 | complete (shared P&U with Table) |
+| Pagination | — | — | not started |
+| Metric Tiles | — | — | not started |
+| Inline Stats Cards | — | — | not started |
+| Inline Context Data | — | — | not started |
+| Chips & Tags | — | — | not started |
+
+Table — the existing `components/ui/table.tsx` primitives (`Table`/
+`TableHeader`/`TableBody`/`TableRow`/`TableHead`/`TableCell`/
+`TableCheckboxHead`/`TableCheckboxCell`) are a deliberate, more idiomatic
+composable abstraction of Figma's "Table Fields Wide/Compact" mega-variant
+field component (`69-1408` / `422-7991`) rather than a 1:1 prop-for-prop
+port — confirmed this is the intended architecture by the component's own
+pre-existing "Cell content types" doc section, which already documents
+composing Chip/Tag/Switch/Progress-Bar inline rather than baking every
+Figma field type into `TableCell`. **New behavior confirmed and
+implemented:** Figma's live component (both Wide and Compact pulls,
+independently) recolors `default`- and `link`-variant cell text on row
+Hover — this didn't exist in code at all; implemented via a shared
+row-hover context `TableCell` now consumes. `secondary`/`visited` have no
+Hover variant in Figma, so they intentionally stay static. Table Row
+Checkbox (`69-1469`) uncovered three real bugs in `InlineCheckbox`, none
+previously caught: idle/unchecked border was pointing at the classic
+wrong-ramp-step token (`--content-action-primary-600`) where Figma's idle
+*and* checked states share one border; hover fill was pointing at what's
+actually the *idle* border token, not a hover value at all, where Figma
+wants `--surface-action-primary-hover` (#366618, matching this whole
+audit's "hover = -500 step" convention) for both fill and border; disabled
+border was off by a near-miss hex (`#cfd7c2` vs. Figma's actual `#cdcdcd`).
+All three fixed. Table Title (`571-1533`) has an optional leading-icon
+slot `TableHead` had no support for at all — added — plus its
+label-to-icon gap was 4px where Figma measures 8px — fixed. Two entirely
+unbuilt pieces found: **Table Filter** (`71-16179`) — built as a new,
+separately-registered component, see its own row above — and **Table
+Field Select** (`273-18568`) — documented as a compose-inline cell
+pattern instead (matching the Chip/Tag precedent), since it's just an
+icon-or-Counter + label + caret with no border/chrome and no dropdown
+panel modeled in Figma's pull; a dedicated component would just duplicate
+the DS's existing full-featured `Select` for a narrower case Figma
+doesn't clearly justify as its own thing. **Registry DRY fix:** the
+`chip`/`tag`/`switch`/`filter` cell-type demos in
+`lib/component-registry.ts` previously hand-rolled raw markup with
+several stale pre-rebrand hex values (`#4285f4` blue switch track/filter
+badge, `#021920` text) that duplicated — badly — this codebase's own
+existing `Chip`/`Tag`/`Switch` components; rewired to import and use the
+real components (Chip/Tag/Switch's own internal correctness wasn't
+re-verified — Chips & Tags gets its own row later in this batch).
+
 ## Git state
 
 Branch: **`fix/ds-audit-g1-g2-figma-alignment`** (cut from
 `claude/assign-worker-flow-prototype-rb4ms4`, which is where this work was
-sitting uncommitted by mistake). 21 commits ahead of `main` (2026-09-07 to
-2026-09-08):
+sitting uncommitted by mistake). 22 commits ahead of `main` (2026-09-07 to
+2026-09-09):
 
 1. `fix(tokens): correct action and form-field semantic aliases` — the 4 shared globals.css aliases, landed first because of blast radius
 2. `fix(g1): align form primitives to Figma tokens and sizing`
@@ -339,7 +392,8 @@ sitting uncommitted by mistake). 21 commits ahead of `main` (2026-09-07 to
 18. `fix(nav): align Left/Vertical Nav to Figma; build the NT Menu redesign`
 19. `docs(audit): catch up audit/ commits through Left/Vertical Nav + NT Menu`
 20. `fix(top-bar): align product theme, instance styling, and a11y to Figma`
-21. `fix(page-title): correct colors, spacing, and DFC controls story to Figma` — about to be committed
+21. `fix(page-title): correct colors, spacing, and DFC controls story to Figma`
+22. `fix(table): correct checkbox/link/header tokens, add row-hover recolor; build Table Filter` — about to be committed
 
 Not merged to main, no PR opened yet. Note the branch's ancestry still carries
 22 commits of Assign-to-Worker v2 prototype + Caylent rebrand work that were
@@ -395,15 +449,15 @@ All six docs frames supplied on 2026-09-07 have been read, and Button Icon Small
 
 **Cross-cutting wrong-ramp-step tokens — needs a decision, bigger than one component**
 - `--text-body-primary` (`--neutral-700`, `#373737`) is very likely the wrong
-  ramp step site-wide. Now confirmed on **eight** rows: G1 Checkbox & Radio
+  ramp step site-wide. Now confirmed on **nine** rows: G1 Checkbox & Radio
   (first local workaround, switched to `--neutral-800` directly); Modal's
   Header node (`Text/Body/Primary = #1d1d1d`); Toast's component node (same);
   Horizontal/Vertical Tabs; Left/Vertical Nav (via `nav-item.tsx`'s own
   `text-on-action-secondary` comment noting the same underlying split); Top
-  Bar's user-email/icon/instance-label text; and now Page Title's title
-  text (previously wired to the green accent token instead, masking the
-  same underlying alias bug until the component was actually compared
-  against Figma). `--neutral-800`
+  Bar's user-email/icon/instance-label text; Page Title's title text
+  (previously wired to the green accent token instead, masking the same
+  underlying alias bug until the component was actually compared against
+  Figma); and now Table's header label + default cell text. `--neutral-800`
   (`#1d1d1d`) already exists as the correct value. NOT fixed globally —
   `--text-body-primary` also backs `--color-text-primary`, `--foreground`,
   `--secondary-foreground`, `--accent-foreground`, `--card-foreground`, and
@@ -431,9 +485,12 @@ All six docs frames supplied on 2026-09-07 have been read, and Button Icon Small
   `--text-on-action-secondary` (`--neutral-700`, `#373737`) join the list —
   both confirmed wrong by direct Figma reads on Horizontal Tabs (should be
   `#3a8015` / `#1d1d1d`). `--text-action` alone has real blast radius beyond
-  Tabs: also consumed by `table.tsx`, `Sidebar.tsx`, and several un-audited
-  `open-inventory` components. Tabs bypasses both locally, same pattern as
-  above. `--text-on-action-secondary` was confirmed wrong a **second** time
+  Tabs: this row correctly predicted it was also consumed by `table.tsx` —
+  now confirmed and fixed there too (`textLink`, Table's link-cell text),
+  plus it's still consumed unverified by `Sidebar.tsx` and several
+  un-audited `open-inventory` components. Tabs and Table both bypass it
+  locally, same pattern as above. `--text-on-action-secondary` was
+  confirmed wrong a **second** time
   on Vertical Tabs the same session — its Default-state text token reads
   the identical `#373737`-instead-of-`#1d1d1d` split — and a **third** time
   on Page Title's chip text. This is now five confirmed tokens in the
@@ -510,6 +567,22 @@ All six docs frames supplied on 2026-09-07 have been read, and Button Icon Small
   (version, dates, associations) is documented as a live, non-deprecated
   Figma variant, but no concrete component node showing it was supplied
   this pass — not built, flagged rather than guessed at.
+- Table: keyboard-focus / "Active" row state — Usage's own Table Row
+  States table and Accessibility section both call for a fourth
+  state ("Active/Focused" — focus ring or highlight, keyboard nav
+  required) that `TableRow` has zero support for (no `tabIndex`, no
+  focus tracking, no ring). Not built — Figma gives no exact visual
+  spec, and deciding which rows should even become focusable is a
+  product decision, not a token-alignment fix.
+- Table Filter: Figma models three Active-state digit-count variants
+  (01/02/03) with three hardcoded badge widths; the built component
+  sizes the badge with `minWidth` + padding instead, matching any count
+  without replicating three near-identical variants literally.
+- Table Field Select (`273-18568`): documented as a compose-inline cell
+  pattern (icon-or-Counter + label + caret) rather than built as its own
+  component — no dedicated component node justifies duplicating the
+  DS's existing full-featured `Select` for this narrower, chrome-less
+  case.
 
 **Horizontal Tabs — Figma-internal contradiction, needs a designer call**
 - Principles (`2544-75780`) explicitly caps tab count at "2, 3, or 4 — do not
@@ -580,27 +653,33 @@ Needs a decision on which surface colour the demo should use.
 1. Paste `component-audit-results-paste-g2.csv` into the sheet — the full G2
    batch (Button, Alert Messages, Counter, Tooltip, Modal, Toast). The whole
    of G3 (Breadcrumb, Horizontal Tabs, Vertical Tabs, Left/Vertical Nav, Top
-   Bar, Page Title) still needs its own paste block produced.
+   Bar, Page Title) and Table + Table Filter (G4 so far) still need their own
+   paste blocks produced.
 2. Get a designer call on the Figma-internal/docs contradictions logged above:
    old variant model on Usage 742-11289; multi-line Alert vs its own docs;
    Modal's `role="alertdialog"` conflict; Modal's missing `xlarge` Figma frame;
    Breadcrumb's three-way colour conflict; Horizontal Tabs' 4-vs-5-tab cap;
    Top Bar's CxPortal-purple-vs-green accent; Page Title's `<h2>`-vs-`<h1>`
-   heading-hierarchy tension.
+   heading-hierarchy tension; Table's keyboard-focus row state (documented,
+   unbuilt).
 3. Decide on the cross-cutting wrong-ramp-step token sweep (see Cross-cutting
    thread above) — six confirmed tokens, `--text-body-primary` alone now
-   hit on eight component rows. Worth asking whether this is one systemic
+   hit on nine component rows. Worth asking whether this is one systemic
    rebrand-migration bug rather than isolated ones.
 4. Audit Combobox (2255-8066) to actually close G1 — still the one hole in that batch.
-5. **G3 is done.** Move on to G4 (Data display): Table, Pagination, Metric
+5. Continue G4: Table and Table Filter are done. Next — Pagination, Metric
    Tiles, Inline Stats Cards, Inline Context Data, Chips & Tags.
-6. Decide whether to migrate the 14+ existing inline breadcrumb call sites to
+6. Add a `select` cellType demo to the Table registry playground for parity
+   with chip/tag/switch/filter — skipped this pass (polish, not a Figma
+   drift fix) since "Table Field Select" was documented as compose-inline
+   rather than built as its own component.
+7. Decide whether to migrate the 14+ existing inline breadcrumb call sites to
    the new shared component — not done this pass, flagged only.
-7. Decide whether to consolidate `nav-item.tsx` and `Sidebar.tsx`'s duplicated
+8. Decide whether to consolidate `nav-item.tsx` and `Sidebar.tsx`'s duplicated
    implementations — not done this pass, flagged only.
-8. Test the new NT Menu pattern (`/components/nt-menu`) and decide when to
+9. Test the new NT Menu pattern (`/components/nt-menu`) and decide when to
    wire it into `Sidebar.tsx` as the live default, per the user's own framing.
-9. Decide whether to open a PR for the branch.
+10. Decide whether to open a PR for the branch.
 
 ## Rules for how to read Figma (learned the hard way)
 

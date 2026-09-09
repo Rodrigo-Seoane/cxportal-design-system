@@ -33,22 +33,31 @@ const T = {
   // Borders
   borderRow:      'var(--neutral-100)',
   borderTable:    'var(--neutral-100)',
-  borderActive:   'var(--content-action-primary-600)',
-  borderDisabled: 'var(--content-action-disabled-300)',
   // Text
-  textHeader:     'var(--text-body-primary)',  // header label — Body/Small/sm-semibold
+  // Figma's header label and default cell text both use text/body/primary
+  // (#1d1d1d) — bypassed to --neutral-800 directly since --text-body-primary
+  // itself resolves to the wrong ramp step (#373737) in this codebase, the
+  // same recurring bug found throughout this audit.
+  textHeader:     'var(--neutral-800)',  // header label — Body/Small/sm-semibold
   textSecondary:  'var(--text-body-secondary)',  // sort icon idle
-  textPrimary:    'var(--text-body-primary)',
-  textLink:       'var(--text-action)',
+  textPrimary:    'var(--neutral-800)',
+  // Figma's link cell text is text/action (#3a8015) — --text-action itself
+  // resolves to the wrong ramp step in this codebase, bypassed directly.
+  textLink:       'var(--content-action-primary-default)',
+  // Figma's Text-Link Hover state repaints to text/form-field/hover (#366618),
+  // distinct from the default-text hover recolor below.
+  textLinkHover:  'var(--text-form-field-hover)',
   textVisited:    'var(--text-info)',  // visited links
-  textDisabled:   'var(--content-action-disabled-700)',  // disabled rows/cells
   // Checkbox (mirrors checkbox.tsx tokens)
   cbChecked:      'var(--surface-action-primary-default)',
-  cbHover:        'var(--content-action-primary-300)',
-  cbBorder:       'var(--content-action-primary-600)',
-  cbBorderDis:    'var(--content-action-disabled-300)',
+  // Figma's idle AND checked checkbox share the same border (#629944) —
+  // only Hover gets a distinct bg + border (#366618, both).
+  cbBorder:       'var(--border-color-surface-active-primary-default)',
+  cbHoverBg:      'var(--surface-action-primary-hover)',
+  cbHoverBorder:  'var(--border-color-surface-active-primary-hover)',
+  cbBorderDis:    'var(--border-color-disabled)',
   cbSurface:      'var(--surface-form-field)',
-  cbSurfaceDis:   'var(--content-action-disabled-100)',
+  cbSurfaceDis:   'var(--surface-disabled)',
 } as const
 
 // ─── Size context ─────────────────────────────────────────────────────────────
@@ -66,6 +75,7 @@ const useTableSize = () => useContext(TableSizeCtx)
 interface TableRowCtxValue {
   selected: boolean
   toggleSelection: (v: boolean) => void
+  hovered: boolean
 }
 const TableRowCtx = createContext<TableRowCtxValue | null>(null)
 
@@ -169,7 +179,7 @@ export function TableRow({
     : T.rowBgDefault
 
   return (
-    <TableRowCtx.Provider value={{ selected, toggleSelection }}>
+    <TableRowCtx.Provider value={{ selected, toggleSelection, hovered }}>
       <tr
         aria-selected={selected || undefined}
         aria-disabled={disabled || undefined}
@@ -203,12 +213,15 @@ export interface TableHeadProps extends ThHTMLAttributes<HTMLTableCellElement> {
   onSort?: () => void
   /** Text / content alignment — mirrors the cell data convention. */
   align?: 'left' | 'center' | 'right'
+  /** Optional leading icon (16px) before the header label. */
+  icon?: ReactNode
 }
 
 export function TableHead({
   sortDirection,
   onSort,
   align = 'left',
+  icon,
   children,
   style,
   onClick,
@@ -255,7 +268,8 @@ export function TableHead({
       onClick={e => { onSort?.(); onClick?.(e) }}
       {...props}
     >
-      <span style={{ display: 'inline-flex', alignItems: 'center', gap: 4 }}>
+      <span style={{ display: 'inline-flex', alignItems: 'center', gap: 8 }}>
+        {icon}
         {children}
         {sortable && (
           <SortIcon
@@ -292,16 +306,21 @@ export function TableCell({
   ...props
 }: TableCellProps) {
   const size = useTableSize()
+  const rowCtx = useContext(TableRowCtx)
 
   const height   = size === 'wide' ? 64 : 40
   const paddingV = size === 'wide' ? 12 : 8
   const fontSize = size === 'wide' ? 14 : 12
 
+  // Figma's live component recolors "default" and "link" cell text when the
+  // parent row is hovered (a row-is-clickable preview) — "secondary" and
+  // "visited" have no Hover variant in Figma, so they stay static.
+  const hovered = rowCtx?.hovered ?? false
   const color =
-    variant === 'link'      ? T.textLink      :
+    variant === 'link'      ? (hovered ? T.textLinkHover : T.textLink) :
     variant === 'visited'   ? T.textVisited   :
     variant === 'secondary' ? T.textSecondary :
-    T.textPrimary
+    (hovered ? T.textLink : T.textPrimary)
 
   return (
     <td
@@ -393,10 +412,14 @@ function InlineCheckbox({
     : active
     ? T.cbChecked
     : hovered
-    ? T.cbHover
+    ? T.cbHoverBg
     : T.cbSurface
 
-  const boxBorder = disabled ? T.cbBorderDis : T.cbBorder
+  const boxBorder = disabled
+    ? T.cbBorderDis
+    : hovered && !active
+    ? T.cbHoverBorder
+    : T.cbBorder
 
   // Cells heights to center the 18px box
   const cellHeight = isHeader
