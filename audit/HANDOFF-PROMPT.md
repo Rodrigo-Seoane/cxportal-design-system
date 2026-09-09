@@ -1,9 +1,10 @@
 # CxPortal DS — Component Audit Handoff
 
-_Last refreshed: 2026-09-09 (sixteenth pass — Collapsible Filters built,
-extracted from a real sandbox reference implementation rather than left as
-a raw app-page import; G5 now has Instance Cards and Collapsible Filters
-done). Supersedes the earlier 2026-09-09 versions.
+_Last refreshed: 2026-09-09 (seventeenth pass — File Tree closes out G5;
+fixed a wrong-dark-green selected-controller bug and the worst instance yet
+of this audit's pre-rebrand-blue-leftover pattern, both code and docs, and
+added the full WAI-ARIA TreeView keyboard pattern the previous doc had
+flagged as an open TODO). Supersedes the earlier 2026-09-09 versions.
 **Also fixed a prior pass:** several turns' worth of `audit/` edits (Modal
 through Vertical Tabs) had been sitting uncommitted on tracked files because
 of a wrong assumption that `audit/` was untracked — it was committed back in
@@ -43,7 +44,7 @@ Batching: Foundations → Global (G1–G5) → Knowledge Management → Campaign
 - `component-audit-seed.csv` — full component list (Section/Batch/Component), already in the sheet
 - `component-audit-fill.csv` — same rows with Figma node IDs and code paths filled
 - `component-audit-fill-2cols.csv` — Figma node + Code path only, for pasting
-- `component-audit-results.csv` — **the live findings log** (33 rows as of 2026-09-09)
+- `component-audit-results.csv` — **the live findings log** (34 rows as of 2026-09-09)
 - `component-audit-results-paste-g1.csv` — Status→Notes block for G1
 - `component-audit-results-paste-g2.csv` — same, full G2 (Button, Alert Messages, Counter, Tooltip, Modal, Toast)
 - `component-audit-results-paste.csv` — same, Foundations batch
@@ -504,13 +505,13 @@ selected/hover/focus treatment with no Figma backing.
 
 **G4 is not quite done — Inline Context Data is still the one hole.**
 
-## Progress — G5 (IN PROGRESS)
+## Progress — G5 (DONE)
 
 | Component | Status | Priority | Docs |
 |---|---|---|---|
 | Instance Cards | missing → built | P1 | no Principles/Usage exists yet (user-confirmed) |
 | Collapsible Filters | missing → built | P1 | complete (Principles 2216-4961 + Usage 2212-8572) |
-| File Tree | — | — | not started (code already exists, unaudited) |
+| File Tree | major | P0 | complete (Principles 2501-54188 + Usage 2501-54091) |
 
 **Instance Cards — new component, built from scratch, no Principles/Usage
 doc exists yet.** Pulled the real component (`3437-9650`: state=Active/
@@ -614,11 +615,63 @@ real. Rewrote `content/components/collapsible-filters.mdx` in full
 a raw `app/sandbox/...` import path rather than a real DS export). Added
 registry entry, stories, and sidebar nav entry.
 
+**File Tree — G5's last row, closing the batch.** Pulled all three
+component pieces (`.treeview_controler` `2244-2713`, `.tree_foldertitle`
+`2244-2732`, `Doc Tree - Bulk` `2244-2676`, the composed row) plus
+Examples (`2244-2761`), Principles (`2501-54188`), and Usage
+(`2501-54091`). Code already existed (`components/ui/file-tree.tsx`,
+status `stable`, unaudited) and was structurally sound — correct
+recursive model, correct connector-line math, correct sizing constants
+— but had real, confirmed bugs and one missing anatomy piece. **Missing
+piece, confirmed via two independent pulls:** a hover-revealed "Select"
+ghost-text affordance on every row regardless of node type, mentioned
+nowhere in Anatomy/Principles/Usage prose. Built it — and it resolves a
+standing ambiguity: Principles say clicking a Group only toggles expand
+(never selects), yet the component's own variant matrix includes a
+Group+Focus(selected) state with no other stated way to reach it. This
+is the "Select" button's job. Confirmed the wrong-ramp-step bug a
+**13th** time on the label text. Found real, direct value bugs by
+comparing token-by-token against the live pull: the selected controller
+background was wired to `--color-primary` → `--content-action-primary-
+600` (`#204704`, the classic wrong-dark-green value flagged repeatedly
+throughout this whole audit) where Figma's real value is
+`--surface-action-primary-default` (`#3a8015`); the selected border was
+the same wrong `#204704` token directly, should be `--border-color-
+surface-active-primary-default` (`#629944`); and the border-right accent
+was only ever applied to a selected *Topic*, never a selected *Group*,
+despite Figma showing the identical border on both when Focus/selected.
+The Hover state (Default/Hover/Focus per Figma's own `state` prop) was
+entirely unimplemented — added using already-verified-correct hover
+tokens. **The most severe instance yet of this whole audit's pre-rebrand-
+blue-leftover pattern:** Principles, Usage's Anatomy prose, AND the
+formal Token Reference table all describe the selected state as
+"primary blue" (`#4285f4`/`#d9e7fd`/`#689df6`) — but the live component
+is green throughout, and the Token Reference table's own colour swatch
+for the title-cell row renders green *directly next to* its own blue hex
+text, an internal contradiction within a single table cell. The
+pre-existing code had also baked in the wrong value, but as an unrelated
+wrong dark green (`#204704`) matching neither the doc's blue nor the
+real green — now fixed to the real green throughout, both code and doc.
+Added full WAI-ARIA TreeView keyboard navigation (Arrow Up/Down/Left/
+Right, Home/End, Space) via a roving `tabIndex` over a flattened,
+expansion-aware row list — Usage's Accessibility section formally
+specifies this exact pattern, and the previous doc had explicitly
+flagged it as an open TODO rather than left silently unbuilt. Added
+`role="treeitem"`/`aria-level`/`aria-expanded`/`aria-selected` per row.
+Rewrote `content/components/file-tree.mdx` in full (previous version had
+copied the stale blue values into its own docs, including the code's
+wrong `#204704` as if correct). Registry entry, stories, and sidebar nav
+entry were already correctly wired from a prior pass — no changes
+needed there.
+
+**G5 is now fully done: Instance Cards, Collapsible Filters, and File
+Tree all built/audited.**
+
 ## Git state
 
 Branch: **`fix/ds-audit-g1-g2-figma-alignment`** (cut from
 `claude/assign-worker-flow-prototype-rb4ms4`, which is where this work was
-sitting uncommitted by mistake). 28 commits ahead of `main` (2026-09-07 to
+sitting uncommitted by mistake). 29 commits ahead of `main` (2026-09-07 to
 2026-09-09):
 
 1. `fix(tokens): correct action and form-field semantic aliases` — the 4 shared globals.css aliases, landed first because of blast radius
@@ -648,7 +701,8 @@ sitting uncommitted by mistake). 28 commits ahead of `main` (2026-09-07 to
 25. `feat(inline-stats): build Inline Stats Cards from scratch, replace fictional doc content`
 26. `fix(chip): cover all 30 chip variants, correct wrong colors on Chip and Tag`
 27. `feat(instance-card): build Instance Card from scratch, no Figma docs yet`
-28. `feat(collapsible-filters): extract from the real sandbox reference, fix drift vs Figma` — about to be committed
+28. `feat(collapsible-filters): extract from the real sandbox reference, fix drift vs Figma`
+29. `fix(file-tree): correct selected-state colors, add hover state and keyboard nav` — about to be committed
 
 Not merged to main, no PR opened yet. Note the branch's ancestry still carries
 22 commits of Assign-to-Worker v2 prototype + Caylent rebrand work that were
@@ -704,7 +758,7 @@ All six docs frames supplied on 2026-09-07 have been read, and Button Icon Small
 
 **Cross-cutting wrong-ramp-step tokens — needs a decision, bigger than one component**
 - `--text-body-primary` (`--neutral-700`, `#373737`) is very likely the wrong
-  ramp step site-wide. Now confirmed on **twelve** rows: G1 Checkbox & Radio
+  ramp step site-wide. Now confirmed on **thirteen** rows: G1 Checkbox & Radio
   (first local workaround, switched to `--neutral-800` directly); Modal's
   Header node (`Text/Body/Primary = #1d1d1d`); Toast's component node (same);
   Horizontal/Vertical Tabs; Left/Vertical Nav (via `nav-item.tsx`'s own
@@ -715,8 +769,8 @@ All six docs frames supplied on 2026-09-07 have been read, and Button Icon Small
   Figma); Table's header label + default cell text; Metric Tiles' card
   label + value text; Inline Stats Cards' label + value text
   (bypassed from the start, since this was a brand-new component built
-  with the bug already known); and now Collapsible Filters' "Filters"
-  label. `--neutral-800`
+  with the bug already known); Collapsible Filters' "Filters"
+  label; and now File Tree's row label text. `--neutral-800`
   (`#1d1d1d`) already exists as the correct value. NOT fixed globally —
   `--text-body-primary` also backs `--color-text-primary`, `--foreground`,
   `--secondary-foreground`, `--accent-foreground`, `--card-foreground`, and
@@ -989,9 +1043,9 @@ Needs a decision on which surface colour the demo should use.
    batch (Button, Alert Messages, Counter, Tooltip, Modal, Toast). The whole
    of G3 (Breadcrumb, Horizontal Tabs, Vertical Tabs, Left/Vertical Nav, Top
    Bar, Page Title), G4 (Table, Table Filter, Pagination, Metric Tiles,
-   Metric Tile ACGR, Inline Stats Cards, Chips & Tags), and G5 so far
-   (Instance Cards, Collapsible Filters) still need their own paste blocks
-   produced.
+   Metric Tile ACGR, Inline Stats Cards, Chips & Tags), and all of G5
+   (Instance Cards, Collapsible Filters, File Tree — now fully done) still
+   need their own paste blocks produced.
 2. Get a designer call on the Figma-internal/docs contradictions logged above:
    old variant model on Usage 742-11289; multi-line Alert vs its own docs;
    Modal's `role="alertdialog"` conflict; Modal's missing `xlarge` Figma frame;
@@ -1007,10 +1061,15 @@ Needs a decision on which surface colour the demo should use.
    Chip's Anatomy prose claiming selected/hover/focus states the real
    component doesn't have; Instance Card's Read Only variant still showing
    a drag handle it shouldn't be able to use; Collapsible Filters' own doc
-   calling the count badge "blue" four times when it's green everywhere real.
+   calling the count badge "blue" four times when it's green everywhere real;
+   File Tree's Token Reference table having a colour swatch that contradicts
+   its own adjacent hex text (green swatch, blue hex, same table cell) — the
+   single worst instance of the pre-rebrand-blue-leftover pattern this whole
+   audit has found, worth asking whether it's the same root cause as Metric
+   Tiles'/Collapsible Filters' milder versions of the same thing.
 3. Decide on the cross-cutting wrong-ramp-step token sweep (see Cross-cutting
    thread above) — five confirmed tokens, `--text-body-primary` alone now
-   hit twelve times and `--text-on-action-secondary` seven times (Horizontal/
+   hit thirteen times and `--text-on-action-secondary` seven times (Horizontal/
    Vertical Tabs, Page Title, Metric Tile ACGR, Chip + Tag simultaneously,
    and Instance Card) — the single most-repeated instance in this whole
    audit. Worth asking whether this is one systemic rebrand-migration bug
@@ -1024,9 +1083,9 @@ Needs a decision on which surface colour the demo should use.
 4. Audit Combobox (2255-8066) to actually close G1 — still the one hole in that batch.
 5. Close out G4: Inline Context Data is the one remaining hole (code already
    exists at `/components/inline-context-data`, unaudited against Figma).
-6. Continue G5: Instance Cards and Collapsible Filters are done. File Tree
-   remains — it already has code (`/components/file-tree`) but is
-   unaudited against Figma.
+6. **G5 is fully done** (Instance Cards, Collapsible Filters, File Tree).
+   Next batch per the seed list is Knowledge Management (Doc Preview) —
+   ask the user for Figma links when ready to start it.
 7. Add a `select` cellType demo to the Table registry playground for parity
    with chip/tag/switch/filter — skipped this pass (polish, not a Figma
    drift fix) since "Table Field Select" was documented as compose-inline
