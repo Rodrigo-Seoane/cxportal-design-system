@@ -699,13 +699,13 @@ export const registry: Record<string, ComponentEntry> = {
       chipType: {
         type: 'chip-select',
         label: 'Chip type',
-        options: ['info', 'success', 'warning', 'error'],
+        options: ['grey', 'info', 'success', 'warning', 'error'],
         default: 'info',
       },
       chipShade: {
         type: 'chip-select',
         label: 'Chip shade',
-        options: ['100', '200', '400', '500'],
+        options: ['100', '200', '300', '400', '500', '600'],
         default: '100',
       },
       iconLeft: {

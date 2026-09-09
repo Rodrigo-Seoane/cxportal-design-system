@@ -1,8 +1,8 @@
 # CxPortal DS — Component Audit Handoff
 
-_Last refreshed: 2026-09-09 (thirteenth pass — Inline Stats Cards closed;
-built from scratch, and its own doc page previously described an unrelated
-fictional component). Supersedes the earlier 2026-09-09 version.
+_Last refreshed: 2026-09-09 (fourteenth pass — Chips & Tags closed; Chip
+rebuilt to cover 30 real variants instead of 16, an entire missing type and
+two missing shades). Supersedes the earlier 2026-09-09 version.
 **Also fixed this pass:** several turns' worth of `audit/` edits (Modal
 through Vertical Tabs) had been sitting uncommitted on tracked files because
 of a wrong assumption that `audit/` was untracked — it was committed back in
@@ -42,7 +42,7 @@ Batching: Foundations → Global (G1–G5) → Knowledge Management → Campaign
 - `component-audit-seed.csv` — full component list (Section/Batch/Component), already in the sheet
 - `component-audit-fill.csv` — same rows with Figma node IDs and code paths filled
 - `component-audit-fill-2cols.csv` — Figma node + Code path only, for pasting
-- `component-audit-results.csv` — **the live findings log** (30 rows as of 2026-09-09)
+- `component-audit-results.csv` — **the live findings log** (31 rows as of 2026-09-09)
 - `component-audit-results-paste-g1.csv` — Status→Notes block for G1
 - `component-audit-results-paste-g2.csv` — same, full G2 (Button, Alert Messages, Counter, Tooltip, Modal, Toast)
 - `component-audit-results-paste.csv` — same, Foundations batch
@@ -324,7 +324,7 @@ registry playground doesn't exercise the `actions` slot.
 | Metric Tile ACGR | missing → built | P1 | complete (shared P&U with Metric Tiles) |
 | Inline Stats Cards | missing → built | P0 | complete (Principles 2297-4845 + Usage 2297-4741) — both severely stale, see notes |
 | Inline Context Data | — | — | not started |
-| Chips & Tags | — | — | not started |
+| Chips & Tags | major | P0 | complete (Principles 2995-1025 + Usage 2995-1060) |
 
 Table — the existing `components/ui/table.tsx` primitives (`Table`/
 `TableHeader`/`TableBody`/`TableRow`/`TableHead`/`TableCell`/
@@ -471,11 +471,43 @@ directly contradicting Principles' explicit "equal distribution" rule —
 treated as a one-off Figma authoring slip, built with equal
 distribution for all tile counts instead.
 
+Chips & Tags — Chip's real Figma component covers **5 types × 6 shades =
+30 combinations** (Grey/Info/Success/Warning/Error × 100–600); the
+existing code only had 4 types × 4 shades = 16, missing the entire Grey
+type and shades 300/600 for every type. Rebuilt `CHIP_COLORS` from
+scratch. Confirmed a genuinely non-obvious mapping rule along the way:
+shades 100/200/300 land directly on each ramp's own 100/200/300 step,
+but shades 400/500/600 *skip* straight to the "-default"/"-600"/"-700"
+steps for the four non-neutral families (there's no literal "-400" or
+"-500" step defined for red/success/warning/info) — Grey/neutral is the
+one family with a real, literal 1:1 ramp, so it doesn't skip. Text
+colour turned out to be a hand-set matrix per (type, shade), not a
+simple "light shades get dark text" rule — Warning stays on dark text
+through shade 500 (a fairly dark tan background) while Info and Error
+switch to light text starting at shade 400; replicated exactly as read
+rather than inferred. The dark-text alias itself (`--text-on-action-
+secondary`) hit the classic wrong-ramp-step bug yet again — now
+confirmed on both Chip and Tag simultaneously, the single most-repeated
+instance of this whole audit's cross-cutting bug family. Tag's Active
+background was a real, clearly-wrong value (`--neutral-700` #373737
+instead of the actual `--neutral-500` #6f6f6f, not just a same-value-
+wrong-token case), and its Disabled text was routed through a
+completely unrelated dark muddy-green token instead of the
+already-correct `--text-form-field-disabled`. **Figma-internal
+contradiction, not resolved:** Principles' own Anatomy prose claims Chip
+"supports default, selected, hover, focused, and disabled states," but
+the real Chip component's entire prop surface is just `type` +
+`colorValue` + boolean icon toggles — zero state variants exist on the
+live component at all. Flagged rather than inventing a
+selected/hover/focus treatment with no Figma backing.
+
+**G4 is not quite done — Inline Context Data is still the one hole.**
+
 ## Git state
 
 Branch: **`fix/ds-audit-g1-g2-figma-alignment`** (cut from
 `claude/assign-worker-flow-prototype-rb4ms4`, which is where this work was
-sitting uncommitted by mistake). 25 commits ahead of `main` (2026-09-07 to
+sitting uncommitted by mistake). 26 commits ahead of `main` (2026-09-07 to
 2026-09-09):
 
 1. `fix(tokens): correct action and form-field semantic aliases` — the 4 shared globals.css aliases, landed first because of blast radius
@@ -502,7 +534,8 @@ sitting uncommitted by mistake). 25 commits ahead of `main` (2026-09-07 to
 22. `fix(table): correct checkbox/link/header tokens, add row-hover recolor; build Table Filter`
 23. `fix(pagination): correct idle/active button backgrounds and sizing to Figma`
 24. `fix(stats-cards): correct 7 wrong category icons, sizing, and tokens; build Metric Tile ACGR`
-25. `feat(inline-stats): build Inline Stats Cards from scratch, replace fictional doc content` — about to be committed
+25. `feat(inline-stats): build Inline Stats Cards from scratch, replace fictional doc content`
+26. `fix(chip): cover all 30 chip variants, correct wrong colors on Chip and Tag` — about to be committed
 
 Not merged to main, no PR opened yet. Note the branch's ancestry still carries
 22 commits of Assign-to-Worker v2 prototype + Caylent rebrand work that were
@@ -605,15 +638,17 @@ All six docs frames supplied on 2026-09-07 have been read, and Button Icon Small
   confirmed wrong a **second** time
   on Vertical Tabs the same session — its Default-state text token reads
   the identical `#373737`-instead-of-`#1d1d1d` split — a **third** time
-  on Page Title's chip text — and a **fourth** time on Metric Tile ACGR's
+  on Page Title's chip text — a **fourth** time on Metric Tile ACGR's
   Assign-button text (this token is Figma's own name for that button's
-  text colour, `text/on-action/secondary`). This is now five confirmed
-  tokens in the same wrong-ramp-step family (`--text-body-primary`,
-  `--icon-action`, `--icon-success`, `--text-action`,
-  `--text-on-action-secondary`), hit across ten component rows total —
-  worth asking whether there's a systemic cause (e.g. a bulk
-  find-replace during the rebrand that landed one ramp step short) rather
-  than treating each as an isolated bug.
+  text colour, `text/on-action/secondary`) — and now a **fifth and sixth**
+  time simultaneously on Chip AND Tag's dark label text, the single
+  most-repeated instance of this alias bug in this whole audit. This is
+  now five confirmed tokens in the same wrong-ramp-step family
+  (`--text-body-primary`, `--icon-action`, `--icon-success`,
+  `--text-action`, `--text-on-action-secondary`), hit across thirteen
+  component rows total — worth asking whether there's a systemic cause
+  (e.g. a bulk find-replace during the rebrand that landed one ramp step
+  short) rather than treating each as an isolated bug.
 - `--surface-action-primary-hover` joins the list too, but with a twist:
   blast-radius check found **zero real consumers** anywhere before this
   pass (only the token definition itself and the non-consuming reference
@@ -802,14 +837,25 @@ Needs a decision on which surface colour the demo should use.
   top-level headings on those specific pages. Left as `<h2>`, flagged
   for whoever owns the app's heading hierarchy rather than resolved here.
 
+**Chip — Anatomy prose claims states the real component doesn't have, needs a designer call**
+- Principles (`2995-1025`) says Chip "supports default, selected, hover,
+  focused, and disabled states," but the real Chip component
+  (`188-8771`) exposes only `type` (colour family) and `colorValue`
+  (shade) as its entire prop surface — no state variants of any kind
+  exist on the live component. Not built — inventing a
+  selected/hover/focus treatment with no Figma backing would be
+  guessing, not implementing. Worth a designer confirming whether these
+  states were planned but never built, or whether the prose is simply
+  stale.
+
 ## Immediate next actions
 
 1. Paste `component-audit-results-paste-g2.csv` into the sheet — the full G2
    batch (Button, Alert Messages, Counter, Tooltip, Modal, Toast). The whole
    of G3 (Breadcrumb, Horizontal Tabs, Vertical Tabs, Left/Vertical Nav, Top
    Bar, Page Title) and Table + Table Filter + Pagination + Metric Tiles +
-   Metric Tile ACGR + Inline Stats Cards (G4 so far) still need their own
-   paste blocks produced.
+   Metric Tile ACGR + Inline Stats Cards + Chips & Tags (G4 so far) still
+   need their own paste blocks produced.
 2. Get a designer call on the Figma-internal/docs contradictions logged above:
    old variant model on Usage 742-11289; multi-line Alert vs its own docs;
    Modal's `role="alertdialog"` conflict; Modal's missing `xlarge` Figma frame;
@@ -821,15 +867,19 @@ Needs a decision on which surface colour the demo should use.
    surface rendering gray instead of blue; Inline Stats Cards' 5-tile
    instance breaking its own equal-distribution rule, and — bigger than a
    token fix — Figma's own Usage/Principles docs for Inline Stats Cards
-   disagreeing with each other about whether sparklines/deltas exist at all.
+   disagreeing with each other about whether sparklines/deltas exist at all;
+   Chip's Anatomy prose claiming selected/hover/focus states the real
+   component doesn't have.
 3. Decide on the cross-cutting wrong-ramp-step token sweep (see Cross-cutting
-   thread above) — six confirmed tokens, `--text-body-primary` alone now
-   hit on eleven component rows. Worth asking whether this is one systemic
+   thread above) — six confirmed tokens, `--text-on-action-secondary` alone
+   now hit six times (Horizontal/Vertical Tabs, Page Title, Metric Tile
+   ACGR, and now Chip + Tag simultaneously) — the single most-repeated
+   instance in this whole audit. Worth asking whether this is one systemic
    rebrand-migration bug rather than isolated ones.
 4. Audit Combobox (2255-8066) to actually close G1 — still the one hole in that batch.
 5. Continue G4: Table, Table Filter, Pagination, Metric Tiles, Metric Tile
-   ACGR, and Inline Stats Cards are done. Next — Inline Context Data, Chips
-   & Tags.
+   ACGR, Inline Stats Cards, and Chips & Tags are done. **Inline Context
+   Data is the one remaining hole in this batch.**
 6. Add a `select` cellType demo to the Table registry playground for parity
    with chip/tag/switch/filter — skipped this pass (polish, not a Figma
    drift fix) since "Table Field Select" was documented as compose-inline
