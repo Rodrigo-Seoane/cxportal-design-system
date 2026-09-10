@@ -977,6 +977,59 @@ generated code, and all 3 demoted routes' heading tags).
 
 Next: the 3-part codebase audit (see above), then Phases 8–10.
 
+## 3-part codebase audit — DONE (2026-09-10)
+
+Ran the 3-part audit via 3 parallel read-only agents (stale tokens vs.
+`figma_styles.json`; dead/deprecated code; inline comment triage) plus a
+4th "councillor" agent that consolidated all three into one prioritized
+change list — `audit/codebase-audit-report-2026-09-10.md` (41 findings,
+16 safe, 21 needs-a-decision, 4 informational). No changes were applied
+during the audit itself, per instruction; the report was reviewed and its
+batches applied afterward, across 5 commits:
+
+- **Batch A** — paragraph-spacing mode bug (`lib/tokens.ts` was carrying
+  Former Pronetx Blue-mode numbers), a hardcoded blue caption palette in
+  `app/charts/graph-cards/page.tsx` inconsistent with `GraphCard.tsx`'s own
+  tokenized values, and 6 stale "blue" comments/JSDoc/MDX prose corrected
+  to green.
+- **Batch B** — deleted 2 dead components (`scroll-area.tsx` + stories),
+  2 dead barrel files (`components/ui/index.ts`, `lib/index.ts`), an
+  unused `getExperiment` export, and 7 stray untracked artifacts
+  (`app/globals-17-08-2026.css`, `audit/component-audit-results.csv.bak`,
+  4 draft CSVs in `notes/`, 2 unreferenced `.ttf` font files — `.woff2`
+  siblings are the ones actually loaded).
+- **Batch C** — 4 new `LESSONS.md` entries (appended to the existing file
+  rather than creating a differently-cased duplicate) and a new root-level
+  `Open_Questions.md` (17 open items + a Resolved section).
+- **Batch D (D1-D4)** — user-confirmed color-mapping decisions for the
+  audit's open threads: `--surface-overlay` → Caylent Green 900 at 70%
+  opacity; every `#eff1f3` mention → `--neutral-100` (cascaded through
+  `FilterRail.tsx`, 4 `lib/component-registry.ts` codegen snippets, and
+  `instance-card.tsx`'s shared `--border-color-surface-active-secondary-
+  disabled` token, which also fixes `Button` and `Checkbox`'s `Radio`);
+  `#aab0b8` → `--neutral-300` (confirmed Instance Card's Default border
+  was already right; applied to `assign/_data.ts`'s "Logged Off" color);
+  both alpha-0 surface variants re-expressed via `color-mix()` against
+  their mapped tokens instead of raw rgba tuples. Closed the Instance
+  Card MDX open question. All D1-D4 changes verified live via
+  `getComputedStyle` (confirmed `color-mix()` resolves correctly in the
+  browser — `--surface-overlay` computes to exactly `rgb(3,9,1)` at 70%).
+
+**Deliberately not applied** — left as open items in `Open_Questions.md`
+or flagged in the audit report, pending further decisions: `lib/tokens.ts`'s
+11 unused public-API-shaped exports (keep-or-prune call needed); the
+`nav-item.tsx`/`nt-menu.tsx` → `Sidebar.tsx` refactor (real build needed,
+not a deletion); `combobox.mdx`/`drawer.mdx` (describe components that
+don't exist — build vs. remove); `AdherenceBadge`'s backwards `@deprecated`
+marker; the `breadcrumb.mdx` 14+ call-site migration backlog; the
+`docs/email_campaigns/figma_styles_02_sep.json` stale provenance comment;
+`Archived plans/` (flagged low-stakes/either-way, left untouched — user
+didn't address it).
+
+Verified with `npx tsc --noEmit` after every batch and live browser checks
+(FilterRail worker-status dots, Instance Card disabled state, a synthetic
+`--surface-overlay` element) — all clean.
+
 ## Git state
 
 Branch: **`fix/ds-audit-g1-g2-figma-alignment`** (cut from
