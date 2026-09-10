@@ -43,7 +43,7 @@ const sections: Section[] = [
         swatches: [
           { name: 'Placeholder', hex: '#7a828c', cssVar: '--text-form-field-placeholder' },
           { name: 'Hover',       hex: '#366618', cssVar: '--text-form-field-hover' },
-          { name: 'Focus',       hex: '#373737', cssVar: '--text-form-field-focus' },
+          { name: 'Focus',       hex: '#1d1d1d', cssVar: '--text-form-field-focus' },
           { name: 'Disabled',    hex: '#adadad', cssVar: '--text-form-field-disabled' },
         ],
       },
@@ -56,7 +56,7 @@ const sections: Section[] = [
       {
         caption: 'Icon / Body',
         swatches: [
-          { name: 'Primary',         hex: '#373737', cssVar: '--icon-body-primary' },
+          { name: 'Primary',         hex: '#1d1d1d', cssVar: '--icon-body-primary' },
           { name: 'Secondary',       hex: '#7a828c', cssVar: '--icon-body-secondary' },
           { name: 'On Dark Surface', hex: '#efefef', cssVar: '--icon-body-on-dark-surface' },
         ],
@@ -75,7 +75,7 @@ const sections: Section[] = [
         caption: 'Icon / On Action',
         swatches: [
           { name: 'Primary',     hex: '#efefef', cssVar: '--icon-on-action-primary' },
-          { name: 'Secondary',   hex: '#373737', cssVar: '--icon-on-action-secondary' },
+          { name: 'Secondary',   hex: '#1d1d1d', cssVar: '--icon-on-action-secondary' },
           { name: 'Transparent', hex: '#366618', cssVar: '--icon-on-action-transparent' },
         ],
       },

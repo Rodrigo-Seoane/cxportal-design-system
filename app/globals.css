@@ -319,7 +319,7 @@
   --text-on-action-transparent: var(--content-action-primary-default);
   --text-form-field-placeholder: var(--neutral-400);
   --text-form-field-hover: var(--content-action-primary-500);
-  --text-form-field-focus: var(--neutral-700);
+  --text-form-field-focus: var(--neutral-800);
   --text-form-field-disabled: var(--neutral-300);
   --icon-action: var(--content-action-primary-default);
   --icon-success: var(--success-300);
@@ -327,11 +327,11 @@
   --icon-warning: var(--warning-default);
   --icon-error: var(--error-default);
   --icon-destructive: var(--error-500);
-  --icon-body-primary: var(--neutral-700);
+  --icon-body-primary: var(--neutral-800);
   --icon-body-secondary: var(--neutral-400);
   --icon-body-on-dark-surface: var(--neutral-100);
   --icon-on-action-primary: var(--neutral-100);
-  --icon-on-action-secondary: var(--neutral-700);
+  --icon-on-action-secondary: var(--neutral-800);
   --icon-on-action-transparent: var(--content-action-primary-500);
   --icon-form-field-placeholder: var(--neutral-400);
   --icon-form-field-hover: var(--content-action-primary-500);
