@@ -6,16 +6,18 @@ import { Checkbox } from './checkbox'
 
 // ── Design tokens (Figma node 3437-9650 "Instance Card") ──────────────────────
 //
-// Figma's Default/Hover/Disabled secondary border colours (#aab0b8, #7a828c,
-// #eff1f3) don't match any existing --border-color-surface-active-secondary-*
-// token value in this codebase (those resolve to --neutral-300/#adadad,
-// --neutral-400/#8d8d8d, and a hardcoded #d2e0c8 respectively) -- a token-
-// definition drift distinct from the usual wrong-ramp-step bug, since the
-// right hex doesn't exist under any other token name either. Kept the
-// semantically-correct token names (same ones Figma's own component binds to,
-// and the same ones Button/Checkbox-radio already consume) rather than
-// silently changing the shared token values or inventing new raw hex --
-// flagged as a token-value audit thread, not fixed here.
+// Figma's Default/Disabled secondary border colours (#aab0b8, #eff1f3) don't
+// match any existing --border-color-surface-active-secondary-* token value
+// in this codebase (those resolve to --neutral-300/#adadad and
+// --content-action-disabled-200/#d2e0c8) -- a token-definition drift
+// distinct from the usual wrong-ramp-step bug, since the right hex doesn't
+// exist under any other token name either. Kept the semantically-correct
+// token names (same ones Figma's own component binds to, and the same ones
+// Button/Checkbox-radio already consume) rather than silently changing the
+// shared token values or inventing new raw hex -- flagged as a token-value
+// audit thread, not fixed here. (The Hover border was flagged here too
+// pending a #7a828c-vs-#8d8d8d question -- resolved 2026-09-10, #8d8d8d via
+// --neutral-400 is correct per a direct Figma Variables export; no gap.)
 const T = {
   bg: {
     default:      'var(--surface-action-secondary-default)',

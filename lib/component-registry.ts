@@ -902,7 +902,7 @@ export const registry: Record<string, ComponentEntry> = {
         `<Modal size="${s}" preview>`,
         `  <ModalHeader${closeAttr}>${t}</ModalHeader>`,
         `  <ModalBody>`,
-        `    <p style={{ fontSize: 14, color: '#7a828c', lineHeight: '20px' }}>`,
+        `    <p style={{ fontSize: 14, color: '#8d8d8d', lineHeight: '20px' }}>`,
         `      Configure your settings before proceeding with this action.`,
         `    </p>`,
         `  </ModalBody>`,
@@ -2074,7 +2074,7 @@ export const registry: Record<string, ComponentEntry> = {
       const two   = showValue2 === true || showValue2 === 'true'
 
       const lines: string[] = ['<InlineContextData']
-      if (icon) lines.push(`  icon={<AddressBookIcon size={16} weight="regular" color="#7a828c" />}`)
+      if (icon) lines.push(`  icon={<AddressBookIcon size={16} weight="regular" color="#8d8d8d" />}`)
       lines.push(`  label="${lbl}"`)
       lines.push(`  value="${val}"`)
       if (two) lines.push(`  value2="${val2}"`)

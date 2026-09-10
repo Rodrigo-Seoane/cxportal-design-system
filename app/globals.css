@@ -32,7 +32,7 @@
   /* ─── Raw palette (private — do not consume directly in components) ─── */
   --raw-pronetx-greys-200: #cdcdcd;
   --raw-pronetx-greys-300: #adadad;
-  --raw-pronetx-greys-400: #7a828c;
+  --raw-pronetx-greys-400: #8d8d8d;
   --raw-pronetx-greys-600: #525252;
   --raw-pronetx-greys-500: #6f6f6f;
   --raw-blue-100: #d6e2f5;
@@ -153,7 +153,7 @@
   /* ─── Semantic colors (CxPortal/Light) ─── */
   --neutral-200: #cdcdcd;
   --neutral-300: #adadad;
-  --neutral-400: #7a828c;
+  --neutral-400: #8d8d8d;
   --neutral-600: #525252;
   --neutral-500: #6f6f6f;
   --success-100: #ddf4d2;
@@ -248,16 +248,16 @@
   --grid-margin: 16px;
   --text-size-heading-h-1-font-size: 28px;
   --text-size-heading-h-1-line-height: 34px;
-  --text-size-heading-h-1-paragragh-spacing: 16px;
+  --text-size-heading-h-1-paragragh-spacing: 4px;
   --text-size-heading-h-2-font-size: 24px;
   --text-size-heading-h-2-line-height: 30px;
-  --text-size-heading-h-2-paragragh-spacing: 16px;
+  --text-size-heading-h-2-paragragh-spacing: 4px;
   --text-size-heading-h-3-font-size: 20px;
   --text-size-heading-h-3-line-height: 28px;
-  --text-size-heading-h-3-paragragh-spacing: 12px;
+  --text-size-heading-h-3-paragragh-spacing: 8px;
   --text-size-heading-h-4-font-size: 18px;
   --text-size-heading-h-4-line-height: 24px;
-  --text-size-heading-h-4-paragragh-spacing: 12px;
+  --text-size-heading-h-4-paragragh-spacing: 8px;
   --text-size-heading-h-5-font-size: 16px;
   --text-size-heading-h-5-line-height: 24px;
   --text-size-heading-h-5-paragragh-spacing: 8px;

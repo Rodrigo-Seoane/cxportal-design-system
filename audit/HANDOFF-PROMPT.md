@@ -552,7 +552,9 @@ Figma's Default/Hover/Disabled secondary border colors (`#aab0b8`,
 `#7a828c`, `#eff1f3`) don't match *any* existing
 `--border-color-surface-active-secondary-*` token value in this codebase —
 and unlike every prior wrong-ramp-step case, the correct hex doesn't exist
-under any other token name either. Kept the same token names Figma's own
+under any other token name either. **Correction (2026-09-10): the Hover
+part of this was wrong — `#7a828c` was never the real value, see the
+correction section below.** Kept the same token names Figma's own
 component binds to (and that `Button` and `Checkbox`'s `Radio` disabled
 state already consume) rather than inventing raw hex or silently changing
 the shared token values, which would ripple into those already-audited
@@ -595,13 +597,11 @@ comparison against the live sandbox reference:** the sandbox's own
 expanded-state collapse-toggle button, but Figma's own pulled component
 shows an identical green-bordered `secondary`-style button for *both*
 toggles — built to match the live component, not the sandbox's own
-drift. **New corroborating data point for Instance Card's border-token-
+drift. ~~**New corroborating data point for Instance Card's border-token-
 value-gap thread:** Figma's Usage doc gives `#7a828c` for
-`--text-body-secondary`'s "inactive icon color" slot; this codebase's
-`--text-body-secondary` (`--neutral-400`) resolves to `#8d8d8d` instead —
-the *exact same* wrong hex substitution already flagged on Instance
-Card's `--border-color-surface-active-secondary-hover`, now reinforcing
-that `--neutral-400`'s raw value itself may be wrong site-wide. Added an
+`--text-body-secondary`'s "inactive icon color" slot...~~ **Retracted
+(2026-09-10) — `#8d8d8d` was the correct value all along, see the
+correction section below.** Added an
 optional `size="compact"` (36px) prop to the existing `TableFilter`
 component — Figma's Collapsible Filters pull shows every embedded Table
 Filter row at 36px, not the already-implemented standalone 40px — the
@@ -747,8 +747,9 @@ green. `tsc --noEmit` clean across the whole repo (21 files changed).
 
 Applied the user-approved global-token mapping. `--text-body-primary` and
 `--text-on-action-secondary` now resolve to `--neutral-800` (`#1d1d1d`);
-`--neutral-400` now resolves to `#7a828c` in both the CSS token layer and the
-foundations token catalogs; and the approved disabled/highlight border aliases
+`--neutral-400` was repointed to `#7a828c` in both the CSS token layer and the
+foundations token catalogs (**later reverted — see the 2026-09-10 correction
+below, this value was wrong**); and the approved disabled/highlight border aliases
 now point at their semantic sources rather than raw literals. Added the missing
 `--border-color-surface-active-highlight-active-disabled` token. Restored Toast
 success icons to the verified shared `--icon-success` alias (`#87d95e`) and
@@ -765,7 +766,8 @@ Repointed `--text-action`, the legacy `--color-primary` alias, and shadcn's
 Storybook data to display the actual context-token names and current values,
 including the Action text/icon/surface family and the Phase 1 neutral/text
 corrections. Verified with `npx tsc --noEmit` and the `/foundations/colors`
-browser page (Neutral/400 visibly renders as `#7a828c`).
+browser page (Neutral/400 visibly rendered as `#7a828c` at the time —
+**later reverted, see the 2026-09-10 correction below**).
 
 Next: Phase 3 — small documentation closeouts.
 
@@ -810,8 +812,10 @@ Next: Phase 6 — build the Grid Foundation.
 Before starting Phase 6, re-verified the Colors Foundation page against the
 Phase 1–2 fixes (the branch had picked up an unrelated parallel PR rebuilding
 that same page around the same time). The live `/foundations/colors` page
-(`semantic-tokens.ts` + `ColorsExplorer.tsx`) was confirmed correct — Neutral/400
-renders `#7a828c` as expected. Found and fixed three more tokens in the exact
+(`semantic-tokens.ts` + `ColorsExplorer.tsx`) rendered Neutral/400 as `#7a828c`
+at the time, matching what Phase 1 had set — **this has since been reverted,
+see the 2026-09-10 correction below; `#7a828c` was itself wrong.** Also found
+and fixed three more tokens in the exact
 same `--neutral-700`-instead-of-`--neutral-800` family that the whole 18-pass
 audit had missed: `--text-form-field-focus`, `--icon-body-primary`, and
 `--icon-on-action-secondary`. Two have zero live component consumers and the
@@ -838,6 +842,62 @@ screenshot — all 5 rows render correctly widening left to right.
 
 Next: Phase 7 — Page Title owns `<h1>`, build the composed Open Page Title
 (+ Breadcrumb) component.
+
+## Correction — `--neutral-400` was wrong, and I introduced it (2026-09-10)
+
+Before starting Phase 7, the user pointed at a real, authoritative source —
+`figma_styles.json`, a direct export of Figma's Semantic/Raw/Context variable
+collections (dated 2026-09-10, the same morning) — and asked why
+`globals.css` wasn't matching it. It wasn't, and the mismatch was mine.
+
+**The mistake:** Phase 1 repointed `--neutral-400` from `#8d8d8d` to
+`#7a828c`, based on three Figma component pulls (Instance Card, Collapsible
+Filters, File Tree-adjacent) whose dev-mode fallback literals showed
+`#7a828c` in that semantic slot, treated as three corroborating data points
+against a single "8d8d8d" resolution. That inference was wrong. The
+authoritative Variables export shows `Neutral/400` = `#8d8d8d` explicitly,
+for **both** the Caylent Green and Former Pronetx Blue modes, in the
+Semantic collection — and `Greys/400` = `#8d8d8d` too, in the Raw
+collection. There is no `#7a828c` anywhere in either collection. The
+component-pull fallback literals were almost certainly stale or reflected a
+local per-node override, not the true bound variable — and I treated a
+weaker signal (component fallback hex) as stronger evidence than it was,
+without a direct Variables read to arbitrate. That was the actual mistake:
+not checking the named variable directly before repointing a shared token
+on pattern-matched circumstantial evidence.
+
+**Fixed:** `--neutral-400` reverted to `#8d8d8d` in `globals.css`. Also
+fixed a second, independent instance of the same literal value on the raw
+tier: `--raw-pronetx-greys-400` was *also* `#7a828c` (unrelated to the
+Phase 1 change, likely stale from the same rebrand-era source, and never
+consumed by anything else so zero blast radius) — corrected to `#8d8d8d`
+to match `Greys/400` in the Raw collection. Reverted the matching label in
+`app/foundations/colors/semantic-tokens.ts`. Retracted the "corroborating
+evidence" claims in `content/components/instance-card.mdx` and
+`content/components/collapsible-filters.mdx`'s Open Questions sections —
+both had logged this as an open, designer-call-needed token-value gap; it
+isn't one.
+
+**Also found while cross-checking the same export, unrelated to the
+`--neutral-400` mistake:** the 4 heading-level `paragragh-spacing` tokens
+(H1–H4) were carrying the *Former Pronetx Blue* mode's values (16/16/12/12)
+instead of the current Caylent Green mode's values (4/4/8/8) — a genuine
+pre-rebrand leftover, not something I touched previously. Zero live
+consumers (only referenced by their own definitions), so zero blast radius.
+Fixed to match the export.
+
+**Cross-checked and confirmed correct, not touched:** every other Semantic-
+collection color value already in `globals.css` (all of Neutral/Success/
+Error/Info/Warning/Content-Action-Primary/Secondary/Disabled) matches the
+authoritative export exactly — including every value the earlier Phase 1–2
+`--text-body-primary`/`--text-on-action-secondary`/`--icon-*` repoints to
+`--neutral-800` depend on. Those were right. Also confirmed the Grid
+Foundation's token spec (12 columns / 16px gutter / 16px margin) matches
+the export's `gridStyles` exactly — Phase 6 needed no changes. The export
+also lists a second, un-built grid style ("16 cols (wide)") not covered by
+the original audit note; flagged for a future pass, not built here.
+
+Verified with `npx tsc --noEmit`.
 
 ## Git state
 
@@ -996,25 +1056,24 @@ All six docs frames supplied on 2026-09-07 have been read, and Button Icon Small
   during the rebrand that landed one ramp step short) rather than treating
   each as an isolated bug.
 - **New, distinct from the wrong-ramp-step family above:** Instance
-  Card's Default/Hover/Disabled secondary border colors — Figma's real
-  hex values (`#aab0b8`, `#7a828c`, `#eff1f3`) don't match `--border-
-  color-surface-active-secondary-default/-hover/-disabled`'s current
-  values (`--neutral-300`/#adadad, `--neutral-400`/#8d8d8d, and a
-  hardcoded `#d2e0c8`) — and unlike every case above, the *correct* hex
-  doesn't exist under any other token name in the palette either. This
-  is a token-**value** gap, not a wrong-alias-pointer bug. These same
-  three tokens are already consumed by `Button` (disabled state) and
-  `Checkbox`'s `Radio` (disabled border), so correcting the values has
-  real blast radius into components already marked aligned — needs a
-  designer call before changing them, not a silent fix. **Corroborating
-  evidence found on Collapsible Filters:** Figma's Usage doc gives
-  `#7a828c` for `--text-body-secondary`'s ("inactive icon color") slot;
-  this codebase's `--text-body-secondary` (`--neutral-400`) resolves to
-  `#8d8d8d` — the exact same wrong hex substitution, via a *different*
-  token that happens to share the same underlying `--neutral-400`
-  value. Suggests `--neutral-400`'s raw hex itself may be wrong
-  site-wide, not just the one border alias — worth checking as part of
-  the same designer call rather than as a separate issue.
+  Card's Default/Disabled secondary border colors — Figma's real hex
+  values (`#aab0b8`, `#eff1f3`) don't match `--border-color-surface-
+  active-secondary-default/-disabled`'s current values (`--neutral-300`/
+  `#adadad` and `--content-action-disabled-200`/`#d2e0c8`) — and the
+  *correct* hex doesn't exist under any other token name in the palette
+  either. This is a token-**value** gap, not a wrong-alias-pointer bug.
+  These same tokens are already consumed by `Button` (disabled state)
+  and `Checkbox`'s `Radio` (disabled border), so correcting the values
+  has real blast radius into components already marked aligned — needs
+  a designer call before changing them, not a silent fix. **The Hover
+  part of this thread (`#7a828c` vs. `--neutral-400`'s `#8d8d8d`) — and
+  the matching "corroborating evidence" found on Collapsible Filters —
+  was retracted on 2026-09-10.** A direct Figma Variables export
+  confirmed `Neutral/400` is `#8d8d8d` in every mode; the `#7a828c`
+  seen in both component pulls was stale or a local override, not the
+  bound variable. `--neutral-400` and the Hover border both resolve
+  correctly as-is; no designer call needed for that part. See the
+  correction section above (search "was wrong, and I introduced it").
 - `--surface-action-primary-hover` joins the list too, but with a twist:
   blast-radius check found **zero real consumers** anywhere before this
   pass (only the token definition itself and the non-consuming reference

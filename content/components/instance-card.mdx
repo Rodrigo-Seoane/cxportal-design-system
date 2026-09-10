@@ -51,7 +51,7 @@ Instance Card is a compact row used to list a single org instance — typically 
     <TableRow>
       <TableCell>Hover</TableCell>
       <TableCell>#f8f8f8</TableCell>
-      <TableCell>#7a828c (unverified — see Open Questions)</TableCell>
+      <TableCell>#8d8d8d</TableCell>
       <TableCell>#1d1d1d</TableCell>
     </TableRow>
     <TableRow>
@@ -151,6 +151,7 @@ interface InstanceCardProps {
 
 ## Open Questions
 
-- **Border token values don't match Figma's hex.** Figma's Default/Hover/Disabled secondary border colors (`#aab0b8`, `#7a828c`, `#eff1f3`) don't correspond to any existing `--border-color-surface-active-secondary-*` token value in this codebase — those resolve to `#adadad`, `#8d8d8d`, and a hardcoded `#d2e0c8` respectively. This is different from the usual wrong-ramp-step bug (where the right hex exists under another token name) — here the right hex doesn't exist anywhere in the palette. The component uses the same token *names* Figma binds to (and that Button/Checkbox-radio already consume), so a future token-value correction will propagate here automatically. Needs a designer call before the shared token values are changed, given the blast radius.
+- **Default/Disabled border values still don't match Figma's pulled hex.** Figma's Default/Disabled secondary border colors (`#aab0b8`, `#eff1f3`) don't correspond to any existing `--border-color-surface-active-secondary-*` token value in this codebase — those resolve to `#adadad` and `#d2e0c8` respectively, and neither exists under any other token name either. Needs a designer call before touching the shared token values, given the blast radius (`Button`/`Checkbox`'s `Radio` already consume the same tokens).
+  **Correction (2026-09-10):** the Hover value was previously flagged here too (`#7a828c` from the component pull vs. `#8d8d8d` from `--neutral-400`) and repointed globally on that assumption — wrong call. A direct Figma Variables export confirms `Neutral/400` is `#8d8d8d` in both brand modes; the `#7a828c` seen in the earlier component pull was a stale or locally-overridden fallback, not the true bound variable. `--neutral-400` has been reverted to `#8d8d8d`, and the Hover row above now matches without a designer call needed.
 - **Read Only still shows the drag handle.** A card that can't be selected or reordered (no checkbox) still renders the `DotsSixVertical` drag-handle icon in Figma. Implemented faithfully, but this reads as a real contradiction — a drag affordance implies drag capability, which "Read Only" explicitly denies. Needs a designer call.
 - **Drag-reorder itself isn't implemented.** The design shows a drag handle, but no drag-and-drop behavior is specified or built — only the visual affordance exists.
