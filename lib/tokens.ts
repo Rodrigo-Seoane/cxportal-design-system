@@ -448,6 +448,12 @@ export const borderRadius = {
 // Legacy alias — prefer `borderRadius` above for new code
 export const radii = borderRadius
 
+export const grid = {
+  columns: 'var(--grid-columns)', // 12
+  gutter:  'var(--grid-gutter)',  // 16px
+  margin:  'var(--grid-margin)',  // 16px
+} as const
+
 // ═══════════════════════════════════════════════════════════════════════════
 // Typography — Roboto everywhere. Numeric sizes/line-heights match Figma.
 // ═══════════════════════════════════════════════════════════════════════════

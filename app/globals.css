@@ -242,6 +242,10 @@
   --border-radius-md: 8px;
   --border-radius-lg: 16px;
   --border-radius-round: 64px;
+  /* Grid foundation — 12-column layout grid (Foundations audit row: was undefined) */
+  --grid-columns: 12;
+  --grid-gutter: 16px;
+  --grid-margin: 16px;
   --text-size-heading-h-1-font-size: 28px;
   --text-size-heading-h-1-line-height: 34px;
   --text-size-heading-h-1-paragragh-spacing: 16px;

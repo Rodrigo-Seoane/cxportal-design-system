@@ -77,6 +77,7 @@ const NAV_GROUPS: NavGroup[] = [
     items: [
       { label: 'Colors',        href: '/foundations/colors' },
       { label: 'Typography',    href: '/foundations/typography' },
+      { label: 'Grid',          href: '/foundations/grid' },
       { label: 'Spacing',       href: '/foundations/spacing' },
       { label: 'Border Radius', href: '/foundations/border-radius' },
       { label: 'Icons',         href: '/foundations/icons' },
