@@ -12,12 +12,13 @@
 import { useState, useEffect, useRef, useCallback, Suspense } from 'react'
 import { useSearchParams } from 'next/navigation'
 import {
-  ArrowClockwiseIcon, BellIcon, ChartLineIcon, HouseIcon, CaretRightIcon,
+  ArrowClockwiseIcon, BellIcon, ChartLineIcon,
 } from '@phosphor-icons/react'
 
 import { WFMContext, INITIAL_KPI, INITIAL_DELTAS, INITIAL_ALERTS, DEFAULT_SCOPE, generateSparkline, AGENT_BANK } from '@/mocks/wfm/store'
 import type { ForceState, KpiValues, Role, WFMStore } from '@/mocks/wfm/store'
 
+import { Breadcrumb } from '@/components/ui/breadcrumbs'
 import { HierarchyFilter } from '@/components/wfm/HierarchyFilter'
 import { KpiTile } from '@/components/wfm/KpiTile'
 import { DegradedSourceBanner } from '@/components/wfm/DegradedSourceBanner'
@@ -167,14 +168,9 @@ function RealTimeWorkforceDashboardInner() {
           zIndex:          20,
         }}>
           {/* Breadcrumb */}
-          <nav aria-label="Breadcrumb" style={{ display: 'flex', alignItems: 'center', gap: 4, flex: 1, minWidth: 0 }}>
-            <HouseIcon size={14} color="var(--text-body-secondary)" weight="regular" aria-hidden="true" />
-            <span style={{ fontSize: 12, color: 'var(--text-body-secondary)' }}>Reporting</span>
-            <CaretRightIcon size={12} color="var(--neutral-300)" weight="regular" aria-hidden="true" />
-            <span style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-body-primary)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-              Real-Time Workforce Dashboard
-            </span>
-          </nav>
+          <div style={{ flex: 1, minWidth: 0 }}>
+            <Breadcrumb homeHref="/" items={[{ label: 'Real-Time Workforce Dashboard' }]} />
+          </div>
 
           {/* Page actions */}
           <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexShrink: 0 }}>

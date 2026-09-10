@@ -1,9 +1,10 @@
 'use client'
 
 import { useState } from 'react'
-import { useParams, useRouter, notFound } from 'next/navigation'
+import { useParams, notFound } from 'next/navigation'
 import Link from 'next/link'
-import { HouseIcon, CaretRightIcon, IdentificationCardIcon, UserFocusIcon } from '@phosphor-icons/react'
+import { IdentificationCardIcon, UserFocusIcon } from '@phosphor-icons/react'
+import { Breadcrumb } from '@/components/ui/breadcrumbs'
 import { CompanyTabs, type CompanyTabValue } from '@/components/access-management/CompanyTabs'
 import { CompanyInstancesTab } from '@/components/access-management/CompanyInstancesTab'
 import { CompanyUsersTab } from '@/components/access-management/CompanyUsersTab'
@@ -13,7 +14,6 @@ import { getCompanyDetail } from '@/mocks/access-management/companies'
 
 export default function CompanyDetailPage() {
   const params = useParams<{ companyId: string }>()
-  const router = useRouter()
   const company = getCompanyDetail(params.companyId)
   const [tab, setTab] = useState<CompanyTabValue>('instances')
 
@@ -24,17 +24,13 @@ export default function CompanyDetailPage() {
   return (
     <main style={{ padding: 16, display: 'flex', flexDirection: 'column', gap: 20 }}>
       {/* ── Breadcrumb ────────────────────────────────────────────────────── */}
-      <nav aria-label="Breadcrumb" style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
-        <button onClick={() => router.push('/access-management/companies')} aria-label="Home" style={{ display: 'flex', border: 'none', background: 'none', cursor: 'pointer', padding: 0 }}>
-          <HouseIcon size={14} color="var(--text-body-secondary)" weight="regular" />
-        </button>
-        <CaretRightIcon size={12} color="var(--neutral-300)" weight="regular" aria-hidden="true" />
-        <button onClick={() => router.push('/access-management/companies')} style={{ border: 'none', background: 'none', cursor: 'pointer', padding: 0, fontSize: 12, color: 'var(--text-body-secondary)' }}>
-          Companies
-        </button>
-        <CaretRightIcon size={12} color="var(--neutral-300)" weight="regular" aria-hidden="true" />
-        <span style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-body-primary)' }}>{company.name}</span>
-      </nav>
+      <Breadcrumb
+        homeHref="/"
+        items={[
+          { label: 'Companies', href: '/access-management/companies' },
+          { label: company.name },
+        ]}
+      />
 
       {/* ── Company header ───────────────────────────────────────────────── */}
       <div style={{ padding: 24, background: 'var(--neutral-0)', borderRadius: 8, display: 'flex', flexDirection: 'column', gap: 12 }}>

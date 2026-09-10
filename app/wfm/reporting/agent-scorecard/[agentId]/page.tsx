@@ -10,10 +10,11 @@
 import { useState, useEffect, useMemo, Suspense } from 'react'
 import { useParams, useSearchParams, useRouter, usePathname } from 'next/navigation'
 import {
-  ArrowLeftIcon, HouseIcon, CaretRightIcon,
+  ArrowLeftIcon,
   ArrowClockwiseIcon, InfoIcon, ShieldWarningIcon,
 } from '@phosphor-icons/react'
 import Link from 'next/link'
+import { Breadcrumb } from '@/components/ui/breadcrumbs'
 
 import {
   WFMContext, INITIAL_KPI, INITIAL_DELTAS, INITIAL_ALERTS, DEFAULT_SCOPE,
@@ -227,16 +228,15 @@ function AgentScorecardInner() {
           background: 'var(--neutral-0)', borderBottom: '1px solid var(--neutral-100)',
           position: 'sticky', top: 0, zIndex: 20,
         }}>
-          <nav aria-label="Breadcrumb" style={{ display: 'flex', alignItems: 'center', gap: 4, flex: 1, minWidth: 0 }}>
-            <HouseIcon size={14} color="var(--text-body-secondary)" aria-hidden="true" />
-            <span style={{ fontSize: 12, color: 'var(--text-body-secondary)' }}>Reporting</span>
-            <CaretRightIcon size={12} color="var(--neutral-300)" aria-hidden="true" />
-            <Link href={backHref} style={{ fontSize: 12, color: 'var(--text-body-secondary)', textDecoration: 'none' }}>Agent Status Summary</Link>
-            <CaretRightIcon size={12} color="var(--neutral-300)" aria-hidden="true" />
-            <span style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-body-primary)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-              {agent?.name ?? agentId}
-            </span>
-          </nav>
+          <div style={{ flex: 1, minWidth: 0 }}>
+            <Breadcrumb
+              homeHref="/"
+              items={[
+                { label: 'Agent Status Summary', href: backHref },
+                { label: agent?.name ?? agentId },
+              ]}
+            />
+          </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexShrink: 0 }}>
             <ForceStateTool />
             <RoleSwitcher />

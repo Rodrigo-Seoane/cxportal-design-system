@@ -12,13 +12,14 @@
 import { useState, useEffect, Suspense } from 'react'
 import { useSearchParams, useRouter, usePathname } from 'next/navigation'
 import {
-  ArrowClockwiseIcon, HouseIcon, CaretRightIcon,
+  ArrowClockwiseIcon,
   FloppyDiskIcon, MagnifyingGlassIcon, RowsIcon,
 } from '@phosphor-icons/react'
 
 import { WFMContext, INITIAL_KPI, INITIAL_DELTAS, INITIAL_ALERTS, DEFAULT_SCOPE, AGENT_BANK, INITIAL_SAVED_VIEWS } from '@/mocks/wfm/store'
 import type { ForceState, Role, WFMStore, SavedView } from '@/mocks/wfm/store'
 
+import { Breadcrumb } from '@/components/ui/breadcrumbs'
 import { HierarchyFilter } from '@/components/wfm/HierarchyFilter'
 import { DegradedSourceBanner } from '@/components/wfm/DegradedSourceBanner'
 import { RoleSwitcher } from '@/components/wfm/RoleSwitcher'
@@ -145,14 +146,9 @@ function AgentStatusSummaryInner() {
           background: 'var(--neutral-0)', borderBottom: '1px solid var(--neutral-100)',
           position: 'sticky', top: 0, zIndex: 20,
         }}>
-          <nav aria-label="Breadcrumb" style={{ display: 'flex', alignItems: 'center', gap: 4, flex: 1, minWidth: 0 }}>
-            <HouseIcon size={14} color="var(--text-body-secondary)" weight="regular" aria-hidden="true" />
-            <span style={{ fontSize: 12, color: 'var(--text-body-secondary)' }}>Reporting</span>
-            <CaretRightIcon size={12} color="var(--neutral-300)" weight="regular" aria-hidden="true" />
-            <span style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-body-primary)', whiteSpace: 'nowrap' }}>
-              Agent Status Summary
-            </span>
-          </nav>
+          <div style={{ flex: 1, minWidth: 0 }}>
+            <Breadcrumb homeHref="/" items={[{ label: 'Agent Status Summary' }]} />
+          </div>
 
           <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexShrink: 0 }}>
             {/* Saved views */}

@@ -3,9 +3,10 @@
 import { useEffect, useState } from 'react'
 import { useParams, useRouter, notFound } from 'next/navigation'
 import {
-  HouseIcon, CaretRightIcon, CaretLeftIcon, EnvelopeSimpleIcon,
+  CaretRightIcon, CaretLeftIcon, EnvelopeSimpleIcon,
   UserSquareIcon, UserFocusIcon, KeyIcon, EyeSlashIcon, TrashIcon,
 } from '@phosphor-icons/react'
+import { Breadcrumb } from '@/components/ui/breadcrumbs'
 import { InstancePanel } from '@/components/access-management/InstancePanel'
 import { ModulePermissionsPanel } from '@/components/access-management/ModulePermissionsPanel'
 import { UnsavedChangesModal } from '@/components/access-management/UnsavedChangesModal'
@@ -79,17 +80,13 @@ export default function UserDetailPage() {
   return (
     <main style={{ padding: 16, display: 'flex', flexDirection: 'column', gap: 20 }}>
       {/* ── Breadcrumb ────────────────────────────────────────────────────── */}
-      <nav aria-label="Breadcrumb" style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
-        <button onClick={() => router.push('/access-management/users')} aria-label="Home" style={{ display: 'flex', border: 'none', background: 'none', cursor: 'pointer', padding: 0 }}>
-          <HouseIcon size={14} color="var(--text-body-secondary)" weight="regular" />
-        </button>
-        <CaretRightIcon size={12} color="var(--neutral-300)" weight="regular" aria-hidden="true" />
-        <button onClick={() => router.push('/access-management/users')} style={{ border: 'none', background: 'none', cursor: 'pointer', padding: 0, fontSize: 12, color: 'var(--text-body-secondary)' }}>
-          Users
-        </button>
-        <CaretRightIcon size={12} color="var(--neutral-300)" weight="regular" aria-hidden="true" />
-        <span style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-body-primary)' }}>{fullName}</span>
-      </nav>
+      <Breadcrumb
+        homeHref="/"
+        items={[
+          { label: 'Users', href: '/access-management/users' },
+          { label: fullName },
+        ]}
+      />
 
       {/* ── User header ───────────────────────────────────────────────────── */}
       <div style={{ padding: 24, background: 'var(--neutral-0)', borderRadius: 8, display: 'flex', flexDirection: 'column', gap: 16 }}>
