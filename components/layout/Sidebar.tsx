@@ -21,6 +21,7 @@ import {
   type NTMenuRowState,
 } from '@/components/ui/nt-menu'
 import { LogoHeader } from './LogoHeader'
+import { AccountRow } from './AccountRow'
 
 // ── Design tokens ─────────────────────────────────────────────────────────────
 // Live sidebar skin, migrated 2026-09-10 from the dark nav-item.tsx family to
@@ -401,11 +402,13 @@ export function Sidebar() {
         )}
       </nav>
 
-      {/* No bottom section -- the previous placeholder "CxPortal / Design
-          System" brand block was removed 2026-09-10: it's now redundant
-          with the real Logo Header at top. Figma's own reference shows an
-          Account row (user email + switcher) here instead, but that's a
-          separate, still-open decision -- see Open_Questions.md. */}
+      {/* ── Bottom: Account row (dropdown opens upward) ─────────────── */}
+      <div style={{
+        flexShrink:  0,
+        borderTop:  '1px solid var(--border-color-surface-active-terciary-default)',
+      }}>
+        <AccountRow email="rseoane@pronetx.com" collapsed={collapsed} />
+      </div>
     </aside>
   )
 }
