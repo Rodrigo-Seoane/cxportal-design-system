@@ -1030,6 +1030,75 @@ Verified with `npx tsc --noEmit` after every batch and live browser checks
 (FilterRail worker-status dots, Instance Card disabled state, a synthetic
 `--surface-overlay` element) — all clean.
 
+## Decision rollout — Phases 8, 9, 10 (DONE, 2026-09-10)
+
+All three remaining plan phases done in one pass, per "Move Phase 7 onto
+Phases 8-10 next."
+
+**Phase 8 — Open Page Title rollout.** Swapped `PageTitle` → `OpenPageTitle`
+on the 3 Open Inventory routes that sit below the module's Dashboard root:
+SLA/TAT (via `MetricDetailPage.tsx`), Task Queue Visibility v1, and v2 —
+each gets a 2-item breadcrumb back to `/open-inventory`. The Dashboard
+itself stays on plain `PageTitle` (module root, nothing to navigate up to,
+per Breadcrumb's own documented guidance) — a deliberate deviation from the
+plan's literal "swap the 7 sites," since 3 of those "7" (the Access
+Management layouts) turned out to be architecturally wrong fits for
+`OpenPageTitle` — see Phase 9. CxPortal purple sweep: already clean, no
+changes needed (`top-bar.tsx` already documents `#b2a3ff`/`#d6d7ff` as a
+deliberately-not-replicated Figma leftover).
+
+**Phase 9 — Breadcrumb migration.** Migrated 7 hand-rolled breadcrumb `<nav>`
+blocks to the real `Breadcrumb` component: Access Management's 3 detail
+pages (`roles/[roleId]`, `users/[userId]`, `companies/[companyId]` —
+their shared list+detail layouts keep plain `PageTitle`, since list pages
+are top-level within their own branch; each detail page now renders
+`Breadcrumb` directly above its own record-name heading instead, which is
+the architecturally correct fit the plan's "swap to OpenPageTitle" framing
+missed) and WFM Reporting's 4 pages (`real-time-workforce`,
+`agent-status-summary` — 1-item breadcrumbs, dropping a non-clickable
+"Reporting" label with no real link target; `agent-scorecard/[agentId]`,
+`supervisor-scorecard/[scope]` — 2-item, preserving existing real links).
+Not migrated: 8 files under `app/sandbox/campaigns-email/` and
+`app/sandbox/collapsible-filter/` — a self-contained prototype subsystem
+with its own Tailwind/`--color-*` styling convention, out of scope for this
+DS-standardization pass, flagged in `Open_Questions.md`.
+
+**Phase 10 — NT Menu becomes the live sidebar.** The highest-risk change in
+the whole plan (every page's nav). Before touching it: read `nt-menu.tsx`
+in full and found real, undocumented gaps between what it defines and what
+the dark sidebar already had (no status-badge slot, no flat-link-no-caret
+state, no disabled state) — asked the user via `AskUserQuestion` rather
+than silently inventing answers, given the stakes. User's answer: swap now,
+strictly Figma-only, but (1) remove status badges, (2) make "Guidelines" a
+flat module row with the caret hidden, (3) order modules alphabetically —
+plus 3 specific Figma frame links for collapsed icons / collapsed
+alphabetical reference / expanded alphabetical reference. **Those 3 frames
+were not reachable** — the Figma desktop MCP plugin available this session
+could only read nodes within whatever canvas was already open locally, not
+arbitrary node IDs by URL (new `LESSONS.md` entry documents this). Per-module
+collapsed icons are carried over unchanged from the previous dark-sidebar
+mapping instead — flagged for a follow-up visual check once the frames are
+reachable, not silently treated as confirmed.
+
+Extended `nt-menu.tsx` with two props needed for real production wiring
+(`href` on `NTMenuModuleItem`/`NTMenuSubItem`/`NTMenuItemCollapsed` for real
+`next/link` navigation; `showCaret` on `NTMenuModuleItem` for the flat
+Guidelines row) — both documented in `nt-menu.mdx` as inferred, not
+Figma-backed. `Sidebar.tsx` rewritten to use `NTMenuModuleItem`/
+`NTMenuSubItem`/`NTMenuGroup`/`NTMenuItemCollapsed` instead of its own
+hand-rolled dark-rail JSX, preserving collapse/expand width animation,
+single-open-group behavior, and active-route highlighting. `nav-item.tsx`
+(the old dark pattern) is kept as a standalone component + doc page, no
+longer consumed anywhere — `navigation.mdx` updated to say so.
+
+Verified live: alphabetical order, no badges, Guidelines flat/no-caret,
+group expand/collapse, collapsed-rail pills (click-to-expand), active-route
+highlighting on the 34-item Components group, and the tree connector line
+(confirmed via `getComputedStyle`, not just visually) — all working. `npx
+tsc --noEmit` clean throughout. No new console errors on any page checked.
+
+All 10 phases of the original plan are now done.
+
 ## Git state
 
 Branch: **`fix/ds-audit-g1-g2-figma-alignment`** (cut from
