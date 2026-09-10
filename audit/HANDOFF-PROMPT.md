@@ -899,6 +899,43 @@ the original audit note; flagged for a future pass, not built here.
 
 Verified with `npx tsc --noEmit`.
 
+## Decision rollout — Phase 6 addendum: 16-col wide grid (DONE, 2026-09-10)
+
+Added the second grid style flagged above. `--grid-wide-columns: 16` added
+to `globals.css` alongside `--grid-columns: 12`, same gutter/margin. `lib/
+tokens.ts`'s `grid` export gained a `wideColumns` field. `GridDemo.tsx` now
+takes a `columns?: number` prop (default 12) instead of hardcoding 12, so
+the same component renders either style. `app/foundations/grid/page.tsx`
+now shows both grids under labeled headings ("12 Column internal — main
+content" / "16 cols (wide) — full-bleed layouts") with a `wideColumns` row
+added to the token table. Verified with `npx tsc --noEmit` and a live
+browser check — both grids render correctly across all 5 breakpoint rows.
+
+Next: Phase 7 — Page Title owns `<h1>`, build the composed Open Page Title
+(+ Breadcrumb) component. **Paused before starting** — see the new
+codebase-audit request below; sequencing decision pending.
+
+## New request — 3-part codebase audit (raised 2026-09-10, not started)
+
+Before Phase 7, the user asked for a separate audit pass across the whole
+project folder, independent of the component-vs-Figma audit this file has
+tracked so far:
+
+1. Find and remove attributes/values/variables still pointing at old/
+   Pronetx/pre-rebrand values that don't match `figma_styles.json`.
+2. Find and remove deprecated/unused functions/modules/components.
+3. Review code comments across the codebase for anything that reads as a
+   lesson learned or an open question from a previous session; move those
+   into new root-level `Lessons.md` and `Open_Questions.md` files so they're
+   tracked in one place instead of scattered inline.
+
+The user asked whether it's more practical to finish the 10-phase plan
+first or run this audit first — answered in chat: finish Phase 7 first
+(small, already-scoped, in progress), then run the 3-part audit before
+Phases 8–10 (which do a wide rollout across every module and the nav — best
+done on a codebase that's already been swept for dead code and stale
+tokens, not before).
+
 ## Git state
 
 Branch: **`fix/ds-audit-g1-g2-figma-alignment`** (cut from
