@@ -384,6 +384,14 @@
   --surface-table-checkbox-active: var(--content-action-primary-500);
   --border-color-neutral-light: var(--neutral-100);
   --border-color-neutral-dark: var(--neutral-600);
+  /* Page shell (2026-09-10, Figma file 6AQU2VprCcbqar3eWe3mNx node 6896-112045):
+     only Main Content gets a white surface -- Nav, Top Bar, and Page Title
+     stay transparent, showing the page's own Neutral-100 background
+     (--color-surface-display) through. */
+  --surface-main-content: var(--neutral-0);
+  --border-color-main-content-external: var(--neutral-300);
+  --border-color-main-content-internal: var(--neutral-200);
+
   --border-color-surface-active-primary-default: var(--content-action-primary-300);
   --border-color-surface-active-primary-hover: var(--content-action-primary-500);
   --border-color-surface-active-secondary-default: var(--neutral-300);

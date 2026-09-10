@@ -47,7 +47,9 @@ export function OpenPageTitle({
   className,
 }: OpenPageTitleProps) {
   return (
-    <div className={className} style={{ backgroundColor: 'var(--color-surface-section, white)' }}>
+    // Open Page Title (Breadcrumb + Page Title) is a transparent section of
+    // the page shell (2026-09-10 rule).
+    <div className={className} style={{ backgroundColor: 'transparent' }}>
       <div style={{ padding: '16px 16px 0' }}>
         <Breadcrumb items={breadcrumbItems} homeHref={homeHref} />
       </div>

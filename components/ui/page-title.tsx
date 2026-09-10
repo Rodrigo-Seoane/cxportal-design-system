@@ -102,7 +102,8 @@ export function PageTitle({
         justifyContent:  'space-between',
         padding:         '16px',
         width:           '100%',
-        backgroundColor: 'var(--color-surface-section, white)',
+        // Page Title is a transparent section of the page shell (2026-09-10 rule)
+        backgroundColor: 'transparent',
       }}
     >
       {/* Left — title + optional chip + optional subtitle */}

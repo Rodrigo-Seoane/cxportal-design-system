@@ -210,7 +210,8 @@ export function TopBar({
         justifyContent:  'space-between',
         height:           52,
         padding:         '2px 16px',
-        backgroundColor: 'var(--color-surface-section)',
+        // Top Bar is a transparent section of the page shell (2026-09-10 rule)
+        backgroundColor: 'transparent',
         borderBottom:    `1px solid ${BORDER_LIGHT}`,
         width:           '100%',
       }}>

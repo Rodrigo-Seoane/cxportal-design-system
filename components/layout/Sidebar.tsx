@@ -327,7 +327,9 @@ export function Sidebar() {
         // width set imperatively via ref
         display:         'flex',
         flexDirection:   'column',
-        backgroundColor: 'var(--surface-section-bg)',
+        // Nav is a transparent section of the page shell (2026-09-10 rule) --
+        // shows the page's own Neutral-100 background through.
+        backgroundColor: 'transparent',
         borderRight:     '1px solid var(--border-color-surface-active-terciary-default)',
         overflow:        'hidden',
         zIndex:           40,
