@@ -1,9 +1,12 @@
 # CxPortal DS — Component Audit Handoff
 
-_Last refreshed: 2026-09-09 (decision-rollout Phases 1–5 complete — global
-semantic-token repoints, the Colors Foundation Action-color family, and small
-documentation closeouts, Table keyboard focus, and Modal accessibility are
-verified and committed; Phase 6 Grid Foundation is next).
+_Last refreshed: 2026-09-10 (decision-rollout Phases 1–6 complete — global
+semantic-token repoints, the Colors Foundation Action-color family, small
+documentation closeouts, Table keyboard focus, Modal accessibility, and a
+from-scratch Grid Foundation build are verified and committed, plus a Colors
+double-check that caught 3 more `--neutral-700` stragglers the whole audit
+had missed. Phase 7 — Page Title owns `<h1>` + the composed Open Page Title
+component — is next). The audit branch has been merged into `main`.
 Eighteenth audit pass was a cross-cutting blue→green /
 old-token sweep, not a per-component Figma pull; found and fixed the
 classic `--content-action-primary-600` bug in 6 components that were never
@@ -802,6 +805,40 @@ absent from the accessibility tree.
 
 Next: Phase 6 — build the Grid Foundation.
 
+## Decision rollout — Colors Foundation double-check (DONE)
+
+Before starting Phase 6, re-verified the Colors Foundation page against the
+Phase 1–2 fixes (the branch had picked up an unrelated parallel PR rebuilding
+that same page around the same time). The live `/foundations/colors` page
+(`semantic-tokens.ts` + `ColorsExplorer.tsx`) was confirmed correct — Neutral/400
+renders `#7a828c` as expected. Found and fixed three more tokens in the exact
+same `--neutral-700`-instead-of-`--neutral-800` family that the whole 18-pass
+audit had missed: `--text-form-field-focus`, `--icon-body-primary`, and
+`--icon-on-action-secondary`. Two have zero live component consumers and the
+third only appears in a Storybook-only demo file (`colors.stories.tsx`, not
+rendered by the live Next.js app — Storybook isn't running in this repo), so
+blast radius was effectively zero. Confirmed via grep that no token in
+`globals.css` still resolves to `--neutral-700` anywhere.
+
+## Decision rollout — Phase 6 (DONE)
+
+Built the Grid foundation from scratch — nothing existed before this (no
+tokens, no page, no Figma P&U frames). Added `--grid-columns` (12),
+`--grid-gutter` (16px), `--grid-margin` (16px) to `globals.css` and
+`lib/tokens.ts`, matching the original audit note's spec exactly. Built
+`app/foundations/grid/page.tsx` + `components/ds/GridDemo.tsx`, mirroring the
+existing Border Radius foundation page's structure (demo card + token
+reference table) rather than inventing a new pattern. The demo shows the same
+flat grid spec (it doesn't vary per breakpoint) reflowing across Tailwind's 5
+default breakpoints — an inferred interpretation of "5 layouts" from the
+audit note, since no Figma source exists to confirm what the 5 were meant to
+be; flagged as such directly on the page. Added to `Sidebar.tsx`'s
+Foundations nav. Verified with `npx tsc --noEmit` and a live browser
+screenshot — all 5 rows render correctly widening left to right.
+
+Next: Phase 7 — Page Title owns `<h1>`, build the composed Open Page Title
+(+ Breadcrumb) component.
+
 ## Git state
 
 Branch: **`fix/ds-audit-g1-g2-figma-alignment`** (cut from
@@ -1207,10 +1244,14 @@ Needs a decision on which surface colour the demo should use.
    single worst instance of the pre-rebrand-blue-leftover pattern this whole
    audit has found, worth asking whether it's the same root cause as Metric
    Tiles'/Collapsible Filters' milder versions of the same thing.
-3. **Completed in Decision rollout Phases 1–2:** apply the approved global
-   token mappings and update the Colors Foundation Action-color family. The separate
+3. **Completed in Decision rollout Phases 1–6:** global token mappings, the
+   Colors Foundation Action-color family (plus a follow-up double-check that
+   caught 3 more `--neutral-700` stragglers), doc closeouts, Table keyboard
+   focus, Modal accessibility, and the Grid Foundation build. The separate
    `--border-color-surface-active-secondary-*` token-value gap remains a
-   designer follow-up.
+   designer follow-up. Remaining: Phases 7–10 (Page Title `<h1>` + Open Page
+   Title/Breadcrumb rollout, Top Bar "New UI" default, Breadcrumb call-site
+   migration, NT Menu as the live Sidebar default).
 4. Audit Combobox (2255-8066) to actually close G1 — still the one hole in that batch.
 5. Close out G4: Inline Context Data is the one remaining hole (code already
    exists at `/components/inline-context-data`, unaudited against Figma).
