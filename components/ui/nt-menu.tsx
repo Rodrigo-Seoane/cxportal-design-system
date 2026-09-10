@@ -1,5 +1,6 @@
 'use client'
 
+import Link from 'next/link'
 import {
   HouseIcon,
   TreeViewIcon,
@@ -69,6 +70,32 @@ function useRowStyle(state: NTMenuRowState, raised: boolean): React.CSSPropertie
     textAlign:       'left',
     transition:      'background 100ms ease, border-color 100ms ease',
   }
+}
+
+// Polymorphic row container — renders a real `next/link` Link when `href` is
+// given (real navigation, wired into Sidebar.tsx), or a plain button when
+// it's a pure toggle (a group header with no destination of its own).
+function RowContainer({
+  href, onClick, style, ariaExpanded, children,
+}: {
+  href?: string
+  onClick?: () => void
+  style: React.CSSProperties
+  ariaExpanded?: boolean
+  children: React.ReactNode
+}) {
+  if (href) {
+    return (
+      <Link href={href} onClick={onClick} style={{ ...style, textDecoration: 'none' }}>
+        {children}
+      </Link>
+    )
+  }
+  return (
+    <button type="button" onClick={onClick} aria-expanded={ariaExpanded} style={style}>
+      {children}
+    </button>
+  )
 }
 
 function RowLabel({ children, semibold = false }: { children: React.ReactNode; semibold?: boolean }) {
@@ -141,23 +168,32 @@ export interface NTMenuModuleItemProps {
   state?:   NTMenuRowState
   isOpen?:  boolean
   onClick?: () => void
+  /** Real navigation target. When set, the row renders as a Link instead of a toggle button. */
+  href?:    string
+  /**
+   * Show the trailing expand/collapse caret. Default true. Set false for a
+   * flat entry with no sub-items (no Figma state for this -- inferred for
+   * Sidebar.tsx's "Guidelines" link, which has no group to expand).
+   */
+  showCaret?: boolean
 }
 
-export function NTMenuModuleItem({ label, icon, state = 'default', isOpen = false, onClick }: NTMenuModuleItemProps) {
+export function NTMenuModuleItem({ label, icon, state = 'default', isOpen = false, onClick, href, showCaret = true }: NTMenuModuleItemProps) {
   const iconSize = 13
   return (
-    <button type="button" onClick={onClick} style={useRowStyle(state, true)}>
+    <RowContainer href={href} onClick={onClick} ariaExpanded={showCaret ? isOpen : undefined} style={useRowStyle(state, true)}>
       <span style={{ display: 'flex', alignItems: 'center', gap: 10, flex: 1, minWidth: 0 }}>
         <span style={{ display: 'flex', alignItems: 'center', flexShrink: 0, color: T.text }}>
           {icon ?? <TreeViewIcon size={iconSize} color={T.text} weight="regular" />}
         </span>
         <RowLabel semibold={state === 'active'}>{label}</RowLabel>
       </span>
-      {isOpen
-        ? <CaretDownIcon  size={iconSize} color={T.text} weight="regular" />
-        : <CaretRightIcon size={iconSize} color={T.text} weight="regular" />
-      }
-    </button>
+      {showCaret && (
+        isOpen
+          ? <CaretDownIcon  size={iconSize} color={T.text} weight="regular" />
+          : <CaretRightIcon size={iconSize} color={T.text} weight="regular" />
+      )}
+    </RowContainer>
   )
 }
 
@@ -169,20 +205,18 @@ export interface NTMenuSubItemProps {
   label:    string
   state?:   NTMenuRowState
   onClick?: () => void
+  /** Real navigation target. When set, the row renders as a Link instead of a button. */
+  href?:    string
 }
 
-export function NTMenuSubItem({ label, state = 'default', onClick }: NTMenuSubItemProps) {
+export function NTMenuSubItem({ label, state = 'default', onClick, href }: NTMenuSubItemProps) {
   return (
-    <button
-      type="button"
-      onClick={onClick}
-      style={{ ...useRowStyle(state, false), width: 205, justifyContent: 'flex-start' }}
-    >
+    <RowContainer href={href} onClick={onClick} style={{ ...useRowStyle(state, false), width: 205, justifyContent: 'flex-start' }}>
       <span style={{ display: 'flex', alignItems: 'center', gap: 10, minWidth: 0 }}>
         <ArrowElbowDownRightIcon size={11} color={T.text} weight="regular" />
         <RowLabel semibold={state === 'active'}>{label}</RowLabel>
       </span>
-    </button>
+    </RowContainer>
   )
 }
 
@@ -242,14 +276,16 @@ export interface NTMenuItemCollapsedProps {
   icon?:    React.ReactNode
   state?:   NTMenuRowState
   onClick?: () => void
+  /** Real navigation target (a flat entry). Omit for a group pill, whose click expands the rail. */
+  href?:    string
 }
 
-export function NTMenuItemCollapsed({ icon, state = 'default', onClick }: NTMenuItemCollapsedProps) {
+export function NTMenuItemCollapsed({ icon, state = 'default', onClick, href }: NTMenuItemCollapsedProps) {
   const isHover  = state === 'hover'
   const isActive = state === 'active'
   return (
-    <button
-      type="button"
+    <RowContainer
+      href={href}
       onClick={onClick}
       style={{
         display:        'flex',
@@ -268,6 +304,6 @@ export function NTMenuItemCollapsed({ icon, state = 'default', onClick }: NTMenu
       }}
     >
       {icon ?? <HouseIcon size={13} color={T.text} weight="regular" />}
-    </button>
+    </RowContainer>
   )
 }

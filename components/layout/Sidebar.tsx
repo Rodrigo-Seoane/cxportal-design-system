@@ -1,16 +1,12 @@
 'use client'
 
-import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useState, useEffect, useRef } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
 import {
   PaletteIcon,
   SquaresFourIcon,
   ChartBarIcon,
   FlaskIcon,
-  CaretRightIcon,
-  CaretDownIcon,
   ListIcon,
   BookOpenIcon,
   WrenchIcon,
@@ -18,60 +14,112 @@ import {
   ShieldCheckIcon,
   PackageIcon,
 } from '@phosphor-icons/react'
+import {
+  NTMenuModuleItem,
+  NTMenuSubItem,
+  NTMenuGroup,
+  NTMenuItemCollapsed,
+  type NTMenuRowState,
+} from '@/components/ui/nt-menu'
 
 // ── Design tokens ─────────────────────────────────────────────────────────────
-// Figma (Vertical Nav Item / Vertical Nav Item Collapsed, nodes 3016-19265 /
-// 22-6316): hoverBg/activeBg/activeText bypass the shared --surface-action-
-// primary-hover / --text-action aliases directly where those were themselves
-// wrong-ramp-stepped in this codebase — see HANDOFF-PROMPT.md.
+// Live sidebar skin, migrated 2026-09-10 from the dark nav-item.tsx family to
+// NT Menu's light-themed pill design (components/ui/nt-menu.tsx). Per the
+// user's decision: status badges removed, "Guidelines" is a flat module row
+// with no caret, and modules are ordered alphabetically (both expanded and
+// collapsed) -- confirmed via chat, not independently re-verified against the
+// 3 specific Figma frames cited (3869-13623 collapsed icons, 3919-57135
+// collapsed alphabetical reference, 3662-5909 expanded alphabetical
+// reference) since the Figma desktop plugin couldn't reach nodes outside the
+// currently-open canvas in this session. Per-module icons below are carried
+// over unchanged from the previous dark-sidebar mapping (already an
+// established, working assignment in this codebase), not re-picked from
+// 3869-13623 -- flagged in Open_Questions.md for a follow-up visual check.
 const NAV = {
-  bg:          'var(--surface-vertical-nav)',
-  hoverBg:     'var(--surface-action-primary-hover)',
-  activeBg:    'var(--surface-action-primary-default)',
-  activeText:  'var(--content-action-primary-default)',
-  textDefault: 'var(--text-on-action-primary)',
-  textMuted:     'color-mix(in srgb, var(--neutral-100) 55%, transparent)',
-  divider:       'color-mix(in srgb, var(--neutral-100) 8%, transparent)',
   widthExpanded:  240,
   widthCollapsed: 64,
 } as const
 
 const EASE = [0.4, 0, 0.2, 1] as const
-const LABEL_T = `opacity 0.18s cubic-bezier(${EASE.join(',')}), width 0.18s cubic-bezier(${EASE.join(',')}), flex 0.18s cubic-bezier(${EASE.join(',')})`
 
-// ── Status badges ─────────────────────────────────────────────────────────────
-const STATUS = {
-  stable:     { label: 'Stable', bg: 'var(--color-success-100)', color: 'var(--success-600)' },
-  wip:        { label: 'WIP',    bg: 'var(--color-warning-100)', color: 'var(--warning-600)' },
-  deprecated: { label: 'Dep.',   bg: 'var(--color-error-100)',   color: 'var(--error-600)' },
-} as const
+// ── Types ─────────────────────────────────────────────────────────────────────
+type NavItem = { label: string; href: string }
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+type IconType = React.ComponentType<any>
 
-type ItemStatus = keyof typeof STATUS
-type NavItem  = { label: string; href: string; status?: ItemStatus }
-type NavGroup = {
-  group: string
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  Icon: React.ComponentType<any>
-  basePath: string
-  items: NavItem[]
-}
+type NavEntry =
+  | { kind: 'group'; label: string; Icon: IconType; basePath: string; items: NavItem[] }
+  | { kind: 'flat';  label: string; Icon: IconType; href: string }
 
-// ── Top-level direct links (no group, no sub-items) ──────────────────────────
-type DirectLink = {
-  label: string
-  href: string
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  Icon: React.ComponentType<any>
-}
-
-const DIRECT_LINKS: DirectLink[] = [
-  { label: 'Guidelines', href: '/guidelines', Icon: BookOpenIcon },
-]
-
-// ── Nav structure ─────────────────────────────────────────────────────────────
-const NAV_GROUPS: NavGroup[] = [
+// ── Nav structure — alphabetical by label (modules + the flat Guidelines link) ─
+const NAV_ENTRIES: NavEntry[] = [
   {
-    group: 'Foundations',
+    kind: 'group',
+    label: 'Access Management',
+    Icon: ShieldCheckIcon,
+    basePath: '/access-management',
+    items: [
+      { label: 'Roles',     href: '/access-management/roles' },
+      { label: 'Users',     href: '/access-management/users' },
+      { label: 'Companies', href: '/access-management/companies' },
+    ],
+  },
+  {
+    kind: 'group',
+    label: 'Charts',
+    Icon: ChartBarIcon,
+    basePath: '/charts',
+    items: [
+      { label: 'Full Size',    href: '/charts/full-size' },
+      { label: 'Graph Cards',  href: '/charts/graph-cards' },
+    ],
+  },
+  {
+    kind: 'group',
+    label: 'Components',
+    Icon: SquaresFourIcon,
+    basePath: '/components',
+    items: [
+      { label: 'Button',                href: '/components/button' },
+      { label: 'Input',                 href: '/components/input' },
+      { label: 'Select',                href: '/components/select' },
+      { label: 'Date Picker',           href: '/components/date-picker' },
+      { label: 'Checkbox & Radio',      href: '/components/checkbox' },
+      { label: 'Navigation',            href: '/components/navigation' },
+      { label: 'Nav Item',              href: '/components/nav-item' },
+      { label: 'NT Menu',               href: '/components/nt-menu' },
+      { label: 'Breadcrumb',            href: '/components/breadcrumb' },
+      { label: 'Top Bar',               href: '/components/top-bar' },
+      { label: 'Table',                 href: '/components/table' },
+      { label: 'Table Filter',          href: '/components/table-filter' },
+      { label: 'Collapsible Filters',   href: '/components/collapsible-filters' },
+      { label: 'Chips & Tags',          href: '/components/chips' },
+      { label: 'Counter',               href: '/components/counter' },
+      { label: 'Tabs',                  href: '/components/tabs' },
+      { label: 'Vertical Tabs',         href: '/components/vertical-tabs' },
+      { label: 'Modal',                 href: '/components/modal' },
+      { label: 'Message Box',           href: '/components/message-box' },
+      { label: 'Switch',                href: '/components/switch' },
+      { label: 'Pagination',            href: '/components/pagination' },
+      { label: 'Loading',               href: '/components/loading' },
+      { label: 'Toast Notifications',   href: '/components/toast' },
+      { label: 'Tooltip',               href: '/components/tooltip' },
+      { label: 'Stats Cards',           href: '/components/stats-cards' },
+      { label: 'Metric Tile ACGR',      href: '/components/metric-tile-acgr' },
+      { label: 'Inline Stats Cards',    href: '/components/inline-stats-cards' },
+      { label: 'Inline Context Data',   href: '/components/inline-context-data' },
+      { label: 'Instance Card',         href: '/components/instance-card' },
+      { label: 'Clickable Card',        href: '/components/clickable-card' },
+      { label: 'Page Title',            href: '/components/page-title' },
+      { label: 'Open Page Title',       href: '/components/open-page-title' },
+      { label: 'Stepper',               href: '/components/stepper' },
+      { label: 'Distribution Controls', href: '/components/distribution-controls' },
+      { label: 'File Tree',             href: '/components/file-tree' },
+    ],
+  },
+  {
+    kind: 'group',
+    label: 'Foundations',
     Icon: PaletteIcon,
     basePath: '/foundations',
     items: [
@@ -83,103 +131,35 @@ const NAV_GROUPS: NavGroup[] = [
       { label: 'Icons',         href: '/foundations/icons' },
     ],
   },
+  { kind: 'flat', label: 'Guidelines', Icon: BookOpenIcon, href: '/guidelines' },
   {
-    group: 'Components',
-    Icon: SquaresFourIcon,
-    basePath: '/components',
-    items: [
-      { label: 'Button',                href: '/components/button',                status: 'stable' },
-      { label: 'Input',                 href: '/components/input',                 status: 'stable' },
-      { label: 'Select',                href: '/components/select',                status: 'stable' },
-      { label: 'Date Picker',           href: '/components/date-picker',           status: 'stable' },
-      { label: 'Checkbox & Radio',      href: '/components/checkbox',              status: 'stable' },
-      { label: 'Navigation',            href: '/components/navigation',            status: 'stable' },
-      { label: 'Nav Item',              href: '/components/nav-item',              status: 'stable' },
-      { label: 'NT Menu',               href: '/components/nt-menu',               status: 'wip'    },
-      { label: 'Breadcrumb',            href: '/components/breadcrumb',            status: 'stable' },
-      { label: 'Top Bar',               href: '/components/top-bar',               status: 'stable' },
-      { label: 'Table',                 href: '/components/table',                 status: 'stable' },
-      { label: 'Table Filter',          href: '/components/table-filter',          status: 'stable' },
-      { label: 'Collapsible Filters',   href: '/components/collapsible-filters',   status: 'stable' },
-      { label: 'Chips & Tags',          href: '/components/chips',                 status: 'stable' },
-      { label: 'Counter',               href: '/components/counter',               status: 'wip'    },
-      { label: 'Tabs',                  href: '/components/tabs',                  status: 'stable' },
-      { label: 'Vertical Tabs',         href: '/components/vertical-tabs',         status: 'stable' },
-      { label: 'Modal',                 href: '/components/modal',                 status: 'stable' },
-      { label: 'Message Box',           href: '/components/message-box',           status: 'stable' },
-      { label: 'Switch',                href: '/components/switch',                status: 'stable' },
-      { label: 'Pagination',            href: '/components/pagination',            status: 'stable' },
-      { label: 'Loading',               href: '/components/loading',               status: 'stable' },
-      { label: 'Toast Notifications',   href: '/components/toast',                 status: 'stable' },
-      { label: 'Tooltip',               href: '/components/tooltip',               status: 'stable' },
-      { label: 'Stats Cards',           href: '/components/stats-cards',           status: 'stable' },
-      { label: 'Metric Tile ACGR',      href: '/components/metric-tile-acgr',      status: 'stable' },
-      { label: 'Inline Stats Cards',    href: '/components/inline-stats-cards',    status: 'stable' },
-      { label: 'Inline Context Data',   href: '/components/inline-context-data',   status: 'stable' },
-      { label: 'Instance Card',         href: '/components/instance-card',         status: 'stable' },
-      { label: 'Clickable Card',        href: '/components/clickable-card',        status: 'stable' },
-      { label: 'Page Title',             href: '/components/page-title',            status: 'stable' },
-      { label: 'Open Page Title',       href: '/components/open-page-title',       status: 'stable' },
-      { label: 'Stepper',               href: '/components/stepper',               status: 'stable' },
-      { label: 'Distribution Controls', href: '/components/distribution-controls', status: 'stable' },
-      { label: 'File Tree',             href: '/components/file-tree',            status: 'stable' },
-    ],
-  },
-  {
-    group: 'Charts',
-    Icon: ChartBarIcon,
-    basePath: '/charts',
-    items: [
-      { label: 'Full Size',    href: '/charts/full-size',    status: 'stable' },
-      { label: 'Graph Cards',  href: '/charts/graph-cards',  status: 'stable' },
-    ],
-  },
-  {
-    group: 'WFM Reporting',
-    Icon: ChartBarHorizontalIcon,
-    basePath: '/wfm',
-    items: [
-      { label: 'Real-Time Workforce', href: '/wfm/reporting/real-time-workforce', status: 'wip' },
-      { label: 'Agent Status Summary', href: '/wfm/reporting/agent-status-summary', status: 'wip' },
-      { label: 'Agent Scorecard', href: '/wfm/reporting/agent-scorecard', status: 'wip' },
-      { label: 'Supervisor Scorecard', href: '/wfm/reporting/supervisor-scorecard', status: 'wip' },
-    ],
-  },
-  {
-    group: 'Access Management',
-    Icon: ShieldCheckIcon,
-    basePath: '/access-management',
-    items: [
-      { label: 'Roles',     href: '/access-management/roles',     status: 'wip' },
-      { label: 'Users',     href: '/access-management/users',     status: 'wip' },
-      { label: 'Companies', href: '/access-management/companies', status: 'wip' },
-    ],
-  },
-  {
-    group: 'Open Inventory',
+    kind: 'group',
+    label: 'Open Inventory',
     Icon: PackageIcon,
     basePath: '/open-inventory',
     items: [
-      { label: 'Dashboard',                href: '/open-inventory',     status: 'wip' },
-      { label: 'Regulatory Due Dates (TAT)', href: '/open-inventory/tat', status: 'wip' },
-      { label: 'Internal SLA',             href: '/open-inventory/sla', status: 'wip' },
-      { label: 'Task Queue Visibility',    href: '/open-inventory/task-queue-visibility/assign', status: 'wip' },
-      { label: 'Task Queue Visibility (v2)', href: '/open-inventory/task-queue-visibility-v2', status: 'wip' },
+      { label: 'Dashboard',                  href: '/open-inventory' },
+      { label: 'Regulatory Due Dates (TAT)', href: '/open-inventory/tat' },
+      { label: 'Internal SLA',               href: '/open-inventory/sla' },
+      { label: 'Task Queue Visibility',      href: '/open-inventory/task-queue-visibility/assign' },
+      { label: 'Task Queue Visibility (v2)', href: '/open-inventory/task-queue-visibility-v2' },
     ],
   },
   {
-    group: 'Sandbox',
+    kind: 'group',
+    label: 'Sandbox',
     Icon: FlaskIcon,
     basePath: '/sandbox',
     items: [
-      { label: 'All Experiments',    href: '/sandbox' },
-      { label: 'Login Report',       href: '/sandbox/login-report',       status: 'wip' },
-      { label: 'Knowledge Management', href: '/sandbox/collapsible-filter', status: 'wip' },
-      { label: 'Email Campaigns',    href: '/sandbox/campaigns-email',    status: 'wip' },
+      { label: 'All Experiments',      href: '/sandbox' },
+      { label: 'Login Report',         href: '/sandbox/login-report' },
+      { label: 'Knowledge Management', href: '/sandbox/collapsible-filter' },
+      { label: 'Email Campaigns',      href: '/sandbox/campaigns-email' },
     ],
   },
   {
-    group: 'System',
+    kind: 'group',
+    label: 'System',
     Icon: WrenchIcon,
     basePath: '/system',
     items: [
@@ -189,173 +169,108 @@ const NAV_GROUPS: NavGroup[] = [
       { label: 'Figma Sync',       href: '/system/figma-sync' },
     ],
   },
+  {
+    kind: 'group',
+    label: 'WFM Reporting',
+    Icon: ChartBarHorizontalIcon,
+    basePath: '/wfm',
+    items: [
+      { label: 'Real-Time Workforce',  href: '/wfm/reporting/real-time-workforce' },
+      { label: 'Agent Status Summary', href: '/wfm/reporting/agent-status-summary' },
+      { label: 'Agent Scorecard',      href: '/wfm/reporting/agent-scorecard' },
+      { label: 'Supervisor Scorecard', href: '/wfm/reporting/supervisor-scorecard' },
+    ],
+  },
 ]
 
-// Returns the nav group whose basePath or any sub-item href matches pathname
-function findActiveGroup(pathname: string): string | null {
-  return NAV_GROUPS.find(s =>
-    pathname.startsWith(s.basePath) ||
-    s.items.some(i => pathname === i.href || pathname.startsWith(i.href + '/'))
-  )?.group ?? null
+// Returns the label of whichever entry (group or flat link) matches pathname
+function findActiveEntry(pathname: string): string | null {
+  return NAV_ENTRIES.find(e =>
+    e.kind === 'flat'
+      ? pathname === e.href
+      : pathname.startsWith(e.basePath) || e.items.some(i => pathname === i.href || pathname.startsWith(i.href + '/'))
+  )?.label ?? null
 }
 
-const sublistVariants = {
-  open:   { height: 'auto', opacity: 1 },
-  closed: { height: 0,      opacity: 0 },
+function rowState(active: boolean, hovered: boolean): NTMenuRowState {
+  return active ? 'active' : hovered ? 'hover' : 'default'
 }
 
-// ── Direct top-level link ─────────────────────────────────────────────────────
-function DirectLinkItem({ link, active, collapsed }: { link: DirectLink; active: boolean; collapsed: boolean }) {
-  const [hovered, setHovered] = useState(false)
-  const { Icon } = link
-
-  return (
-    <Link
-      href={link.href}
-      aria-current={active ? 'page' : undefined}
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
-      style={{
-        width:          '100%',
-        height:          48,
-        display:        'flex',
-        alignItems:     'center',
-        justifyContent:  collapsed ? 'center' : 'flex-start',
-        gap:             collapsed ? 0 : 8,
-        padding:         collapsed ? 0 : '0 12px',
-        background:      active ? NAV.activeBg : hovered ? NAV.hoverBg : 'transparent',
-        textDecoration: 'none',
-        transition:     'background 100ms ease',
-        overflow:       'hidden',
-      }}
-    >
-      <Icon size={18} color={NAV.textDefault} weight="thin" style={{ flexShrink: 0 }} />
-      <span style={{
-        flex:       collapsed ? '0 0 0px' : '1',
-        fontSize:    14, fontWeight: active ? 600 : 300, lineHeight: '20px',
-        color:       NAV.textDefault, textAlign: 'left',
-        overflow:   'hidden', whiteSpace: 'nowrap',
-        opacity:     collapsed ? 0 : 1,
-        minWidth:    0,
-        transition:  LABEL_T,
-      }}>
-        {link.label}
-      </span>
-    </Link>
-  )
-}
-
-// ── Sub-item link ─────────────────────────────────────────────────────────────
-function SubItem({ item, active }: { item: NavItem; active: boolean }) {
-  const [hovered, setHovered] = useState(false)
-  const badge = item.status ? STATUS[item.status] : null
-
-  return (
-    <Link
-      href={item.href}
-      aria-current={active ? 'page' : undefined}
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
-      style={{
-        display:        'flex',
-        alignItems:     'center',
-        height:          48,
-        paddingLeft:     36,
-        paddingRight:    8,
-        gap:             8,
-        background:      active ? NAV.activeBg : hovered ? NAV.hoverBg : 'transparent',
-        textDecoration: 'none',
-        transition:     'background 100ms ease',
-        overflow:       'hidden',
-        whiteSpace:     'nowrap',
-        flexShrink:      0,
-      }}
-    >
-      <span style={{
-        flex: 1, fontSize: 14, fontWeight: active ? 600 : 300, lineHeight: '20px',
-        color: NAV.textDefault,
-        overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap',
-        transition: 'color 100ms ease',
-      }}>
-        {item.label}
-      </span>
-      {badge && (
-        <span style={{
-          fontSize: 10, fontWeight: 600, lineHeight: '14px',
-          padding: '1px 5px', borderRadius: 3, flexShrink: 0,
-          background: badge.bg, color: badge.color,
-        }}>
-          {badge.label}
-        </span>
-      )}
-    </Link>
-  )
-}
-
-// ── Group header button ───────────────────────────────────────────────────────
-function GroupHeader({
-  section, Icon, isOpen, isGroupActive, collapsed, onToggle,
+// ── Hoverable group (module header + sub-items + trunk line) ──────────────────
+function HoverableGroup({
+  label, Icon, active, open, onToggle, items, pathname,
 }: {
-  section: NavGroup
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  Icon: React.ComponentType<any>
-  isOpen: boolean
-  isGroupActive: boolean
-  collapsed: boolean
+  label: string
+  Icon: IconType
+  active: boolean
+  open: boolean
   onToggle: () => void
+  items: NavItem[]
+  pathname: string
 }) {
   const [hovered, setHovered] = useState(false)
-
   return (
-    <button
-      onClick={onToggle}
-      aria-expanded={isOpen}
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
-      style={{
-        width:          '100%',
-        height:          48,
-        display:        'flex',
-        alignItems:     'center',
-        justifyContent:  collapsed ? 'center' : 'flex-start',
-        gap:             collapsed ? 0 : 8,
-        padding:         collapsed ? 0 : '0 12px',
-        background:      hovered ? NAV.hoverBg : isGroupActive && collapsed ? NAV.activeBg : 'transparent',
-        border:         'none',
-        cursor:         'pointer',
-        transition:     'background 100ms ease',
-        overflow:       'hidden',
-      }}
-    >
-      <Icon size={18} color={NAV.textDefault} weight="thin" style={{ flexShrink: 0 }} />
+    <div onMouseEnter={() => setHovered(true)} onMouseLeave={() => setHovered(false)}>
+      <NTMenuGroup
+        label={label}
+        icon={<Icon size={13} weight="regular" />}
+        open={open}
+        state={rowState(active, hovered)}
+        onToggle={onToggle}
+      >
+        {items.map(item => {
+          const itemActive = pathname === item.href || pathname.startsWith(item.href + '/')
+          return <HoverableSubItem key={item.href} item={item} active={itemActive} />
+        })}
+      </NTMenuGroup>
+    </div>
+  )
+}
 
-      {/* Label */}
-      <span style={{
-        flex:       collapsed ? '0 0 0px' : '1',
-        fontSize:    14, fontWeight: 300, lineHeight: '20px',
-        color:       isGroupActive && !collapsed ? NAV.activeText : NAV.textDefault,
-        textAlign:  'left',
-        overflow:   'hidden', whiteSpace: 'nowrap',
-        opacity:     collapsed ? 0 : 1,
-        minWidth:    0,
-        transition:  LABEL_T,
-      }}>
-        {section.group}
-      </span>
+// ── Hoverable sub-item wrapper ─────────────────────────────────────────────────
+function HoverableSubItem({ item, active }: { item: NavItem; active: boolean }) {
+  const [hovered, setHovered] = useState(false)
+  return (
+    <div onMouseEnter={() => setHovered(true)} onMouseLeave={() => setHovered(false)}>
+      <NTMenuSubItem label={item.label} href={item.href} state={rowState(active, hovered)} />
+    </div>
+  )
+}
 
-      {/* Caret */}
-      <span style={{
-        flexShrink: 0, display: 'flex', alignItems: 'center', overflow: 'hidden',
-        width:   collapsed ? 0 : 16,
-        opacity: collapsed ? 0 : 1,
-        transition: `opacity 0.15s cubic-bezier(${EASE.join(',')}), width 0.15s cubic-bezier(${EASE.join(',')})`,
-      }}>
-        {isOpen
-          ? <CaretDownIcon  size={14} color={isGroupActive ? NAV.activeText : NAV.textDefault} />
-          : <CaretRightIcon size={14} color={NAV.textDefault} />
-        }
-      </span>
-    </button>
+// ── Hoverable module/group header ─────────────────────────────────────────────
+function HoverableModuleItem(props: {
+  label: string
+  Icon: IconType
+  active: boolean
+  isOpen?: boolean
+  href?: string
+  showCaret?: boolean
+  onClick?: () => void
+}) {
+  const [hovered, setHovered] = useState(false)
+  const { label, Icon, active, isOpen, href, showCaret, onClick } = props
+  return (
+    <div onMouseEnter={() => setHovered(true)} onMouseLeave={() => setHovered(false)}>
+      <NTMenuModuleItem
+        label={label}
+        icon={<Icon size={13} weight="regular" />}
+        href={href}
+        showCaret={showCaret}
+        isOpen={isOpen}
+        onClick={onClick}
+        state={rowState(active, hovered)}
+      />
+    </div>
+  )
+}
+
+// ── Hoverable collapsed pill ───────────────────────────────────────────────────
+function HoverableCollapsedPill({ Icon, active, href, onClick }: { Icon: IconType; active: boolean; href?: string; onClick?: () => void }) {
+  const [hovered, setHovered] = useState(false)
+  return (
+    <div onMouseEnter={() => setHovered(true)} onMouseLeave={() => setHovered(false)}>
+      <NTMenuItemCollapsed icon={<Icon size={13} weight="regular" />} href={href} onClick={onClick} state={rowState(active, hovered)} />
+    </div>
   )
 }
 
@@ -385,111 +300,111 @@ export function Sidebar() {
   }, [collapsed])
 
   // Single open group
-  const activeGroup = findActiveGroup(pathname)
-  const [openGroup, setOpenGroup] = useState<string | null>(activeGroup)
+  const activeEntry = findActiveEntry(pathname)
+  const [openGroup, setOpenGroup] = useState<string | null>(activeEntry)
 
   useEffect(() => {
     setOpenGroup(prev => {
-      const group = findActiveGroup(pathname)
-      if (group && prev !== group) return group
+      const entry = findActiveEntry(pathname)
+      if (entry && prev !== entry) return entry
       return prev
     })
   }, [pathname])
 
-  const toggleGroup = (group: string) =>
-    setOpenGroup(prev => prev === group ? null : group)
+  const toggleGroup = (label: string) =>
+    setOpenGroup(prev => prev === label ? null : label)
 
   return (
     <aside
       ref={sidebarRef}
       style={{
-        position:       'fixed',
-        left:            0,
-        top:             0,
-        height:         '100vh',
+        position:        'fixed',
+        left:             0,
+        top:              0,
+        height:          '100vh',
         // width set imperatively via ref
-        display:        'flex',
-        flexDirection:  'column',
-        backgroundColor: NAV.bg,
-        overflow:       'hidden',
-        zIndex:          40,
+        display:         'flex',
+        flexDirection:   'column',
+        backgroundColor: 'var(--surface-section-bg)',
+        borderRight:     '1px solid var(--border-color-surface-active-terciary-default)',
+        overflow:        'hidden',
+        zIndex:           40,
       }}
     >
       {/* ── Top: toggle only ─────────────────────────────────────────── */}
       <div style={{
-        height:       48,
-        flexShrink:   0,
-        display:      'flex',
-        alignItems:   'center',
+        height:        48,
+        flexShrink:     0,
+        display:       'flex',
+        alignItems:    'center',
         justifyContent: 'flex-start',
-        padding:      '0 14px',
-        borderBottom: `1px solid ${NAV.divider}`,
+        padding:       '0 14px',
+        borderBottom:  '1px solid var(--border-color-surface-active-terciary-default)',
       }}>
         <CollapseToggle collapsed={collapsed} onToggle={() => setCollapsed(c => !c)} />
       </div>
 
       {/* ── Navigation ───────────────────────────────────────────────── */}
       <nav
-        style={{ flex: 1, overflowY: 'auto', overflowX: 'hidden', padding: '4px 0' }}
+        style={{ flex: 1, overflowY: 'auto', overflowX: 'hidden', padding: '12px 0' }}
         className="scrollbar-hide"
       >
-        {DIRECT_LINKS.map(link => (
-          <DirectLinkItem
-            key={link.href}
-            link={link}
-            active={pathname === link.href}
-            collapsed={collapsed}
-          />
-        ))}
-        {NAV_GROUPS.map(section => {
-          const isOpen        = !collapsed && openGroup === section.group
-          const isGroupActive = pathname.startsWith(section.basePath) ||
-            section.items.some(i => pathname === i.href || pathname.startsWith(i.href + '/'))
-
-          return (
-            <div key={section.group}>
-              <GroupHeader
-                section={section}
-                Icon={section.Icon}
-                isOpen={isOpen}
-                isGroupActive={isGroupActive}
-                collapsed={collapsed}
-                onToggle={() => {
-                  if (collapsed) {
+        {collapsed ? (
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 8, alignItems: 'center' }}>
+            {NAV_ENTRIES.map(entry => {
+              const active = entry.label === activeEntry
+              return (
+                <HoverableCollapsedPill
+                  key={entry.label}
+                  Icon={entry.Icon}
+                  active={active}
+                  href={entry.kind === 'flat' ? entry.href : undefined}
+                  onClick={entry.kind === 'flat' ? undefined : () => {
                     setCollapsed(false)
-                    setOpenGroup(section.group)
-                  } else {
-                    toggleGroup(section.group)
-                  }
-                }}
-              />
-              <AnimatePresence initial={false}>
-                {isOpen && (
-                  <motion.div
-                    key="sublist"
-                    initial="closed"
-                    animate="open"
-                    exit="closed"
-                    variants={sublistVariants}
-                    transition={{ duration: 0.18, ease: EASE }}
-                    style={{ overflow: 'hidden' }}
-                  >
-                    {section.items.map(item => {
-                      const active = pathname === item.href || pathname.startsWith(item.href + '/')
-                      return <SubItem key={item.href} item={item} active={active} />
-                    })}
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </div>
-          )
-        })}
+                    setOpenGroup(entry.label)
+                  }}
+                />
+              )
+            })}
+          </div>
+        ) : (
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+            {NAV_ENTRIES.map(entry => {
+              if (entry.kind === 'flat') {
+                return (
+                  <div key={entry.label} style={{ paddingLeft: 12 }}>
+                    <HoverableModuleItem
+                      label={entry.label}
+                      Icon={entry.Icon}
+                      href={entry.href}
+                      showCaret={false}
+                      active={entry.label === activeEntry}
+                    />
+                  </div>
+                )
+              }
+
+              return (
+                <HoverableGroup
+                  key={entry.label}
+                  label={entry.label}
+                  Icon={entry.Icon}
+                  active={entry.label === activeEntry}
+                  open={openGroup === entry.label}
+                  onToggle={() => toggleGroup(entry.label)}
+                  items={entry.items}
+                  pathname={pathname}
+                />
+              )
+            })}
+          </div>
+        )}
       </nav>
 
       {/* ── Bottom: brand ────────────────────────────────────────────── */}
       <div style={{
         flexShrink:  0,
-        borderTop:  `1px solid ${NAV.divider}`,
+        borderTop:  '1px solid var(--border-color-surface-active-terciary-default)',
         height:      64,
         display:    'flex',
         alignItems: 'center',
@@ -516,12 +431,12 @@ export function Sidebar() {
           flexShrink:  0,
           opacity:     collapsed ? 0 : 1,
           width:       collapsed ? 0 : 160,
-          transition:  LABEL_T,
+          transition:  `opacity 0.18s cubic-bezier(${EASE.join(',')}), width 0.18s cubic-bezier(${EASE.join(',')})`,
         }}>
-          <p style={{ fontSize: 13, fontWeight: 600, color: NAV.textDefault, lineHeight: '18px', margin: 0, whiteSpace: 'nowrap' }}>
+          <p style={{ fontSize: 13, fontWeight: 600, color: 'var(--neutral-800)', lineHeight: '18px', margin: 0, whiteSpace: 'nowrap' }}>
             CxPortal
           </p>
-          <p style={{ fontSize: 10, fontWeight: 400, color: NAV.textMuted, lineHeight: '14px', margin: 0, whiteSpace: 'nowrap' }}>
+          <p style={{ fontSize: 10, fontWeight: 400, color: 'var(--text-body-secondary)', lineHeight: '14px', margin: 0, whiteSpace: 'nowrap' }}>
             Design System
           </p>
         </div>
@@ -547,13 +462,13 @@ function CollapseToggle({ collapsed, onToggle }: { collapsed: boolean; onToggle:
         height:          32,
         borderRadius:     6,
         border:         'none',
-        background:      hovered ? 'color-mix(in srgb, var(--neutral-100) 12%, transparent)' : 'transparent',
+        background:      hovered ? 'var(--neutral-100)' : 'transparent',
         cursor:         'pointer',
         flexShrink:      0,
         transition:     'background 100ms ease',
       }}
     >
-      <ListIcon size={18} color={NAV.textDefault} weight="regular" />
+      <ListIcon size={18} color="var(--neutral-800)" weight="regular" />
     </button>
   )
 }

@@ -1,21 +1,27 @@
 ---
 title: NT Menu
-description: In-progress redesign of the left/vertical nav — light theme, rounded pill rows, drop shadows, tree connector lines. Not yet wired in as the live sidebar.
+description: The live left/vertical nav — light theme, rounded pill rows, drop shadows, tree connector lines. Wired into Sidebar.tsx as of 2026-09-10.
 figmaNodeId: 3660-6296
 status: wip
 ---
 
 ## Overview
 
-CxPortal is mid-redesign of the left/vertical navigation, moving away from
-the current dark, full-width sidebar (see the **Navigation** / **Nav Item**
-pages) toward this new pattern — a light-themed, rounded-pill tree menu with
+CxPortal's left/vertical navigation, replacing the previous dark, full-width
+sidebar (see the **Navigation** / **Nav Item** pages, now historical —
+`nav-item.tsx` itself is kept only for that doc/playground, no longer
+consumed by `Sidebar.tsx`) — a light-themed, rounded-pill tree menu with
 drop shadows and connector lines between nested items, internally named
 `MenuItemRow` / `MenuItemRowCollapsed` / `ModuleMenuGroup` in Figma.
 
-This page exists so the new pattern can be built and tested independently
-before it becomes the live sidebar. It has **no Principles or Usage doc yet**
-in Figma — everything below is read directly off the component nodes.
+**Wired into `Sidebar.tsx` as the live sidebar (2026-09-10).** It still has
+**no Principles or Usage doc yet** in Figma — everything below is read
+directly off the component nodes. Two props were added specifically for the
+live-wiring pass, with no Figma state to confirm them against (see Open
+questions): `href` on `NTMenuModuleItem`/`NTMenuSubItem`/`NTMenuItemCollapsed`
+(renders a real `next/link` Link instead of a toggle button) and `showCaret`
+on `NTMenuModuleItem` (hides the caret for a flat entry with no sub-items —
+used for Sidebar's "Guidelines" link).
 
 ## Anatomy
 
@@ -175,9 +181,27 @@ import { GlobeIcon } from '@phosphor-icons/react'
   Rather than hardcode five magic numbers, `NTMenuGroup` derives the line
   height from a single row-height constant, which visually approximates but
   does not pixel-match Figma's specific per-count values.
-- **Not wired into `Sidebar.tsx`.** This is deliberately buildable and
-  testable in isolation first — swapping it in as the live default sidebar
-  skin is a separate step once it's been tried out.
-- **No `disabled` state, module icon default, or deep-nesting (grandchild)
-  pattern** is defined in the Figma nodes pulled so far — only what's listed
-  above.
+- ~~**Not wired into `Sidebar.tsx`.**~~ **Resolved (2026-09-10)** — see Overview.
+- **The 3 specific Figma frames cited for this wiring pass weren't
+  independently re-verified.** The user requested pulling collapsed-rail
+  icons from node `3869-13623`, a collapsed alphabetical reference from
+  `3919-57135`, and an expanded alphabetical reference from `3662-5909` —
+  the Figma desktop plugin available in that session couldn't reach nodes
+  outside whatever canvas was already open locally, and no other Figma
+  access was available. The per-module icon set actually used is carried
+  over unchanged from the previous dark-sidebar mapping (an established,
+  already-approved assignment in this codebase — not freshly invented), not
+  re-picked from `3869-13623`. Needs a visual check against those 3 frames
+  once they're reachable.
+- **`href` and `showCaret` props (on `NTMenuModuleItem`/`NTMenuSubItem`/
+  `NTMenuItemCollapsed`) have no Figma state to confirm them against.**
+  Added purely to support real `next/link` navigation and a flat
+  no-sub-items entry ("Guidelines") when wiring this component into
+  `Sidebar.tsx` — inferred from the wiring requirement, not from a Figma
+  node.
+- **No `disabled` state or deep-nesting (grandchild) pattern** is defined in
+  the Figma nodes pulled so far — only what's listed above.
+- **Status badges (stable/wip/deprecated), shown on Sidebar's previous
+  dark-nav sub-items, were dropped** during the live-wiring pass per the
+  user's explicit decision — `NTMenuSubItem` has no badge slot and none was
+  added.

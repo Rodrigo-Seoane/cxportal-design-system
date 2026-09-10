@@ -1,6 +1,6 @@
 ---
 title: Navigation
-description: Vertical side navigation with collapsible groups, icon-labelled headers, and two-level hierarchy. Dark-mode-first with Light/SemiBold typography and green interactive states.
+description: Vertical side navigation with collapsible groups, icon-labelled headers, and two-level hierarchy. Dark-mode-first with Light/SemiBold typography and green interactive states. Superseded by NT Menu as the live sidebar (2026-09-10) — kept as a component/doc, not deleted.
 figmaNodeId: 8-2368
 figmaUpdated: Apr 09, 2026
 status: stable
@@ -459,18 +459,20 @@ fills and text are identical to the dark theme — only idle (default) text diff
 
 ## Open questions — not resolved
 
-- **This pattern is being redesigned.** CxPortal is mid-migration to a new
-  light-themed, rounded-pill "NT Menu" pattern — see the **NT Menu** page. It
-  has no Principles/Usage doc yet and is not wired in as the live sidebar,
-  but is buildable and testable now ahead of that swap.
+- ~~**This pattern is being redesigned.**~~ **Resolved (2026-09-10)** — the
+  light-themed, rounded-pill **NT Menu** pattern is now the live sidebar
+  (`Sidebar.tsx`). This dark pattern's components (`NavMenuItem`/`NavSubItem`/
+  `NavMenuItemCollapsed`) are no longer consumed anywhere in the app — kept
+  as a standalone component + doc page for reference, not deleted.
 - **Sub-item height (48px, not 40px) came from a 2-vs-1 evidence split.**
   The standalone Vertical Nav Item Expanded component (`3016-19265`) and the
   Nav Groups compound example (`203-14455`) both show 48px rows with 36px/8px
   padding; only this page's own hand-drawn "Variants" comparison grid (in the
   Usage doc, `735-30339`) still shows the older 40px/48px/24px numbers. Went
   with the two live component sources over the doc's static comparison grid.
-- **`Sidebar.tsx` doesn't consume `NavMenuItem`/`NavSubItem`/`NavMenuItemCollapsed`
-  at all.** It's a separate, hand-rolled duplicate of this same visual
-  language with its own token set. Both were fixed to the same corrected
-  colours/sizing in this pass, but the duplication itself — one canonical
-  implementation instead of two — is a separate refactor, not done here.
+- ~~**`Sidebar.tsx` doesn't consume `NavMenuItem`/`NavSubItem`/`NavMenuItemCollapsed`
+  at all.**~~ **Resolved (2026-09-10) — superseded, not fixed.** `Sidebar.tsx`
+  now consumes NT Menu's components instead (see above), rather than being
+  refactored to finally consume this dark pattern's components. The
+  duplication is gone because this pattern is no longer the live one, not
+  because the two were unified.
