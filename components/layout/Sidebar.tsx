@@ -37,7 +37,9 @@ import {
 // 3869-13623 -- flagged in Open_Questions.md for a follow-up visual check.
 const NAV = {
   widthExpanded:  240,
-  widthCollapsed: 64,
+  // Confirmed against Figma node 3934-32179 (2026-09-10): the collapsed
+  // rail is 48px, icon pills centered with 6px padding each side.
+  widthCollapsed: 48,
 } as const
 
 const EASE = [0.4, 0, 0.2, 1] as const
