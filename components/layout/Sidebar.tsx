@@ -7,7 +7,6 @@ import {
   SquaresFourIcon,
   ChartBarIcon,
   FlaskIcon,
-  ListIcon,
   BookOpenIcon,
   WrenchIcon,
   ChartBarHorizontalIcon,
@@ -21,6 +20,7 @@ import {
   NTMenuItemCollapsed,
   type NTMenuRowState,
 } from '@/components/ui/nt-menu'
+import { LogoHeader } from './LogoHeader'
 
 // ── Design tokens ─────────────────────────────────────────────────────────────
 // Live sidebar skin, migrated 2026-09-10 from the dark nav-item.tsx family to
@@ -37,9 +37,10 @@ import {
 // 3869-13623 -- flagged in Open_Questions.md for a follow-up visual check.
 const NAV = {
   widthExpanded:  240,
-  // Confirmed against Figma node 3934-32179 (2026-09-10): the collapsed
-  // rail is 48px, icon pills centered with 6px padding each side.
-  widthCollapsed: 48,
+  // Confirmed against Figma node 3919-57135 (2026-09-10): the collapsed
+  // rail widened from 48px to 52px to fit the collapsed Logo Header
+  // (52x52), icon pills centered with 8px padding each side.
+  widthCollapsed: 52,
 } as const
 
 const EASE = [0.4, 0, 0.2, 1] as const
@@ -335,17 +336,12 @@ export function Sidebar() {
         zIndex:           40,
       }}
     >
-      {/* ── Top: toggle only ─────────────────────────────────────────── */}
+      {/* ── Top: Logo Header (wordmark + collapse toggle) ────────────── */}
       <div style={{
-        height:        48,
-        flexShrink:     0,
-        display:       'flex',
-        alignItems:    'center',
-        justifyContent: 'flex-start',
-        padding:       '0 14px',
-        borderBottom:  '1px solid var(--border-color-surface-active-terciary-default)',
+        flexShrink:    0,
+        borderBottom: '1px solid var(--border-color-surface-active-terciary-default)',
       }}>
-        <CollapseToggle collapsed={collapsed} onToggle={() => setCollapsed(c => !c)} />
+        <LogoHeader collapsed={collapsed} onToggle={() => setCollapsed(c => !c)} />
       </div>
 
       {/* ── Navigation ───────────────────────────────────────────────── */}
@@ -405,74 +401,11 @@ export function Sidebar() {
         )}
       </nav>
 
-      {/* ── Bottom: brand ────────────────────────────────────────────── */}
-      <div style={{
-        flexShrink:  0,
-        borderTop:  '1px solid var(--border-color-surface-active-terciary-default)',
-        height:      64,
-        display:    'flex',
-        alignItems: 'center',
-        padding:    '0 14px',
-        gap:         10,
-        overflow:   'hidden',
-      }}>
-        {/* Logo mark — always visible */}
-        {/* TODO(caylent-rebrand): swap Pronetx "P" logo mark asset — pending new brand assets from user */}
-        <div style={{
-          width: 32, height: 32, borderRadius: 6,
-          background: 'var(--content-action-primary-600)', flexShrink: 0,
-          display: 'flex', alignItems: 'center', justifyContent: 'center',
-        }}>
-          <span style={{
-            fontFamily: 'Roboto, system-ui, sans-serif',
-            fontSize: 16, fontWeight: 800, color: 'var(--neutral-0)', letterSpacing: '-0.5px',
-          }}>P</span>
-        </div>
-
-        {/* Brand text — fades when collapsed */}
-        <div style={{
-          overflow:   'hidden',
-          flexShrink:  0,
-          opacity:     collapsed ? 0 : 1,
-          width:       collapsed ? 0 : 160,
-          transition:  `opacity 0.18s cubic-bezier(${EASE.join(',')}), width 0.18s cubic-bezier(${EASE.join(',')})`,
-        }}>
-          <p style={{ fontSize: 13, fontWeight: 600, color: 'var(--neutral-800)', lineHeight: '18px', margin: 0, whiteSpace: 'nowrap' }}>
-            CxPortal
-          </p>
-          <p style={{ fontSize: 10, fontWeight: 400, color: 'var(--text-body-secondary)', lineHeight: '14px', margin: 0, whiteSpace: 'nowrap' }}>
-            Design System
-          </p>
-        </div>
-      </div>
+      {/* No bottom section -- the previous placeholder "CxPortal / Design
+          System" brand block was removed 2026-09-10: it's now redundant
+          with the real Logo Header at top. Figma's own reference shows an
+          Account row (user email + switcher) here instead, but that's a
+          separate, still-open decision -- see Open_Questions.md. */}
     </aside>
-  )
-}
-
-// ── Collapse toggle ───────────────────────────────────────────────────────────
-function CollapseToggle({ collapsed, onToggle }: { collapsed: boolean; onToggle: () => void }) {
-  const [hovered, setHovered] = useState(false)
-  return (
-    <button
-      onClick={onToggle}
-      aria-label={collapsed ? 'Expand navigation' : 'Collapse navigation'}
-      onMouseEnter={() => setHovered(true)}
-      onMouseLeave={() => setHovered(false)}
-      style={{
-        display:        'flex',
-        alignItems:     'center',
-        justifyContent: 'center',
-        width:           32,
-        height:          32,
-        borderRadius:     6,
-        border:         'none',
-        background:      hovered ? 'var(--neutral-100)' : 'transparent',
-        cursor:         'pointer',
-        flexShrink:      0,
-        transition:     'background 100ms ease',
-      }}
-    >
-      <ListIcon size={18} color="var(--neutral-800)" weight="regular" />
-    </button>
   )
 }
