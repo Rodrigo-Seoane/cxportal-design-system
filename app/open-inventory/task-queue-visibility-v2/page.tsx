@@ -45,7 +45,7 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
-import { PageTitle } from '@/components/ui/page-title'
+import { OpenPageTitle } from '@/components/ui/open-page-title'
 import { FilterRail } from '@/components/open-inventory/task-queue-visibility/FilterRail'
 import { QueueTable } from '@/components/open-inventory/task-queue-visibility/QueueTable'
 import { TaskTable } from '@/components/open-inventory/task-queue-visibility/TaskTable'
@@ -112,7 +112,12 @@ export default function TaskQueueVisibilityV2AssignPage() {
 
   return (
     <div className="flex min-h-screen flex-col bg-[var(--color-surface-display)]">
-      <PageTitle
+      <OpenPageTitle
+        homeHref="/"
+        breadcrumbItems={[
+          { label: 'Open Inventory', href: '/open-inventory' },
+          { label: 'Task Queue Visibility (v2)' },
+        ]}
         title="Task Queue Visibility"
         subtitle="Stacked Assignment Flow — assign open tasks to eligible workers"
         actions={

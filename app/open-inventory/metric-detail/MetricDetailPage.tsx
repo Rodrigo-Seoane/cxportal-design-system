@@ -16,7 +16,7 @@
 
 import { Suspense, useMemo, useState } from 'react'
 import { CalendarClock, CircleAlert, CircleCheck, Clock as ClockIcon, Gauge, Layers } from 'lucide-react'
-import { PageTitle } from '@/components/ui/page-title'
+import { OpenPageTitle } from '@/components/ui/open-page-title'
 import { MessageBox } from '@/components/ui/message-box'
 import { Skeleton } from '@/components/ui/loading'
 import { Tabs, TabList, Tab } from '@/components/ui/tabs'
@@ -77,7 +77,16 @@ function MetricDetailInner({ clock, title, subtitle }: { clock: Clock; title: st
   return (
     <OpenInventoryContext.Provider value={store}>
       <div className="flex min-h-screen flex-col bg-[var(--color-surface-display)]">
-        <PageTitle title={title} subtitle={subtitle} actions={<><ForceStateTool /><RoleSwitcher /></>} />
+        <OpenPageTitle
+          homeHref="/"
+          breadcrumbItems={[
+            { label: 'Open Inventory', href: '/open-inventory' },
+            { label: title },
+          ]}
+          title={title}
+          subtitle={subtitle}
+          actions={<><ForceStateTool /><RoleSwitcher /></>}
+        />
 
         <Suspense fallback={null}>
           <FilterBar />

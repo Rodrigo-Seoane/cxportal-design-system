@@ -28,7 +28,7 @@
 
 import { useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
-import { PageTitle } from '@/components/ui/page-title'
+import { OpenPageTitle } from '@/components/ui/open-page-title'
 import { AssignmentBuilderHeader } from '@/components/open-inventory/task-queue-visibility/AssignmentBuilderHeader'
 import { FilterRail } from '@/components/open-inventory/task-queue-visibility/FilterRail'
 import { QueueTable } from '@/components/open-inventory/task-queue-visibility/QueueTable'
@@ -64,7 +64,12 @@ export default function TaskQueueVisibilityAssignPage() {
 
   return (
     <div className="flex min-h-screen flex-col bg-[var(--color-surface-display)]">
-      <PageTitle
+      <OpenPageTitle
+        homeHref="/"
+        breadcrumbItems={[
+          { label: 'Open Inventory', href: '/open-inventory' },
+          { label: 'Task Queue Visibility' },
+        ]}
         title="Task Queue Visibility"
         subtitle="Guided Assignment Builder — assign open tasks to eligible workers"
         actions={<DailyAssignmentsPopover assignments={state.assignments} />}
