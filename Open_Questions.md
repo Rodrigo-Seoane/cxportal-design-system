@@ -14,8 +14,6 @@ Unresolved design/product decisions surfaced during development or audit. Each e
 
 - **Deprecated cxportal-purple ramp has no successor token.** The old cxportal-purple color ramp is deprecated post-rebrand with no successor defined. app/system/status/page.tsx's "sandbox" category badge still uses hardcoded hex (#f0ebf8/#4a1a6b) as a result, and several --raw-cxportal-purple-* tokens in app/globals.css sit unused (tied to a "Former Pronetx Blue mode" that was never built). Needs a design decision: pick a successor token, or remove the dead purple tokens/mode reference. (app/system/status/page.tsx:56-57; app/globals.css:79)
 
-- **Sidebar logo mark is still a placeholder.** Pronetx "P" shape pending the real Caylent-rebrand logo asset from the user. (components/layout/Sidebar.tsx:501)
-
 - **Agent Status Summary table virtualization is a stand-in.** Row "virtualization" is a simple scroll-offset calc on fixed-height rows, not real virtualization. Swap for @tanstack/react-virtual before shipping to production. (app/wfm/reporting/agent-status-summary/AgentTable.tsx:3-6)
 
 - **Campaigns Email TEMPLATE_VARIABLES is placeholder mock data.** Standing in for the real variable list pending the Connect integration. Confirm the final variable set once that integration lands. (app/sandbox/campaigns-email/_mock/templates.ts:25)
@@ -46,3 +44,4 @@ Unresolved design/product decisions surfaced during development or audit. Each e
 - ~~**`--surface-overlay` matches a pre-rebrand Pronetx-blue hex with no figma_styles.json ground truth.**~~ Resolved: confirmed as Surface/Overlay → Caylent Green 900 (#030901) at 70% opacity.
 - ~~**Alpha-0 surface variants have no direct Context-collection citation.**~~ Resolved: kept as 0%-opacity mixes of their already-correct mapped tokens (Neutral/0, Content Action/Disabled/50), now expressed via `color-mix()` referencing the named token instead of an unlabeled raw rgba tuple.
 - ~~**`TopBar` still isn't wired into the app anywhere live.**~~ Resolved: added `<TopBar product="new-ui" />` to `app/layout.tsx`, global, sitting outside the scrolling content region so it stays fixed at the top of every page.
+- ~~**Sidebar logo mark is still a placeholder.**~~ Resolved: replaced with the real Logo Header (CxPORTAL wordmark + Caylent tagline, pulled as a real asset from Figma) at the top of the sidebar, plus a real Account row with a Profile/Logout dropdown at the bottom.
