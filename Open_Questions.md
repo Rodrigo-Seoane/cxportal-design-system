@@ -36,6 +36,10 @@ Unresolved design/product decisions surfaced during development or audit. Each e
 
 - **`docs/email_campaigns/figma_styles_02_sep.json` provenance comment is stale.** `app/foundations/colors/semantic-tokens.ts:2` cites this Sep-2 export as its source; the current canonical export is root-level `figma_styles.json` (dated 2026-09-10). Update the provenance comment, or confirm the Sep-2 files are intentionally kept as historical snapshots. (app/foundations/colors/semantic-tokens.ts:2)
 
+- **`TopBar` still isn't wired into the app anywhere live.** Its only usage remains the docs `/system/changelog` showcase page. The page-shell rule established 2026-09-10 (Nav/Top Bar/Page Title transparent, Main Content white) made `TopBar` itself transparent, but didn't add it to any real route — that's a separate decision (global via `app/layout.tsx`, alongside the always-on `Sidebar`? Or per-module?) not asked for in that pass. (components/ui/top-bar.tsx; app/layout.tsx)
+
+- **Internal dividers inside table/row components weren't sept to `--border-color-main-content-internal`.** Only the Main Content panel/container-level external border and one `StackedStepSection` header divider were repointed to the new Neutral-200 "internal" token (2026-09-10). `QueueTable`/`TaskTable`/`WorkerTable`, `InventoryDetailTable`, and similar still use whatever border token they had before (mostly `--border-color-neutral-light`, Neutral-100) for row/cell dividers. Needs its own pass if the rule is meant to apply that granularly.
+
 ---
 
 ## Resolved (2026-09-10, for reference)
