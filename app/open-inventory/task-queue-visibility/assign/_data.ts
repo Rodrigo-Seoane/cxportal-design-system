@@ -233,5 +233,5 @@ export const TASK_STATUS_CHIP: Record<TaskStatus, 'error' | 'warning' | 'success
 }
 
 export const WORKER_STATUS_COLOR: Record<WorkerStatus, string> = {
-  'Available': '#67d034', 'On Call': '#eaa93c', 'Break': '#7a828c', 'Logged Off': '#aab0b8',
+  'Available': '#67d034', 'On Call': '#eaa93c', 'Break': 'var(--neutral-400)', 'Logged Off': 'var(--neutral-300)',
 }

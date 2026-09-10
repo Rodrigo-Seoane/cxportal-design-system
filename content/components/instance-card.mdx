@@ -45,7 +45,7 @@ Instance Card is a compact row used to list a single org instance — typically 
     <TableRow>
       <TableCell>Default</TableCell>
       <TableCell>White</TableCell>
-      <TableCell>#aab0b8 (unverified — see Open Questions)</TableCell>
+      <TableCell>#adadad</TableCell>
       <TableCell>#1d1d1d</TableCell>
     </TableRow>
     <TableRow>
@@ -69,7 +69,7 @@ Instance Card is a compact row used to list a single org instance — typically 
     <TableRow>
       <TableCell>Disabled</TableCell>
       <TableCell>transparent</TableCell>
-      <TableCell>#eff1f3 (unverified — see Open Questions)</TableCell>
+      <TableCell>#efefef</TableCell>
       <TableCell>#adadad</TableCell>
     </TableRow>
   </TableBody>
@@ -151,7 +151,7 @@ interface InstanceCardProps {
 
 ## Open Questions
 
-- **Default/Disabled border values still don't match Figma's pulled hex.** Figma's Default/Disabled secondary border colors (`#aab0b8`, `#eff1f3`) don't correspond to any existing `--border-color-surface-active-secondary-*` token value in this codebase — those resolve to `#adadad` and `#d2e0c8` respectively, and neither exists under any other token name either. Needs a designer call before touching the shared token values, given the blast radius (`Button`/`Checkbox`'s `Radio` already consume the same tokens).
+- ~~**Default/Disabled border values still don't match Figma's pulled hex.** Figma's Default/Disabled secondary border colors (`#aab0b8`, `#eff1f3`) don't correspond to any existing `--border-color-surface-active-secondary-*` token value in this codebase — those resolve to `#adadad` and `#d2e0c8` respectively, and neither exists under any other token name either. Needs a designer call before touching the shared token values, given the blast radius (`Button`/`Checkbox`'s `Radio` already consume the same tokens).~~ **— resolved (2026-09-10).** Default maps to Neutral-300 (`#adadad`) — the codebase already had this right, no change needed. Disabled maps to Neutral-100 (`#efefef`) — `--border-color-surface-active-secondary-disabled` was repointed from `--content-action-disabled-200` (`#d2e0c8`) to `--neutral-100`, cascading to every consumer of that shared token (`Button`, `Checkbox`'s `Radio`).
   **Correction (2026-09-10):** the Hover value was previously flagged here too (`#7a828c` from the component pull vs. `#8d8d8d` from `--neutral-400`) and repointed globally on that assumption — wrong call. A direct Figma Variables export confirms `Neutral/400` is `#8d8d8d` in both brand modes; the `#7a828c` seen in the earlier component pull was a stale or locally-overridden fallback, not the true bound variable. `--neutral-400` has been reverted to `#8d8d8d`, and the Hover row above now matches without a designer call needed.
 - **Read Only still shows the drag handle.** A card that can't be selected or reordered (no checkbox) still renders the `DotsSixVertical` drag-handle icon in Figma. Implemented faithfully, but this reads as a real contradiction — a drag affordance implies drag capability, which "Read Only" explicitly denies. Needs a designer call.
 - **Drag-reorder itself isn't implemented.** The design shows a drag handle, but no drag-and-drop behavior is specified or built — only the visual affordance exists.

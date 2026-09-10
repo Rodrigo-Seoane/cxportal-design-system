@@ -292,17 +292,23 @@
 
   /* ─── Context colors (Text, Icon, Surface, Border) ─── */
   --surface-disabled: #f1f5ed;
-  --surface-action-empty: rgba(255, 255, 255, 0);
+  /* 0% opacity of the mapped token (Neutral/0), not an arbitrary transparent literal */
+  --surface-action-empty: color-mix(in srgb, var(--neutral-0) 0%, transparent);
   --surface-accent-warning-light: #fdf8ef;
   --border-color-accent-warning-dark: #815d21;
-  --surface-overlay: rgba(8, 17, 31, 0.7);
+  /* Surface/Overlay -> Caylent Green 900 (#030901) at 70% opacity, confirmed 2026-09-10 */
+  --surface-overlay: color-mix(in srgb, var(--raw-caylent-green-900) 70%, transparent);
   --surface-accent-warning-dark: #c79033;
   --surface-accent-warning-hover: #815d21;
   --border-color-accent-warning-light: #f7ddb1;
   --border-color-accent-warning-hover: #eaa93c;
   --border-color-surface-active-primary-disabled: var(--content-action-disabled-300);
-  --border-color-surface-active-secondary-disabled: var(--content-action-disabled-200);
-  --surface-action-secondary-disabled: rgba(249, 251, 247, 0);
+  /* Secondary/Disabled border -> Neutral-100 (#efefef), confirmed 2026-09-10
+     (was --content-action-disabled-200/#d2e0c8, which matched neither Figma's
+     pulled #eff1f3 nor any other token) */
+  --border-color-surface-active-secondary-disabled: var(--neutral-100);
+  /* 0% opacity of the mapped token (Content Action/Disabled/50), not an arbitrary transparent literal */
+  --surface-action-secondary-disabled: color-mix(in srgb, var(--content-action-disabled-50) 0%, transparent);
   --surface-action-terciary-disabled: #f1f5ed;
   --border-color-surface-active-terciary-disabled: var(--content-action-disabled-200);
   --text-on-action-disabled: #cfd7c2;

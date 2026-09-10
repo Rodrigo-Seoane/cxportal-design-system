@@ -17,8 +17,10 @@ const WORKER_STATUS_OPTIONS: WorkerStatus[] = ['Available', 'On Call', 'Break', 
 // A hand-built checkbox row (not components/ui/checkbox.tsx's <Checkbox>) is
 // used here: that component only accepts a plain string label, and this rail
 // needs a colored status/priority dot beside the text. Visual tokens (12px
-// box, #4285f4 checked fill, #689df6 border) are copied 1:1 from Checkbox's
-// own "small" size so it stays visually identical to the real component.
+// box, content-action-primary-default checked fill, content-action-primary-300
+// border) match Checkbox's own "small" size so it stays visually identical to
+// the real component -- previously copied as raw pre-rebrand hex (#4285f4/
+// #689df6), corrected 2026-09-10.
 
 interface FilterOption<T extends string> {
   value: T
@@ -46,7 +48,7 @@ function FilterGroup<T extends string>({
         aria-expanded={open}
         style={{
           display: 'flex', alignItems: 'center', gap: 8, width: '100%', height: 36,
-          padding: 8, border: `1px solid ${selected.length ? '#0ea2a7' : '#eff1f3'}`,
+          padding: 8, border: `1px solid ${selected.length ? '#0ea2a7' : 'var(--surface-action-terciary-default)'}`,
           borderRadius: 8, background: '#ffffff', cursor: 'pointer',
         }}
       >
@@ -54,15 +56,15 @@ function FilterGroup<T extends string>({
           <span style={{
             display: 'flex', alignItems: 'center', justifyContent: 'center',
             width: 18, height: 18, borderRadius: 64, background: '#0b8286',
-            border: '1px solid #0ea2a7', color: '#eff1f3', fontSize: 10, fontWeight: 600,
+            border: '1px solid #0ea2a7', color: 'var(--surface-action-terciary-default)', fontSize: 10, fontWeight: 600,
           }}>
             {selected.length}
           </span>
         )}
-        <span style={{ flex: 1, textAlign: 'left', fontSize: 12, fontWeight: 600, letterSpacing: '0.24px', color: '#021920' }}>
+        <span style={{ flex: 1, textAlign: 'left', fontSize: 12, fontWeight: 600, letterSpacing: '0.24px', color: 'var(--neutral-800)' }}>
           {label}
         </span>
-        <CaretDownIcon size={16} color="#021920" weight="regular" style={{ transform: open ? 'rotate(180deg)' : undefined }} />
+        <CaretDownIcon size={16} color="var(--neutral-800)" weight="regular" style={{ transform: open ? 'rotate(180deg)' : undefined }} />
       </button>
 
       {open && (
@@ -83,15 +85,15 @@ function FilterGroup<T extends string>({
                   aria-hidden="true"
                   style={{
                     width: 12, height: 12, flexShrink: 0, borderRadius: 2,
-                    background: checked ? '#4285f4' : '#ffffff',
-                    border: `1px solid ${checked ? '#689df6' : '#eff1f3'}`,
+                    background: checked ? 'var(--content-action-primary-default)' : '#ffffff',
+                    border: `1px solid ${checked ? 'var(--content-action-primary-300)' : 'var(--surface-action-terciary-default)'}`,
                     display: 'flex', alignItems: 'center', justifyContent: 'center',
                   }}
                 >
                   {checked && <CheckIcon size={8} color="white" weight="bold" />}
                 </span>
                 {opt.dotColor && <StatusDot color={opt.dotColor} />}
-                <span style={{ fontSize: 14, color: '#021920' }}>{opt.label}</span>
+                <span style={{ fontSize: 14, color: 'var(--neutral-800)' }}>{opt.label}</span>
               </label>
             )
           })}
@@ -148,7 +150,7 @@ export function FilterRail({
           <span style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: 24, height: 24, border: '1px solid #0ea2a7', borderRadius: 4 }}>
             <SlidersIcon size={16} color="#0ea2a7" weight="regular" />
           </span>
-          <h3 style={{ margin: 0, fontSize: 18, fontWeight: 400, lineHeight: '24px', color: '#021920' }}>Filters</h3>
+          <h3 style={{ margin: 0, fontSize: 18, fontWeight: 400, lineHeight: '24px', color: 'var(--neutral-800)' }}>Filters</h3>
         </div>
         {hasActiveFilters && (
           <button

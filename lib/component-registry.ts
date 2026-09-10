@@ -1239,7 +1239,7 @@ export const registry: Record<string, ComponentEntry> = {
         return [
           '<div style={{',
           '  padding: 16,',
-          '  border: "1px solid #eff1f3",',
+          '  border: "1px solid var(--surface-action-terciary-default)",',
           '  borderRadius: 8,',
           '  display: "flex",',
           '  flexDirection: "column",',
@@ -1266,7 +1266,7 @@ export const registry: Record<string, ComponentEntry> = {
         '        gap: 16,',
         '        padding: "10px 12px",',
         '        alignItems: "center",',
-        '        borderTop: i > 0 ? "1px solid #eff1f3" : "none",',
+        '        borderTop: i > 0 ? "1px solid var(--surface-action-terciary-default)" : "none",',
         '      }}',
         '    >',
         '      <Skeleton variant="rect" width={16} height={16} radius={3} />',
@@ -1826,7 +1826,7 @@ export const registry: Record<string, ComponentEntry> = {
       }).join(',\n')
 
       return [
-        `<div style={{ width: 280, background: '#ffffff', border: '1px solid #eff1f3', borderRadius: 8, padding: 8 }}>`,
+        `<div style={{ width: 280, background: '#ffffff', border: '1px solid var(--surface-action-terciary-default)', borderRadius: 8, padding: 8 }}>`,
         `  <Stepper`,
         `    steps={[`,
         stepsCode,
@@ -2249,7 +2249,7 @@ export const registry: Record<string, ComponentEntry> = {
     generateCode: ({ selectedId }) => {
       const sel = String(selectedId)
       return [
-        '<div style={{ width: 280, border: \'1px solid #eff1f3\' }}>',
+        '<div style={{ width: 280, border: \'1px solid var(--surface-action-terciary-default)\' }}>',
         '  <FileTree',
         '    nodes={TREE_DATA}',
         `    selectedId="${sel}"`,
