@@ -936,6 +936,47 @@ Phases 8–10 (which do a wide rollout across every module and the nav — best
 done on a codebase that's already been swept for dead code and stale
 tokens, not before).
 
+## Decision rollout — Phase 7 (DONE, 2026-09-10)
+
+`components/ui/page-title.tsx`'s title now renders as `<h1>` instead of
+`<h2>`, per Figma's Usage doc ("should be the first heading element on the
+page for screen reader navigation") — this was flagged as an open question
+in the original G-batch audit and resolved by the user's decision #13
+("The Page Title component will own the H1"). Demoted the 3 routes that
+previously rendered their own literal `<h1>` for a record name *alongside*
+PageTitle's title, via a shared layout — `access-management/roles/[roleId]`,
+`users/[userId]`, `companies/[companyId]` — to `<h2>`, so each page keeps
+exactly one top-level heading. Verified live: each of the 3 routes now
+renders exactly one `<h1>` (the module-level PageTitle title, e.g. "Access
+Management") with the record name as `<h2>` (e.g. "Danzig Test").
+
+Built `components/ui/open-page-title.tsx` — the composed "Open Page Title"
+pattern from Figma's `3700-1594` frame: `Breadcrumb` stacked directly above
+`PageTitle`, 16px gap, matching 16px horizontal padding. Thin wrapper, no
+new visual logic — reuses both existing components exactly as built.
+Registered in `lib/component-registry.ts` with a playground (breadcrumb
+depth + title/subtitle/chip controls), added
+`components/ui/open-page-title.stories.tsx`, a new
+`content/components/open-page-title.mdx` doc, and a Sidebar nav entry.
+Also updated `page-title.mdx`'s Accessibility and Open Questions sections
+to mark the `<h1>` vs `<h2>` question resolved instead of leaving it open.
+
+**Flagged, not fixed:** the docs site's own chrome (`components/layout/
+PageTitle`, a different component from the design-system's `components/ui/
+page-title`) renders its own `<h1>` on every doc page. Since the Page
+Title and Open Page Title component doc pages now demo a component whose
+own output is also an `<h1>`, those two specific doc pages show 2 `<h1>`s
+inside the docs tool itself — a pre-existing characteristic of how the
+playground renders live demos verbatim, not a regression from this phase,
+and it doesn't affect real app pages (verified separately, see above). Not
+fixed here — would mean special-casing the playground's demo container for
+just these two components, out of scope for this phase.
+
+Verified with `npx tsc --noEmit` and live browser checks (playground,
+generated code, and all 3 demoted routes' heading tags).
+
+Next: the 3-part codebase audit (see above), then Phases 8–10.
+
 ## Git state
 
 Branch: **`fix/ds-audit-g1-g2-figma-alignment`** (cut from
