@@ -12,7 +12,7 @@ const meta: Meta = {
     docs: {
       description: {
         component:
-          'Vertical navigation list for settings-style or sub-navigation panels. VerticalTabGroup is the container; VerticalTab is each individual item with an optional leading icon. The active item has a solid blue background; disabled items are grayed out.',
+          'Vertical navigation list for settings-style or sub-navigation panels. VerticalTabGroup is the container; VerticalTab is each individual item with an optional leading icon. The active item has a solid green background; disabled items are grayed out.',
       },
     },
   },

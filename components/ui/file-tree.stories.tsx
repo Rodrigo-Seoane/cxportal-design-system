@@ -12,7 +12,7 @@ const meta: Meta<typeof FileTree> = {
     docs: {
       description: {
         component:
-          'Hierarchical navigation tree for account → campaign group → topic structures. Each row is 24 px tall with a 24 px controller cell (expand/collapse caret or file icon) and an indented title cell. Selected topics highlight in blue; vertical connector lines show parent–child relationships.',
+          'Hierarchical navigation tree for account → campaign group → topic structures. Each row is 24 px tall with a 24 px controller cell (expand/collapse caret or file icon) and an indented title cell. Selected topics highlight in green; vertical connector lines show parent–child relationships.',
       },
     },
   },

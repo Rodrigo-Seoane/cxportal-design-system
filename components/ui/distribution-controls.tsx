@@ -197,7 +197,7 @@ export function DistributionControls({
 
           {/* ── FILLS — pure backgrounds, no labels ───────────────────────── */}
 
-          {/* Top: blue fill (Region A) */}
+          {/* Top: green fill (Region A) */}
           {value > 0 && (
             <div style={{
               position: 'absolute', top: BAR1_Y, left: 0,
@@ -234,7 +234,7 @@ export function DistributionControls({
             }} />
           )}
 
-          {/* Bottom: dark blue fill (Region B) */}
+          {/* Bottom: dark green fill (Region B) */}
           {east > 0 && (
             <div style={{
               position: 'absolute', top: BAR2_Y,

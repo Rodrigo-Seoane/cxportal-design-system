@@ -122,7 +122,7 @@ const RADIAL_5 = [
   { name: 'Other',   value: 30, fill: 'var(--content-action-primary-800)' },
 ]
 
-// Primary blue palette steps (200 → 600)
+// Primary green palette steps (200 → 800)
 const PALETTE = ['var(--content-action-primary-200)', 'var(--content-action-primary-300)', 'var(--content-action-primary-600)', 'var(--content-action-primary-700)', 'var(--content-action-primary-800)']
 
 const DEFAULT_CAPTIONS: GraphCardCaption[] = BROWSER_DATA.map((d, i) => ({

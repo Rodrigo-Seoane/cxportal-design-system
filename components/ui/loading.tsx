@@ -111,7 +111,7 @@ export type SpinnerSize = keyof typeof SPINNER_SIZES
 export interface SpinnerProps {
   /** xs → Inputs/Selects · sm → Buttons/Inline · md → Default · lg → Section · xl → Full page */
   size?: SpinnerSize
-  /** Override spinner arc colour. Defaults to primary blue. */
+  /** Override spinner arc colour. Defaults to primary green. */
   color?: string
   /** Accessible label announced to screen readers. Default: "Loading". */
   label?: string

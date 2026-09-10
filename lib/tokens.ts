@@ -480,12 +480,15 @@ export const fontWeight = {
 // Full type ramp matching Figma "Text Size/*" variables.
 // Sizes and line-heights are numeric px (Figma stores px).
 export const textSize = {
+  // paragraphSpacing values are the Caylent Green mode's Text Size/Heading/
+  // h N/Paragraph Spacing figures (figma_styles.json) -- these previously
+  // carried the Former Pronetx Blue mode's numbers (16/16/12/12) instead.
   heading: {
-    h1: { size: 28, lineHeight: 34, paragraphSpacing: 16 },
-    h2: { size: 24, lineHeight: 30, paragraphSpacing: 16 },
-    h3: { size: 20, lineHeight: 28, paragraphSpacing: 12 },
-    h4: { size: 18, lineHeight: 24, paragraphSpacing: 12 },
-    h5: { size: 16, lineHeight: 24, paragraphSpacing:  8 },
+    h1: { size: 28, lineHeight: 34, paragraphSpacing: 4 },
+    h2: { size: 24, lineHeight: 30, paragraphSpacing: 4 },
+    h3: { size: 20, lineHeight: 28, paragraphSpacing: 8 },
+    h4: { size: 18, lineHeight: 24, paragraphSpacing: 8 },
+    h5: { size: 16, lineHeight: 24, paragraphSpacing: 8 },
   },
   paragraph: {
     xl:      { size: 18, lineHeight: 28, paragraphSpacing: 12 },

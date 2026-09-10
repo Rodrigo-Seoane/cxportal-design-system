@@ -295,11 +295,11 @@ export default function GraphCardsPage() {
               title="Browser Share"
               description="Visitor breakdown by browser for the last 6 months"
               captions={[
-                { label: 'Chrome',  color: '#a0c2f9' },
-                { label: 'Safari',  color: '#689df6' },
-                { label: 'Firefox', color: '#4285f4' },
-                { label: 'Edge',    color: '#3264b8' },
-                { label: 'Other',   color: '#1a3561' },
+                { label: 'Chrome',  color: 'var(--content-action-primary-200)' },
+                { label: 'Safari',  color: 'var(--content-action-primary-300)' },
+                { label: 'Firefox', color: 'var(--content-action-primary-600)' },
+                { label: 'Edge',    color: 'var(--content-action-primary-700)' },
+                { label: 'Other',   color: 'var(--content-action-primary-800)' },
               ]}
             />
           </div>
