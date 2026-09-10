@@ -449,9 +449,10 @@ export const borderRadius = {
 export const radii = borderRadius
 
 export const grid = {
-  columns: 'var(--grid-columns)', // 12
-  gutter:  'var(--grid-gutter)',  // 16px
-  margin:  'var(--grid-margin)',  // 16px
+  columns:     'var(--grid-columns)',      // 12 — "12 Column internal" (main content)
+  wideColumns: 'var(--grid-wide-columns)', // 16 — "16 cols (wide)" (full-bleed layouts)
+  gutter:      'var(--grid-gutter)',       // 16px
+  margin:      'var(--grid-margin)',       // 16px
 } as const
 
 // ═══════════════════════════════════════════════════════════════════════════

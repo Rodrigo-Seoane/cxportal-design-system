@@ -1,6 +1,6 @@
 import { grid } from '@/lib/tokens'
 
-// The grid spec itself is flat (12 columns, 16px gutter, 16px margin) at
+// The grid spec itself is flat (fixed columns, 16px gutter, 16px margin) at
 // every size — Tailwind's 5 default breakpoints are shown here to
 // demonstrate how that same fixed grid reflows as available width grows.
 // Each row is scaled to fit the docs content column, capped at 100%.
@@ -12,7 +12,12 @@ const BREAKPOINTS = [
   { name: '2xl', label: 'Wide',    px: 1536 },
 ] as const
 
-export function GridDemo() {
+export interface GridDemoProps {
+  /** Column count for this grid style. Default: 12 ("12 Column internal"). */
+  columns?: number
+}
+
+export function GridDemo({ columns = 12 }: GridDemoProps) {
   return (
     <div className="flex flex-col gap-6">
       {BREAKPOINTS.map(({ name, label, px }) => (
@@ -27,13 +32,13 @@ export function GridDemo() {
             style={{
               width: `min(100%, ${px / 2}px)`,
               display: 'grid',
-              gridTemplateColumns: `repeat(${grid.columns}, 1fr)`,
+              gridTemplateColumns: `repeat(${columns}, 1fr)`,
               gap: grid.gutter,
               padding: `0 ${grid.margin}`,
               boxSizing: 'content-box',
             }}
           >
-            {Array.from({ length: 12 }).map((_, i) => (
+            {Array.from({ length: columns }).map((_, i) => (
               <div
                 key={i}
                 className="h-8 rounded border"
