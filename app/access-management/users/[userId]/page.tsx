@@ -98,7 +98,8 @@ export default function UserDetailPage() {
             <div style={{ width: 32, height: 32, borderRadius: '50%', background: 'var(--content-action-primary-600)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 14, fontWeight: 600, color: 'var(--neutral-100)', flexShrink: 0 }}>
               {initials}
             </div>
-            <h1 style={{ margin: 0, fontSize: 24, fontWeight: 400, lineHeight: '30px', color: 'var(--text-body-primary)' }}>{fullName}</h1>
+            {/* h2, not h1 -- PageTitle in this route's layout owns the page's <h1> */}
+            <h2 style={{ margin: 0, fontSize: 24, fontWeight: 400, lineHeight: '30px', color: 'var(--text-body-primary)' }}>{fullName}</h2>
             <div style={{ display: 'flex', alignItems: 'center', gap: 4, paddingLeft: 8, borderLeft: '1px solid var(--neutral-200)', fontSize: 10, color: 'var(--text-body-secondary)' }}>
               <EnvelopeSimpleIcon size={16} color="var(--text-body-primary)" weight="regular" aria-hidden="true" />
               <span style={{ fontWeight: 600, color: 'var(--text-body-primary)' }}>Email:</span> {user.email}

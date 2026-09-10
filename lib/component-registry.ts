@@ -46,6 +46,7 @@ import {
 } from '@/components/ui/nt-menu'
 import { PageTitle } from '@/components/ui/page-title'
 import { Breadcrumb } from '@/components/ui/breadcrumbs'
+import { OpenPageTitle } from '@/components/ui/open-page-title'
 import { TopBar } from '@/components/ui/top-bar'
 import { FileTree } from '@/components/ui/file-tree'
 import type { FileTreeNode } from '@/components/ui/file-tree'
@@ -2022,6 +2023,66 @@ export const registry: Record<string, ComponentEntry> = {
       const sc  = Boolean(showChip)
 
       const lines: string[] = ['<PageTitle']
+      lines.push(`  title="${t}"`)
+      if (sub) lines.push(`  subtitle="${sub}"`)
+      if (sc) lines.push('  showChip')
+      if (sc && ch) lines.push(`  chip="${ch}"`)
+      lines.push('/>')
+      return lines.join('\n')
+    },
+  },
+
+  // ─── Open Page Title ────────────────────────────────────────────────────────
+  'open-page-title': {
+    slug: 'open-page-title',
+    title: 'Open Page Title',
+    description:
+      'Composed page header: a Breadcrumb trail stacked above Page Title, 16px gap, matching horizontal padding. Use at the top of any page that sits below the module root.',
+    status: 'stable',
+    scope: { OpenPageTitle },
+    propSchema: {
+      depth: {
+        type: 'chip-select',
+        label: 'Breadcrumb depth',
+        options: ['1', '2', '3', '4'],
+        default: '2',
+      },
+      title: {
+        type: 'text',
+        label: 'Title',
+        default: 'Northeast Quarter',
+      },
+      subtitle: {
+        type: 'text',
+        label: 'Subtitle',
+        default: 'Master list for Northeast Quarter',
+      },
+      showChip: {
+        type: 'boolean',
+        label: 'Show chip',
+        default: false,
+      },
+      chip: {
+        type: 'text',
+        label: 'Chip label',
+        default: 'Current',
+      },
+    },
+    generateCode: ({ depth, title, subtitle, showChip, chip }) => {
+      const labels = ['Social Security Admin', 'Benefit Status Updates', 'Retirement Planning Reminders', 'Send Schedule']
+      const hrefs  = ['/accounts/ssa', '/accounts/ssa/campaign-groups/benefit-status', '/accounts/ssa/campaign-groups/benefit-status/reminders']
+      const n = Math.min(4, Math.max(1, Number(depth) || 2))
+      const t   = String(title)
+      const sub = String(subtitle)
+      const ch  = String(chip)
+      const sc  = Boolean(showChip)
+
+      const lines = ['<OpenPageTitle', `  homeHref="/"`, '  breadcrumbItems={[']
+      for (let i = 0; i < n; i++) {
+        const isCurrent = i === n - 1
+        lines.push(isCurrent ? `    { label: '${labels[i]}' },` : `    { label: '${labels[i]}', href: '${hrefs[i]}' },`)
+      }
+      lines.push('  ]}')
       lines.push(`  title="${t}"`)
       if (sub) lines.push(`  subtitle="${sub}"`)
       if (sc) lines.push('  showChip')

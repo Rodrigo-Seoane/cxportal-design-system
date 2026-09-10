@@ -81,7 +81,8 @@ export default function RoleDetailPage() {
 
       {/* ── Role header ───────────────────────────────────────────────────── */}
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: 24, background: 'var(--neutral-0)', borderRadius: 8, flexWrap: 'wrap', gap: 16 }}>
-        <h1 style={{ margin: 0, fontSize: 28, fontWeight: 400, lineHeight: '34px', color: 'var(--text-body-primary)' }}>{role.name}</h1>
+        {/* h2, not h1 -- PageTitle in this route's layout owns the page's <h1> */}
+        <h2 style={{ margin: 0, fontSize: 28, fontWeight: 400, lineHeight: '34px', color: 'var(--text-body-primary)' }}>{role.name}</h2>
         <div style={{ display: 'flex', alignItems: 'center', gap: 24, flexWrap: 'wrap' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
             <span style={{ fontSize: 12, fontWeight: 600, letterSpacing: '0.24px', color: 'var(--text-body-primary)' }}>Permission Level:</span>

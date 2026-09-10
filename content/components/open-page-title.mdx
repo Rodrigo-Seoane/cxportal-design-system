@@ -1,0 +1,83 @@
+---
+title: Open Page Title
+description: Composed page header — a Breadcrumb trail stacked above Page Title, 16px gap, matching horizontal padding. Use at the top of any page below the module root.
+figmaNodeId: 3700-1594
+figmaUpdated: Apr 09, 2026
+status: stable
+---
+
+## Overview
+
+Open Page Title is the composed pattern Figma's "Open Page Title" frame (`3700-1594`) actually shows: a `Breadcrumb` trail stacked directly above `PageTitle`, 16px gap between them, both aligned to the same 16px horizontal padding. It is a thin wrapper — no new visual logic, no new tokens — that reuses the standalone `Breadcrumb` and `PageTitle` components exactly as they're built and documented elsewhere.
+
+It exists because `PageTitle`'s own docs are explicit that breadcrumbs don't belong *inside* PageTitle — they belong *above* it, in the layout hierarchy. This component **is** that hierarchy, pre-composed for the common case of a page that sits below a module root.
+
+## When to use
+
+- At the top of any page that is two or more levels deep in the navigation hierarchy — anywhere `Breadcrumb` alone would be used, immediately followed by a page title.
+- As the default header for module detail pages (e.g. a specific role, user, company, or list record).
+
+## When not to use
+
+- On top-level module pages with nothing to navigate up to — use `PageTitle` alone (no breadcrumb, per `Breadcrumb`'s own guidance).
+- Inside modals, drawers, or side panels — neither piece belongs there.
+
+## Anatomy
+
+- **Breadcrumb** — the existing `Breadcrumb` component, unmodified. 16px top/left/right padding, no bottom padding (the gap comes from `PageTitle`'s own top padding immediately below it).
+- **Page Title** — the existing `PageTitle` component, unmodified, including its own 16px padding on all sides.
+
+## Heading hierarchy
+
+`PageTitle`'s title renders as an `<h1>` — the single top-level heading for the page. Do not also render a literal `<h1>` elsewhere on the same page; use `<h2>` or lower for any in-page record name or section heading. Three routes (`access-management/roles/[roleId]`, `users/[userId]`, `companies/[companyId]`) previously rendered their own literal `<h1>` for a record name alongside this component's title, via a shared layout — demoted to `<h2>` when `PageTitle` took over `<h1>`.
+
+## Code
+
+### Props
+
+```tsx
+interface OpenPageTitleProps {
+  /** Breadcrumb ancestor + current page trail. Last item is the current page. */
+  breadcrumbItems: BreadcrumbItem[]
+  /** Destination for the breadcrumb's leading Home icon (the module root). */
+  homeHref: string
+  /** Primary page title text. */
+  title: string
+  /** Supporting description text below the title. */
+  subtitle?: string
+  /** Category or status chip label. */
+  chip?: string
+  /** Show/hide the chip. Default: false. */
+  showChip?: boolean
+  /** Callback when chip dismiss button is clicked. If omitted, chip has no dismiss. */
+  onChipDismiss?: () => void
+  /** Right-side slot for composable action controls (buttons, search, tabs, etc.). */
+  actions?: ReactNode
+  className?: string
+}
+```
+
+### Usage example
+
+```tsx
+import { OpenPageTitle } from '@/components/ui/open-page-title'
+
+<OpenPageTitle
+  homeHref="/"
+  breadcrumbItems={[
+    { label: 'Social Security Admin', href: '/accounts/ssa' },
+    { label: 'Benefit Status Updates' },
+  ]}
+  title="Benefit Status Updates"
+  subtitle="Master list for Northeast Quarter"
+/>
+```
+
+## Related components
+
+- [Breadcrumb](/components/breadcrumb) — the standalone navigation trail, for pages that need it without a title stacked underneath.
+- [Page Title](/components/page-title) — the standalone title, for top-level pages with nothing to navigate up to.
+
+## Open questions
+
+- **Figma's own "Component" link mismatch** — like Page Title's own doc, no Figma node was supplied this pass that's specifically named "Open Page Title" as a *component* (rather than an example frame); this doc and the code above are built entirely from the `3700-1594` frame's visual composition (Breadcrumb + PageTitle, 16px gap) rather than a distinct component-node spec.

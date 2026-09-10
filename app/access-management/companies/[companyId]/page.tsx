@@ -42,7 +42,8 @@ export default function CompanyDetailPage() {
           <div style={{ width: 32, height: 32, borderRadius: '50%', background: 'var(--content-action-primary-600)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 14, fontWeight: 600, color: 'var(--neutral-100)', flexShrink: 0 }}>
             {initials}
           </div>
-          <h1 style={{ margin: 0, fontSize: 24, fontWeight: 400, lineHeight: '30px', color: 'var(--text-body-primary)' }}>{company.name}</h1>
+          {/* h2, not h1 -- PageTitle in this route's layout owns the page's <h1> */}
+          <h2 style={{ margin: 0, fontSize: 24, fontWeight: 400, lineHeight: '30px', color: 'var(--text-body-primary)' }}>{company.name}</h2>
         </div>
 
         <div style={{ display: 'flex', alignItems: 'center', gap: 24, paddingLeft: 40, flexWrap: 'wrap' }}>

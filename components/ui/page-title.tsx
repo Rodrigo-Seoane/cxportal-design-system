@@ -108,7 +108,7 @@ export function PageTitle({
       {/* Left — title + optional chip + optional subtitle */}
       <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
-          <h2 style={{
+          <h1 style={{
             margin:     0,
             fontSize:   28,
             fontWeight: 400,
@@ -117,7 +117,7 @@ export function PageTitle({
             whiteSpace: 'nowrap',
           }}>
             {title}
-          </h2>
+          </h1>
           {showChip && (
             <InfoChip label={chip} onDismiss={onChipDismiss} />
           )}
