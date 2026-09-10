@@ -89,7 +89,11 @@ export default function UserDetailPage() {
       />
 
       {/* ── User header ───────────────────────────────────────────────────── */}
-      <div style={{ padding: 24, background: 'var(--neutral-0)', borderRadius: 8, display: 'flex', flexDirection: 'column', gap: 16 }}>
+      <div style={{
+        padding: 24, background: 'var(--surface-main-content)',
+        border: '1px solid var(--border-color-main-content-external)', borderRadius: 8,
+        display: 'flex', flexDirection: 'column', gap: 16,
+      }}>
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 16 }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
             <div style={{ width: 32, height: 32, borderRadius: '50%', background: 'var(--content-action-primary-600)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 14, fontWeight: 600, color: 'var(--neutral-100)', flexShrink: 0 }}>
@@ -150,7 +154,10 @@ export default function UserDetailPage() {
       </div>
 
       {/* ── Instances + Module Permissions ───────────────────────────────── */}
-      <div style={{ display: 'flex', background: 'var(--neutral-0)', borderRadius: 8 }}>
+      <div style={{
+        display: 'flex', background: 'var(--surface-main-content)',
+        border: '1px solid var(--border-color-main-content-external)', borderRadius: 8,
+      }}>
         <InstancePanel
           groups={user.instances}
           ungrouped={user.ungrouped}

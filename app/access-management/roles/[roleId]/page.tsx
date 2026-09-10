@@ -73,7 +73,11 @@ export default function RoleDetailPage() {
       />
 
       {/* ── Role header ───────────────────────────────────────────────────── */}
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: 24, background: 'var(--neutral-0)', borderRadius: 8, flexWrap: 'wrap', gap: 16 }}>
+      <div style={{
+        display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: 24,
+        background: 'var(--surface-main-content)', border: '1px solid var(--border-color-main-content-external)',
+        borderRadius: 8, flexWrap: 'wrap', gap: 16,
+      }}>
         {/* h2, not h1 -- PageTitle in this route's layout owns the page's <h1> */}
         <h2 style={{ margin: 0, fontSize: 28, fontWeight: 400, lineHeight: '34px', color: 'var(--text-body-primary)' }}>{role.name}</h2>
         <div style={{ display: 'flex', alignItems: 'center', gap: 24, flexWrap: 'wrap' }}>
@@ -90,7 +94,10 @@ export default function RoleDetailPage() {
       </div>
 
       {/* ── Instances + Module Permissions ───────────────────────────────── */}
-      <div style={{ display: 'flex', background: 'var(--neutral-0)', borderRadius: 8 }}>
+      <div style={{
+        display: 'flex', background: 'var(--surface-main-content)',
+        border: '1px solid var(--border-color-main-content-external)', borderRadius: 8,
+      }}>
         <InstancePanel
           groups={role.groups}
           ungrouped={role.ungrouped}

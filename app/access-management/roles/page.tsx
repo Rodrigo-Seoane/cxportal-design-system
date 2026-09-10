@@ -58,7 +58,12 @@ export default function RolesIndexPage() {
     <main style={{ display: 'flex', padding: '16px 16px 16px 0', gap: 0 }}>
       <RoleFilters selectedLevels={selectedLevels} onChange={handleLevelsChange} />
 
-      <div style={{ flex: 1, minWidth: 0, padding: 16, display: 'flex', flexDirection: 'column', gap: 16 }}>
+      <div style={{
+        flex: 1, minWidth: 0, padding: 16, display: 'flex', flexDirection: 'column', gap: 16,
+        backgroundColor: 'var(--surface-main-content)',
+        border: '1px solid var(--border-color-main-content-external)',
+        borderRadius: 8,
+      }}>
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
           <h2 style={{ margin: 0, fontSize: 24, fontWeight: 400, lineHeight: '30px', color: 'var(--text-body-primary)' }}>
             Roles ({filteredRoles.length})

@@ -131,7 +131,7 @@ function OpenInventoryDashboardInner() {
           </div>
         )}
 
-        <main className="flex flex-1 flex-col gap-9 p-4">
+        <main className="flex flex-1 flex-col gap-9 p-4 m-4 rounded-lg border bg-[var(--surface-main-content)] border-[var(--border-color-main-content-external)]">
           {isLoading ? (
             <div className="flex flex-col gap-2">
               <Skeleton variant="rect" height={108} />

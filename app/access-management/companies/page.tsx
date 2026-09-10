@@ -38,7 +38,12 @@ export default function CompaniesIndexPage() {
 
   return (
     <>
-      <main style={{ padding: 16, display: 'flex', flexDirection: 'column', gap: 16 }}>
+      <main style={{
+        margin: 16, padding: 16, display: 'flex', flexDirection: 'column', gap: 16,
+        backgroundColor: 'var(--surface-main-content)',
+        border: '1px solid var(--border-color-main-content-external)',
+        borderRadius: 8,
+      }}>
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
           <h2 style={{ margin: 0, fontSize: 24, fontWeight: 400, lineHeight: '30px', color: 'var(--text-body-primary)' }}>
             Companies ({filteredCompanies.length})

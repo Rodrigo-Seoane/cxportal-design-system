@@ -97,7 +97,7 @@ export default function TaskQueueVisibilityAssignPage() {
           hasActiveFilters={hasActiveFilters}
         />
 
-        <div className="min-h-[700px] flex-1 rounded-md border border-[var(--border-color-neutral-light)] bg-[var(--surface-section-bg)]">
+        <div className="min-h-[700px] flex-1 rounded-md border border-[var(--border-color-main-content-external)] bg-[var(--surface-main-content)]">
           <AnimatePresence mode="wait">
             {state.activeStep === 'queue' && (
               <motion.div key="queue" {...FADE_SLIDE} transition={{ duration: 0.15 }} className="h-full">

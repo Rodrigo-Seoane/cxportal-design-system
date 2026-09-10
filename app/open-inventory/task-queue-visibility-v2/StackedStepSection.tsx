@@ -72,11 +72,11 @@ export const StackedStepSection = forwardRef<StackedStepSectionRef, StackedStepS
       aria-disabled={isDisabled || undefined}
       data-disabled={isDisabled || undefined}
       className={cn(
-        'rounded-md border border-[var(--border-color-neutral-light)] bg-[var(--surface-section-bg)] transition-opacity duration-200',
+        'rounded-md border border-[var(--border-color-main-content-external)] bg-[var(--surface-main-content)] transition-opacity duration-200',
         isDisabled && 'opacity-50',
       )}
     >
-      <header className="flex items-center gap-3 px-4 py-3 border-b border-[var(--border-color-neutral-light)]">
+      <header className="flex items-center gap-3 px-4 py-3 border-b border-[var(--border-color-main-content-internal)]">
         <SectionBullet index={index} variant={variant} />
         <div className="flex min-w-0 flex-1 flex-col">
           <h2 id={headingId} className="text-sm font-semibold text-[var(--text-body-primary)]">

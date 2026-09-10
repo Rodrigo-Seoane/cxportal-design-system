@@ -239,7 +239,12 @@ function AgentStatusSummaryInner() {
         )}
 
         {/* ── Main content ─────────────────────────────────────────────────── */}
-        <main style={{ padding: '24px', display: 'flex', flexDirection: 'column', gap: 16 }}>
+        <main style={{
+          margin: 16, padding: 24, display: 'flex', flexDirection: 'column', gap: 16,
+          backgroundColor: 'var(--surface-main-content)',
+          border: '1px solid var(--border-color-main-content-external)',
+          borderRadius: 8,
+        }}>
 
           {!hasScope ? (
             <div style={panelCard}>

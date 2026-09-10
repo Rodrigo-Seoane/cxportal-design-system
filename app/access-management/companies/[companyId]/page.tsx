@@ -33,7 +33,11 @@ export default function CompanyDetailPage() {
       />
 
       {/* ── Company header ───────────────────────────────────────────────── */}
-      <div style={{ padding: 24, background: 'var(--neutral-0)', borderRadius: 8, display: 'flex', flexDirection: 'column', gap: 12 }}>
+      <div style={{
+        padding: 24, background: 'var(--surface-main-content)',
+        border: '1px solid var(--border-color-main-content-external)', borderRadius: 8,
+        display: 'flex', flexDirection: 'column', gap: 12,
+      }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
           <div style={{ width: 32, height: 32, borderRadius: '50%', background: 'var(--content-action-primary-600)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 14, fontWeight: 600, color: 'var(--neutral-100)', flexShrink: 0 }}>
             {initials}
@@ -61,7 +65,10 @@ export default function CompanyDetailPage() {
       </div>
 
       {/* ── Tab content ───────────────────────────────────────────────────── */}
-      <div style={{ padding: 16, background: 'var(--neutral-0)', borderRadius: 8 }}>
+      <div style={{
+        padding: 16, background: 'var(--surface-main-content)',
+        border: '1px solid var(--border-color-main-content-external)', borderRadius: 8,
+      }}>
         {tab === 'instances' && (
           <CompanyInstancesTab companyName={company.name} companyId={company.companyId} initialInstances={company.instances} />
         )}
