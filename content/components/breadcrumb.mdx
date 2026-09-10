@@ -10,7 +10,7 @@ status: stable
 
 Breadcrumbs render the user's current position within the application hierarchy as a left-to-right trail of links separated by caret icons. The trail always begins with a `HouseIcon` (the module root) and ends with the current page label in semibold — every item before it is a real navigation link. The component supports 1 to 4 depth levels.
 
-Breadcrumbs were previously deprecated in CxPortal; they are being re-introduced as a first-class DS component to support deeper navigation hierarchies introduced in the Campaigns Email and Knowledge Management modules. This is a new build — no prior implementation existed in the codebase; the app's existing per-page inline breadcrumb JSX (14+ call sites) has not yet been migrated to it.
+Breadcrumbs were previously deprecated in CxPortal; they are being re-introduced as a first-class DS component to support deeper navigation hierarchies introduced in the Campaigns Email and Knowledge Management modules. This is a new build — no prior implementation existed in the codebase. **Migrated (2026-09-10):** the app's 7 real inline breadcrumb call sites (Access Management's 3 detail pages, WFM Reporting's 4 pages) now use this component. 8 remaining call sites inside `app/sandbox/campaigns-email/` and `app/sandbox/collapsible-filter/` are still hand-rolled — a separate prototype subsystem with its own styling convention, tracked in `Open_Questions.md` rather than migrated here.
 
 ## When to use
 
