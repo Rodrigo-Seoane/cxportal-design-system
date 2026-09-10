@@ -34,7 +34,3 @@ const EXPERIMENTS: Experiment[] = [
 export function getExperiments(): Experiment[] {
   return EXPERIMENTS
 }
-
-export function getExperiment(slug: string): Experiment | undefined {
-  return EXPERIMENTS.find(e => e.slug === slug)
-}
