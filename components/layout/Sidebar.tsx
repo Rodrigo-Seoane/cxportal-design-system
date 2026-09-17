@@ -119,6 +119,7 @@ const NAV_ENTRIES: NavEntry[] = [
       { label: 'Stepper',               href: '/components/stepper' },
       { label: 'Distribution Controls', href: '/components/distribution-controls' },
       { label: 'File Tree',             href: '/components/file-tree' },
+      { label: 'Drawer',                href: '/components/drawer' },
     ],
   },
   {
