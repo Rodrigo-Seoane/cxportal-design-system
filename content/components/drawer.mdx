@@ -1,167 +1,318 @@
 ---
 title: Drawer
-description: A panel that slides in from a screen edge — typically the right side on desktop — to show detail content without a full page navigation. Built on shadcn/ui Drawer (vaul). First consumer is the DFC module.
-figmaNodeId: 2252-6277
-figmaUpdated: May 29, 2026
+description: A right-anchored content panel that slides in over or alongside the page to show detail, context, or a focused form without navigating away.
+figmaNodeId: 3986-15723
+figmaUpdated: Sep 17, 2026
 status: stable
 ---
 
 ## Overview
 
-The Drawer is a surface that slides in from the right edge of the viewport to surface detail, contextual actions, or a focused form without navigating away from the current page. It sits above the page content with a backdrop overlay.
+The Drawer is a 520 px panel pinned to the right edge of the viewport. It slides in to surface record detail, contextual actions, or a focused form while the user keeps their place on the page underneath.
 
-The CxPortal Drawer is built on [shadcn/ui Drawer](https://ui.shadcn.com/docs/components/drawer), which is itself built on [vaul](https://vaul.emilkowal.ski/) by Emil Kowalski. It follows shadcn's component API (`Drawer`, `DrawerTrigger`, `DrawerContent`, `DrawerHeader`, `DrawerFooter`, `DrawerTitle`, `DrawerDescription`, `DrawerClose`) and extends it with CxPortal-specific sizing and layout conventions.
+Unlike Modal, Drawer ships **unopinionated about blocking**. It renders no backdrop, no focus trap, and no body-scroll lock. Whether the panel interrupts the page or sits alongside it is a decision the consuming page makes, not the component:
 
-The DFC (Dynamic Form Component) module was the first driver for this component. Its growing adoption across other modules is why Drawer is being formalized in the Design System.
+- **DFC pattern** — non-blocking. Render the Drawer as-is. The page stays interactive and the user can keep navigating while the panel is open.
+- **ACGR pattern** — blocking. The page supplies its own backdrop, marks the app shell `inert`, and traps focus. See Modal's app-shell-isolation effect for the reference implementation.
+
+This split is deliberate. A component that guessed wrong would either trap focus in a panel the user is meant to work around, or leave a genuinely modal panel keyboard-escapable into dead page content.
+
+---
 
 ## When to use
 
-- When showing detail information about a selected record without losing the context of the list (e.g. clicking a campaign row to view its details).
-- When presenting a form or multi-step flow that is tied to the current page context and should be dismissible.
-- When a modal is too disruptive or too small to hold the required content.
-- When the user may need to reference the underlying page while filling out the drawer content.
+- Showing detail for a selected row without losing the list context behind it.
+- A form or focused flow tied to the current page that should be dismissible.
+- Content too large for a Modal but not substantial enough to justify its own route.
+- Any case where the user benefits from referencing the page while working in the panel.
 
-## When not to use
+**Do not use a Drawer when:**
 
-- Don't use a Drawer when a simple confirmation is needed — use a `Modal` instead.
-- Don't use a Drawer for top-level navigation — use the sidebar.
-- Don't stack Drawers (no drawer-within-drawer). If a secondary detail is needed, open a Modal inside the Drawer instead.
-- Don't use a Drawer on mobile for content that can be displayed inline — on small screens consider a full-page route instead.
+- A short confirmation is all that's needed — use `Modal`.
+- The content is top-level navigation — use the sidebar.
+- You would be stacking one Drawer inside another. Open a Modal from within the Drawer instead.
+
+---
 
 ## Anatomy
 
-- **Overlay** — Semi-transparent backdrop that covers the main content. Clicking it closes the Drawer.
-- **DrawerContent** — The panel itself, slides in from the right. Fixed height (full viewport height), variable width.
-- **DrawerHeader** — Contains the `DrawerTitle` and an optional `DrawerDescription`. Also hosts the close button.
-- **DrawerBody** — Scrollable content area between header and footer.
-- **DrawerFooter** — Sticky bottom bar for primary and secondary actions.
-- **DrawerClose** — The `×` button in the header that closes the panel.
+- **Panel** — 520 px wide, full viewport height, pinned right. No corner radius. Drop shadow `-4px 0 24px rgba(5, 3, 38, 0.08)` ("Drawer Shadow" in Figma).
+- **DrawerHeader** — min-height 80 px. Holds the title, an optional description line, an optional record ID, and the × close button. Separated from the body by a 1 px internal border.
+- **DrawerBody** — the scrollable region. Padding 16 px, `overflow-y: auto`.
+- **DrawerFooter** — min-height 72 px. Left-aligned action row, separated from the body by a 1 px internal border. Optional — the No Footer variant omits it entirely.
 
-## Sizes
+---
 
-CxPortal defines named width sizes for the Drawer. Choose based on the density and complexity of the content:
+## Variants
 
-| Size | Width | Use case |
-|---|---|---|
-| `sm` | 400 px | Simple detail views, short forms |
-| `md` | 560 px | Standard detail views with multiple sections (default) |
-| `lg` | 720 px | Complex forms, multi-column layouts, DFC-style panels |
-| `xl` | 960 px | Full-featured panels with embedded tables or charts |
+Header and footer each take a `variant` of `default` or `compact`. **Pair them** — a `compact` header with a `default` footer mixes two different spacing systems.
 
-## Variants observed in DFC (Figma)
+<Table size="compact" className="mb-6">
+  <TableHeader>
+    <tr>
+      <TableHead>Variant</TableHead>
+      <TableHead>Figma name</TableHead>
+      <TableHead>Title style</TableHead>
+      <TableHead>Record ID</TableHead>
+      <TableHead>Use for</TableHead>
+    </tr>
+  </TableHeader>
+  <TableBody>
+    <TableRow>
+      <TableCell><strong>default</strong></TableCell>
+      <TableCell>ACGR</TableCell>
+      <TableCell>H4 — 18 px / weight 400 / heading family</TableCell>
+      <TableCell>Not rendered</TableCell>
+      <TableCell>Task and tool panels titled by function ("Variables")</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><strong>compact</strong></TableCell>
+      <TableCell>DFC</TableCell>
+      <TableCell>14 px / weight 600 / body family</TableCell>
+      <TableCell>Rendered above the title</TableCell>
+      <TableCell>Record detail panels titled by the record itself</TableCell>
+    </TableRow>
+  </TableBody>
+</Table>
 
-The DFC module Figma (node `2252-6277`) contains the reference variants and states for this component:
+The `compact` variant is not simply "smaller". It is the record-detail layout: the title is the name of a thing, so it carries a machine-readable `itemId` above it and a provenance line ("Created Jan 30, 2026, 03:10 PM") below. The `default` variant titles a *function*, so it uses the page heading scale and needs neither.
 
-- **Default / closed** — No overlay, drawer not visible
-- **Open — empty state** — Drawer open, content area loading or empty
-- **Open — with content** — Full detail panel with header, scrollable body, sticky footer actions
-- **Open — form mode** — Body contains form fields with validation states
+### Footer spacing
 
-See [DFC Role-Based Views prototype](https://www.figma.com/proto/SaB9CC6VgtQNgvVLUEISth/DFC---Role-Based-Views?node-id=51-6949) for interaction patterns: how the drawer opens on row click, dismiss behavior, and footer action flows.
+The two footers differ in both padding and gap, and the values do **not** move in the same direction — `compact` is tighter vertically but spaces its buttons further apart. Replicate as specced; do not interpolate.
 
-## Guidelines
+<Table size="compact" className="mb-6">
+  <TableHeader>
+    <tr>
+      <TableHead>Variant</TableHead>
+      <TableHead>Padding</TableHead>
+      <TableHead>Button gap</TableHead>
+      <TableHead>Min height</TableHead>
+    </tr>
+  </TableHeader>
+  <TableBody>
+    <TableRow>
+      <TableCell><strong>default</strong> (ACGR)</TableCell>
+      <TableCell>16 px</TableCell>
+      <TableCell>12 px</TableCell>
+      <TableCell>72 px</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell><strong>compact</strong> (DFC)</TableCell>
+      <TableCell>16 px / 12 px</TableCell>
+      <TableCell>16 px</TableCell>
+      <TableCell>72 px</TableCell>
+    </TableRow>
+  </TableBody>
+</Table>
+
+---
+
+## Do's & Don'ts
 
 ### DOs
 
-- Always provide a `DrawerTitle` for accessibility — even if it's visually hidden.
-- Always include a `DrawerClose` button in the header. Users expect `Esc` and a visible close button.
-- Use `DrawerFooter` for all action buttons. Never put primary/destructive actions inside the scrollable body.
-- Keep `DrawerHeader` minimal — title + optional one-line description only.
-- Persist the user's scroll position within the Drawer if they dismiss and re-open it (where the data is stable).
+- Always give the Drawer an accessible name — either a visible `DrawerHeader` title (wired automatically) or an `aria-label`.
+- Always render the × close button. Users expect both `Esc` and a visible affordance.
+- Keep footer actions **left-aligned**. Cancel leftmost, primary action to its right. No DS footer right-aligns its button group.
+- Put every action in the `DrawerFooter`. Primary and destructive actions never live in the scrollable body.
+- Use `size="sm"` buttons in the footer — that is what Figma specs.
+- Pair the header and footer `variant`.
 
 ### DON'Ts
 
-- Don't use the Drawer for confirmation dialogs — those belong in `Modal`.
-- Don't open a new route when the Drawer closes. The Drawer is a layer on top of the current route.
-- Don't put navigation (tabs that change routes) inside a Drawer.
-- Don't let the Drawer body content overflow horizontally — design for the fixed width.
+- Don't right-align or `justify-content: flex-end` the footer. This is the single most common drift on this component.
+- Don't stack Drawers. Open a Modal from inside one instead.
+- Don't change route when the Drawer closes — it is a layer over the current route.
+- Don't put route-changing tabs inside a Drawer.
+- Don't let body content overflow horizontally. Design for the fixed 520 px width.
+- Don't add a corner radius to the panel. Figma specs none.
 
-## Installation
-
-The shadcn Drawer component must be added before use. It requires `vaul`:
-
-```bash
-npx shadcn@latest add drawer
-```
-
-This adds `vaul` to the project and creates `components/ui/drawer.tsx`.
+---
 
 ## Code
 
-### Basic usage
+### DFC — non-blocking record detail
 
 ```tsx
-import {
-  Drawer,
-  DrawerClose,
-  DrawerContent,
-  DrawerDescription,
-  DrawerFooter,
-  DrawerHeader,
-  DrawerTitle,
-  DrawerTrigger,
-} from '@/components/ui/drawer'
+import { Drawer, DrawerHeader, DrawerBody, DrawerFooter } from '@/components/ui/drawer'
 import { Button } from '@/components/ui/button'
 
-<Drawer>
-  <DrawerTrigger asChild>
-    <Button variant="secondary">View Details</Button>
-  </DrawerTrigger>
-
-  <DrawerContent>
-    <DrawerHeader>
-      <DrawerTitle>Campaign Name</DrawerTitle>
-      <DrawerDescription>Last updated Apr 12, 2026</DrawerDescription>
-    </DrawerHeader>
-
-    {/* Scrollable body */}
-    <div style={{ flex: 1, overflowY: 'auto', padding: '0 24px' }}>
-      {/* content */}
-    </div>
-
-    <DrawerFooter>
-      <Button>Save Changes</Button>
-      <DrawerClose asChild>
-        <Button variant="secondary">Cancel</Button>
-      </DrawerClose>
-    </DrawerFooter>
-  </DrawerContent>
-</Drawer>
-```
-
-### Controlled (open state managed externally)
-
-```tsx
 const [open, setOpen] = useState(false)
 
-<Drawer open={open} onOpenChange={setOpen}>
-  <DrawerContent>
-    {/* ... */}
-  </DrawerContent>
-</Drawer>
+<Drawer open={open} onClose={() => setOpen(false)}>
+  <DrawerHeader
+    variant="compact"
+    itemId="item_01kaajp2924m0z8qn26bhja22f"
+    description="Created Jan 30, 2026, 03:10 PM"
+    onClose={() => setOpen(false)}
+  >
+    DE Delaware First Health Holidays
+  </DrawerHeader>
 
-{/* Trigger from a table row */}
-<button onClick={() => setOpen(true)}>View</button>
+  <DrawerBody>{/* detail content */}</DrawerBody>
+
+  <DrawerFooter variant="compact">
+    <Button variant="text" size="sm">Cancel</Button>
+    <Button variant="primary" size="sm">Save</Button>
+  </DrawerFooter>
+</Drawer>
 ```
 
-### With custom width (lg)
+### ACGR — blocking, page supplies the backdrop
 
 ```tsx
-<DrawerContent className="w-[720px]">
-  {/* ... */}
-</DrawerContent>
+{open && (
+  <div
+    role="presentation"
+    onClick={() => setOpen(false)}
+    style={{ position: 'fixed', inset: 0, zIndex: 39, background: 'var(--surface-overlay)' }}
+  />
+)}
+
+<Drawer open={open} onClose={() => setOpen(false)}>
+  <DrawerHeader
+    description="Click a variable to insert at cursor."
+    onClose={() => setOpen(false)}
+  >
+    Variables
+  </DrawerHeader>
+
+  <DrawerBody>{/* variable list */}</DrawerBody>
+
+  <DrawerFooter>
+    <Button variant="text" size="sm">Cancel</Button>
+    <Button variant="secondary" size="sm">Review Impact</Button>
+    <Button variant="primary" size="sm">Proceed with Failover</Button>
+  </DrawerFooter>
+</Drawer>
 ```
+
+The page owning a blocking Drawer is responsible for the backdrop, marking the app shell `inert` or `aria-hidden`, and trapping focus. Drawer does none of this, because it cannot know which pattern it is being used in.
+
+### No footer — read-only panel
+
+```tsx
+<Drawer open={open} onClose={() => setOpen(false)}>
+  <DrawerHeader onClose={() => setOpen(false)}>Activity Log</DrawerHeader>
+  <DrawerBody>{/* read-only content */}</DrawerBody>
+</Drawer>
+```
+
+### Inline preview
+
+`preview` renders the panel inline in its parent rather than pinned to the viewport, ignoring `open`. It exists for this documentation playground and Storybook — not for production layouts.
+
+```tsx
+<Drawer preview>{/* ... */}</Drawer>
+```
+
+---
+
+## Token reference
+
+<Table size="compact" className="mb-6">
+  <TableHeader>
+    <tr>
+      <TableHead>Element</TableHead>
+      <TableHead>Value</TableHead>
+      <TableHead>Notes</TableHead>
+    </tr>
+  </TableHeader>
+  <TableBody>
+    <TableRow>
+      <TableCell>Panel width</TableCell>
+      <TableCell>520 px</TableCell>
+      <TableCell>Figma default; override via the `width` prop</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>Panel background</TableCell>
+      <TableCell>`--surface-section-bg`</TableCell>
+      <TableCell>Same on header, body and footer</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>Panel shadow</TableCell>
+      <TableCell>`-4px 0 24px rgba(5, 3, 38, 0.08)`</TableCell>
+      <TableCell>Figma effect "Drawer Shadow"</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>Panel radius</TableCell>
+      <TableCell>None</TableCell>
+      <TableCell>Figma specs no corner radius</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>Internal borders</TableCell>
+      <TableCell>1 px `--border-color-main-content-internal`</TableCell>
+      <TableCell>Header bottom, footer top</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>Header min-height</TableCell>
+      <TableCell>80 px</TableCell>
+      <TableCell>Both variants</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>Header padding — default</TableCell>
+      <TableCell>16 px</TableCell>
+      <TableCell>ACGR</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>Header padding — compact</TableCell>
+      <TableCell>16 px / 12 px</TableCell>
+      <TableCell>DFC</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>Record ID (compact)</TableCell>
+      <TableCell>10 px / 16 px, `--text-body-secondary`</TableCell>
+      <TableCell>16 px gap below it, before the title block</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>Title — default</TableCell>
+      <TableCell>18 px / 24 px, weight 400, heading family</TableCell>
+      <TableCell>H4 scale; 12 px gap to description</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>Title — compact</TableCell>
+      <TableCell>14 px / 20 px, weight 600, body family</TableCell>
+      <TableCell>8 px gap to description</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>Description</TableCell>
+      <TableCell>12 px / 20 px, `--text-body-primary`</TableCell>
+      <TableCell>Same in both variants</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>Close icon</TableCell>
+      <TableCell>16 × 16 px</TableCell>
+      <TableCell>32 × 32 px hit area for WCAG 2.5.8</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>Body padding</TableCell>
+      <TableCell>16 px</TableCell>
+      <TableCell>Scroll region</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>Slide transition</TableCell>
+      <TableCell>350 ms ease-in-out</TableCell>
+      <TableCell>Transform only — `x: 100%` → `0`</TableCell>
+    </TableRow>
+  </TableBody>
+</Table>
+
+---
 
 ## Accessibility
 
-- `DrawerTitle` maps to `aria-labelledby` on the Drawer dialog — always required.
-- `DrawerDescription` maps to `aria-describedby` — use it for a one-line context about the drawer's purpose.
-- The overlay must trap focus within the open Drawer.
-- `Escape` key must close the Drawer and return focus to the trigger element.
-- `DrawerClose` must be focusable and have an accessible label (e.g. `aria-label="Close drawer"`).
+- The panel renders `role="dialog"`. `DrawerHeader` registers its title element automatically, so `aria-labelledby` is wired for you. Pass `aria-label` on `Drawer` only when there is no visible heading.
+- **Focus** — on open, focus moves to the close button, falling back to the first focusable element. On close, focus returns to whatever triggered the Drawer, so keyboard users are never dropped at `<body>`.
+- **No focus trap.** Tab moves out of the panel and into the page behind it. This is correct for the non-blocking DFC pattern. If you are building a blocking ACGR-style Drawer, the page must add the trap and mark the app shell `inert` — the component will not do it for you.
+- **Escape** closes the Drawer by default. Set `closeOnEscape={false}` for a non-blocking panel where `Esc` would fight a page-level shortcut, but keep the × button in that case.
+- The × button carries `aria-label="Close drawer"` and a 32 × 32 px hit area, clearing the WCAG 2.5.8 minimum for a 16 px icon.
+- The slide animates `transform` only, so it respects compositing and does not trigger layout on open.
+
+---
 
 ## Related components
 
-- **Modal** — For confirmations and short-form dialogs. No scrollable body.
-- **Side Panel** — A persistent (non-overlay) right column that narrows the main content area. See [Side Panel](/components/side-panel).
-- **Collapsible Filters** — Left-side panel for filtering. Not an overlay.
+- **Modal** — for confirmations and short dialogs that must interrupt. Always blocking, always focus-trapped.
+- **Side Panel** — a persistent, non-overlay right column that narrows the main content area.
+- **Collapsible Filters** — a left-side filter panel. Not an overlay.

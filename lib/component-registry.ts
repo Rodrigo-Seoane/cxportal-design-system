@@ -18,6 +18,7 @@ import { Chip, Tag } from '@/components/ui/chip'
 import { Counter } from '@/components/ui/counter'
 import { Tabs, TabList, Tab, TabPanel, TableIcon } from '@/components/ui/tabs'
 import { Modal, ModalHeader, ModalBody, ModalFooter, XCircleIcon, FloppyDisk } from '@/components/ui/modal'
+import { Drawer, DrawerHeader, DrawerBody, DrawerFooter } from '@/components/ui/drawer'
 import { Switch, BooleanIcon } from '@/components/ui/switch'
 import { MessageBox } from '@/components/ui/message-box'
 import { Pagination } from '@/components/ui/pagination'
@@ -2256,6 +2257,83 @@ export const registry: Record<string, ComponentEntry> = {
         '  />',
         '</div>',
       ].join('\n')
+    },
+  },
+
+  // ─── Drawer ────────────────────────────────────────────────────────────────────
+  drawer: {
+    slug: 'drawer',
+    title: 'Drawer',
+    description:
+      'A right-anchored content panel that slides in over or alongside the page. Ships with no backdrop, focus trap, or scroll lock — whether it blocks the page (ACGR) or lets the user keep navigating (DFC) is decided by the consuming page, not the component. Footer actions are always left-aligned, matching every other footer in the DS.',
+    status: 'stable',
+    scope: { Drawer, DrawerHeader, DrawerBody, DrawerFooter, Button },
+    propSchema: {
+      headerVariant: {
+        type: 'chip-select',
+        label: 'Header variant',
+        options: ['default', 'compact'],
+        default: 'compact',
+      },
+      title: {
+        type: 'text',
+        label: 'Title',
+        default: 'DE Delaware First Health Holidays',
+      },
+      footer: {
+        type: 'chip-select',
+        label: 'Footer',
+        options: ['none', 'single-action', 'cancel-confirm', 'acgr-three-action'],
+        default: 'cancel-confirm',
+      },
+    },
+    generateCode: ({ headerVariant, title, footer }) => {
+      const v = String(headerVariant)
+      const t = String(title)
+      const f = String(footer)
+      const compact = v === 'compact'
+
+      const headerAttrs = compact
+        ? ` variant="compact" itemId="item_01kaajp2924m0z8qn26bhja22f" description="Created Jan 30, 2026, 03:10 PM"`
+        : ` description="Click a variable to insert at cursor."`
+      // Header and footer variants are always paired — mixing them mixes two
+      // different spacing systems.
+      const footerAttrs = compact ? ' variant="compact"' : ''
+
+      const lines = [
+        `<Drawer preview>`,
+        `  <DrawerHeader${headerAttrs} onClose={() => {}}>${t}</DrawerHeader>`,
+        `  <DrawerBody>`,
+        `    <p style={{ fontSize: 14, color: '#1d1d1d', lineHeight: '20px' }}>`,
+        `      Drawer body content goes here.`,
+        `    </p>`,
+        `  </DrawerBody>`,
+      ]
+
+      if (f === 'single-action') {
+        lines.push(
+          `  <DrawerFooter${footerAttrs}>`,
+          `    <Button variant="secondary" size="sm">Edit</Button>`,
+          `  </DrawerFooter>`,
+        )
+      } else if (f === 'cancel-confirm') {
+        lines.push(
+          `  <DrawerFooter${footerAttrs}>`,
+          `    <Button variant="text" size="sm">Cancel</Button>`,
+          `    <Button variant="primary" size="sm">Save</Button>`,
+          `  </DrawerFooter>`,
+        )
+      } else if (f === 'acgr-three-action') {
+        lines.push(
+          `  <DrawerFooter${footerAttrs}>`,
+          `    <Button variant="text" size="sm">Cancel</Button>`,
+          `    <Button variant="secondary" size="sm">Review Impact</Button>`,
+          `    <Button variant="primary" size="sm">Proceed with Failover</Button>`,
+          `  </DrawerFooter>`,
+        )
+      }
+      lines.push(`</Drawer>`)
+      return lines.join('\n')
     },
   },
 
