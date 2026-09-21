@@ -48,15 +48,15 @@ export interface InputProps {
 // ─── Design tokens (from CxPortal DS) ────────────────────────────────────────
 
 const T = {
-  borderDefault:  'var(--neutral-200)',
-  borderFocus:    'var(--content-action-primary-default)',
+  borderDefault:  'var(--border-color-form-fields-default)',
+  borderFocus:    'var(--border-color-form-fields-focus)',
   borderError:    'var(--error-200)',
-  borderDisabled: 'var(--content-action-disabled-300)',
+  borderDisabled: 'var(--border-color-form-fields-disabled)',
   bgDefault:      'var(--neutral-0)',
-  bgDisabled:     'var(--content-action-disabled-100)',
+  bgDisabled:     'var(--surface-form-field-disabled)',
   textFocus:      'var(--text-body-primary)',
   textPlaceholder:'var(--text-body-secondary)',
-  textDisabled:   'var(--content-action-disabled-700)',
+  textDisabled:   'var(--text-form-field-disabled)',
   textLabel:      'var(--text-body-primary)',
   textHint:       'var(--text-body-primary)',
   textError:      'var(--error-default)',

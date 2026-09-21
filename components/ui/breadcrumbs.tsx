@@ -6,15 +6,15 @@ import { HouseIcon, CaretRightIcon } from '@phosphor-icons/react'
 // ── Design tokens (Figma: nodes 1933-2500 / 2303-5400 / 2303-5312) ────────────
 
 const T = {
-  // Figma's component instance renders every label — ancestor and current —
-  // in --text-on-action-transparent (#3a8015). Principles/Usage each claim a
-  // different neutral gray instead, and disagree with each other too; the
-  // component node wins per the design-system audit convention.
-  textColor:   'var(--text-on-action-transparent)',
-  caretColor:  'var(--neutral-300)',
-  fontSize:    10,
-  lineHeight: '16px',
+  textColor:      'var(--text-on-action-transparent)',
+  caretColor:     'var(--neutral-300)',
+  fontSize:       12,
+  lineHeight:    '20px',
+  letterSpacing: '0.24px',
 } as const
+
+/** Max visible ancestor items before truncation kicks in. */
+const MAX_VISIBLE_ANCESTORS = 4
 
 // ── Types ──────────────────────────────────────────────────────────────────────
 
@@ -26,7 +26,7 @@ export interface BreadcrumbItem {
 }
 
 export interface BreadcrumbProps {
-  /** Ancestor + current page trail. Depth (1-4 per Figma) is items.length. */
+  /** Ancestor + current page trail. 1–5 items shown in full; beyond 5 the Max variant truncates middle ancestors with an ellipsis. */
   items: BreadcrumbItem[]
   /** Destination for the leading Home icon (the module root). */
   homeHref: string
@@ -36,6 +36,14 @@ export interface BreadcrumbProps {
 // ── Breadcrumb ─────────────────────────────────────────────────────────────────
 
 export function Breadcrumb({ items, homeHref, className }: BreadcrumbProps) {
+  // Determine visible items — Max variant truncates middle ancestors
+  const ancestors = items.slice(0, -1)
+  const current = items[items.length - 1]
+  const needsTruncation = ancestors.length > MAX_VISIBLE_ANCESTORS
+  const visibleAncestors = needsTruncation
+    ? ancestors.slice(-3)  // last 3 ancestors before current
+    : ancestors
+
   return (
     <nav aria-label="Breadcrumb" className={className}>
       <ol
@@ -48,58 +56,77 @@ export function Breadcrumb({ items, homeHref, className }: BreadcrumbProps) {
           padding:      0,
         }}
       >
+        {/* Home icon */}
         <li style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
           <Link
             href={homeHref}
             aria-label="Home"
             style={{ display: 'flex', alignItems: 'center', padding: 2 }}
           >
-            <HouseIcon size={16} color={T.textColor} weight="regular" />
+            <HouseIcon size={14} color={T.textColor} weight="regular" />
           </Link>
           <CaretRightIcon size={12} color={T.caretColor} weight="regular" aria-hidden="true" />
         </li>
 
-        {items.map((item, index) => {
-          const isCurrent = index === items.length - 1
+        {/* Ellipsis for Max variant */}
+        {needsTruncation && (
+          <li style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+            <span
+              style={{
+                padding:    2,
+                fontSize:   T.fontSize,
+                fontWeight: 400,
+                lineHeight: T.lineHeight,
+                color:      T.textColor,
+                whiteSpace: 'nowrap',
+              }}
+            >
+              &hellip;
+            </span>
+            <CaretRightIcon size={12} color={T.caretColor} weight="regular" aria-hidden="true" />
+          </li>
+        )}
 
-          return (
-            <li key={`${item.label}-${index}`} style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
-              {isCurrent ? (
-                <span
-                  aria-current="page"
-                  style={{
-                    padding:      2,
-                    fontSize:      T.fontSize,
-                    fontWeight:    600,
-                    lineHeight:    T.lineHeight,
-                    color:         T.textColor,
-                    whiteSpace:   'nowrap',
-                  }}
-                >
-                  {item.label}
-                </span>
-              ) : (
-                <Link
-                  href={item.href ?? '#'}
-                  style={{
-                    padding:        2,
-                    fontSize:        T.fontSize,
-                    fontWeight:      400,
-                    lineHeight:      T.lineHeight,
-                    color:           T.textColor,
-                    whiteSpace:     'nowrap',
-                    textDecoration: 'none',
-                  }}
-                >
-                  {item.label}
-                </Link>
-              )}
-              {!isCurrent && (
-                <CaretRightIcon size={12} color={T.caretColor} weight="regular" aria-hidden="true" />
-              )}
-            </li>
-          )
-        })}
+        {/* Ancestor links */}
+        {visibleAncestors.map((item, index) => (
+          <li key={`${item.label}-${index}`} style={{ display: 'flex', alignItems: 'center', gap: 4 }}>
+            <Link
+              href={item.href ?? '#'}
+              style={{
+                padding:        2,
+                fontSize:        T.fontSize,
+                fontWeight:      400,
+                lineHeight:      T.lineHeight,
+                color:           T.textColor,
+                whiteSpace:     'nowrap',
+                textDecoration: 'none',
+              }}
+            >
+              {item.label}
+            </Link>
+            <CaretRightIcon size={12} color={T.caretColor} weight="regular" aria-hidden="true" />
+          </li>
+        ))}
+
+        {/* Current page */}
+        {current && (
+          <li style={{ display: 'flex', alignItems: 'center' }}>
+            <span
+              aria-current="page"
+              style={{
+                padding:       2,
+                fontSize:       T.fontSize,
+                fontWeight:     600,
+                lineHeight:     T.lineHeight,
+                letterSpacing:  T.letterSpacing,
+                color:          T.textColor,
+                whiteSpace:    'nowrap',
+              }}
+            >
+              {current.label}
+            </span>
+          </li>
+        )}
       </ol>
     </nav>
   )

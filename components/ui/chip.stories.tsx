@@ -21,7 +21,7 @@ type Story = StoryObj
 
 export const ChipDefault: Story = {
   render: (args) => <Chip {...args} />,
-  args: { label: 'Current', type: 'info', shade: 100, iconLeft: true, iconRight: true },
+  args: { label: 'Current', type: 'info', shade: 100, size: 'regular', iconLeft: true, iconRight: true },
   argTypes: {
     type: {
       control: 'select',
@@ -32,6 +32,11 @@ export const ChipDefault: Story = {
       control: 'select',
       options: [100, 200, 300, 400, 500, 600],
       description: 'Tint level within the colour family — 100 is lightest, 600 is darkest.',
+    },
+    size: {
+      control: 'select',
+      options: ['regular', 'small'],
+      description: 'Size variant. Small is for dense layouts (table cells, filter bars).',
     },
     iconLeft: {
       control: 'boolean',
@@ -69,6 +74,37 @@ export const ChipShades: Story = {
           <Chip label="600" type={type} shade={600} />
         </div>
       ))}
+    </div>
+  ),
+}
+
+export const ChipSmallDefault: Story = {
+  render: (args) => <Chip {...args} />,
+  args: { label: 'Current', type: 'info', shade: 100, size: 'small', iconLeft: true, iconRight: true },
+}
+
+export const ChipSmallShades: Story = {
+  render: () => (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+      {(['grey', 'info', 'success', 'warning', 'error'] as const).map(type => (
+        <div key={type} style={{ display: 'flex', gap: 8 }}>
+          <Chip label="Current" type={type} shade={100} size="small" />
+          <Chip label="Current" type={type} shade={200} size="small" />
+          <Chip label="Current" type={type} shade={300} size="small" />
+          <Chip label="Current" type={type} shade={400} size="small" />
+          <Chip label="Current" type={type} shade={500} size="small" />
+          <Chip label="Current" type={type} shade={600} size="small" />
+        </div>
+      ))}
+    </div>
+  ),
+}
+
+export const ChipSizeComparison: Story = {
+  render: () => (
+    <div style={{ display: 'flex', gap: 16, alignItems: 'center' }}>
+      <Chip label="Regular" type="info" shade={200} size="regular" />
+      <Chip label="Small" type="info" shade={200} size="small" />
     </div>
   ),
 }

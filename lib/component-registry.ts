@@ -768,6 +768,12 @@ export const registry: Record<string, ComponentEntry> = {
         options: ['100', '200', '300', '400', '500', '600'],
         default: '100',
       },
+      chipSize: {
+        type: 'chip-select',
+        label: 'Chip size',
+        options: ['regular', 'small'],
+        default: 'regular',
+      },
       iconLeft: {
         type: 'boolean',
         label: 'Left icon',
@@ -792,9 +798,10 @@ export const registry: Record<string, ComponentEntry> = {
         default: 'simple',
       },
     },
-    generateCode: ({ chipType, chipShade, iconLeft, iconRight, tagState, tagType }) => {
+    generateCode: ({ chipType, chipShade, chipSize, iconLeft, iconRight, tagState, tagType }) => {
       const type  = String(chipType)
       const shade = String(chipShade)
+      const sz    = String(chipSize)
       const left  = iconLeft  === true || iconLeft  === 'true'
       const right = iconRight === true || iconRight === 'true'
       const state = String(tagState)
@@ -805,6 +812,7 @@ export const registry: Record<string, ComponentEntry> = {
         `  label="Current"`,
         `  type="${type}"`,
         `  shade={${shade}}`,
+        sz !== 'regular' ? `  size="${sz}"` : null,
         !left  ? `  iconLeft={false}`  : null,
         !right ? `  iconRight={false}` : null,
         `/>`,
@@ -1639,14 +1647,14 @@ export const registry: Record<string, ComponentEntry> = {
     slug: 'clickable-card',
     title: 'Clickable Card',
     description:
-      'Selection cards for single-choice flows. Two variants: a rich Card with icon, title and description, and a compact Horizontal Card with a radio and uppercase label.',
+      'Selection cards for single-choice flows. Three shapes: a rich Card with icon/title/description, a compact Horizontal Card (single-line), and a Horizontal Card with description (2+ lines).',
     status: 'stable',
     scope: { ClickableCard, ClickableHorizontalCard },
     propSchema: {
       variant: {
         type: 'chip-select',
         label: 'Variant',
-        options: ['card', 'horizontal'],
+        options: ['card', 'horizontal', 'horizontal-2-lines'],
         default: 'card',
       },
       selected: {
@@ -1695,6 +1703,12 @@ export const registry: Record<string, ComponentEntry> = {
       if (v === 'horizontal') {
         const lbl = String(label)
         return [`<ClickableHorizontalCard`, `  label="${lbl}"${selAttr}`, `/>`].join('\n')
+      }
+
+      if (v === 'horizontal-2-lines') {
+        const lbl = String(label)
+        const desc = String(description)
+        return [`<ClickableHorizontalCard`, `  label="${lbl}"`, `  description="${desc}"${selAttr}`, `/>`].join('\n')
       }
 
       // card variant
@@ -1961,21 +1975,22 @@ export const registry: Record<string, ComponentEntry> = {
     slug: 'breadcrumb',
     title: 'Breadcrumb',
     description:
-      'A horizontal navigation trail showing the current position within the page hierarchy. Always starts with a Home icon; the last item is the current page. Depth is 1-4 items.',
+      'A horizontal navigation trail showing the current position within the page hierarchy. Always starts with a Home icon; the last item is the current page. Supports 1\u20135 depth levels with Max truncation beyond 5.',
     status: 'stable',
     scope: { Breadcrumb },
     propSchema: {
       depth: {
         type: 'chip-select',
         label: 'Depth',
-        options: ['1', '2', '3', '4'],
+        options: ['1', '2', '3', '4', '5', 'Max'],
         default: '2',
       },
     },
     generateCode: ({ depth }) => {
-      const labels = ['Social Security Admin', 'Benefit Status Updates', 'Retirement Planning Reminders', 'Send Schedule']
-      const hrefs  = ['/accounts/ssa', '/accounts/ssa/campaign-groups/benefit-status', '/accounts/ssa/campaign-groups/benefit-status/reminders']
-      const n = Math.min(4, Math.max(1, Number(depth) || 2))
+      const labels = ['Campaigns', 'User Lists', 'List Title', 'List Detail', 'More Detail', 'Deep Page', 'Campaigns']
+      const hrefs  = ['/campaigns', '/campaigns/lists', '/campaigns/lists/list-title', '/campaigns/lists/list-title/detail', '/campaigns/lists/list-title/detail/more', '/campaigns/lists/list-title/detail/more/deep']
+      const d = String(depth)
+      const n = d === 'Max' ? 7 : Math.min(5, Math.max(1, Number(d) || 2))
 
       const lines = ['<Breadcrumb', `  homeHref="/"`, '  items={[']
       for (let i = 0; i < n; i++) {
@@ -2045,7 +2060,7 @@ export const registry: Record<string, ComponentEntry> = {
       depth: {
         type: 'chip-select',
         label: 'Breadcrumb depth',
-        options: ['1', '2', '3', '4'],
+        options: ['1', '2', '3', '4', '5'],
         default: '2',
       },
       title: {

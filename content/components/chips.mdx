@@ -2,7 +2,7 @@
 title: Chips & Tags
 description: Compact inline labels for status, categorisation, and user input. Chips are interactive; Tags are primarily informational.
 figmaNodeId: 188-8771
-figmaUpdated: Apr 09, 2026
+figmaUpdated: Sep 22, 2026
 status: stable
 ---
 
@@ -63,10 +63,66 @@ Chips and Tags are both compact inline elements, but they serve fundamentally di
 
 ### Anatomy
 
-- **Container** — 8px border-radius. Padding: 4px vertical, 12px horizontal.
-- **Left icon (optional)** — 12px thin-weight icon communicating the chip's domain or type.
-- **Label** — 10px SemiBold, 0.4px letter-spacing.
-- **Dismiss icon (optional)** — 12px × icon. Clicking removes the chip.
+- **Container** — 8px border-radius (Regular) or 4px (Small). Padding: 4px/12px (Regular) or 2px/8px (Small).
+- **Left icon (optional)** — 12px (Regular) or 10px (Small) thin-weight icon.
+- **Label** — 10px SemiBold, 0.4px letter-spacing (Regular). 8px SemiBold, 0.32px letter-spacing, capitalize-transformed (Small).
+- **Dismiss icon (optional)** — 12px (Regular) or 10px (Small) × icon.
+
+### Size
+
+Chips come in two sizes. Regular is the default. Small (12px min-height, 8px text) exists for dense layouts — table cells, compact filter bars, inline metadata rows. Never mix sizes in the same group.
+
+<Table size="compact" className="mb-6">
+  <TableHeader>
+    <tr>
+      <TableHead>Property</TableHead>
+      <TableHead>Regular</TableHead>
+      <TableHead>Small</TableHead>
+    </tr>
+  </TableHeader>
+  <TableBody>
+    <TableRow>
+      <TableCell>Min height</TableCell>
+      <TableCell>—</TableCell>
+      <TableCell>12px</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>Padding</TableCell>
+      <TableCell>4px 12px</TableCell>
+      <TableCell>2px 8px</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>Gap</TableCell>
+      <TableCell>8px</TableCell>
+      <TableCell>4px</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>Border radius</TableCell>
+      <TableCell>8px</TableCell>
+      <TableCell>4px</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>Font size</TableCell>
+      <TableCell>10px</TableCell>
+      <TableCell>8px</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>Letter spacing</TableCell>
+      <TableCell>0.4px</TableCell>
+      <TableCell>0.32px</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>Icon size</TableCell>
+      <TableCell>12px</TableCell>
+      <TableCell>10px</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>Text transform</TableCell>
+      <TableCell>—</TableCell>
+      <TableCell>capitalize</TableCell>
+    </TableRow>
+  </TableBody>
+</Table>
 
 ### Variants
 
@@ -421,6 +477,14 @@ const [tags, setTags] = useState(['Design', 'Research', 'Dev'])
   shade={100}
   onClick={() => openFilterPanel()}
 />
+```
+
+### Chip/Small — dense layout
+
+```tsx
+<Chip label="Current" type="info" shade={100} size="small" />
+<Chip label="Synched" type="success" shade={200} size="small" />
+<Chip label="Warning" type="warning" shade={300} size="small" iconLeft={false} />
 ```
 
 ### Tag — simple

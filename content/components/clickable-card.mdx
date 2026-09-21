@@ -1,8 +1,8 @@
 ---
 title: Clickable Card
-description: Selection cards for single-choice flows. Two variants — a rich Card with icon, title, and description, and a compact Horizontal Card with a radio and uppercase label.
+description: Selection cards for single-choice flows. Three shapes — a rich Card with icon/title/description, a compact Horizontal Card (single-line label), and a Horizontal Card with description (2+ lines).
 figmaNodeId: 814-10834
-figmaUpdated: Apr 13, 2026
+figmaUpdated: Sep 22, 2026
 status: stable
 ---
 
@@ -192,7 +192,7 @@ const [selected, setSelected] = useState<string | null>(null)
 </div>
 ```
 
-### Horizontal Card variant
+### Horizontal Card variant — single line
 
 ```tsx
 import { ClickableHorizontalCard } from '@/components/ui/clickable-card'
@@ -209,6 +209,27 @@ const [schedule, setSchedule] = useState<'now' | 'later'>('now')
     label="Schedule Later"
     selected={schedule === 'later'}
     onClick={() => setSchedule('later')}
+  />
+</div>
+```
+
+### Horizontal Card variant — 2+ lines
+
+```tsx
+const [region, setRegion] = useState<string>('outage')
+
+<div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
+  <ClickableHorizontalCard
+    label="Total Outage"
+    description="All East 1"
+    selected={region === 'outage'}
+    onClick={() => setRegion('outage')}
+  />
+  <ClickableHorizontalCard
+    label="Partial Outage"
+    description="East Region 2"
+    selected={region === 'partial'}
+    onClick={() => setRegion('partial')}
   />
 </div>
 ```
