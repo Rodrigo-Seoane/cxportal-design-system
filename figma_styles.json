@@ -1,0 +1,2654 @@
+{
+  "styles": {
+    "colors": [
+      {
+        "name": "Neutral/Gradient/Light - Off white",
+        "token": "neutral-gradient-light-off-white",
+        "type": "gradient_linear"
+      },
+      {
+        "name": "Gradient/Purple",
+        "token": "gradient-purple",
+        "type": "gradient_linear"
+      },
+      {
+        "name": "Gradient/Green",
+        "token": "gradient-green",
+        "type": "gradient_linear"
+      }
+    ],
+    "textStyles": [
+      {
+        "name": "Heading/H1",
+        "token": "heading-h1",
+        "type": "text",
+        "fontFamily": "Roboto",
+        "fontWeight": "400",
+        "fontSize": "28px",
+        "lineHeight": "34px",
+        "letterSpacing": "0px"
+      },
+      {
+        "name": "Heading/H2",
+        "token": "heading-h2",
+        "type": "text",
+        "fontFamily": "Roboto",
+        "fontWeight": "400",
+        "fontSize": "24px",
+        "lineHeight": "30px",
+        "letterSpacing": "0px"
+      },
+      {
+        "name": "Heading/H3",
+        "token": "heading-h3",
+        "type": "text",
+        "fontFamily": "Roboto",
+        "fontWeight": "400",
+        "fontSize": "20px",
+        "lineHeight": "28px",
+        "letterSpacing": "0px"
+      },
+      {
+        "name": "Heading/H4",
+        "token": "heading-h4",
+        "type": "text",
+        "fontFamily": "Roboto",
+        "fontWeight": "400",
+        "fontSize": "18px",
+        "lineHeight": "24px",
+        "letterSpacing": "0px"
+      },
+      {
+        "name": "Heading/H5",
+        "token": "heading-h5",
+        "type": "text",
+        "fontFamily": "Roboto",
+        "fontWeight": "400",
+        "fontSize": "16px",
+        "lineHeight": "24px",
+        "letterSpacing": "0px"
+      },
+      {
+        "name": "Heading+Indent/H1",
+        "token": "heading-indent-h1",
+        "type": "text",
+        "fontFamily": "Roboto",
+        "fontWeight": "400",
+        "fontSize": "28px",
+        "lineHeight": "34px",
+        "letterSpacing": "0px"
+      },
+      {
+        "name": "Heading+Indent/H2",
+        "token": "heading-indent-h2",
+        "type": "text",
+        "fontFamily": "Roboto",
+        "fontWeight": "400",
+        "fontSize": "24px",
+        "lineHeight": "30px",
+        "letterSpacing": "0px"
+      },
+      {
+        "name": "Heading+Indent/H3",
+        "token": "heading-indent-h3",
+        "type": "text",
+        "fontFamily": "Roboto",
+        "fontWeight": "400",
+        "fontSize": "20px",
+        "lineHeight": "28px",
+        "letterSpacing": "0px"
+      },
+      {
+        "name": "Heading+Indent/H4",
+        "token": "heading-indent-h4",
+        "type": "text",
+        "fontFamily": "Roboto",
+        "fontWeight": "400",
+        "fontSize": "18px",
+        "lineHeight": "24px",
+        "letterSpacing": "0px"
+      },
+      {
+        "name": "Heading+Indent/H5",
+        "token": "heading-indent-h5",
+        "type": "text",
+        "fontFamily": "Roboto",
+        "fontWeight": "400",
+        "fontSize": "16px",
+        "lineHeight": "24px",
+        "letterSpacing": "0px"
+      },
+      {
+        "name": "Body/Extra Large/xl-light",
+        "token": "body-extra-large-xl-light",
+        "type": "text",
+        "fontFamily": "Roboto",
+        "fontWeight": "300",
+        "fontSize": "18px",
+        "lineHeight": "28px",
+        "letterSpacing": "0%"
+      },
+      {
+        "name": "Body/Extra Large/xl-regular",
+        "token": "body-extra-large-xl-regular",
+        "type": "text",
+        "fontFamily": "Roboto",
+        "fontWeight": "400",
+        "fontSize": "18px",
+        "lineHeight": "28px",
+        "letterSpacing": "0%"
+      },
+      {
+        "name": "Body/Extra Large/xl-semibold",
+        "token": "body-extra-large-xl-semibold",
+        "type": "text",
+        "fontFamily": "Roboto",
+        "fontWeight": "600",
+        "fontSize": "18px",
+        "lineHeight": "28px",
+        "letterSpacing": "0%"
+      },
+      {
+        "name": "Body/Extra Large/xl-extrabold",
+        "token": "body-extra-large-xl-extrabold",
+        "type": "text",
+        "fontFamily": "Roboto",
+        "fontWeight": "700",
+        "fontSize": "18px",
+        "lineHeight": "28px",
+        "letterSpacing": "0%"
+      },
+      {
+        "name": "Body/Large/lg-light",
+        "token": "body-large-lg-light",
+        "type": "text",
+        "fontFamily": "Roboto",
+        "fontWeight": "300",
+        "fontSize": "16px",
+        "lineHeight": "24px",
+        "letterSpacing": "0%"
+      },
+      {
+        "name": "Body/Large/lg-regular",
+        "token": "body-large-lg-regular",
+        "type": "text",
+        "fontFamily": "Roboto",
+        "fontWeight": "400",
+        "fontSize": "16px",
+        "lineHeight": "24px",
+        "letterSpacing": "0%"
+      },
+      {
+        "name": "Body/Large/lg-semibold",
+        "token": "body-large-lg-semibold",
+        "type": "text",
+        "fontFamily": "Roboto",
+        "fontWeight": "600",
+        "fontSize": "16px",
+        "lineHeight": "24px",
+        "letterSpacing": "0%"
+      },
+      {
+        "name": "Body/Large/lg-extrabold",
+        "token": "body-large-lg-extrabold",
+        "type": "text",
+        "fontFamily": "Roboto",
+        "fontWeight": "700",
+        "fontSize": "16px",
+        "lineHeight": "24px",
+        "letterSpacing": "0%"
+      },
+      {
+        "name": "Body/Regular/regular-light",
+        "token": "body-regular-regular-light",
+        "type": "text",
+        "fontFamily": "Roboto",
+        "fontWeight": "300",
+        "fontSize": "14px",
+        "lineHeight": "20px",
+        "letterSpacing": "0%"
+      },
+      {
+        "name": "Body/Regular/regular-md",
+        "token": "body-regular-regular-md",
+        "type": "text",
+        "fontFamily": "Roboto",
+        "fontWeight": "400",
+        "fontSize": "14px",
+        "lineHeight": "20px",
+        "letterSpacing": "0%"
+      },
+      {
+        "name": "Body/Regular/regular-semibold",
+        "token": "body-regular-regular-semibold",
+        "type": "text",
+        "fontFamily": "Roboto",
+        "fontWeight": "600",
+        "fontSize": "14px",
+        "lineHeight": "20px",
+        "letterSpacing": "0%"
+      },
+      {
+        "name": "Body/Regular/regular-extrabold",
+        "token": "body-regular-regular-extrabold",
+        "type": "text",
+        "fontFamily": "Roboto",
+        "fontWeight": "700",
+        "fontSize": "14px",
+        "lineHeight": "20px",
+        "letterSpacing": "0%"
+      },
+      {
+        "name": "Body/Small/sm-light",
+        "token": "body-small-sm-light",
+        "type": "text",
+        "fontFamily": "Roboto",
+        "fontWeight": "300",
+        "fontSize": "12px",
+        "lineHeight": "20px",
+        "letterSpacing": "0%"
+      },
+      {
+        "name": "Body/Small/sm-regular",
+        "token": "body-small-sm-regular",
+        "type": "text",
+        "fontFamily": "Roboto",
+        "fontWeight": "400",
+        "fontSize": "12px",
+        "lineHeight": "20px",
+        "letterSpacing": "0%"
+      },
+      {
+        "name": "Body/Small/sm-semibold",
+        "token": "body-small-sm-semibold",
+        "type": "text",
+        "fontFamily": "Roboto",
+        "fontWeight": "600",
+        "fontSize": "12px",
+        "lineHeight": "20px",
+        "letterSpacing": "2%"
+      },
+      {
+        "name": "Body/Small/sm-extrabold",
+        "token": "body-small-sm-extrabold",
+        "type": "text",
+        "fontFamily": "Roboto",
+        "fontWeight": "700",
+        "fontSize": "12px",
+        "lineHeight": "20px",
+        "letterSpacing": "0%"
+      },
+      {
+        "name": "Body/Extra Small/xs-light",
+        "token": "body-extra-small-xs-light",
+        "type": "text",
+        "fontFamily": "Roboto",
+        "fontWeight": "300",
+        "fontSize": "10px",
+        "lineHeight": "16px",
+        "letterSpacing": "0%"
+      },
+      {
+        "name": "Body/Extra Small/xs-regular",
+        "token": "body-extra-small-xs-regular",
+        "type": "text",
+        "fontFamily": "Roboto",
+        "fontWeight": "400",
+        "fontSize": "10px",
+        "lineHeight": "16px",
+        "letterSpacing": "0%"
+      },
+      {
+        "name": "Body/Extra Small/xs-semibold",
+        "token": "body-extra-small-xs-semibold",
+        "type": "text",
+        "fontFamily": "Roboto",
+        "fontWeight": "600",
+        "fontSize": "10px",
+        "lineHeight": "16px",
+        "letterSpacing": "0%"
+      },
+      {
+        "name": "Body/Extra Small/xs-extrabold",
+        "token": "body-extra-small-xs-extrabold",
+        "type": "text",
+        "fontFamily": "Roboto",
+        "fontWeight": "700",
+        "fontSize": "10px",
+        "lineHeight": "16px",
+        "letterSpacing": "0%"
+      },
+      {
+        "name": "Caption/large",
+        "token": "caption-large",
+        "type": "text",
+        "fontFamily": "Roboto",
+        "fontWeight": "600",
+        "fontSize": "12px",
+        "lineHeight": "16px",
+        "letterSpacing": "4%",
+        "textTransform": "upper"
+      },
+      {
+        "name": "Caption/regular",
+        "token": "caption-regular",
+        "type": "text",
+        "fontFamily": "Roboto",
+        "fontWeight": "600",
+        "fontSize": "10px",
+        "lineHeight": "12px",
+        "letterSpacing": "4%"
+      },
+      {
+        "name": "Caption/small",
+        "token": "caption-small",
+        "type": "text",
+        "fontFamily": "Roboto",
+        "fontWeight": "600",
+        "fontSize": "8px",
+        "lineHeight": "12px",
+        "letterSpacing": "4%",
+        "textTransform": "title"
+      }
+    ],
+    "effectStyles": [
+      {
+        "name": "Tooltip Shadow",
+        "token": "tooltip-shadow",
+        "type": "effect",
+        "value": "box-shadow: 0px 4px 24px 0px rgba(5, 3, 38, 0.08)",
+        "effects": [
+          {
+            "type": "drop-shadow",
+            "x": 0,
+            "y": 4,
+            "blur": 24,
+            "spread": 0,
+            "color": "rgba(5, 3, 38, 0.08)"
+          }
+        ]
+      }
+    ],
+    "gridStyles": [
+      {
+        "name": "12 Column internal",
+        "token": "12-column-internal",
+        "type": "grid",
+        "grids": [
+          {
+            "pattern": "columns",
+            "count": 12,
+            "gutter": 16,
+            "margin": 16
+          }
+        ]
+      },
+      {
+        "name": "16 cols (wide)",
+        "token": "16-cols-wide",
+        "type": "grid",
+        "grids": [
+          {
+            "pattern": "columns",
+            "count": 16,
+            "gutter": 16,
+            "margin": 16
+          }
+        ]
+      }
+    ]
+  },
+  "collections": {
+    "Semantic": {
+      "id": "VariableCollectionId:1:9",
+      "modes": [
+        {
+          "id": "1:0",
+          "name": "Caylent Green"
+        },
+        {
+          "id": "1:1",
+          "name": "Former Pronetx Blue"
+        }
+      ],
+      "variables": {
+        "colors": [
+          {
+            "name": "Neutral/200",
+            "token": "neutral-200",
+            "type": "color",
+            "value": "#cdcdcd",
+            "values": {
+              "Caylent Green": "#cdcdcd",
+              "Former Pronetx Blue": "#cdcdcd"
+            }
+          },
+          {
+            "name": "Neutral/300",
+            "token": "neutral-300",
+            "type": "color",
+            "value": "#adadad",
+            "values": {
+              "Caylent Green": "#adadad",
+              "Former Pronetx Blue": "#adadad"
+            }
+          },
+          {
+            "name": "Neutral/400",
+            "token": "neutral-400",
+            "type": "color",
+            "value": "#8d8d8d",
+            "values": {
+              "Caylent Green": "#8d8d8d",
+              "Former Pronetx Blue": "#8d8d8d"
+            }
+          },
+          {
+            "name": "Neutral/600",
+            "token": "neutral-600",
+            "type": "color",
+            "value": "#525252",
+            "values": {
+              "Caylent Green": "#525252",
+              "Former Pronetx Blue": "#525252"
+            }
+          },
+          {
+            "name": "Neutral/500",
+            "token": "neutral-500",
+            "type": "color",
+            "value": "#6f6f6f",
+            "values": {
+              "Caylent Green": "#6f6f6f",
+              "Former Pronetx Blue": "#6f6f6f"
+            }
+          },
+          {
+            "name": "Success/100",
+            "token": "success-100",
+            "type": "color",
+            "value": "#ddf4d2",
+            "values": {
+              "Caylent Green": "#ddf4d2",
+              "Former Pronetx Blue": "#ddf4d2"
+            }
+          },
+          {
+            "name": "Success/200",
+            "token": "success-200",
+            "type": "color",
+            "value": "#b5e89c",
+            "values": {
+              "Caylent Green": "#b5e89c",
+              "Former Pronetx Blue": "#b5e89c"
+            }
+          },
+          {
+            "name": "Success/300",
+            "token": "success-300",
+            "type": "color",
+            "value": "#87d95e",
+            "values": {
+              "Caylent Green": "#87d95e",
+              "Former Pronetx Blue": "#87d95e"
+            }
+          },
+          {
+            "name": "Success/500",
+            "token": "success-500",
+            "type": "color",
+            "value": "#4b9924",
+            "values": {
+              "Caylent Green": "#4b9924",
+              "Former Pronetx Blue": "#4b9924"
+            }
+          },
+          {
+            "name": "Success/600",
+            "token": "success-600",
+            "type": "color",
+            "value": "#244a11",
+            "values": {
+              "Caylent Green": "#244a11",
+              "Former Pronetx Blue": "#244a11"
+            }
+          },
+          {
+            "name": "Success/700",
+            "token": "success-700",
+            "type": "color",
+            "value": "#0c1906",
+            "values": {
+              "Caylent Green": "#0c1906",
+              "Former Pronetx Blue": "#0c1906"
+            }
+          },
+          {
+            "name": "Success/Default",
+            "token": "success-default",
+            "type": "color",
+            "value": "#67d034",
+            "values": {
+              "Caylent Green": "#67d034",
+              "Former Pronetx Blue": "#67d034"
+            }
+          },
+          {
+            "name": "Error/100",
+            "token": "error-100",
+            "type": "color",
+            "value": "#fbc6d4",
+            "values": {
+              "Caylent Green": "#fbc6d4",
+              "Former Pronetx Blue": "#fbc6d4"
+            }
+          },
+          {
+            "name": "Error/200",
+            "token": "error-200",
+            "type": "color",
+            "value": "#f792ac",
+            "values": {
+              "Caylent Green": "#f792ac",
+              "Former Pronetx Blue": "#f792ac"
+            }
+          },
+          {
+            "name": "Error/300",
+            "token": "error-300",
+            "type": "color",
+            "value": "#f3547d",
+            "values": {
+              "Caylent Green": "#f3547d",
+              "Former Pronetx Blue": "#f3547d"
+            }
+          },
+          {
+            "name": "Error/500",
+            "token": "error-500",
+            "type": "color",
+            "value": "#ab0c36",
+            "values": {
+              "Caylent Green": "#ab0c36",
+              "Former Pronetx Blue": "#ab0c36"
+            }
+          },
+          {
+            "name": "Error/600",
+            "token": "error-600",
+            "type": "color",
+            "value": "#690821",
+            "values": {
+              "Caylent Green": "#690821",
+              "Former Pronetx Blue": "#690821"
+            }
+          },
+          {
+            "name": "Error/700",
+            "token": "error-700",
+            "type": "color",
+            "value": "#130106",
+            "values": {
+              "Caylent Green": "#130106",
+              "Former Pronetx Blue": "#130106"
+            }
+          },
+          {
+            "name": "Error/Default",
+            "token": "error-default",
+            "type": "color",
+            "value": "#ef2056",
+            "values": {
+              "Caylent Green": "#ef2056",
+              "Former Pronetx Blue": "#ef2056"
+            }
+          },
+          {
+            "name": "Info/100",
+            "token": "info-100",
+            "type": "color",
+            "value": "#d6e2f5",
+            "values": {
+              "Caylent Green": "#d6e2f5",
+              "Former Pronetx Blue": "#d6e2f5"
+            }
+          },
+          {
+            "name": "Info/200",
+            "token": "info-200",
+            "type": "color",
+            "value": "#a4beea",
+            "values": {
+              "Caylent Green": "#a4beea",
+              "Former Pronetx Blue": "#a4beea"
+            }
+          },
+          {
+            "name": "Info/300",
+            "token": "info-300",
+            "type": "color",
+            "value": "#5a89d8",
+            "values": {
+              "Caylent Green": "#5a89d8",
+              "Former Pronetx Blue": "#5a89d8"
+            }
+          },
+          {
+            "name": "Info/500",
+            "token": "info-500",
+            "type": "color",
+            "value": "#1f4584",
+            "values": {
+              "Caylent Green": "#1f4584",
+              "Former Pronetx Blue": "#1f4584"
+            }
+          },
+          {
+            "name": "Info/600",
+            "token": "info-600",
+            "type": "color",
+            "value": "#11274a",
+            "values": {
+              "Caylent Green": "#11274a",
+              "Former Pronetx Blue": "#11274a"
+            }
+          },
+          {
+            "name": "Info/700",
+            "token": "info-700",
+            "type": "color",
+            "value": "#060d19",
+            "values": {
+              "Caylent Green": "#060d19",
+              "Former Pronetx Blue": "#060d19"
+            }
+          },
+          {
+            "name": "Info/Default",
+            "token": "info-default",
+            "type": "color",
+            "value": "#2859ab",
+            "values": {
+              "Caylent Green": "#2859ab",
+              "Former Pronetx Blue": "#2859ab"
+            }
+          },
+          {
+            "name": "Neutral/0",
+            "token": "neutral-0",
+            "type": "color",
+            "value": "#ffffff",
+            "values": {
+              "Caylent Green": "#ffffff",
+              "Former Pronetx Blue": "#ffffff"
+            }
+          },
+          {
+            "name": "Content Action/Primary/50",
+            "token": "content-action-primary-50",
+            "type": "color",
+            "value": "#fbfcf2",
+            "values": {
+              "Caylent Green": "#fbfcf2",
+              "Former Pronetx Blue": "#fcfdff"
+            }
+          },
+          {
+            "name": "Content Action/Primary/100",
+            "token": "content-action-primary-100",
+            "type": "color",
+            "value": "#d0ecc1",
+            "values": {
+              "Caylent Green": "#d0ecc1",
+              "Former Pronetx Blue": "#f8f9ff"
+            }
+          },
+          {
+            "name": "Content Action/Primary/200",
+            "token": "content-action-primary-200",
+            "type": "color",
+            "value": "#97ca6f",
+            "values": {
+              "Caylent Green": "#97ca6f",
+              "Former Pronetx Blue": "#e5e9ff"
+            }
+          },
+          {
+            "name": "Content Action/Primary/300",
+            "token": "content-action-primary-300",
+            "type": "color",
+            "value": "#629944",
+            "values": {
+              "Caylent Green": "#629944",
+              "Former Pronetx Blue": "#d6d7ff"
+            }
+          },
+          {
+            "name": "Content Action/Primary/Default",
+            "token": "content-action-primary-default",
+            "type": "color",
+            "value": "#3a8015",
+            "values": {
+              "Caylent Green": "#3a8015",
+              "Former Pronetx Blue": "#b2a3ff"
+            }
+          },
+          {
+            "name": "Content Action/Primary/500",
+            "token": "content-action-primary-500",
+            "type": "color",
+            "value": "#366618",
+            "values": {
+              "Caylent Green": "#366618",
+              "Former Pronetx Blue": "#917aff"
+            }
+          },
+          {
+            "name": "Content Action/Primary/600",
+            "token": "content-action-primary-600",
+            "type": "color",
+            "value": "#204704",
+            "values": {
+              "Caylent Green": "#204704",
+              "Former Pronetx Blue": "#8565f2"
+            }
+          },
+          {
+            "name": "Content Action/Primary/700",
+            "token": "content-action-primary-700",
+            "type": "color",
+            "value": "#123200",
+            "values": {
+              "Caylent Green": "#123200",
+              "Former Pronetx Blue": "#7950e5"
+            }
+          },
+          {
+            "name": "Success/50",
+            "token": "success-50",
+            "type": "color",
+            "value": "#f3fbee",
+            "values": {
+              "Caylent Green": "#f3fbee",
+              "Former Pronetx Blue": "#f3fbee"
+            }
+          },
+          {
+            "name": "Error/50",
+            "token": "error-50",
+            "type": "color",
+            "value": "#fef1f4",
+            "values": {
+              "Caylent Green": "#fef1f4",
+              "Former Pronetx Blue": "#fef1f4"
+            }
+          },
+          {
+            "name": "Info/50",
+            "token": "info-50",
+            "type": "color",
+            "value": "#eef3fb",
+            "values": {
+              "Caylent Green": "#eef3fb",
+              "Former Pronetx Blue": "#eef3fb"
+            }
+          },
+          {
+            "name": "Content Action/Secondary/0",
+            "token": "content-action-secondary-0",
+            "type": "color",
+            "value": "#ffffff",
+            "values": {
+              "Caylent Green": "#ffffff",
+              "Former Pronetx Blue": "#ffffff"
+            }
+          },
+          {
+            "name": "Content Action/Secondary/200",
+            "token": "content-action-secondary-200",
+            "type": "color",
+            "value": "#cdcdcd",
+            "values": {
+              "Caylent Green": "#cdcdcd",
+              "Former Pronetx Blue": "#cdcdcd"
+            }
+          },
+          {
+            "name": "Content Action/Secondary/300",
+            "token": "content-action-secondary-300",
+            "type": "color",
+            "value": "#adadad",
+            "values": {
+              "Caylent Green": "#adadad",
+              "Former Pronetx Blue": "#adadad"
+            }
+          },
+          {
+            "name": "Content Action/Secondary/Default",
+            "token": "content-action-secondary-default",
+            "type": "color",
+            "value": "#8d8d8d",
+            "values": {
+              "Caylent Green": "#8d8d8d",
+              "Former Pronetx Blue": "#8d8d8d"
+            }
+          },
+          {
+            "name": "Content Action/Secondary/500",
+            "token": "content-action-secondary-500",
+            "type": "color",
+            "value": "#6f6f6f",
+            "values": {
+              "Caylent Green": "#6f6f6f",
+              "Former Pronetx Blue": "#6f6f6f"
+            }
+          },
+          {
+            "name": "Content Action/Secondary/600",
+            "token": "content-action-secondary-600",
+            "type": "color",
+            "value": "#525252",
+            "values": {
+              "Caylent Green": "#525252",
+              "Former Pronetx Blue": "#525252"
+            }
+          },
+          {
+            "name": "Content Action/Primary/750",
+            "token": "content-action-primary-750",
+            "type": "color",
+            "value": "#0e2800",
+            "values": {
+              "Caylent Green": "#0e2800",
+              "Former Pronetx Blue": "#6530b9"
+            }
+          },
+          {
+            "name": "Content Action/Primary/800",
+            "token": "content-action-primary-800",
+            "type": "color",
+            "value": "#081902",
+            "values": {
+              "Caylent Green": "#081902",
+              "Former Pronetx Blue": "#51078f"
+            }
+          },
+          {
+            "name": "Content Action/Secondary/100",
+            "token": "content-action-secondary-100",
+            "type": "color",
+            "value": "#efefef",
+            "values": {
+              "Caylent Green": "#efefef",
+              "Former Pronetx Blue": "#efefef"
+            }
+          },
+          {
+            "name": "Content Action/Secondary/700",
+            "token": "content-action-secondary-700",
+            "type": "color",
+            "value": "#373737",
+            "values": {
+              "Caylent Green": "#373737",
+              "Former Pronetx Blue": "#373737"
+            }
+          },
+          {
+            "name": "Warning/50",
+            "token": "warning-50",
+            "type": "color",
+            "value": "#fdf8ef",
+            "values": {
+              "Caylent Green": "#fdf8ef",
+              "Former Pronetx Blue": "#fdf8ef"
+            }
+          },
+          {
+            "name": "Warning/100",
+            "token": "warning-100",
+            "type": "color",
+            "value": "#fbeed8",
+            "values": {
+              "Caylent Green": "#fbeed8",
+              "Former Pronetx Blue": "#fbeed8"
+            }
+          },
+          {
+            "name": "Warning/200",
+            "token": "warning-200",
+            "type": "color",
+            "value": "#f7ddb1",
+            "values": {
+              "Caylent Green": "#f7ddb1",
+              "Former Pronetx Blue": "#f7ddb1"
+            }
+          },
+          {
+            "name": "Warning/300",
+            "token": "warning-300",
+            "type": "color",
+            "value": "#f1c780",
+            "values": {
+              "Caylent Green": "#f1c780",
+              "Former Pronetx Blue": "#f1c780"
+            }
+          },
+          {
+            "name": "Warning/Default",
+            "token": "warning-default",
+            "type": "color",
+            "value": "#eaa93c",
+            "values": {
+              "Caylent Green": "#eaa93c",
+              "Former Pronetx Blue": "#eaa93c"
+            }
+          },
+          {
+            "name": "Warning/500",
+            "token": "warning-500",
+            "type": "color",
+            "value": "#c79033",
+            "values": {
+              "Caylent Green": "#c79033",
+              "Former Pronetx Blue": "#c79033"
+            }
+          },
+          {
+            "name": "Warning/600",
+            "token": "warning-600",
+            "type": "color",
+            "value": "#815d21",
+            "values": {
+              "Caylent Green": "#815d21",
+              "Former Pronetx Blue": "#815d21"
+            }
+          },
+          {
+            "name": "Warning/700",
+            "token": "warning-700",
+            "type": "color",
+            "value": "#2f220c",
+            "values": {
+              "Caylent Green": "#2f220c",
+              "Former Pronetx Blue": "#2f220c"
+            }
+          },
+          {
+            "name": "Neutral/100",
+            "token": "neutral-100",
+            "type": "color",
+            "value": "#efefef",
+            "values": {
+              "Caylent Green": "#efefef",
+              "Former Pronetx Blue": "#efefef"
+            }
+          },
+          {
+            "name": "Neutral/700",
+            "token": "neutral-700",
+            "type": "color",
+            "value": "#373737",
+            "values": {
+              "Caylent Green": "#373737",
+              "Former Pronetx Blue": "#373737"
+            }
+          },
+          {
+            "name": "Neutral/50",
+            "token": "neutral-50",
+            "type": "color",
+            "value": "#f8f8f8",
+            "values": {
+              "Caylent Green": "#f8f8f8",
+              "Former Pronetx Blue": "#f8f8f8"
+            }
+          },
+          {
+            "name": "Neutral/800",
+            "token": "neutral-800",
+            "type": "color",
+            "value": "#1d1d1d",
+            "values": {
+              "Caylent Green": "#1d1d1d",
+              "Former Pronetx Blue": "#1d1d1d"
+            }
+          },
+          {
+            "name": "Content Action/Secondary/800",
+            "token": "content-action-secondary-800",
+            "type": "color",
+            "value": "#1d1d1d",
+            "values": {
+              "Caylent Green": "#1d1d1d",
+              "Former Pronetx Blue": "#1d1d1d"
+            }
+          },
+          {
+            "name": "Content Action/Secondary/50",
+            "token": "content-action-secondary-50",
+            "type": "color",
+            "value": "#f8f8f8",
+            "values": {
+              "Caylent Green": "#f8f8f8",
+              "Former Pronetx Blue": "#f8f8f8"
+            }
+          },
+          {
+            "name": "Navigation Bar",
+            "token": "navigation-bar",
+            "type": "color",
+            "value": "#050326",
+            "values": {
+              "Caylent Green": "#050326",
+              "Former Pronetx Blue": "#050326"
+            }
+          },
+          {
+            "name": "Neutral/900",
+            "token": "neutral-900",
+            "type": "color",
+            "value": "#1d1d1d",
+            "values": {
+              "Caylent Green": "#1d1d1d",
+              "Former Pronetx Blue": "#101010"
+            }
+          },
+          {
+            "name": "Neutral/750",
+            "token": "neutral-750",
+            "type": "color",
+            "value": "#2a2a2a",
+            "values": {
+              "Caylent Green": "#2a2a2a",
+              "Former Pronetx Blue": "#2a2a2a"
+            }
+          },
+          {
+            "name": "Content Action/Primary/900",
+            "token": "content-action-primary-900",
+            "type": "color",
+            "value": "#030901",
+            "values": {
+              "Caylent Green": "#030901",
+              "Former Pronetx Blue": "#1b0028"
+            }
+          },
+          {
+            "name": "Content Action/Secondary/900",
+            "token": "content-action-secondary-900",
+            "type": "color",
+            "value": "#101010",
+            "values": {
+              "Caylent Green": "#101010",
+              "Former Pronetx Blue": "#101010"
+            }
+          },
+          {
+            "name": "Content Action/Secondary/750",
+            "token": "content-action-secondary-750",
+            "type": "color",
+            "value": "#2a2a2a",
+            "values": {
+              "Caylent Green": "#2a2a2a",
+              "Former Pronetx Blue": "#2a2a2a"
+            }
+          },
+          {
+            "name": "Content Action/Disabled/50",
+            "token": "content-action-disabled-50",
+            "type": "color",
+            "value": "#f9fbf7",
+            "values": {
+              "Caylent Green": "#f9fbf7",
+              "Former Pronetx Blue": "#f9fbf7"
+            }
+          },
+          {
+            "name": "Content Action/Disabled/100",
+            "token": "content-action-disabled-100",
+            "type": "color",
+            "value": "#f1f5ed",
+            "values": {
+              "Caylent Green": "#f1f5ed",
+              "Former Pronetx Blue": "#f1f5ed"
+            }
+          },
+          {
+            "name": "Content Action/Disabled/200",
+            "token": "content-action-disabled-200",
+            "type": "color",
+            "value": "#d2e0c8",
+            "values": {
+              "Caylent Green": "#d2e0c8",
+              "Former Pronetx Blue": "#d2e0c8"
+            }
+          },
+          {
+            "name": "Content Action/Disabled/300",
+            "token": "content-action-disabled-300",
+            "type": "color",
+            "value": "#cfd7c2",
+            "values": {
+              "Caylent Green": "#cfd7c2",
+              "Former Pronetx Blue": "#cfd7c2"
+            }
+          },
+          {
+            "name": "Content Action/Disabled/Default",
+            "token": "content-action-disabled-default",
+            "type": "color",
+            "value": "#c4cdba",
+            "values": {
+              "Caylent Green": "#c4cdba",
+              "Former Pronetx Blue": "#c4cdba"
+            }
+          },
+          {
+            "name": "Content Action/Disabled/500",
+            "token": "content-action-disabled-500",
+            "type": "color",
+            "value": "#b7beac",
+            "values": {
+              "Caylent Green": "#b7beac",
+              "Former Pronetx Blue": "#b7beac"
+            }
+          },
+          {
+            "name": "Content Action/Disabled/600",
+            "token": "content-action-disabled-600",
+            "type": "color",
+            "value": "#8f9785",
+            "values": {
+              "Caylent Green": "#8f9785",
+              "Former Pronetx Blue": "#8f9785"
+            }
+          },
+          {
+            "name": "Content Action/Disabled/700",
+            "token": "content-action-disabled-700",
+            "type": "color",
+            "value": "#6a7260",
+            "values": {
+              "Caylent Green": "#6a7260",
+              "Former Pronetx Blue": "#6a7260"
+            }
+          },
+          {
+            "name": "Content Action/Disabled/750",
+            "token": "content-action-disabled-750",
+            "type": "color",
+            "value": "#4f5746",
+            "values": {
+              "Caylent Green": "#4f5746",
+              "Former Pronetx Blue": "#4f5746"
+            }
+          },
+          {
+            "name": "Content Action/Disabled/800",
+            "token": "content-action-disabled-800",
+            "type": "color",
+            "value": "#373d2f",
+            "values": {
+              "Caylent Green": "#373d2f",
+              "Former Pronetx Blue": "#373d2f"
+            }
+          },
+          {
+            "name": "Content Action/Disabled/900",
+            "token": "content-action-disabled-900",
+            "type": "color",
+            "value": "#0b0f06",
+            "values": {
+              "Caylent Green": "#0b0f06",
+              "Former Pronetx Blue": "#0b0f06"
+            }
+          }
+        ],
+        "numbers": [
+          {
+            "name": "Border Width/None",
+            "token": "border-width-none",
+            "type": "float",
+            "value": 0,
+            "values": {
+              "Caylent Green": 0,
+              "Former Pronetx Blue": 0
+            }
+          },
+          {
+            "name": "Border Width/xs",
+            "token": "border-width-xs",
+            "type": "float",
+            "value": 1,
+            "values": {
+              "Caylent Green": 1,
+              "Former Pronetx Blue": 1
+            }
+          },
+          {
+            "name": "Border Width/md",
+            "token": "border-width-md",
+            "type": "float",
+            "value": 2,
+            "values": {
+              "Caylent Green": 2,
+              "Former Pronetx Blue": 2
+            }
+          },
+          {
+            "name": "Border Width/lg",
+            "token": "border-width-lg",
+            "type": "float",
+            "value": 4,
+            "values": {
+              "Caylent Green": 4,
+              "Former Pronetx Blue": 4
+            }
+          },
+          {
+            "name": "Border Radius/None",
+            "token": "border-radius-none",
+            "type": "float",
+            "value": 0,
+            "values": {
+              "Caylent Green": 0,
+              "Former Pronetx Blue": 0
+            }
+          },
+          {
+            "name": "Border Radius/xs",
+            "token": "border-radius-xs",
+            "type": "float",
+            "value": 2,
+            "values": {
+              "Caylent Green": 2,
+              "Former Pronetx Blue": 2
+            }
+          },
+          {
+            "name": "Border Radius/sm",
+            "token": "border-radius-sm",
+            "type": "float",
+            "value": 4,
+            "values": {
+              "Caylent Green": 4,
+              "Former Pronetx Blue": 4
+            }
+          },
+          {
+            "name": "Border Radius/md",
+            "token": "border-radius-md",
+            "type": "float",
+            "value": 8,
+            "values": {
+              "Caylent Green": 8,
+              "Former Pronetx Blue": 8
+            }
+          },
+          {
+            "name": "Border Radius/lg",
+            "token": "border-radius-lg",
+            "type": "float",
+            "value": 16,
+            "values": {
+              "Caylent Green": 16,
+              "Former Pronetx Blue": 16
+            }
+          },
+          {
+            "name": "Border Radius/round",
+            "token": "border-radius-round",
+            "type": "float",
+            "value": 64,
+            "values": {
+              "Caylent Green": 64,
+              "Former Pronetx Blue": 64
+            }
+          },
+          {
+            "name": "Text Size/Heading/h 1/Font Size",
+            "token": "text-size-heading-h-1-font-size",
+            "type": "float",
+            "value": 28,
+            "values": {
+              "Caylent Green": 28,
+              "Former Pronetx Blue": 28
+            }
+          },
+          {
+            "name": "Text Size/Heading/h 1/Line Height",
+            "token": "text-size-heading-h-1-line-height",
+            "type": "float",
+            "value": 34,
+            "values": {
+              "Caylent Green": 34,
+              "Former Pronetx Blue": 34
+            }
+          },
+          {
+            "name": "Text Size/Heading/h 1/Paragragh Spacing",
+            "token": "text-size-heading-h-1-paragragh-spacing",
+            "type": "float",
+            "value": 4,
+            "values": {
+              "Caylent Green": 4,
+              "Former Pronetx Blue": 16
+            }
+          },
+          {
+            "name": "Text Size/Heading/h 2/Font Size",
+            "token": "text-size-heading-h-2-font-size",
+            "type": "float",
+            "value": 24,
+            "values": {
+              "Caylent Green": 24,
+              "Former Pronetx Blue": 24
+            }
+          },
+          {
+            "name": "Text Size/Heading/h 2/Line Height",
+            "token": "text-size-heading-h-2-line-height",
+            "type": "float",
+            "value": 30,
+            "values": {
+              "Caylent Green": 30,
+              "Former Pronetx Blue": 30
+            }
+          },
+          {
+            "name": "Text Size/Heading/h 2/Paragragh Spacing",
+            "token": "text-size-heading-h-2-paragragh-spacing",
+            "type": "float",
+            "value": 4,
+            "values": {
+              "Caylent Green": 4,
+              "Former Pronetx Blue": 16
+            }
+          },
+          {
+            "name": "Text Size/Heading/h 3/Font Size",
+            "token": "text-size-heading-h-3-font-size",
+            "type": "float",
+            "value": 20,
+            "values": {
+              "Caylent Green": 20,
+              "Former Pronetx Blue": 20
+            }
+          },
+          {
+            "name": "Text Size/Heading/h 3/Line Height",
+            "token": "text-size-heading-h-3-line-height",
+            "type": "float",
+            "value": 28,
+            "values": {
+              "Caylent Green": 28,
+              "Former Pronetx Blue": 28
+            }
+          },
+          {
+            "name": "Text Size/Heading/h 3/Paragragh Spacing",
+            "token": "text-size-heading-h-3-paragragh-spacing",
+            "type": "float",
+            "value": 8,
+            "values": {
+              "Caylent Green": 8,
+              "Former Pronetx Blue": 12
+            }
+          },
+          {
+            "name": "Text Size/Heading/h 4/Font Size",
+            "token": "text-size-heading-h-4-font-size",
+            "type": "float",
+            "value": 18,
+            "values": {
+              "Caylent Green": 18,
+              "Former Pronetx Blue": 18
+            }
+          },
+          {
+            "name": "Text Size/Heading/h 4/Line Height",
+            "token": "text-size-heading-h-4-line-height",
+            "type": "float",
+            "value": 24,
+            "values": {
+              "Caylent Green": 24,
+              "Former Pronetx Blue": 24
+            }
+          },
+          {
+            "name": "Text Size/Heading/h 4/Paragragh Spacing",
+            "token": "text-size-heading-h-4-paragragh-spacing",
+            "type": "float",
+            "value": 8,
+            "values": {
+              "Caylent Green": 8,
+              "Former Pronetx Blue": 12
+            }
+          },
+          {
+            "name": "Text Size/Heading/h 5/Font Size",
+            "token": "text-size-heading-h-5-font-size",
+            "type": "float",
+            "value": 16,
+            "values": {
+              "Caylent Green": 16,
+              "Former Pronetx Blue": 16
+            }
+          },
+          {
+            "name": "Text Size/Heading/h 5/Line Height",
+            "token": "text-size-heading-h-5-line-height",
+            "type": "float",
+            "value": 24,
+            "values": {
+              "Caylent Green": 24,
+              "Former Pronetx Blue": 24
+            }
+          },
+          {
+            "name": "Text Size/Heading/h 5/Paragragh Spacing",
+            "token": "text-size-heading-h-5-paragragh-spacing",
+            "type": "float",
+            "value": 8,
+            "values": {
+              "Caylent Green": 8,
+              "Former Pronetx Blue": 8
+            }
+          },
+          {
+            "name": "Text Size/Paragraph/Large/Size",
+            "token": "text-size-paragraph-large-size",
+            "type": "float",
+            "value": 16,
+            "values": {
+              "Caylent Green": 16,
+              "Former Pronetx Blue": 16
+            }
+          },
+          {
+            "name": "Text Size/Paragraph/Large/Lne Height",
+            "token": "text-size-paragraph-large-lne-height",
+            "type": "float",
+            "value": 24,
+            "values": {
+              "Caylent Green": 24,
+              "Former Pronetx Blue": 24
+            }
+          },
+          {
+            "name": "Text Size/Paragraph/Large/Paragraph Spacing",
+            "token": "text-size-paragraph-large-paragraph-spacing",
+            "type": "float",
+            "value": 12,
+            "values": {
+              "Caylent Green": 12,
+              "Former Pronetx Blue": 12
+            }
+          },
+          {
+            "name": "Text Size/Paragraph/Regular/Size",
+            "token": "text-size-paragraph-regular-size",
+            "type": "float",
+            "value": 14,
+            "values": {
+              "Caylent Green": 14,
+              "Former Pronetx Blue": 14
+            }
+          },
+          {
+            "name": "Text Size/Paragraph/Regular/Lne Height",
+            "token": "text-size-paragraph-regular-lne-height",
+            "type": "float",
+            "value": 20,
+            "values": {
+              "Caylent Green": 20,
+              "Former Pronetx Blue": 20
+            }
+          },
+          {
+            "name": "Text Size/Paragraph/Regular/Paragraph Spacing",
+            "token": "text-size-paragraph-regular-paragraph-spacing",
+            "type": "float",
+            "value": 12,
+            "values": {
+              "Caylent Green": 12,
+              "Former Pronetx Blue": 12
+            }
+          },
+          {
+            "name": "Text Size/Paragraph/Small/Size",
+            "token": "text-size-paragraph-small-size",
+            "type": "float",
+            "value": 12,
+            "values": {
+              "Caylent Green": 12,
+              "Former Pronetx Blue": 12
+            }
+          },
+          {
+            "name": "Text Size/Paragraph/Small/Lne Height",
+            "token": "text-size-paragraph-small-lne-height",
+            "type": "float",
+            "value": 20,
+            "values": {
+              "Caylent Green": 20,
+              "Former Pronetx Blue": 20
+            }
+          },
+          {
+            "name": "Text Size/Paragraph/Small/Paragraph Spacing",
+            "token": "text-size-paragraph-small-paragraph-spacing",
+            "type": "float",
+            "value": 12,
+            "values": {
+              "Caylent Green": 12,
+              "Former Pronetx Blue": 12
+            }
+          },
+          {
+            "name": "Text Size/Paragraph/Extra Small/Size",
+            "token": "text-size-paragraph-extra-small-size",
+            "type": "float",
+            "value": 10,
+            "values": {
+              "Caylent Green": 10,
+              "Former Pronetx Blue": 10
+            }
+          },
+          {
+            "name": "Text Size/Paragraph/Extra Small/Lne Height",
+            "token": "text-size-paragraph-extra-small-lne-height",
+            "type": "float",
+            "value": 16,
+            "values": {
+              "Caylent Green": 16,
+              "Former Pronetx Blue": 16
+            }
+          },
+          {
+            "name": "Text Size/Paragraph/Extra Small/Paragraph Spacing",
+            "token": "text-size-paragraph-extra-small-paragraph-spacing",
+            "type": "float",
+            "value": 12,
+            "values": {
+              "Caylent Green": 12,
+              "Former Pronetx Blue": 12
+            }
+          },
+          {
+            "name": "Border Width/sm",
+            "token": "border-width-sm",
+            "type": "float",
+            "value": 1,
+            "values": {
+              "Caylent Green": 1,
+              "Former Pronetx Blue": 1
+            }
+          },
+          {
+            "name": "Text Size/Paragraph/Extra Large/Size",
+            "token": "text-size-paragraph-extra-large-size",
+            "type": "float",
+            "value": 18,
+            "values": {
+              "Caylent Green": 18,
+              "Former Pronetx Blue": 18
+            }
+          },
+          {
+            "name": "Text Size/Paragraph/Extra Large/Lne Height",
+            "token": "text-size-paragraph-extra-large-lne-height",
+            "type": "float",
+            "value": 28,
+            "values": {
+              "Caylent Green": 28,
+              "Former Pronetx Blue": 28
+            }
+          },
+          {
+            "name": "Text Size/Paragraph/Extra Large/Paragraph Spacing",
+            "token": "text-size-paragraph-extra-large-paragraph-spacing",
+            "type": "float",
+            "value": 12,
+            "values": {
+              "Caylent Green": 12,
+              "Former Pronetx Blue": 12
+            }
+          },
+          {
+            "name": "Text Size/Captions/Large/Size",
+            "token": "text-size-captions-large-size",
+            "type": "float",
+            "value": 12,
+            "values": {
+              "Caylent Green": 12,
+              "Former Pronetx Blue": 12
+            }
+          },
+          {
+            "name": "Text Size/Captions/Large/Lne Height",
+            "token": "text-size-captions-large-lne-height",
+            "type": "float",
+            "value": 16,
+            "values": {
+              "Caylent Green": 16,
+              "Former Pronetx Blue": 16
+            }
+          },
+          {
+            "name": "Text Size/Captions/Large/Paragraph Spacing",
+            "token": "text-size-captions-large-paragraph-spacing",
+            "type": "float",
+            "value": 0,
+            "values": {
+              "Caylent Green": 0,
+              "Former Pronetx Blue": 0
+            }
+          },
+          {
+            "name": "Text Size/Captions/Regular/Size",
+            "token": "text-size-captions-regular-size",
+            "type": "float",
+            "value": 10,
+            "values": {
+              "Caylent Green": 10,
+              "Former Pronetx Blue": 10
+            }
+          },
+          {
+            "name": "Text Size/Captions/Regular/Lne Height",
+            "token": "text-size-captions-regular-lne-height",
+            "type": "float",
+            "value": 12,
+            "values": {
+              "Caylent Green": 12,
+              "Former Pronetx Blue": 12
+            }
+          },
+          {
+            "name": "Text Size/Captions/Regular/Paragraph Spacing",
+            "token": "text-size-captions-regular-paragraph-spacing",
+            "type": "float",
+            "value": 0,
+            "values": {
+              "Caylent Green": 0,
+              "Former Pronetx Blue": 0
+            }
+          },
+          {
+            "name": "Text Size/Captions/Small/Size",
+            "token": "text-size-captions-small-size",
+            "type": "float",
+            "value": 8,
+            "values": {
+              "Caylent Green": 8,
+              "Former Pronetx Blue": 8
+            }
+          },
+          {
+            "name": "Text Size/Captions/Small/Lne Height",
+            "token": "text-size-captions-small-lne-height",
+            "type": "float",
+            "value": 12,
+            "values": {
+              "Caylent Green": 12,
+              "Former Pronetx Blue": 12
+            }
+          },
+          {
+            "name": "Text Size/Captions/Small/Paragraph Spacing",
+            "token": "text-size-captions-small-paragraph-spacing",
+            "type": "float",
+            "value": 0,
+            "values": {
+              "Caylent Green": 0,
+              "Former Pronetx Blue": 0
+            }
+          }
+        ],
+        "strings": [],
+        "booleans": []
+      }
+    },
+    "Raw": {
+      "id": "VariableCollectionId:1:96",
+      "modes": [
+        {
+          "id": "1:2",
+          "name": "Mode 1"
+        }
+      ],
+      "variables": {
+        "colors": [
+          {
+            "name": "Greys/200",
+            "token": "greys-200",
+            "type": "color",
+            "value": "#cdcdcd"
+          },
+          {
+            "name": "Greys/300",
+            "token": "greys-300",
+            "type": "color",
+            "value": "#adadad"
+          },
+          {
+            "name": "Greys/400",
+            "token": "greys-400",
+            "type": "color",
+            "value": "#8d8d8d"
+          },
+          {
+            "name": "Greys/600",
+            "token": "greys-600",
+            "type": "color",
+            "value": "#525252"
+          },
+          {
+            "name": "Greys/500",
+            "token": "greys-500",
+            "type": "color",
+            "value": "#6f6f6f"
+          },
+          {
+            "name": "Blue/100",
+            "token": "blue-100",
+            "type": "color",
+            "value": "#d6e2f5"
+          },
+          {
+            "name": "Blue/200",
+            "token": "blue-200",
+            "type": "color",
+            "value": "#a4beea"
+          },
+          {
+            "name": "Blue/300",
+            "token": "blue-300",
+            "type": "color",
+            "value": "#5a89d8"
+          },
+          {
+            "name": "Blue/500",
+            "token": "blue-500",
+            "type": "color",
+            "value": "#1f4584"
+          },
+          {
+            "name": "Blue/600",
+            "token": "blue-600",
+            "type": "color",
+            "value": "#11274a"
+          },
+          {
+            "name": "Blue/700",
+            "token": "blue-700",
+            "type": "color",
+            "value": "#060d19"
+          },
+          {
+            "name": "Blue/Default",
+            "token": "blue-default",
+            "type": "color",
+            "value": "#2859ab"
+          },
+          {
+            "name": "Green/50",
+            "token": "green-50",
+            "type": "color",
+            "value": "#f3fbee"
+          },
+          {
+            "name": "Green/200",
+            "token": "green-200",
+            "type": "color",
+            "value": "#b5e89c"
+          },
+          {
+            "name": "Green/300",
+            "token": "green-300",
+            "type": "color",
+            "value": "#87d95e"
+          },
+          {
+            "name": "Green/500",
+            "token": "green-500",
+            "type": "color",
+            "value": "#4b9924"
+          },
+          {
+            "name": "Green/600",
+            "token": "green-600",
+            "type": "color",
+            "value": "#244a11"
+          },
+          {
+            "name": "Green/700",
+            "token": "green-700",
+            "type": "color",
+            "value": "#0c1906"
+          },
+          {
+            "name": "Green/Default",
+            "token": "green-default",
+            "type": "color",
+            "value": "#67d034"
+          },
+          {
+            "name": "Red/100",
+            "token": "red-100",
+            "type": "color",
+            "value": "#fbc6d4"
+          },
+          {
+            "name": "Red/200",
+            "token": "red-200",
+            "type": "color",
+            "value": "#f792ac"
+          },
+          {
+            "name": "Red/300",
+            "token": "red-300",
+            "type": "color",
+            "value": "#f3547d"
+          },
+          {
+            "name": "Red/500",
+            "token": "red-500",
+            "type": "color",
+            "value": "#ab0c36"
+          },
+          {
+            "name": "Red/600",
+            "token": "red-600",
+            "type": "color",
+            "value": "#690821"
+          },
+          {
+            "name": "Red/700",
+            "token": "red-700",
+            "type": "color",
+            "value": "#130106"
+          },
+          {
+            "name": "Red/Default",
+            "token": "red-default",
+            "type": "color",
+            "value": "#ef2056"
+          },
+          {
+            "name": "Caylent Green/50",
+            "token": "caylent-green-50",
+            "type": "color",
+            "value": "#fbfcf2"
+          },
+          {
+            "name": "Caylent Green/200",
+            "token": "caylent-green-200",
+            "type": "color",
+            "value": "#97ca6f"
+          },
+          {
+            "name": "Caylent Green/300",
+            "token": "caylent-green-300",
+            "type": "color",
+            "value": "#629944"
+          },
+          {
+            "name": "Caylent Green/Default",
+            "token": "caylent-green-default",
+            "type": "color",
+            "value": "#3a8015"
+          },
+          {
+            "name": "Caylent Green/500",
+            "token": "caylent-green-500",
+            "type": "color",
+            "value": "#366618"
+          },
+          {
+            "name": "Caylent Green/600",
+            "token": "caylent-green-600",
+            "type": "color",
+            "value": "#204704"
+          },
+          {
+            "name": "Caylent Green/700",
+            "token": "caylent-green-700",
+            "type": "color",
+            "value": "#123200"
+          },
+          {
+            "name": "Golden/50",
+            "token": "golden-50",
+            "type": "color",
+            "value": "#fdf8ef"
+          },
+          {
+            "name": "Golden/200",
+            "token": "golden-200",
+            "type": "color",
+            "value": "#f7ddb1"
+          },
+          {
+            "name": "Golden/300",
+            "token": "golden-300",
+            "type": "color",
+            "value": "#f1c780"
+          },
+          {
+            "name": "Golden/Default",
+            "token": "golden-default",
+            "type": "color",
+            "value": "#eaa93c"
+          },
+          {
+            "name": "Golden/500",
+            "token": "golden-500",
+            "type": "color",
+            "value": "#c79033"
+          },
+          {
+            "name": "Golden/600",
+            "token": "golden-600",
+            "type": "color",
+            "value": "#815d21"
+          },
+          {
+            "name": "Golden/700",
+            "token": "golden-700",
+            "type": "color",
+            "value": "#2f220c"
+          },
+          {
+            "name": "CxPortal Purple/100",
+            "token": "cxportal-purple-100",
+            "type": "color",
+            "value": "#f8f9ff"
+          },
+          {
+            "name": "CxPortal Purple/200",
+            "token": "cxportal-purple-200",
+            "type": "color",
+            "value": "#e5e9ff"
+          },
+          {
+            "name": "CxPortal Purple/300",
+            "token": "cxportal-purple-300",
+            "type": "color",
+            "value": "#d6d7ff"
+          },
+          {
+            "name": "CxPortal Purple/Default",
+            "token": "cxportal-purple-default",
+            "type": "color",
+            "value": "#b2a3ff"
+          },
+          {
+            "name": "CxPortal Purple/500",
+            "token": "cxportal-purple-500",
+            "type": "color",
+            "value": "#917aff"
+          },
+          {
+            "name": "CxPortal Purple/600",
+            "token": "cxportal-purple-600",
+            "type": "color",
+            "value": "#8565f2"
+          },
+          {
+            "name": "CxPortal Purple/700",
+            "token": "cxportal-purple-700",
+            "type": "color",
+            "value": "#7950e5"
+          },
+          {
+            "name": "Caylent Green/100",
+            "token": "caylent-green-100",
+            "type": "color",
+            "value": "#d0ecc1"
+          },
+          {
+            "name": "Golden/100",
+            "token": "golden-100",
+            "type": "color",
+            "value": "#fbeed8"
+          },
+          {
+            "name": "Greys/0",
+            "token": "greys-0",
+            "type": "color",
+            "value": "#ffffff"
+          },
+          {
+            "name": "CxPortal Purple/50",
+            "token": "cxportal-purple-50",
+            "type": "color",
+            "value": "#fcfdff"
+          },
+          {
+            "name": "Green/100",
+            "token": "green-100",
+            "type": "color",
+            "value": "#ddf4d2"
+          },
+          {
+            "name": "Blue/50",
+            "token": "blue-50",
+            "type": "color",
+            "value": "#eef3fb"
+          },
+          {
+            "name": "Red/50",
+            "token": "red-50",
+            "type": "color",
+            "value": "#fef1f4"
+          },
+          {
+            "name": "CxPortal Purple/750",
+            "token": "cxportal-purple-750",
+            "type": "color",
+            "value": "#6530b9"
+          },
+          {
+            "name": "CxPortal Purple/800",
+            "token": "cxportal-purple-800",
+            "type": "color",
+            "value": "#51078f"
+          },
+          {
+            "name": "Caylent Green/750",
+            "token": "caylent-green-750",
+            "type": "color",
+            "value": "#0e2800"
+          },
+          {
+            "name": "Caylent Green/800",
+            "token": "caylent-green-800",
+            "type": "color",
+            "value": "#081902"
+          },
+          {
+            "name": "Greys/100",
+            "token": "greys-100",
+            "type": "color",
+            "value": "#efefef"
+          },
+          {
+            "name": "Greys/700",
+            "token": "greys-700",
+            "type": "color",
+            "value": "#373737"
+          },
+          {
+            "name": "Greys/50",
+            "token": "greys-50",
+            "type": "color",
+            "value": "#f8f8f8"
+          },
+          {
+            "name": "Greys/800",
+            "token": "greys-800",
+            "type": "color",
+            "value": "#1d1d1d"
+          },
+          {
+            "name": "Teal/50",
+            "token": "teal-50",
+            "type": "color",
+            "value": "#e7f6f6"
+          },
+          {
+            "name": "Teal/100",
+            "token": "teal-100",
+            "type": "color",
+            "value": "#cfeced"
+          },
+          {
+            "name": "Teal/200",
+            "token": "teal-200",
+            "type": "color",
+            "value": "#86d1d3"
+          },
+          {
+            "name": "Teal/300",
+            "token": "teal-300",
+            "type": "color",
+            "value": "#3eb5b9"
+          },
+          {
+            "name": "Teal/Default",
+            "token": "teal-default",
+            "type": "color",
+            "value": "#0ea2a7"
+          },
+          {
+            "name": "Teal/500",
+            "token": "teal-500",
+            "type": "color",
+            "value": "#0b8286"
+          },
+          {
+            "name": "Teal/600",
+            "token": "teal-600",
+            "type": "color",
+            "value": "#075154"
+          },
+          {
+            "name": "Teal/700",
+            "token": "teal-700",
+            "type": "color",
+            "value": "#032021"
+          },
+          {
+            "name": "Teal/750",
+            "token": "teal-750",
+            "type": "color",
+            "value": "#010f0f"
+          },
+          {
+            "name": "Teal/800",
+            "token": "teal-800",
+            "type": "color",
+            "value": "#000303"
+          },
+          {
+            "name": "Navigation Blue",
+            "token": "navigation-blue",
+            "type": "color",
+            "value": "#050326"
+          },
+          {
+            "name": "Caylent Green/900",
+            "token": "caylent-green-900",
+            "type": "color",
+            "value": "#030901"
+          },
+          {
+            "name": "CxPortal Purple/900",
+            "token": "cxportal-purple-900",
+            "type": "color",
+            "value": "#1b0028"
+          },
+          {
+            "name": "Greys/750",
+            "token": "greys-750",
+            "type": "color",
+            "value": "#2a2a2a"
+          },
+          {
+            "name": "Greys/900",
+            "token": "greys-900",
+            "type": "color",
+            "value": "#101010"
+          },
+          {
+            "name": "Disabled Green/50",
+            "token": "disabled-green-50",
+            "type": "color",
+            "value": "#f9fbf7"
+          },
+          {
+            "name": "Disabled Green/100",
+            "token": "disabled-green-100",
+            "type": "color",
+            "value": "#f1f5ed"
+          },
+          {
+            "name": "Disabled Green/200",
+            "token": "disabled-green-200",
+            "type": "color",
+            "value": "#d2e0c8"
+          },
+          {
+            "name": "Disabled Green/300",
+            "token": "disabled-green-300",
+            "type": "color",
+            "value": "#cfd7c2"
+          },
+          {
+            "name": "Disabled Green/Default",
+            "token": "disabled-green-default",
+            "type": "color",
+            "value": "#c4cdba"
+          },
+          {
+            "name": "Disabled Green/500",
+            "token": "disabled-green-500",
+            "type": "color",
+            "value": "#b7beac"
+          },
+          {
+            "name": "Disabled Green/600",
+            "token": "disabled-green-600",
+            "type": "color",
+            "value": "#8f9785"
+          },
+          {
+            "name": "Disabled Green/700",
+            "token": "disabled-green-700",
+            "type": "color",
+            "value": "#6a7260"
+          },
+          {
+            "name": "Disabled Green/750",
+            "token": "disabled-green-750",
+            "type": "color",
+            "value": "#4f5746"
+          },
+          {
+            "name": "Disabled Green/800",
+            "token": "disabled-green-800",
+            "type": "color",
+            "value": "#373d2f"
+          },
+          {
+            "name": "Disabled Green/900",
+            "token": "disabled-green-900",
+            "type": "color",
+            "value": "#0b0f06"
+          }
+        ],
+        "numbers": [
+          {
+            "name": "Scale/0",
+            "token": "scale-0",
+            "type": "float",
+            "value": 0
+          },
+          {
+            "name": "Scale/0,5",
+            "token": "scale-0-5",
+            "type": "float",
+            "value": 2
+          },
+          {
+            "name": "Scale/1",
+            "token": "scale-1",
+            "type": "float",
+            "value": 4
+          },
+          {
+            "name": "Scale/2",
+            "token": "scale-2",
+            "type": "float",
+            "value": 8
+          },
+          {
+            "name": "Scale/3",
+            "token": "scale-3",
+            "type": "float",
+            "value": 12
+          },
+          {
+            "name": "Scale/4",
+            "token": "scale-4",
+            "type": "float",
+            "value": 16
+          },
+          {
+            "name": "Scale/5",
+            "token": "scale-5",
+            "type": "float",
+            "value": 20
+          },
+          {
+            "name": "Scale/6",
+            "token": "scale-6",
+            "type": "float",
+            "value": 24
+          },
+          {
+            "name": "Scale/7",
+            "token": "scale-7",
+            "type": "float",
+            "value": 28
+          },
+          {
+            "name": "Scale/8",
+            "token": "scale-8",
+            "type": "float",
+            "value": 32
+          },
+          {
+            "name": "Scale/9",
+            "token": "scale-9",
+            "type": "float",
+            "value": 36
+          },
+          {
+            "name": "Scale/10",
+            "token": "scale-10",
+            "type": "float",
+            "value": 40
+          },
+          {
+            "name": "Scale/12",
+            "token": "scale-12",
+            "type": "float",
+            "value": 48
+          },
+          {
+            "name": "Scale/16",
+            "token": "scale-16",
+            "type": "float",
+            "value": 64
+          },
+          {
+            "name": "Scale/20",
+            "token": "scale-20",
+            "type": "float",
+            "value": 80
+          },
+          {
+            "name": "Scale/30",
+            "token": "scale-30",
+            "type": "float",
+            "value": 120
+          },
+          {
+            "name": "Scale/0,25",
+            "token": "scale-0-25",
+            "type": "float",
+            "value": 1
+          }
+        ],
+        "strings": [
+          {
+            "name": "Font Family/Heading",
+            "token": "font-family-heading",
+            "type": "string",
+            "value": "Roboto"
+          },
+          {
+            "name": "Font Family/Body",
+            "token": "font-family-body",
+            "type": "string",
+            "value": "Roboto"
+          },
+          {
+            "name": "Font Family/Caption",
+            "token": "font-family-caption",
+            "type": "string",
+            "value": "Roboto"
+          },
+          {
+            "name": "Font Weight/Light",
+            "token": "font-weight-light",
+            "type": "string",
+            "value": "Light"
+          },
+          {
+            "name": "Font Weight/Regular",
+            "token": "font-weight-regular",
+            "type": "string",
+            "value": "Regular"
+          },
+          {
+            "name": "Font Weight/Semibold",
+            "token": "font-weight-semibold",
+            "type": "string",
+            "value": "SemiBold"
+          },
+          {
+            "name": "Font Weight/Extra Bold",
+            "token": "font-weight-extra-bold",
+            "type": "string",
+            "value": "ExtraBold"
+          },
+          {
+            "name": "Font Family/Email/Heading",
+            "token": "font-family-email-heading",
+            "type": "string",
+            "value": "Lora"
+          },
+          {
+            "name": "Font Family/Email/Body",
+            "token": "font-family-email-body",
+            "type": "string",
+            "value": "Source Sans Pro"
+          },
+          {
+            "name": "Font Family/Email/Caption",
+            "token": "font-family-email-caption",
+            "type": "string",
+            "value": "Source Sans Pro"
+          }
+        ],
+        "booleans": []
+      }
+    },
+    "Context": {
+      "id": "VariableCollectionId:1:174",
+      "modes": [
+        {
+          "id": "1:3",
+          "name": "Light"
+        }
+      ],
+      "variables": {
+        "colors": [
+          {
+            "name": "Text/Form Field/Disabled",
+            "token": "text-form-field-disabled",
+            "type": "color",
+            "value": "#cfd7c2",
+            "values": {
+              "Light": "#cfd7c2"
+            }
+          },
+          {
+            "name": "Surface/Form Field/Disabled",
+            "token": "surface-form-field-disabled",
+            "type": "color",
+            "value": "#f9fbf7",
+            "values": {
+              "Light": "#f9fbf7"
+            }
+          },
+          {
+            "name": "Surface/Disabled",
+            "token": "surface-disabled",
+            "type": "color",
+            "value": "#f1f5ed",
+            "values": {
+              "Light": "#f1f5ed"
+            }
+          },
+          {
+            "name": "Border Color/Form Fields/Disabled",
+            "token": "border-color-form-fields-disabled",
+            "type": "color",
+            "value": "#f1f5ed",
+            "values": {
+              "Light": "#f1f5ed"
+            }
+          },
+          {
+            "name": "Surface/Accent/Warning Light",
+            "token": "surface-accent-warning-light",
+            "type": "color",
+            "value": "#fdf8ef",
+            "values": {
+              "Light": "#fdf8ef"
+            }
+          },
+          {
+            "name": "Border Color/Accent/Warning Dark",
+            "token": "border-color-accent-warning-dark",
+            "type": "color",
+            "value": "#815d21",
+            "values": {
+              "Light": "#815d21"
+            }
+          },
+          {
+            "name": "Icon/Form Field/Disabled",
+            "token": "icon-form-field-disabled",
+            "type": "color",
+            "value": "#cfd7c2",
+            "values": {
+              "Light": "#cfd7c2"
+            }
+          },
+          {
+            "name": "Surface/Accent/Warning Dark",
+            "token": "surface-accent-warning-dark",
+            "type": "color",
+            "value": "#c79033",
+            "values": {
+              "Light": "#c79033"
+            }
+          },
+          {
+            "name": "Surface/Accent/Warning Hover",
+            "token": "surface-accent-warning-hover",
+            "type": "color",
+            "value": "#815d21",
+            "values": {
+              "Light": "#815d21"
+            }
+          },
+          {
+            "name": "Border Color/Accent/Warning Light",
+            "token": "border-color-accent-warning-light",
+            "type": "color",
+            "value": "#f7ddb1",
+            "values": {
+              "Light": "#f7ddb1"
+            }
+          },
+          {
+            "name": "Border Color/Accent/Warning Hover",
+            "token": "border-color-accent-warning-hover",
+            "type": "color",
+            "value": "#eaa93c",
+            "values": {
+              "Light": "#eaa93c"
+            }
+          },
+          {
+            "name": "Border Color/Surface Active/Primary Disabled",
+            "token": "border-color-surface-active-primary-disabled",
+            "type": "color",
+            "value": "#cfd7c2",
+            "values": {
+              "Light": "#cfd7c2"
+            }
+          },
+          {
+            "name": "Border Color/Surface Active/Secondary Disabled",
+            "token": "border-color-surface-active-secondary-disabled",
+            "type": "color",
+            "value": "#d2e0c8",
+            "values": {
+              "Light": "#d2e0c8"
+            }
+          },
+          {
+            "name": "Surface/Action/Terciary Disabled",
+            "token": "surface-action-terciary-disabled",
+            "type": "color",
+            "value": "#f1f5ed",
+            "values": {
+              "Light": "#f1f5ed"
+            }
+          },
+          {
+            "name": "Border Color/Surface Active/Terciary Disabled",
+            "token": "border-color-surface-active-terciary-disabled",
+            "type": "color",
+            "value": "#d2e0c8",
+            "values": {
+              "Light": "#d2e0c8"
+            }
+          },
+          {
+            "name": "Text/On Action/Disabled",
+            "token": "text-on-action-disabled",
+            "type": "color",
+            "value": "#cfd7c2",
+            "values": {
+              "Light": "#cfd7c2"
+            }
+          },
+          {
+            "name": "Icon/On Action/Disabled",
+            "token": "icon-on-action-disabled",
+            "type": "color",
+            "value": "#cfd7c2",
+            "values": {
+              "Light": "#cfd7c2"
+            }
+          },
+          {
+            "name": "Surface/Action/Highlight (Active)",
+            "token": "surface-action-highlight-active",
+            "type": "color",
+            "value": "#d0ecc1",
+            "values": {
+              "Light": "#d0ecc1"
+            }
+          },
+          {
+            "name": "Surface/Action/Highlight (Active) Hover",
+            "token": "surface-action-highlight-active-hover",
+            "type": "color",
+            "value": "#97ca6f",
+            "values": {
+              "Light": "#97ca6f"
+            }
+          },
+          {
+            "name": "Surface/Action/Highlight (Active) Disabled",
+            "token": "surface-action-highlight-active-disabled",
+            "type": "color",
+            "value": "#f1f5ed",
+            "values": {
+              "Light": "#f1f5ed"
+            }
+          },
+          {
+            "name": "Border Color/Surface Active/Highlight (Active)",
+            "token": "border-color-surface-active-highlight-active",
+            "type": "color",
+            "value": "#97ca6f",
+            "values": {
+              "Light": "#97ca6f"
+            }
+          },
+          {
+            "name": "Border Color/Surface Active/Highlight (Active) Hover",
+            "token": "border-color-surface-active-highlight-active-hover",
+            "type": "color",
+            "value": "#97ca6f",
+            "values": {
+              "Light": "#97ca6f"
+            }
+          }
+        ],
+        "numbers": [],
+        "strings": [
+          {
+            "name": "Message Title",
+            "token": "message-title",
+            "type": "string",
+            "value": "Message Title",
+            "values": {
+              "Light": "Message Title"
+            }
+          }
+        ],
+        "booleans": []
+      }
+    }
+  },
+  "metadata": {
+    "exportDate": "2026-09-10T08:44:52.774Z",
+    "figmaFileKey": "unknown",
+    "fileName": "CxPortal | Design System",
+    "pluginVersion": "1.0.0",
+    "collectionsFound": 3,
+    "collectionsExported": 3
+  }
+}
