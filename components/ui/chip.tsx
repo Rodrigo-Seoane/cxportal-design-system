@@ -91,8 +91,46 @@ const TAG_COLORS = {
 
 export type ChipType  = 'grey' | 'info' | 'success' | 'warning' | 'error'
 export type ChipShade = 100 | 200 | 300 | 400 | 500 | 600
+export type ChipSize  = 'regular' | 'small'
 export type TagState  = 'default' | 'active' | 'viewed' | 'disabled'
 export type TagType   = 'simple' | 'with-value' | 'value-update'
+
+// ── Size config ──────────────────────────────────────────────────────────────
+
+type ChipSizeConfig = {
+  padding: string
+  gap: number
+  borderRadius: number
+  fontSize: number
+  lineHeight: string
+  letterSpacing: string
+  iconSize: number
+  minHeight?: number
+  textTransform?: 'capitalize'
+}
+
+const CHIP_SIZE_CONFIG: Record<ChipSize, ChipSizeConfig> = {
+  regular: {
+    padding: '4px 12px',
+    gap: 8,
+    borderRadius: 8,
+    fontSize: 10,
+    lineHeight: '12px',
+    letterSpacing: '0.4px',
+    iconSize: 12,
+  },
+  small: {
+    padding: '2px 8px',
+    gap: 4,
+    borderRadius: 4,
+    fontSize: 8,
+    lineHeight: '12px',
+    letterSpacing: '0.32px',
+    iconSize: 10,
+    minHeight: 12,
+    textTransform: 'capitalize',
+  },
+}
 
 // ── Chip ──────────────────────────────────────────────────────────────────────
 
@@ -103,7 +141,9 @@ export interface ChipProps {
   type?: ChipType
   /** Tint level within the family: 100 (lightest) → 600 (darkest) */
   shade?: ChipShade
-  /** Show left icon (PlugsConnected, 12px thin) */
+  /** Size variant. Small (12px height, 8px text) is for dense layouts. */
+  size?: ChipSize
+  /** Show left icon (PlugsConnected, 12px thin for regular, 10px for small) */
   iconLeft?: boolean
   /** Show right dismiss icon (×) */
   iconRight?: boolean
@@ -119,6 +159,7 @@ export function Chip({
   label     = 'Current',
   type      = 'info',
   shade     = 100,
+  size      = 'regular',
   iconLeft  = true,
   iconRight = true,
   onDismiss,
@@ -127,6 +168,7 @@ export function Chip({
   className,
 }: ChipProps) {
   const colors = CHIP_COLORS[type][shade]
+  const sz = CHIP_SIZE_CONFIG[size]
 
   return (
     <div
@@ -141,9 +183,10 @@ export function Chip({
       style={{
         display: 'inline-flex',
         alignItems: 'center',
-        gap: 8,
-        padding: '4px 12px',
-        borderRadius: 8,          // --border-radius/md
+        gap: sz.gap,
+        padding: sz.padding,
+        borderRadius: sz.borderRadius,
+        minHeight: sz.minHeight,
         background: colors.bg,
         cursor: onClick ? 'pointer' : 'default',
         userSelect: 'none',
@@ -152,17 +195,18 @@ export function Chip({
       className={className}
     >
       {iconLeft && (
-        <PlugsConnected size={12} color={colors.text} weight="thin" aria-hidden="true" />
+        <PlugsConnected size={sz.iconSize} color={colors.text} weight="thin" aria-hidden="true" />
       )}
 
       <span
         style={{
-          fontSize: 10,
+          fontSize: sz.fontSize,
           fontWeight: 600,
-          lineHeight: '12px',
-          letterSpacing: '0.4px',
+          lineHeight: sz.lineHeight,
+          letterSpacing: sz.letterSpacing,
           color: colors.text,
           whiteSpace: 'nowrap',
+          textTransform: sz.textTransform,
         }}
       >
         {label}
@@ -186,7 +230,7 @@ export function Chip({
           aria-label={onDismiss ? `Remove ${label}` : undefined}
           style={{ display: 'flex', cursor: onDismiss ? 'pointer' : 'default' }}
         >
-          <X size={12} color={colors.text} weight="thin" aria-hidden="true" />
+          <X size={sz.iconSize} color={colors.text} weight="thin" aria-hidden="true" />
         </span>
       )}
     </div>
