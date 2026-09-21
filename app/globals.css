@@ -354,6 +354,7 @@
   --surface-section-bg: var(--neutral-0);
   --surface-section-group-bg: var(--neutral-50);
   --surface-form-field: var(--neutral-0);
+  --surface-form-field-disabled: var(--neutral-100);
   --surface-form-group: var(--neutral-50);
   --surface-action-primary-default: var(--content-action-primary-default);
   --surface-action-primary-hover: var(--content-action-primary-500);
@@ -415,6 +416,7 @@
   --border-color-form-fields-default: var(--neutral-200);
   --border-color-form-fields-hover: var(--content-action-primary-default);
   --border-color-form-fields-focus: var(--content-action-primary-default);
+  --border-color-form-fields-disabled: var(--neutral-200);
 
   /* ─── Legacy aliases (keep existing consumer surface working during Phase 2 sweep) ─── */
   --color-primary:                     var(--content-action-primary-default);
