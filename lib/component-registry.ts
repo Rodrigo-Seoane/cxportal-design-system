@@ -768,6 +768,12 @@ export const registry: Record<string, ComponentEntry> = {
         options: ['100', '200', '300', '400', '500', '600'],
         default: '100',
       },
+      chipSize: {
+        type: 'chip-select',
+        label: 'Chip size',
+        options: ['regular', 'small'],
+        default: 'regular',
+      },
       iconLeft: {
         type: 'boolean',
         label: 'Left icon',
@@ -792,9 +798,10 @@ export const registry: Record<string, ComponentEntry> = {
         default: 'simple',
       },
     },
-    generateCode: ({ chipType, chipShade, iconLeft, iconRight, tagState, tagType }) => {
+    generateCode: ({ chipType, chipShade, chipSize, iconLeft, iconRight, tagState, tagType }) => {
       const type  = String(chipType)
       const shade = String(chipShade)
+      const sz    = String(chipSize)
       const left  = iconLeft  === true || iconLeft  === 'true'
       const right = iconRight === true || iconRight === 'true'
       const state = String(tagState)
@@ -805,6 +812,7 @@ export const registry: Record<string, ComponentEntry> = {
         `  label="Current"`,
         `  type="${type}"`,
         `  shade={${shade}}`,
+        sz !== 'regular' ? `  size="${sz}"` : null,
         !left  ? `  iconLeft={false}`  : null,
         !right ? `  iconRight={false}` : null,
         `/>`,

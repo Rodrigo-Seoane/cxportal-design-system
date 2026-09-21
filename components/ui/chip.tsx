@@ -168,7 +168,7 @@ export function Chip({
   className,
 }: ChipProps) {
   const colors = CHIP_COLORS[type][shade]
-  const sz = CHIP_SIZE_CONFIG[size]
+  const sz = CHIP_SIZE_CONFIG[size] ?? CHIP_SIZE_CONFIG.regular
 
   return (
     <div
