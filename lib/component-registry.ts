@@ -1961,21 +1961,22 @@ export const registry: Record<string, ComponentEntry> = {
     slug: 'breadcrumb',
     title: 'Breadcrumb',
     description:
-      'A horizontal navigation trail showing the current position within the page hierarchy. Always starts with a Home icon; the last item is the current page. Depth is 1-4 items.',
+      'A horizontal navigation trail showing the current position within the page hierarchy. Always starts with a Home icon; the last item is the current page. Supports 1\u20135 depth levels with Max truncation beyond 5.',
     status: 'stable',
     scope: { Breadcrumb },
     propSchema: {
       depth: {
         type: 'chip-select',
         label: 'Depth',
-        options: ['1', '2', '3', '4'],
+        options: ['1', '2', '3', '4', '5', 'Max'],
         default: '2',
       },
     },
     generateCode: ({ depth }) => {
-      const labels = ['Social Security Admin', 'Benefit Status Updates', 'Retirement Planning Reminders', 'Send Schedule']
-      const hrefs  = ['/accounts/ssa', '/accounts/ssa/campaign-groups/benefit-status', '/accounts/ssa/campaign-groups/benefit-status/reminders']
-      const n = Math.min(4, Math.max(1, Number(depth) || 2))
+      const labels = ['Campaigns', 'User Lists', 'List Title', 'List Detail', 'More Detail', 'Deep Page', 'Campaigns']
+      const hrefs  = ['/campaigns', '/campaigns/lists', '/campaigns/lists/list-title', '/campaigns/lists/list-title/detail', '/campaigns/lists/list-title/detail/more', '/campaigns/lists/list-title/detail/more/deep']
+      const d = String(depth)
+      const n = d === 'Max' ? 7 : Math.min(5, Math.max(1, Number(d) || 2))
 
       const lines = ['<Breadcrumb', `  homeHref="/"`, '  items={[']
       for (let i = 0; i < n; i++) {
@@ -2045,7 +2046,7 @@ export const registry: Record<string, ComponentEntry> = {
       depth: {
         type: 'chip-select',
         label: 'Breadcrumb depth',
-        options: ['1', '2', '3', '4'],
+        options: ['1', '2', '3', '4', '5'],
         default: '2',
       },
       title: {

@@ -10,7 +10,7 @@ const meta: Meta<typeof Breadcrumb> = {
     docs: {
       description: {
         component:
-          'A horizontal navigation trail showing the current position within the page hierarchy. Always starts with a Home icon; the last item in `items` is the current page (semibold, no link). Depth is 1-4 items per Figma.',
+          'A horizontal navigation trail showing the current position within the page hierarchy. Always starts with a Home icon; the last item in `items` is the current page (semibold, no link). Supports 1\u20135 depth levels with Max truncation beyond 5.',
       },
     },
   },
@@ -65,22 +65,49 @@ export const Depth4: Story = {
   },
 }
 
+export const Depth5: Story = {
+  args: {
+    homeHref: '/',
+    items: [
+      { label: 'Campaigns', href: '/campaigns' },
+      { label: 'User Lists', href: '/campaigns/lists' },
+      { label: 'List Title', href: '/campaigns/lists/list-title' },
+      { label: 'List Detail', href: '/campaigns/lists/list-title/detail' },
+      { label: 'Campaigns' },
+    ],
+  },
+}
+
+export const MaxTruncated: Story = {
+  args: {
+    homeHref: '/',
+    items: [
+      { label: 'Campaigns', href: '/campaigns' },
+      { label: 'User Lists', href: '/campaigns/lists' },
+      { label: 'List Title', href: '/campaigns/lists/list-title' },
+      { label: 'List Detail', href: '/campaigns/lists/list-title/detail' },
+      { label: 'More Detail', href: '/campaigns/lists/list-title/detail/more' },
+      { label: 'Campaigns' },
+    ],
+  },
+}
+
 export const AllDepths: Story = {
   render: () => (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
-      <Breadcrumb homeHref="/" items={[{ label: 'Social Security Admin' }]} />
+      <Breadcrumb homeHref="/" items={[{ label: 'Campaigns' }]} />
       <Breadcrumb
         homeHref="/"
         items={[
-          { label: 'Social Security Admin', href: '/accounts/ssa' },
+          { label: 'Campaigns', href: '/campaigns' },
           { label: 'Benefit Status Updates' },
         ]}
       />
       <Breadcrumb
         homeHref="/"
         items={[
-          { label: 'Social Security Admin', href: '/accounts/ssa' },
-          { label: 'Benefit Status Updates', href: '/accounts/ssa/campaign-groups/benefit-status' },
+          { label: 'Campaigns', href: '/campaigns' },
+          { label: 'User Lists', href: '/campaigns/lists' },
           { label: 'Retirement Planning Reminders' },
         ]}
       />
@@ -91,6 +118,27 @@ export const AllDepths: Story = {
           { label: 'User Lists', href: '/campaigns/lists' },
           { label: 'Retirees Q4', href: '/campaigns/lists/retirees-q4' },
           { label: 'Retirement Planning Reminders' },
+        ]}
+      />
+      <Breadcrumb
+        homeHref="/"
+        items={[
+          { label: 'Campaigns', href: '/campaigns' },
+          { label: 'User Lists', href: '/campaigns/lists' },
+          { label: 'List Title', href: '/campaigns/lists/list-title' },
+          { label: 'List Detail', href: '/campaigns/lists/list-title/detail' },
+          { label: 'Campaigns' },
+        ]}
+      />
+      <Breadcrumb
+        homeHref="/"
+        items={[
+          { label: 'Campaigns', href: '/campaigns' },
+          { label: 'User Lists', href: '/campaigns/lists' },
+          { label: 'List Title', href: '/campaigns/lists/list-title' },
+          { label: 'List Detail', href: '/campaigns/lists/list-title/detail' },
+          { label: 'More Detail', href: '/campaigns/lists/list-title/detail/more' },
+          { label: 'Campaigns' },
         ]}
       />
     </div>

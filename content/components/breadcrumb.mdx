@@ -1,16 +1,16 @@
 ---
 title: Breadcrumb
-description: A horizontal navigation trail showing the user's location within the page hierarchy. Always starts with a Home icon and ends with the current page in semibold. Supports 1 to 4 depth levels.
+description: A horizontal navigation trail showing the user's location within the page hierarchy. Always starts with a Home icon and ends with the current page in semibold. Supports 1–5 depth levels with Max truncation for deeper trails.
 figmaNodeId: 1933-2500
-figmaUpdated: May 29, 2026
+figmaUpdated: Sep 18, 2026
 status: stable
 ---
 
 ## Overview
 
-Breadcrumbs render the user's current position within the application hierarchy as a left-to-right trail of links separated by caret icons. The trail always begins with a `HouseIcon` (the module root) and ends with the current page label in semibold — every item before it is a real navigation link. The component supports 1 to 4 depth levels.
+Breadcrumbs render the user's current position within the application hierarchy as a left-to-right trail of links separated by caret icons. The trail always begins with a `HouseIcon` (the module root) and ends with the current page label in semibold — every item before it is a real navigation link. Six depth variants (01–05 plus Max) cover real navigation hierarchies in the product. The Max variant introduces ellipsis truncation for paths deeper than 5 levels.
 
-Breadcrumbs were previously deprecated in CxPortal; they are being re-introduced as a first-class DS component to support deeper navigation hierarchies introduced in the Campaigns Email and Knowledge Management modules. This is a new build — no prior implementation existed in the codebase. **Migrated (2026-09-10):** the app's 7 real inline breadcrumb call sites (Access Management's 3 detail pages, WFM Reporting's 4 pages) now use this component. 8 remaining call sites inside `app/sandbox/campaigns-email/` and `app/sandbox/collapsible-filter/` are still hand-rolled — a separate prototype subsystem with its own styling convention, tracked in `Open_Questions.md` rather than migrated here.
+Breadcrumbs were previously deprecated in CxPortal; they are being re-introduced as a first-class DS component to support deeper navigation hierarchies introduced in the Campaigns Email and Knowledge Management modules. **Migrated (2026-09-10):** the app's 7 real inline breadcrumb call sites (Access Management's 3 detail pages, WFM Reporting's 4 pages) now use this component. 8 remaining call sites inside `app/sandbox/campaigns-email/` and `app/sandbox/collapsible-filter/` are still hand-rolled — a separate prototype subsystem with its own styling convention, tracked in `Open_Questions.md` rather than migrated here.
 
 ## When to use
 
@@ -22,16 +22,17 @@ Breadcrumbs were previously deprecated in CxPortal; they are being re-introduced
 
 - Do not use breadcrumbs on top-level pages — there is nothing to navigate up to.
 - Do not use breadcrumbs as a replacement for tab navigation within a single page — use the Tab Group component instead.
-- Do not nest deeper than 4 levels. If you need a 5th, the information architecture needs rethinking, not a wider component.
+- Do not nest beyond the Max variant's capacity. If the trail would exceed the ellipsis truncation pattern, the information architecture needs rethinking.
 
 ## Anatomy
 
-- **Home icon** — `HouseIcon` (16×16), always the first item, always a link to `homeHref`.
+- **Home icon** — `HouseIcon` (14×14), always the first item, always a link to `homeHref`.
 - **Caret separator** — `CaretRightIcon` (12×12) between each item. Decorative, `aria-hidden="true"`.
-- **Ancestor labels** — Body/Extra Small Regular (10 px, 400 weight). Each is a link.
-- **Current page label** — Body/Extra Small SemiBold (10 px, 600 weight). Not a link — represents where the user is.
+- **Ancestor labels** — Body/Small Regular (12 px, 400 weight). Each is a link.
+- **Current page label** — Body/Small SemiBold (12 px, 600 weight, 0.24px letter-spacing). Not a link — represents where the user is.
+- **Ellipsis (Max variant only)** — A "…" text node replacing hidden middle ancestors. Displayed when the trail exceeds 5 levels. Not a link.
 
-All labels use `--text-on-action-transparent` (`#3a8015`) — see **Token reference** for why this doesn't match either of the Figma docs frames.
+All labels use `--text-on-action-transparent` (`#3a8015`).
 
 ## Variants
 
@@ -65,6 +66,16 @@ Depth is simply `items.length` — there's no separate "variant" prop to set.
       <TableCell>4 items</TableCell>
       <TableCell>Home › Ancestor › Ancestor › Ancestor › <strong>Current</strong></TableCell>
       <TableCell>Topic or item-level pages</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>5 items</TableCell>
+      <TableCell>Home › A › A › A › A › <strong>Current</strong></TableCell>
+      <TableCell>Deep detail pages</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>6+ items (Max)</TableCell>
+      <TableCell>Home › … › A › A › A › <strong>Current</strong></TableCell>
+      <TableCell>Truncated — shows last 3 ancestors before current</TableCell>
     </TableRow>
   </TableBody>
 </Table>
@@ -105,10 +116,8 @@ Depth is simply `items.length` — there's no separate "variant" prop to set.
 
 ### DON'Ts
 
-- Don't render breadcrumbs on root-level pages — the Home icon alone conveys nothing useful.
-- Don't truncate ancestor labels with ellipsis — if the trail overflows, the hierarchy is too deep for breadcrumbs alone; consider restructuring the navigation. (Figma's Usage doc allows middle-truncation past 200px; not implemented — see **Open questions**.)
-- Don't style the current page label as a link — it represents the current location and should not be interactive.
-- Don't pass more than 4 items. Beyond that, use a different navigation pattern.
+- Don't nest beyond the Max variant's capacity. If the trail would exceed the ellipsis truncation pattern, the information architecture needs rethinking.
+- Don't use the deprecated Breadcrumb Deprecated component (slash separators, different typography) for new screens.
 
 ## Code
 
@@ -123,7 +132,7 @@ interface BreadcrumbItem {
 }
 
 interface BreadcrumbProps {
-  /** Ancestor + current page trail. Depth (1-4 per Figma) is items.length. */
+  /** Ancestor + current page trail. 1–5 items shown in full; beyond 5 the Max variant truncates middle ancestors with an ellipsis. */
   items: BreadcrumbItem[]
   /** Destination for the leading Home icon (the module root). */
   homeHref: string
@@ -180,55 +189,42 @@ import { Breadcrumb } from '@/components/ui/breadcrumbs'
       <TableCell>All breadcrumb text — ancestor links <strong>and</strong> the current-page label</TableCell>
     </TableRow>
     <TableRow>
-      <TableCell>Body/Extra Small Regular</TableCell>
-      <TableCell>10 px / 400</TableCell>
+      <TableCell>Font size</TableCell>
+      <TableCell>12 px</TableCell>
+      <TableCell>All breadcrumb labels</TableCell>
+    </TableRow>
+    <TableRow>
+      <TableCell>Ancestor weight</TableCell>
+      <TableCell>Regular (400)</TableCell>
       <TableCell>Ancestor link labels</TableCell>
     </TableRow>
     <TableRow>
-      <TableCell>Body/Extra Small SemiBold</TableCell>
-      <TableCell>10 px / 600</TableCell>
-      <TableCell>Current page label</TableCell>
+      <TableCell>Current page weight</TableCell>
+      <TableCell>SemiBold (600), 0.24px letter-spacing</TableCell>
+      <TableCell>Current (last) breadcrumb label</TableCell>
     </TableRow>
     <TableRow>
       <TableCell>Home icon size</TableCell>
-      <TableCell>16×16 px</TableCell>
+      <TableCell>14×14 px</TableCell>
       <TableCell><code>HouseIcon</code></TableCell>
     </TableRow>
     <TableRow>
       <TableCell>Caret icon size</TableCell>
       <TableCell>12×12 px</TableCell>
-      <TableCell><code>CaretRightIcon</code> separator, coloured <code>--neutral-300</code>. The glyph inherits this assigned component color.</TableCell>
+      <TableCell><code>CaretRightIcon</code> separator, coloured <code>--neutral-300</code></TableCell>
     </TableRow>
     <TableRow>
-      <TableCell>Item padding</TableCell>
-      <TableCell>2 px</TableCell>
-      <TableCell>Each breadcrumb item wrapper</TableCell>
-    </TableRow>
-    <TableRow>
-      <TableCell>Gap between items</TableCell>
+      <TableCell>Item gap</TableCell>
       <TableCell>4 px</TableCell>
       <TableCell>Horizontal gap in the trail</TableCell>
     </TableRow>
   </TableBody>
 </Table>
 
-### Figma documentation conflict — resolved
-
-The live Figma **component** (node `1933-2500`) renders every label — ancestor and current alike — in `text/on-action/transparent` (`#3a8015`, the same green as link text elsewhere in the DS). But the two documentation frames disagree with the component **and with each other**:
-
-- Principles (`2303-5400`) Anatomy items 5–6 and the Usage (`2303-5312`) Accessibility note both say ancestor and current labels use `--text/breadcrumb` at `#323840` — a token that doesn't exist anywhere in this codebase.
-- The Usage doc's own Token Reference table instead lists `--text/body/secondary` at `#7a828c` for the same "all breadcrumb text" row — a third value, and one that doesn't match the codebase's actual `--text-body-secondary` (`#8d8d8d`) either.
-
-The confirmed decision is to keep the live component's green `--text-on-action-transparent` color for both ancestor links and the current-page label. The semibold, non-interactive current-page treatment remains its distinguishing affordance; the contradictory Figma prose is not implemented.
-
-Also unresolved:
-- No prop exists yet for middle-truncating labels past 200px (Usage DO's truncation allowance) — not built.
-- Neither Figma docs frame nor the component specifies where the Home icon points; `homeHref` is a plain required prop, left for the consumer to supply per-module.
-
 ## Accessibility
 
-- The trail is a `<nav aria-label="Breadcrumb">` wrapping an `<ol>`, each item an `<li>` — this gives screen readers the "list, N items" / "position X of N" announcements Figma's Usage doc calls for.
+- The trail is a `<nav aria-label="Breadcrumb">` wrapping an `<ol>`, each item an `<li>` — this gives screen readers the "list, N items" / "position X of N" announcements.
 - The Home icon's link carries `aria-label="Home"`.
 - `CaretRightIcon` separators carry `aria-hidden="true"` — never rendered as literal `/` or `›` characters.
 - Ancestor items are real `next/link` anchors. The current page item is a `<span>` with `aria-current="page"`, not a link.
-- The 10 px label size is below the WCAG-recommended 12px minimum for body text; Figma's Usage doc accepts this because breadcrumbs are supplementary navigation, not primary content, provided contrast passes AA with the confirmed green label color.
+- The 12 px label size meets the WCAG-recommended minimum for body text. Ensure sufficient contrast of #3a8015 on the page background at all expected surface colors.
