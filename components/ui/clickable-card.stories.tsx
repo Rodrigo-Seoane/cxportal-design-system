@@ -84,3 +84,44 @@ export const HorizontalDefault: Story = {
     )
   },
 }
+
+export const HorizontalTwoLines: Story = {
+  render: () => {
+    const [selected, setSelected] = useState<string>('outage')
+    return (
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 8, width: 440 }}>
+        <ClickableHorizontalCard
+          label="Total Outage"
+          description="All East 1"
+          selected={selected === 'outage'}
+          onClick={() => setSelected('outage')}
+        />
+        <ClickableHorizontalCard
+          label="Partial Outage"
+          description="East Region 2"
+          selected={selected === 'partial'}
+          onClick={() => setSelected('partial')}
+        />
+        <ClickableHorizontalCard
+          label="Scheduled Maintenance"
+          description="West Region 3"
+          selected={selected === 'maintenance'}
+          onClick={() => setSelected('maintenance')}
+        />
+      </div>
+    )
+  },
+}
+
+export const HorizontalAllStates: Story = {
+  render: () => (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+      <div style={{ display: 'flex', gap: 8 }}>
+        <ClickableHorizontalCard label="Default" />
+        <ClickableHorizontalCard label="Selected" selected />
+      </div>
+      <ClickableHorizontalCard label="Total Outage" description="All East 1" />
+      <ClickableHorizontalCard label="Total Outage" description="All East 1" selected />
+    </div>
+  ),
+}

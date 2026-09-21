@@ -1639,14 +1639,14 @@ export const registry: Record<string, ComponentEntry> = {
     slug: 'clickable-card',
     title: 'Clickable Card',
     description:
-      'Selection cards for single-choice flows. Two variants: a rich Card with icon, title and description, and a compact Horizontal Card with a radio and uppercase label.',
+      'Selection cards for single-choice flows. Three shapes: a rich Card with icon/title/description, a compact Horizontal Card (single-line), and a Horizontal Card with description (2+ lines).',
     status: 'stable',
     scope: { ClickableCard, ClickableHorizontalCard },
     propSchema: {
       variant: {
         type: 'chip-select',
         label: 'Variant',
-        options: ['card', 'horizontal'],
+        options: ['card', 'horizontal', 'horizontal-2-lines'],
         default: 'card',
       },
       selected: {
@@ -1695,6 +1695,12 @@ export const registry: Record<string, ComponentEntry> = {
       if (v === 'horizontal') {
         const lbl = String(label)
         return [`<ClickableHorizontalCard`, `  label="${lbl}"${selAttr}`, `/>`].join('\n')
+      }
+
+      if (v === 'horizontal-2-lines') {
+        const lbl = String(label)
+        const desc = String(description)
+        return [`<ClickableHorizontalCard`, `  label="${lbl}"`, `  description="${desc}"${selAttr}`, `/>`].join('\n')
       }
 
       // card variant
